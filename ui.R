@@ -20,12 +20,15 @@ library(shiny)
 
 
 shinyUI(
+  # navbar ----
   navbarPage(
     "Tabby2",
+    # about ----
     tabPanel("About", {
       fluidRow(
         column(8, includeMarkdown("inst/md/about.md")),
         column(4, wellPanel(
+          # __ select your state ----
           tags$h4("Select Your State"),
           tags$p(
             "Specify your state to load the corresponding data into Tabby2 and to adjust model parameters accordingly."
@@ -36,6 +39,7 @@ shinyUI(
         ))
       )
     }),
+    # standard interventions ----
     tabPanel("Standard Interventions", {
       fluidRow(
         column(8, 
@@ -57,70 +61,95 @@ shinyUI(
         ))
       )
     }),
+    # custom interventions ----
     tabPanel("Custom Interventions", {
       fluidRow(
         column(6, includeMarkdown("inst/md/custom-interventions.md"),
                tags$br()),
+        # define intervention ----
         column(6, tabsetPanel(
           tabPanel("Intervention 1",
             tags$br(),
             fluidRow(
-              column(6, 
-                textInput(inputId = "custom1-name", label = "Name Custom Intervention:"),
-                radioButtons(
-                  inputId = "custom1-agegroups", 
-                  label = "Select Targeted Age Groups",
-                  choices = c("All Ages", "0 to 24", "25 to 64", "65+")
+              column(
+                6,
+                wellPanel(
+                  tags$h4("Define Intervention"),
+                  textInput(inputId = "custom1-name", label = "Name Custom Intervention:"),
+                  radioButtons(
+                    inputId = "custom1risk",
+                    label = "Select Targeted Risk Groups",
+                    choices = c(
+                      "All Individuals",
+                      "HIV Positive",
+                      "Diabetics",
+                      "Custom Risk Group"
+                    )
                   ),
-                radioButtons(
-                  inputId = "custom1-nativity",
-                  label = "Select Targeted Nativity Groups",
-                  choices = c("All Ages", "U.S. Born", "Non-U.S. Born")
-                ),
-                radioButtons(
-                  inputId = "custom1-risk",
-                  label = "Select Targeted Risk Groups",
-                  choices = c("All Individuals", "HIV Positive", "Diabetics")
+                  radioButtons(
+                    inputId = "custom1agegroups",
+                    label = "Select Targeted Age Groups",
+                    choices = c("All Ages", "0 to 24", "25 to 64", "65+")
+                  ),
+                  radioButtons(
+                    inputId = "custom1nativity",
+                    label = "Select Targeted Nativity Groups",
+                    choices = c("All Ages", "U.S. Born", "Non-U.S. Born")
+                  ),
+                  sliderInput(
+                    inputId = "custom1numberscreened",
+                    label = "Select Number of Individuals Screened",
+                    min = 0,
+                    max = 10000,
+                    value = 0,
+                    step = 10
+                  )
                 )
               ),
-              column(6, 
-                sliderInput(
-                  inputId = "custom1-mortality-risk",
-                  label = "Adjust Targeted Population's Mortality Risk (%)",
-                  min = 0, 
-                  max = 100,
-                  value = 0
+              # __ define custom risk group ----
+              column(
+                6,
+                wellPanel(
+                  tags$h4("Targeted Population Summary Statistics"),
+                  tags$p("Incidence: 5.1%\n"),
+                  tags$p("LTBI Prevalence: 12.5%")
                 ),
-                sliderInput(
-                  inputId = "custom1-reactivation-risk",
-                  label = "Adjust Targeted Population's Reactivation Risk (%)",
-                  min = 0, 
-                  max = 100,
-                  value = 0
-                ),
-                sliderInput(
-                  inputId = "custom1-additional-screening",
-                  label = "Select Additional Number of Individuals Screened",
-                  min = 0, 
-                  max = 10000,
-                  value = 0,
-                  step = 10
-                ),
-                sliderInput(
-                  inputId = "custom1-treatment-initiation-rate",
-                  label = "Specify Improvement in Treatment Initiation Rates (%)",
-                  min = 0,
-                  max = 100,
-                  value = 0
+                conditionalPanel(
+                  condition = "input.custom1risk == 'Custom Risk Group'",
+                  wellPanel(
+                    # style = "overflow-y:scroll; max-height: 350px",
+                    tags$h4("Define Custom Risk Group"),
+                    sliderInput(
+                      inputId = "custom1-mortality-risk",
+                      label = "Specify Targeted Population's Relative Mortality Risk (%)",
+                      min = 0,
+                      max = 140,
+                      value = 100
+                    ),
+                    sliderInput(
+                      inputId = "custom1-reactivation-risk",
+                      label = "Specify Targeted Population's Relative LTBI Progression Risk (%)",
+                      min = 0,
+                      max = 140,
+                      value = 100
+                    ),
+                    sliderInput(
+                      inputId = "custom1-treatment-initiation-rate",
+                      label = "Specify Targeted Population's Relative LTBI Prevalence Risk (%)",
+                      min = 0,
+                      max = 140,
+                      value = 100
+                    )
+                  )
                 )
               )
             )
           ),
           tabPanel("Intervention 2", {}),
           tabPanel("Intervention 3", {})
+          )
         )
       )
-    )
     }),
     tabPanel("Outcomes", {
     })
