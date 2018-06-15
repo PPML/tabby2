@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyjs)
 
 shinyServer(function(input, output) {
   # downloadHandler() takes two arguments, both functions.
@@ -15,8 +16,6 @@ shinyServer(function(input, output) {
     # This function should write data to a file given to it by
     # the argument 'file'.
     content = function(file) {
-      # cat(str(input))
-      # yaml::as.yaml(input)
       cat(yaml::as.yaml(reactiveValuesToList(input)), file = file)
     }
   )
