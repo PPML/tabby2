@@ -70,34 +70,73 @@ intervention_content <- function(n=1) {
         6,
         # __summary statistics ----
         wellPanel(
-          tags$h4("Targeted Population Summary Statistics"),
-          tags$p("Incidence: 5.1%\n"),
-          tags$p("LTBI Prevalence: 12.5%")
+          fluidRow(
+            column(
+              6,
+              tags$h4("Targeted Population Summary Statistics"),
+              tags$p("Incidence: 0%\n"),
+              tags$p("LTBI Prevalence: 0%")
+            ),
+            column(
+              6,
+              tags$h4("Age-Nativity Group Population Summary Statistics"),
+              tags$p("Incidence: 0%\n"),
+              tags$p("LTBI Prevalence: 0%"),
+              tags$p("Population Size: 0")
+            )
+          )
         ),
         # __risk group parameters ----
         wellPanel(
           # style = "overflow-y:scroll; max-height: 350px",
           tags$h4("Define Custom Risk Group"),
-          sliderInput(
-            inputId = paste0(customn, "mortality-rate"),
-            label = "Specify Targeted Population's Relative Mortality Rate",
-            min = 0,
-            max = 40,
-            value = 1
+          fluidRow(
+            column(
+              8, 
+              uiOutput('custom1_mortality_slider')
+            ),
+            column(
+              4,
+              uiOutput('custom1_mortality_numeric')
+            )
           ),
-          sliderInput(
-            inputId = paste0(customn, "reactivation-rate"),
-            label = "Specify Targeted Population's Relative LTBI Progression Rate",
-            min = 0,
-            max = 40,
-            value = 1
+          fluidRow(
+            column(
+              8,
+              sliderInput(
+                inputId = paste0(customn, "reactivation-rate-slider"),
+                label = "Specify Targeted Population's Relative LTBI Progression Rate",
+                min = 1,
+                max = 40,
+                value = 1
+              )
+            ),
+            column(
+              4,
+              numericInput(
+                inputId = paste0(customn, "reactivation-rate-numeric"),
+                label = '',
+                min = 1, max = 40, value = 1)
+            )
           ),
-          sliderInput(
-            inputId = paste0(customn, "prevalence-rate"),
-            label = "Specify Targeted Population's Relative LTBI Prevalence Rate",
-            min = 0,
-            max = 40,
-            value = 1
+          fluidRow(
+            column(
+              8,
+              sliderInput(
+                inputId = paste0(customn, "prevalence-rate-slider"),
+                label = "Specify Targeted Population's Relative LTBI Prevalence Rate",
+                min = 1,
+                max = 40,
+                value = 1
+              )
+            ),
+            column(
+              4, 
+              numericInput(
+                inputId = paste0(customn, "prevalence-rate-numeric"),
+                label = '',
+                min = 1, max = 40, value = 1)
+            )
           )
         )
       ) # end of column

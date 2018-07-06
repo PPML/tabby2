@@ -20,6 +20,33 @@ shinyServer(function(input, output) {
     }
   )
   
+  # Set Custom Intervention Sliders and Numerics to Update Each Other
+  values <- reactiveValues(custom1_mortality_rate=1) 
+  observe({
+    values$custom1_mortality_rate <- input[['custom1motality-rate-slider']]
+    cat(input[['custom1mortality-rate-slider']])
+  })
+  observe({
+    values$custom1_mortality_rate <- input[['custom1mortality-rate-numeric']]
+    cat(input[['custom1mortality-rate-numeric']])
+  })
+  
+  output$custom1_mortality_slider <- renderUI({sliderInput(
+    inputId = paste0(customn, "mortality-rate-slider"),
+    label = "Specify Targeted Population's Relative Mortality Rate",
+    min = 1,
+    max = 40,
+    value = values$custom1_mortality_rate
+  )})
+  
+  output$custom1_mortality_numeric <- renderUI({numericInput(
+    inputId = paste0(customn, "mortality-rate-numeric"),
+    label = '',
+    min = 1, max = 40, 
+    value = values$custom1_mortality_rate)
+  })
+  
+  
   output$outcome_plot <- renderPlot({
     render_plot(DATA, selected_output = input$plot_outcome)
   })
