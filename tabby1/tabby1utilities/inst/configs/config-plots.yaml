@@ -1,0 +1,93 @@
+font: Helvetica-Narrow
+colors:
+  - "black"
+  - "dodgerblue2"
+  - "#E31A1C"
+  - "green4"
+  - "purple"
+  - "#FF7F00"
+  - "skyblue2"
+  - "#FB9A99"
+shapes:
+  - 4
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 22
+  - 23
+fills:
+  - "black"
+  - "dodgerblue2"
+  - "#E31A1C"
+  - "green4"
+  - "purple"
+  - "#FF7F00"
+  - "#F5F5F5"
+  - "#F5F5F5"
+linetypes:
+  - 'solid'
+  - 'dashed'
+  - 'dotted'
+  - 'dotdash'
+  - 'longdash'
+  - 'twodash'
+  - '4C88C488'
+  - '12345678'
+labels:
+  base_case: Base case
+  intervention_1: TLTBI for new immigrants
+  intervention_2: Improved TLTBI in the US
+  intervention_3: Better case detection
+  intervention_4: Better TB treatment
+  intervention_5: All improvements
+  scenario_1: |-
+    No transmission within
+    the US after 2016
+  scenario_2: |-
+    No LTBI among
+    immigrants after 2016
+  scenario_3: |-
+    Reduced TB prevention
+    effort
+  scenario_5: |-
+    In-migration held
+    constant
+  scenario_6: |-
+    Improving global TB
+    control
+  scenario_7: |-
+    Rising reactivation
+    risk
+region:
+  year:
+    - 2000.0
+    - 2025.0
+    - 2050.0
+    - 2075.0
+    - 2100.0
+  right_bound:
+  - 2012.0
+  - 2037.0
+  - 2062.0
+  - 2087.0
+  - 2112.0
+  left_bound:
+  - 1988.0
+  - 2013.0
+  - 2038.0
+  - 2063.0
+  - 2088.0
+  top_bound:
+  - .inf
+  - .inf
+  - .inf
+  - .inf
+  - .inf
+  bottom_bound:
+  - -.inf
+  - -.inf
+  - -.inf
+  - -.inf
+  - -.inf

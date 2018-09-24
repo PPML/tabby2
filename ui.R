@@ -1,93 +1,95 @@
 library(shiny)
+library(shinydashboard)
 devtools::load_all("utilities")
+source("tabby1/tabby1dependencies.R")
+devtools::load_all("tabby1/tabby1utilities")
+source("tabby1/tabby1global.R")
 
-# Relevant Documentation Articles:
+# Global Variables ----
+tabnames <- c(
+  about = "Introduction",
+  scenarios = "Scenarios",
+  predefined = "Predefined Scenarios",
+  customscenarios = "Build Scenarios",
+  # tltbi = "Targeted LTBI Testing",
+  estimates = "Estimates",
+  timetrends = "Time Trends",
+  agegroups = "Age Groups",
+  downloads = "Downloads",
+  readmore = "Further Description"
+)
 
-# Some Layout Examples with Navbar TabPanels
-# https://shiny.rstudio.com/articles/layout-guide.html
+tabcontents <- list(
+  about = aboutUI(),
+  scenarios = NULL,
+  predefined = NULL,
+  customscenarios = scenariosUI(),
+  # tltbi = customInterventionsUI(),
+  estimates = tabby1Estimates('tabby1'),
+  timetrends = tabby1TimeTrends('tabby1'),
+  agegroups = tabby1AgeGroups('tabby1'),
+  downloads = downloadsAndSettingsUI(),
+  readmore = readmoreUI()
+)
 
-# User Interface Section of Shiny Documentation Articles
-# https://shiny.rstudio.com/articles/#user-interface
+# Sidebar Menu ----
+sidebar <- dashboardSidebar(
+  sidebarMenu(
+    menuItem(tabnames[[1]], tabName = names(tabnames)[[1]], selected = T), # intro
+    menuItem(tabnames[[2]], tabName = names(tabnames)[[2]], startExpanded = T, # scenarios menu dropdown
+      menuItem(tabnames[[3]], tabName = names(tabnames)[[3]]), # custom model scenarios
+      menuItem(tabnames[[4]], tabName = names(tabnames)[[4]]) # ltbi ttt
+    ),
+    menuItem(
+      "Outcomes", startExpanded = T,
+      menuItem(tabnames[[5]], tabName = names(tabnames)[[5]]), # tabby1 estimates
+      menuItem(tabnames[[6]], tabName = names(tabnames)[[6]]), # tabby1 time trends
+      menuItem(tabnames[[7]], tabName = names(tabnames)[[7]])  # tabby1 age groups
+    ),
+    menuItem(tabnames[[8]], tabName = names(tabnames)[[8]]), # downloads
+    menuItem(tabnames[[9]], tabName = names(tabnames)[[9]])  # further description
+  )
+)
 
-# HTML templates look like they're going to be very 
-# important in designing custom 508 compliant componenets.
-# https://shiny.rstudio.com/articles/templates.html
+# Dashboard Body ----
+body <- dashboardBody(
+  tagList(
+    tags$head(
+      tags$style(HTML(
+"
+@import url('//fonts.googleapis.com/css?family=Josefin+Slab');
 
-# shinyWidgets has some good examples of building custom 
-# components. This might be helpful for "prettifying" 
-# the application later and as examples for how we might
-# build custom components to satisfy 508 compliance.
-# https://dreamrs.github.io/shinyWidgets/index.html
+.logo {
+font-family: 'Josefin Slab' !important ;
+font-size: 25px !important;
+}
+"))
+      ),
+    
+  # This is an anonymous function which does the exact same thing 
+  # as tabItems() except that it does not call list() on `...`.
+  # This allows me to pass a list which I construct with a vectorized
+  # operation, namely lapply.
+  # This is just 
+  # tabItems(tabItem(), ...), but written in a way that allows me
+  # to automatically loop over my tabnames and tabcontents variables.
+  (function (...) 
+  {
+    lapply(..., shinydashboard:::tagAssert, class = "tab-pane")
+    div(class = "tab-content", ...)
+  })(lapply(seq_along(tabnames), function(x) {
+    tabItem(tabName = names(tabnames)[[x]], tabcontents[[x]])
+  }))
+  )
+  
+)
 
-
+# Run the Application ----
 shinyUI(
-  # navbar ----
-  navbarPage(
-    "Tabby2",
-    # about ----
-    tabPanel("About", {
-      fluidRow(
-        column(12, h1("About Tabby2")),
-        column(6, includeMarkdown("inst/md/about.md")),
-        column(6, wellPanel(
-          # __ select your state ----
-          tags$h4("Select your Location"),
-          tags$p(
-            "After specifying your location, Tabby2 will load historical data and model parameters calibrated to your state."
-          ), 
-          selectInput(inputId = "state",
-                      label = "Select Your State",
-                      choices = c('United States', state.name),
-                      selected = 'United States')
-        ))
-      )
-    }),
-    # standard interventions ----
-    tabPanel("Standard Interventions", {
-      fluidRow(
-        column(6, 
-          includeMarkdown("inst/md/standard-interventions.md")
-        ),
-        column(6, wellPanel(
-          tags$h4("Standard Intervention Scenarios"),
-          HTML("<hr style='height:3px; visibility:hidden; margin:0;' />"),
-          checkboxInput("input1", "TLTBI for New Immigrants"),
-          checkboxInput("input2", "Improved TLTBI in the United States"),
-          checkboxInput("input3", "Better Case Detection"),
-          checkboxInput("input4", "Better TB Treatment"),
-          checkboxInput("input5", "All Improvements")
-        ))
-      )
-    }),
-    # custom interventions ----
-    tabPanel("Custom Interventions", {
-      fluidRow(
-        column(8, includeMarkdown("inst/md/custom-interventions.md")),
-        column(12, 
-        # define intervention ----
-        tabsetPanel(
-          tabPanel("Intervention 1",
-                   tags$br(),
-                   intervention_content(1)),
-          tabPanel("Intervention 2", 
-                   tags$br(),
-                   intervention_content(2)),
-          tabPanel("Intervention 3", 
-                   tags$br(),
-                   intervention_content(3))
-          )
-        )
-      )
-    }),
-    tabPanel("Outcomes", {
-      fluidRow(
-        selectInput(inputId="plot_outcome", choices = unique(DATA$Output), label = "Choose something to plot"),
-        plotOutput('outcome_plot')
-      )
-    }),
-    tabPanel("Import/Export", {
-      downloadButton('downloadParameters', 'Download User Interface Parameters')
-    })
+  dashboardPage(
+    dashboardHeader(title = 'TabbyII'),
+    sidebar,
+    body
 ))
 
 

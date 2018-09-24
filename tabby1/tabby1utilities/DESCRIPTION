@@ -1,0 +1,26 @@
+Package: tabby1utilities
+Title: Tabby App Utilities
+Version: 0.0.0.1
+Authors@R: person("Nathan", "Teetor", email = "nteetor@hsph.harvard.edu", role = c("aut", "cre"))
+Description: Provide utilities for the Tabby TB application. These utilities
+    include UI building functions, data loading, config reading, and general
+    util functions.
+Depends: R (>= 3.4.0)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports:
+    shiny,
+    dplyr,
+    tidyr,
+    purrr,
+    stringr,
+    ggplot2,
+    ggrepel,
+    scales,
+    naturalsort,
+    extrafont,
+    openxlsx,
+    officer,
+    yaml
+RoxygenNote: 6.0.1

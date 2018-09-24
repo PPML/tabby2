@@ -1,0 +1,185 @@
+IDs:
+  controls:
+    comparators: agegroupComparator
+    populations: agegroupPopulations
+    years: agegroupYears
+    outcomes: agegroupOutcomes
+    interventions: agegroupInterventions
+    analyses: agegroupAnalyses
+    colorblind: agegroupsColorblind
+  downloads:
+    png: agegroupsPNG
+    pdf: agegroupsPDF
+    pptx: agegroupsPPTX
+    csv: agegroupsCSV
+    xlsx: agegroupsXLSX
+  panels:
+    control: agegroupsControlPanel
+    visualization: agegroupsVisualizationPanel
+  title: agegroupTitle
+  subtitle: agegroupSubtitle
+  plot: agegroupPlot
+comparators:
+  heading: Comparison
+  values:
+  - absolute_value
+  - pct_basecase_same_year
+  - pct_basecase_2016
+  labels:
+    absolute_value: Absolute values
+    pct_basecase_same_year: Percentage of base case value in the same year
+    pct_basecase_2016: Percentage of base case value in 2016
+  formatted:
+    absolute_value: ''
+    pct_basecase_same_year: Percentage of base case value in the same year
+    pct_basecase_2016: Percentage of base case value in 2016
+  selected:
+  - yes
+  - no
+  - no
+populations:
+  heading: Populations
+  values:
+  - all_populations
+  - usb_population
+  - fb_population
+  labels:
+    all_populations: Total
+    usb_population: US-born
+    fb_population: Non-US-born
+  formatted:
+    all_populations: total US population
+    usb_population: US-born population
+    fb_population: non-US-born population
+  selected:
+  - yes
+  - no
+  - no
+years:
+  heading: Year
+  min: 2016.0
+  max: 2099.0
+  step: 1.0
+outcomes:
+  heading: Outcomes
+  values:
+  - pct_ltbi
+  - tb_incidence_per_mil
+  - tb_mortality_per_mil
+  - ltbi_000s
+  - tb_incidence_000s
+  - tb_mortality_000s
+  labels:
+    pct_ltbi: LTBI Prevalence (percentage)
+    tb_incidence_per_mil: TB Incidence (per million)
+    tb_mortality_per_mil: TB-Related Deaths (per million)
+    ltbi_000s: LTBI Prevalence (in thousands)
+    tb_incidence_000s: TB Incidence (in thousands)
+    tb_mortality_000s: TB-Related Deaths (in thousands)
+  formatted:
+    pct_ltbi: |-
+      LTBI prevalence
+      (percentage)
+    tb_incidence_per_mil: |-
+      TB Incidence
+      (per million)
+    tb_mortality_per_mil: |-
+      TB-Related Deaths
+      (per million)
+    ltbi_000s: |-
+      LTBI Prevalence
+      (in thousands)
+    tb_incidence_000s: |-
+      TB Incidence
+      (in thousands)
+    tb_mortality_000s: |-
+      TB-Related Deaths
+      (in thousands)
+  descriptions:
+    pct_ltbi: Prevalence of latent M. TB infection at mid-point of year
+    tb_incidence_per_mil: TB cases identified each year (includes TB cases identified
+      after death)
+    tb_mortality_per_mil: Number of deaths attributable to TB each year
+    ltbi_000s: Incident M. TB infections each year due to transmission within the
+      US (includes reinfection of individuals with prior infection, excludes migrants
+      entering the US with established LTBI)
+    tb_incidence_000s: TB cases identified each year (includes TB cases identified
+      after death)
+    tb_mortality_000s: Number of deaths attributable to TB each year
+  selected:
+  - yes
+  - no
+  - no
+  - no
+  - no
+  - no
+interventions:
+  heading: Modeled Scenarios
+  values:
+  - intervention_1
+  - intervention_2
+  - intervention_3
+  - intervention_4
+  - intervention_5
+  labels:
+    intervention_1: TLTBI for New Immigrants
+    intervention_2: Improved TLTBI in the US
+    intervention_3: Better Case Detection
+    intervention_4: Better TB Treatment
+    intervention_5: All Improvements
+  descriptions:
+    intervention_1: Provision of LTBI testing and treatment for all new legal immigrants
+      entering the US
+    intervention_2: Intensification of the current LTBI targeted testing and treatment policy for
+      high-risk populations, doubling treatment uptake within each risk group compared
+      to current levels, and increasing the fraction cured among individuals initiating
+      LTBI treatment, via a 3-month Isoniazid-Rifapentine drug regimen
+    intervention_3: Improved detection of active TB cases, such that the duration of untreated active
+      disease (time from TB incidence to the initiation of treatment) is reduced by 50%
+    intervention_4: Improved treatment quality for active TB, such that treatment default, failure
+      rates, and the fraction of individuals receiving an incorrect drug regimen are
+      reduced by 50% from current levels
+    intervention_5: The combination of all intervention scenarios described above
+analyses:
+  heading: Sensitivity Analyses
+  values:
+  - scenario_1
+  - scenario_2
+  - scenario_3
+  - scenario_5
+  - scenario_6
+  - scenario_7
+  labels:
+    scenario_1: No Transmission Within the US After 2016
+    scenario_2: No TB or LTBI in New Migrants After 2016
+    scenario_3: Reduced TB Prevention Effort
+    scenario_5: Future Immigration at 2016 Levels
+    scenario_6: Improving Global TB Control
+    scenario_7: Rising Reactivation Risks
+  formatted: # use |- to include newline characters
+    scenario_1: |-
+      No transmission within
+      the US after 2016
+    scenario_2: |-
+      No TB or LTBI in new
+      migrants after 2016
+    scenario_3: |-
+      Reduced TB prevention
+      effort
+    scenario_5: |-
+      Future immigration
+      at 2016 levels
+    scenario_6: |-
+      Improving global TB
+      control
+    scenario_7: |-
+      Rising reactivation
+      risks
+downloads:
+  heading: Download
+  labels:
+  - PNG
+  - PDF
+  - PPTX
+  - CSV
+  - XLSX
