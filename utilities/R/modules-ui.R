@@ -39,24 +39,27 @@ standardInterventionsUI <- function() {
 
 
 customInterventionsUI <- function() {
-  # fluidRow(
-    # column(12, h1("Targeted LTBI Testing and Treatment")),
-    # column(6, includeMarkdown("inst/md/custom-interventions.md")),
-    # column(12, 
-           # define intervention ----
-           tabsetPanel(
-             tabPanel("Intervention 1",
-                      tags$br(),
-                      intervention_content(1)),
-             tabPanel("Intervention 2", 
-                      tags$br(),
-                      intervention_content(2)),
-             tabPanel("Intervention 3", 
-                      tags$br(),
-                      intervention_content(3))
-           )
-    # )
-  # )
+  tabsetPanel(
+    id = 'currentlySelectedTTT',
+    tabPanel(
+      title = "Intervention 1",
+      value = 1,
+      tags$br(),
+      intervention_content(1)
+    ),
+    tabPanel(
+      title = "Intervention 2",
+      value = 2,
+      tags$br(),
+      intervention_content(2)
+    ),
+    tabPanel(
+      title = "Intervention 3",
+      value = 3,
+      tags$br(),
+      intervention_content(3)
+    )
+  )
 }
 
 scenariosUI <- function() {
