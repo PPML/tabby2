@@ -112,16 +112,9 @@ programChangePanel <- function(n) {
       column(6, {
         tagList(
         tags$h4("LTBI Treatment Cascade:"),
-        column(6, {
-          selectInput(inputId = paste0("programChanges", n, "RiskGroup"), 
-                      label = "Risk Group for Adjusted Coverage Rate", 
-                      choices = risk_groups)
-        }),
-        column(6, {
         numericInput(inputId = paste0(id, "CoverageRate"),
                     label = "Screening Coverage Rate as a Multiple of the Current Rate for the Selected Risk Group",
-                    value = 1, min = 1, max = 5)
-        }),
+                    value = 1, min = 1, max = 5),
         numericInput(inputId = paste0(id, "IGRACoverage"),
                      label = "Fraction of Individuals Receiving IGRA (%)",
                      value = 0, min = 0, max = 100),
