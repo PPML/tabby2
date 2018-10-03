@@ -8,36 +8,111 @@ source("tabby1/tabby1global.R")
 
 shinyServer(function(input, output, session) {
   
-  callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1")) 
-  
-  # downloadHandler() takes two arguments, both functions.
-  # The content function is passed a filename as an argument, and
-  #   it should write out data to that filename.
-  output$downloadParameters <- downloadHandler(
-    
-    # This function returns a string which tells the client
-    # browser what name to use when saving the file.
-    filename = function() {
-      "input_parameters.yaml"
-    },
-    
-    # This function should write data to a file given to it by
-    # the argument 'file'.
-    content = function(file) {
-      cat(yaml::as.yaml(reactiveValuesToList(input)), file = file)
-    }
+  # Reactive Values ----
+  values <- reactiveValues()
+  # template for targeted testing & treatment
+  ttt_template <- list(
+    name = NULL,
+    risk_group = NULL,
+    nativity_group = NULL,
+    age_group = NULL,
+    number_targeted = NULL,
+    fraction_screened_annually = NULL,
+    start_year = NULL,
+    stop_year = NULL,
+    rate_ratio_progression = NULL,
+    rate_ratio_mortality = NULL,
+    rate_ratio_prevalence = NULL
   )
-  
-  output$plot_outcome <- renderText({input$plot_outcome})
-  
-  output$outcome_plot <- renderPlot({
-    render_plot(DATA, selected_output = input$plot_outcome)
+  # template for the program changes
+  programChanges_template <- list(
+    name = NULL,
+    ltbi_screening_coverage_multiplier = NULL,
+    fraction_receiving_igra = NULL,
+    fraction_accepting_ltbi_treatment = NULL,
+    fraction_completing_ltbi_treatment = NULL,
+    average_time_to_treatment_active = NULL,
+    fraction_defaulting_from_treatment_active = NULL
+  )
+  values[['scenarios']] <-
+    list(
+      ttt = list(ttt_template,
+                 ttt_template,
+                 ttt_template),
+      program_changes = list(programChanges_template,
+                             programChanges_template,
+                             programChanges_template),
+      scenarios = list(list(),
+                       list(),
+                       list())
+    )
+  observe({
+    ttt_to_update <- ifelse(
+      is.null(input$currentlySelectedTTT),
+      1,
+      as.integer(input$currentlySelectedTTT)
+    )
+
+    n <- ttt_to_update
+    tttn <- paste0("ttt", n)
+    tttName <- paste0(tttn, "name")
+    tttRisk <- paste0(tttn, "risk")
+    tttAge <- paste0(tttn, "agegroups")
+    tttNativity <- paste0(tttn, "nativity")
+    tttNumberTargeted <- paste0(tttn, "numberTargeted")
+    tttFractionScreened <- paste0(tttn, "fumberScreened")
+    tttStartYear <- paste0(tttn, "startyear")
+    tttStopYear <- paste0(tttn, "stopyear")
+    tttProgression <- paste0(tttn, "progression-rate-slider")
+    tttPrevalence <- paste0(tttn, "prevalence-rate-slider")
+    tttMortality <- paste0(tttn, "mortality-rate-slider")
+    
+    
+    values[['scenarios']][['ttt']][[ttt_to_update]] <-
+      list(
+        name = input[[tttName]],
+        risk_group = input[[tttRisk]],
+        nativity_group = input[[tttNativity]],
+        age_group = input[[tttAge]],
+        number_targeted = input[[tttNumberTargeted]],
+        fraction_screened_annually = input[[tttFractionScreened]],
+        start_year = input[[tttStartYear]],
+        stop_year = input[[tttStopYear]],
+        rate_ratio_progression = input[[tttProgression]],
+        rate_ratio_mortality = input[[tttMortality]],
+        rate_ratio_prevalence = input[[tttPrevalence]]
+      )
+    
+    # program_change_to_update <- 
+    #   if (is.null(input$currentlySelectedProgramChange)) 1 
+    # else as.integer(input$currentlySelectedProgramChange)
+    # 
+    # pcn <- paste0("programChange", n)
+    # programChangeName = paste0(pcn, 'name')
+    # programChangeLtbi_screening_coverage_multiplier = paste0(pcn, "CoverageRate")
+    # programChangeFraction_receiving_igra = paste0(pcn, "IGRACoverage")
+    # programChangeFraction_accepting_ltbi_treatment = paste0(pcn, "AcceptingTreatmentFraction")
+    # programChangeFraction_completing_ltbi_treatment = paste0(pcn, "CompletionRate")
+    # programChangeAverage_time_to_treatment_active = paste0(pcn, "AverageTimeToTreatment")
+    # programChangeFraction_defaulting_from_treatment_active = paste0(pcn, "DefaultRate")
+    # 
+    # print(program_change_to_update)
+    # values[['scenarios']][['program_changes']][[program_change_to_update]] <- 
+    #   list(
+    #     name = input[[programChangeName]],
+    #     ltbi_screening_coverage_multiplier = input[[programChangeLtbi_screening_coverage_multiplier]],
+    #     fraction_receiving_igra = input[[programChangeFraction_receiving_igra]],
+    #     fraction_accepting_ltbi_treatment = input[[programChangeFraction_accepting_ltbi_treatment]],
+    #     fraction_completing_ltbi_treatment = input[[programChangeFraction_completing_ltbi_treatment]],
+    #     average_time_to_treatment_active = input[[programChangeAverage_time_to_treatment_active]],
+    #     fraction_defaulting_from_treatment_active = input[[programChangeFraction_defaulting_from_treatment_active]]
+    #   )
   })
   
-  output$custom1numberTargeted <- renderText({input$custom1numberTargeted})
-  output$custom2numberTargeted <- renderText({input$custom2numberTargeted})
-  output$custom3numberTargeted <- renderText({input$custom3numberTargeted})
-  
+  # Scenarios Server ----
+  # __TTT Intervention Scenarios as Choices in Custom Scenarios ----
+  # These are the options for TTT Interventions (by Name) available as 
+  # choices in the Custom Scenarios.
   renderScenariosInterventionRadioChoice <- function(n) {
     renderUI({
       radioButtons(
@@ -45,16 +120,32 @@ shinyServer(function(input, output, session) {
         label = "Select a Targeted LTBI Treatment Intervention",
         choices = c(
           "No Intervention",
-          if (input$custom1name != '') input$custom1name else "Intervention 1",
-          if (input$custom2name != '') input$custom2name else "Intervention 2",
-          if (input$custom3name != '') input$custom3name else "Intervention 3"))
+          if (input$ttt1name != '') input$ttt1name else NULL,
+          if (input$ttt2name != '') input$ttt2name else NULL,
+          if (input$ttt3name != '') input$ttt3name else NULL))
     })
   }
-  
   output$custom1ScenarioRadios <- renderScenariosInterventionRadioChoice(1)
   output$custom2ScenarioRadios <- renderScenariosInterventionRadioChoice(2)
   output$custom3ScenarioRadios <- renderScenariosInterventionRadioChoice(3)
   
+  renderScenariosProgramChangesChoice <- function(n) {
+  }
+  
+  
+  # Output Server ----
+  callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1")) 
+  
+  output$downloadParameters <- downloadHandler(
+    filename = function() { "input_parameters.yaml" },
+    content = function(file) { cat(yaml::as.yaml(reactiveValuesToList(input)), file = file) })
+  
+  output$ttt1numberTargeted <- renderText({input$ttt1numberTargeted})
+  output$ttt2numberTargeted <- renderText({input$ttt2numberTargeted})
+  output$ttt3numberTargeted <- renderText({input$ttt3numberTargeted})
+  
+  
+  # These are the Model Scenarios available in the Outcomes - Estimates page
   output$estimatesInterventions <- renderUI({
     checkboxGroup2(
         id = paste0('tabby1-', estimates$IDs$controls$interventions),
@@ -69,6 +160,7 @@ shinyServer(function(input, output, session) {
       )
   })
   
+  # These are the Model Scenarios available in the Outcomes - Trends page
   output$trendsInterventions <- renderUI({
       checkboxGroup2(
       id = paste0('tabby1-', trends$IDs$controls$interventions),
@@ -83,6 +175,7 @@ shinyServer(function(input, output, session) {
     )
   })
   
+  # These are the Model Scenarios available in the Outcomes - Ages page
   output$agesInterventions <- renderUI({
       checkboxGroup2(
       id = paste0('tabby1-', agegroups$IDs$controls$interventions),
@@ -96,4 +189,13 @@ shinyServer(function(input, output, session) {
       values = agegroups$interventions$values
     )
   })
+  
+  # Debug Printout Server ----
+  if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
+    output$debugPrintouts <- renderUI({ 
+      HTML(paste0(capture.output(Hmisc::list.tree(reactiveValuesToList(values), maxlen = 80)), collapse = "<br>"))
+    })
+  }
+  
+  
 })
