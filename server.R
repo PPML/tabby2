@@ -83,40 +83,47 @@ shinyServer(function(input, output, session) {
         rate_ratio_prevalence = input[[tttPrevalence]]
       )
     
-    # program_change_to_update <- 
-    #   if (is.null(input$currentlySelectedProgramChange)) 1 
-    # else as.integer(input$currentlySelectedProgramChange)
-    # 
-    # pcn <- paste0("programChange", n)
-    # programChangeName = paste0(pcn, 'name')
-    # programChangeLtbi_screening_coverage_multiplier = paste0(pcn, "CoverageRate")
-    # programChangeFraction_receiving_igra = paste0(pcn, "IGRACoverage")
-    # programChangeFraction_accepting_ltbi_treatment = paste0(pcn, "AcceptingTreatmentFraction")
-    # programChangeFraction_completing_ltbi_treatment = paste0(pcn, "CompletionRate")
-    # programChangeAverage_time_to_treatment_active = paste0(pcn, "AverageTimeToTreatment")
-    # programChangeFraction_defaulting_from_treatment_active = paste0(pcn, "DefaultRate")
-    # 
-    # print(program_change_to_update)
-    # values[['scenarios']][['program_changes']][[program_change_to_update]] <- 
-    #   list(
-    #     name = input[[programChangeName]],
-    #     ltbi_screening_coverage_multiplier = input[[programChangeLtbi_screening_coverage_multiplier]],
-    #     fraction_receiving_igra = input[[programChangeFraction_receiving_igra]],
-    #     fraction_accepting_ltbi_treatment = input[[programChangeFraction_accepting_ltbi_treatment]],
-    #     fraction_completing_ltbi_treatment = input[[programChangeFraction_completing_ltbi_treatment]],
-    #     average_time_to_treatment_active = input[[programChangeAverage_time_to_treatment_active]],
-    #     fraction_defaulting_from_treatment_active = input[[programChangeFraction_defaulting_from_treatment_active]]
-    #   )
+    program_change_to_update <-
+      if (is.null(input$currentlySelectedProgramChange)) 1
+    else as.integer(input$currentlySelectedProgramChange)
+    
+    pcn <- paste0("programChange", program_change_to_update)
+    programChangeName = paste0(pcn, 'Name')
+    programChangeLtbi_screening_coverage_multiplier = paste0(pcn, "CoverageRate")
+    programChangeFraction_receiving_igra = paste0(pcn, "IGRACoverage")
+    programChangeFraction_accepting_ltbi_treatment = paste0(pcn, "AcceptingTreatmentFraction")
+    programChangeFraction_completing_ltbi_treatment = paste0(pcn, "CompletionRate")
+    programChangeAverage_time_to_treatment_active = paste0(pcn, "AverageTimeToTreatment")
+    programChangeFraction_defaulting_from_treatment_active = paste0(pcn, "DefaultRate")
+    
+    values[['scenarios']][['program_changes']][[program_change_to_update]] <-
+      list(
+        name = input[[programChangeName]],
+        ltbi_screening_coverage_multiplier = input[[programChangeLtbi_screening_coverage_multiplier]],
+        fraction_receiving_igra = input[[programChangeFraction_receiving_igra]],
+        fraction_accepting_ltbi_treatment = input[[programChangeFraction_accepting_ltbi_treatment]],
+        fraction_completing_ltbi_treatment = input[[programChangeFraction_completing_ltbi_treatment]],
+        average_time_to_treatment_active = input[[programChangeAverage_time_to_treatment_active]],
+        fraction_defaulting_from_treatment_active = input[[programChangeFraction_defaulting_from_treatment_active]]
+      )
   })
   
   # Scenarios Server ----
+  
+  # __TTT Number Targeted
+  # These are to display in the summary statistics for the TTT interventions.
+  output$ttt1numberTargeted <- renderText({input$ttt1numberTargeted})
+  output$ttt2numberTargeted <- renderText({input$ttt2numberTargeted})
+  output$ttt3numberTargeted <- renderText({input$ttt3numberTargeted})
+  
+  
   # __TTT Intervention Scenarios as Choices in Custom Scenarios ----
   # These are the options for TTT Interventions (by Name) available as 
   # choices in the Custom Scenarios.
-  renderScenariosInterventionRadioChoice <- function(n) {
+  renderTTTRadioChoice <- function(n) {
     renderUI({
       radioButtons(
-        inputId = paste0('scenarion', n, "TLTBI"),
+        inputId = paste0('scenario', n, "TLTBI"),
         label = "Select a Targeted LTBI Treatment Intervention",
         choices = c(
           "No Intervention",
@@ -125,13 +132,26 @@ shinyServer(function(input, output, session) {
           if (input$ttt3name != '') input$ttt3name else NULL))
     })
   }
-  output$custom1ScenarioRadios <- renderScenariosInterventionRadioChoice(1)
-  output$custom2ScenarioRadios <- renderScenariosInterventionRadioChoice(2)
-  output$custom3ScenarioRadios <- renderScenariosInterventionRadioChoice(3)
+  output$custom1TTTRadios <- renderTTTRadioChoice(1)
+  output$custom2TTTRadios <- renderTTTRadioChoice(2)
+  output$custom3TTTRadios <- renderTTTRadioChoice(3)
   
-  renderScenariosProgramChangesChoice <- function(n) {
+  renderProgramChangesChoice <- function(n) {
+    renderUI({
+      radioButtons(
+        inputId = paste0('scenario', n, "ProgramChange"),
+        label = "Select a Program Change",
+        choices = c(
+          "No Change", 
+          if (input$programChange1Name != '') input$programChange1Name else NULL,
+          if (input$programChange2Name != '') input$programChange2Name else NULL,
+          if (input$programChange3Name != '') input$programChange3Name else NULL))
+    })
   }
   
+  output$custom1ProgramChangeRadios <- renderProgramChangesChoice(1)
+  output$custom2ProgramChangeRadios <- renderProgramChangesChoice(2)
+  output$custom3ProgramChangeRadios <- renderProgramChangesChoice(3)
   
   # Output Server ----
   callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1")) 
@@ -140,9 +160,6 @@ shinyServer(function(input, output, session) {
     filename = function() { "input_parameters.yaml" },
     content = function(file) { cat(yaml::as.yaml(reactiveValuesToList(input)), file = file) })
   
-  output$ttt1numberTargeted <- renderText({input$ttt1numberTargeted})
-  output$ttt2numberTargeted <- renderText({input$ttt2numberTargeted})
-  output$ttt3numberTargeted <- renderText({input$ttt3numberTargeted})
   
   
   # These are the Model Scenarios available in the Outcomes - Estimates page

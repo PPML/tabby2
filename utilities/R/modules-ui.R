@@ -25,33 +25,19 @@ standardInterventionsUI <- function() {
     column(6, 
            includeMarkdown("inst/md/standard-interventions.md")
     )
-    # column(6, wellPanel(
-    #   tags$h4("Standard Intervention Scenarios"),
-    #   HTML("<hr style='height:3px; visibility:hidden; margin:0;' />"),
-    #   checkboxInput("input1", "TLTBI for New Immigrants"),
-    #   checkboxInput("input2", "Improved TLTBI in the United States"),
-    #   checkboxInput("input3", "Better Case Detection"),
-    #   checkboxInput("input4", "Better TB Treatment"),
-    #   checkboxInput("input5", "All Improvements")
-    # ))
   )
 }
 
 
 customInterventionsUI <- function() {
-  
   tagList(
-    # fluidRow(
     br(),
-    # column(6, 
            p(
              "Use the custom Targeted Testing and Treatment to create scenarios that simulate
              additional screening of specific risk groups over a period of specified years. Targeted groups
              can be specified by their risk, age, and nativity status. Custom risk groups can be defined by specifying
              rate ratios of LTBI prevalence, progression, and mortality."
            ),
-    # )
-    # ), 
   tabsetPanel(
     id = 'currentlySelectedTTT',
     tabPanel(
@@ -111,13 +97,13 @@ programChanges <- function() {
     p("Program Changes allow users to change model parameters related to the 
 LTBI treatment and active TB treatment care cascades."),
   tabsetPanel(id = "currentlySelectedProgramChange",
-    tabPanel(title = "Program Change 1", id = 1, {
+    tabPanel(title = "Program Change 1", value = 1, {
       programChangePanel(1)
     }),
-    tabPanel(title = "Program Change 2", id = 2, {
+    tabPanel(title = "Program Change 2", value = 2, {
       programChangePanel(2)
     }),
-    tabPanel(title = "Program Change 3", id = 3, {
+    tabPanel(title = "Program Change 3", value = 3, {
       programChangePanel(3)
     })
   )
@@ -182,28 +168,8 @@ customScenarioPanel <- function(n) {
           label = "Scenario Name",
           inputId = paste0(scenarion, "Name"),
           placeholder = paste0("Custom Scenario ", n)),
-        uiOutput(paste0('custom', n, 'ScenarioRadios')),
-        radioButtons(
-          inputId = paste0(scenarion, "Prebuilt"),
-          label = "Select a Pre-Built Scenario",
-          choices = c(
-            "No Change",
-            "TLTBI for New Immigrants",
-            "Improved TLTBI in the United States",
-            "Better Case Detection",
-            "Better TB Treatment",
-            "All Improvements")),
-        radioButtons(
-          label = "Select a TLTBI Regimen Change",
-          inputId = paste0(scenarion, "Regimen"),
-          choices = c(
-            "No Change",
-            "Decreased Treatment Default Rates",
-            # "Shorter Regimen",
-            "Better Sensitivity/Specificity",
-            "Updated 12-Week 3HP Regimen",
-            "IGRA instead of TST"
-            ))
+        uiOutput(paste0('custom', n, 'TTTRadios')),
+        uiOutput(paste0('custom', n, 'ProgramChangeRadios'))
       )
     )
   )
@@ -322,12 +288,4 @@ debugPrintouts <- function() {
 
 
 comparison_to_recent_data <- function() {
-  # l <- tagList()
-  # fl <- list.files(system.file("calibration_plots/US/", package = "utilities"), full.names = T)
-  # 
-  # for (f in fl) {
-  #   l[[length(l)+1]] <- plotPNG(function() readRDS(f))
-  # }
-  # return(l)
-  # plotOutput('calibration_plots_total_population')
 }
