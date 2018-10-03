@@ -24,13 +24,13 @@ formatted_risk_group <- list(
 
 
 intervention_content <- function(n=1) {
-  customn <- paste0("custom", n)
+  tttn <- paste0("ttt", n)
   return(
     fluidRow(
       # col1: choose intervention risk, age, nativity ----
       column(6, wellPanel(
         tags$h4("Define a Targeted Testing and Treatment Intervention"),
-        textInput(inputId = paste0(customn, "name"),
+        textInput(inputId = paste0(tttn, "name"),
                   label = "Intervention Name",
                   placeholder = paste0("Intervention ", n)),
         fluidRow(
@@ -38,19 +38,19 @@ intervention_content <- function(n=1) {
             6,
             # __subcol1: choose risk group ----
             selectInput(
-              inputId = paste0(customn, "risk"),
+              inputId = paste0(tttn, "risk"),
               label = "Targeted Risk Group",
               choices = formatted_risk_group
             ),
             # __subcol1: choose nativity group ----
             radioButtons(
-              inputId = paste0(customn, "nativity"),
+              inputId = paste0(tttn, "nativity"),
               label = "Targeted Nativity Groups",
               choices = c("All Nativity Groups", "U.S. Born", "Non-U.S. Born")
             ),
             # __subcol1: choose age group ----
             radioButtons(
-              inputId = paste0(customn, "agegroups"),
+              inputId = paste0(tttn, "agegroups"),
               label = "Targeted Age Groups",
               choices = c("All Ages", "0 to 24", "25 to 64", "65+")
             )
@@ -59,14 +59,14 @@ intervention_content <- function(n=1) {
             6,
             # __subcol2: choose number targeted ----
             numericInput(
-              inputId = paste0(customn, "numberTargeted"),
+              inputId = paste0(tttn, "numberTargeted"),
               label = "Number of Individuals in the Risk Group in 2018",
               min = 0,
               value = 0
             ),
             # __subcol2: choose fraction screened----
             numericInput(
-              inputId = paste0(customn, "numberScreened"),
+              inputId = paste0(tttn, "fractionScreened"),
               label = "Fraction of the Risk Group who are Screened Annually",
               min = 0,
               max = 1,
@@ -78,7 +78,7 @@ intervention_content <- function(n=1) {
               column(
                 6,
                 numericInput(
-                  inputId = paste0(customn, 'startyear'),
+                  inputId = paste0(tttn, 'startyear'),
                   label = "Start Year",
                   min = 2018,
                   max = 2050,
@@ -89,7 +89,7 @@ intervention_content <- function(n=1) {
               column(
                 6,
                 numericInput(
-                  inputId = paste0(customn, 'stopyear'),
+                  inputId = paste0(tttn, 'stopyear'),
                   label = 'Stop Year',
                   min = 2018,
                   max = 2050,
@@ -117,7 +117,7 @@ intervention_content <- function(n=1) {
               tags$br(),
               tags$p("Incidence: 0%\n"),
               tags$p("LTBI Prevalence: 0%"),
-              tags$p("Population: ", textOutput(paste0(customn, "numberTargeted"), inline = T))
+              tags$p("Population: ", textOutput(paste0(tttn, "numberTargeted"), inline = T))
               
             ),
             column(
@@ -139,7 +139,7 @@ intervention_content <- function(n=1) {
             column(
               6,
               numericInput(
-                inputId = paste0(customn, "reactivation-rate-slider"),
+                inputId = paste0(tttn, "progression-rate-slider"),
                 label = "Rate Ratio of LTBI Progression",
                 min = 1,
                 max = 40,
@@ -150,7 +150,7 @@ intervention_content <- function(n=1) {
             column(
               6,
               numericInput(
-                inputId = paste0(customn, "prevalence-rate-slider"),
+                inputId = paste0(tttn, "prevalence-rate-slider"),
                 label = "Rate Ratio of LTBI Prevalence",
                 min = 1,
                 max = 40,
@@ -161,7 +161,7 @@ intervention_content <- function(n=1) {
             column(
               6,
               numericInput(
-                inputId = paste0(customn, "mortality-rate-slider"),
+                inputId = paste0(tttn, "mortality-rate-slider"),
                 label = "Rate Ratio of Mortality",
                 min = 1,
                 max = 40,
