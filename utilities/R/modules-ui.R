@@ -20,25 +20,38 @@ aboutUI <- function() {
 standardInterventionsUI <- function() {
   fluidRow(
     column(12,
-           tags$h1("Standard Interventions")
+           tags$h1("Prebuilt Scenarios")
     ),
     column(6, 
            includeMarkdown("inst/md/standard-interventions.md")
-    ),
-    column(6, wellPanel(
-      tags$h4("Standard Intervention Scenarios"),
-      HTML("<hr style='height:3px; visibility:hidden; margin:0;' />"),
-      checkboxInput("input1", "TLTBI for New Immigrants"),
-      checkboxInput("input2", "Improved TLTBI in the United States"),
-      checkboxInput("input3", "Better Case Detection"),
-      checkboxInput("input4", "Better TB Treatment"),
-      checkboxInput("input5", "All Improvements")
-    ))
+    )
+    # column(6, wellPanel(
+    #   tags$h4("Standard Intervention Scenarios"),
+    #   HTML("<hr style='height:3px; visibility:hidden; margin:0;' />"),
+    #   checkboxInput("input1", "TLTBI for New Immigrants"),
+    #   checkboxInput("input2", "Improved TLTBI in the United States"),
+    #   checkboxInput("input3", "Better Case Detection"),
+    #   checkboxInput("input4", "Better TB Treatment"),
+    #   checkboxInput("input5", "All Improvements")
+    # ))
   )
 }
 
 
 customInterventionsUI <- function() {
+  
+  tagList(
+    # fluidRow(
+    br(),
+    # column(6, 
+           p(
+             "Use the custom Targeted Testing and Treatment to create scenarios that simulate
+             additional screening of specific risk groups over a period of specified years. Targeted groups
+             can be specified by their risk, age, and nativity status. Custom risk groups can be defined by specifying
+             rate ratios of LTBI prevalence, progression, and mortality."
+           ),
+    # )
+    # ), 
   tabsetPanel(
     id = 'currentlySelectedTTT',
     tabPanel(
@@ -60,6 +73,7 @@ customInterventionsUI <- function() {
       intervention_content(3)
     )
   )
+  )
 }
 
 scenariosUI <- function() {
@@ -75,10 +89,15 @@ scenariosUI <- function() {
           programChanges()
           }),
         tabPanel("Custom Scenarios", {
+          tagList(
+            br(),
+            p("Custom Scenarios allow users to simulate combinations of Targeted Testing 
+and Treatment interventions and Program Changes."),
           tabsetPanel(
             customScenarioPanel(1),
             customScenarioPanel(2),
             customScenarioPanel(3)
+          )
           )
         })
       )
@@ -87,16 +106,21 @@ scenariosUI <- function() {
 }
 
 programChanges <- function() {
-  tabsetPanel(
-    tabPanel("Program Change 1", {
+  tagList(
+    br(),
+    p("Program Changes allow users to change model parameters related to the 
+LTBI treatment and active TB treatment care cascades."),
+  tabsetPanel(id = "currentlySelectedProgramChange",
+    tabPanel(title = "Program Change 1", id = 1, {
       programChangePanel(1)
     }),
-    tabPanel("Program Change 2", {
+    tabPanel(title = "Program Change 2", id = 2, {
       programChangePanel(2)
     }),
-    tabPanel("Program Change 3", {
+    tabPanel(title = "Program Change 3", id = 3, {
       programChangePanel(3)
     })
+  )
   )
 }
 
@@ -116,7 +140,7 @@ programChangePanel <- function(n) {
         tagList(
         tags$h4("LTBI Treatment Cascade:"),
         numericInput(inputId = paste0(id, "CoverageRate"),
-                    label = "Screening Coverage Rate as a Multiple of the Current Rate for the Selected Risk Group",
+                    label = "Screening Coverage Rate as a Multiple of the Current Rate",
                     value = 1, min = 1, max = 5),
         numericInput(inputId = paste0(id, "IGRACoverage"),
                      label = "Fraction of Individuals Receiving IGRA (%)",
@@ -290,4 +314,20 @@ tabby1AgeGroups <- function(id) {
       agegroupsVisualizationPanel(ns)
     )
   ))
+}
+
+debugPrintouts <- function() {
+  uiOutput('debugPrintouts')
+}
+
+
+comparison_to_recent_data <- function() {
+  # l <- tagList()
+  # fl <- list.files(system.file("calibration_plots/US/", package = "utilities"), full.names = T)
+  # 
+  # for (f in fl) {
+  #   l[[length(l)+1]] <- plotPNG(function() readRDS(f))
+  # }
+  # return(l)
+  # plotOutput('calibration_plots_total_population')
 }
