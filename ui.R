@@ -11,10 +11,10 @@ tabnames <- c(
   scenarios = "Scenarios",
   predefined = "Predefined Scenarios",
   customscenarios = "Build Scenarios",
-  # tltbi = "Targeted LTBI Testing",
   estimates = "Estimates",
   timetrends = "Time Trends",
   agegroups = "Age Groups",
+  calibration = "Comparison to Recent Data",
   downloads = "Downloads",
   readmore = "Further Description"
 )
@@ -22,15 +22,20 @@ tabnames <- c(
 tabcontents <- list(
   about = aboutUI(),
   scenarios = NULL,
-  predefined = NULL,
+  predefined = standardInterventionsUI(),
   customscenarios = scenariosUI(),
-  # tltbi = customInterventionsUI(),
   estimates = tabby1Estimates('tabby1'),
   timetrends = tabby1TimeTrends('tabby1'),
   agegroups = tabby1AgeGroups('tabby1'),
+  calibration = comparison_to_recent_data(),
   downloads = downloadsAndSettingsUI(),
   readmore = readmoreUI()
 )
+
+if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
+  tabnames[['debug']] <- 'Debug Printouts'
+  tabcontents[['debug']] <- debugPrintouts()
+}
 
 # Sidebar Menu ----
 sidebar <- dashboardSidebar(
@@ -44,10 +49,16 @@ sidebar <- dashboardSidebar(
       "Outcomes", startExpanded = T,
       menuItem(tabnames[[5]], tabName = names(tabnames)[[5]]), # tabby1 estimates
       menuItem(tabnames[[6]], tabName = names(tabnames)[[6]]), # tabby1 time trends
-      menuItem(tabnames[[7]], tabName = names(tabnames)[[7]])  # tabby1 age groups
+      menuItem(tabnames[[7]], tabName = names(tabnames)[[7]]),  # tabby1 age groups
+      menuItem(tabnames[[8]], tabName = names(tabnames)[[8]])  # comparison to recent data
+      
     ),
-    menuItem(tabnames[[8]], tabName = names(tabnames)[[8]]), # downloads
-    menuItem(tabnames[[9]], tabName = names(tabnames)[[9]])  # further description
+    menuItem(tabnames[[9]], tabName = names(tabnames)[[9]]), # downloads
+    menuItem(tabnames[[10]], tabName = names(tabnames)[[10]]),  # further description
+    if (
+      exists('debug', envir = .GlobalEnv) && isTRUE(debug)
+      ) { menuItem(tabnames[[11]], tabName = names(tabnames)[[11]]) # debug printouts
+    } else { NULL }
   )
 )
 
@@ -87,7 +98,8 @@ font-size: 25px !important;
 # Run the Application ----
 shinyUI(
   dashboardPage(
-    dashboardHeader(title = 'TabbyII'),
+    dashboardHeader(title = "Tabby2"),
+    # tags$img(src='https://image.flaticon.com/icons/svg/528/528309.svg', width=25, height=25, `vertical-align`='baseline')
     sidebar,
     body
 ))
