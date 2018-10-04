@@ -1,11 +1,9 @@
-Tabby2 not only predicts the trajectory of TB given the current 
-conditions of testing and treatment, but also can make hypothetical 
-predictions that are the result of changes to testing and treatment
-in the future. 
-
-Our Prebuilt Scenarios include 5 hypothetical scenarios which model 
-changes to TB testing and treatment. These are options available for
-visualization in the Outcomes page, selectable as Model Scenarios.
+Tabby2 not only predicts the trajectory of TB given the current conditions of
+testing and treatment, but also can make hypothetical predictions that are the
+result of changes to testing and treatment in the future. Our Prebuilt Scenarios
+include 5 hypothetical scenarios which model changes to TB testing and
+treatment. These are options available for visualization in the Outcomes pages,
+selectable as Model Scenarios.
 
 -   **TLTBI for New Immigrants**: Provision of LTBI testing and treatment
 for all new legal immigrants entering the US.
