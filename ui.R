@@ -74,7 +74,8 @@ body <- dashboardBody(
 font-family: 'Josefin Slab' !important ;
 font-size: 25px !important;
 }
-"))
+")),
+tags$script(src='add-logo.js')
       ),
     
   # This is an anonymous function which does the exact same thing 

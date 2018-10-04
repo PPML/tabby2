@@ -1,0 +1,10 @@
+@import url('//fonts.googleapis.com/css?family=Josefin+Slab');
+
+.logo {
+font-family: 'Josefin Slab' !important ;
+font-size: 25px !important;
+  vertical-align: baseline !important;
+  height: 25px !important;
+  width: 25px !important;
+}
+

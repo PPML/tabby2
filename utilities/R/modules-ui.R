@@ -307,10 +307,10 @@ comparisonDataChoices <- c(
 
 comparison_to_recent_data <- function() {
   tagList(fluidRow(
-    column(12, h2("Comparison to Recent Data")),
     column(
       width = 4,
       class = "tab-content",
+      h2("Comparison to Recent Data"),
       radioButtons(inputId = "comparisonDataChoice",
                    label = "Select an option below to compare the model's performance to observed data.", 
                    choices = as.character(comparisonDataChoices))
