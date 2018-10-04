@@ -154,14 +154,14 @@ shinyServer(function(input, output, session) {
   output$custom3ProgramChangeRadios <- renderProgramChangesChoice(3)
   
   # Output Server ----
+  # __Tabby1 Server ----
   callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1")) 
   
   output$downloadParameters <- downloadHandler(
     filename = function() { "input_parameters.yaml" },
     content = function(file) { cat(yaml::as.yaml(reactiveValuesToList(input)), file = file) })
   
-  
-  
+  # __Options for Outcomes from Custom Scenarios ----
   # These are the Model Scenarios available in the Outcomes - Estimates page
   output$estimatesInterventions <- renderUI({
     checkboxGroup2(
@@ -205,6 +205,16 @@ shinyServer(function(input, output, session) {
       ),
       values = agegroups$interventions$values
     )
+  })
+  
+  # __ Plots for Comparison to Recent Data
+  
+  comparison_to_recent_data_plot_path <- reactive({
+    file <- names(comparisonDataChoices)[[which(comparisonDataChoices == input$comparisonDataChoice)]]
+    return(paste0('calibration_plots/US/', file, ".rds"))
+  })
+  output$calib_total_population <- renderPlot({
+    readRDS(system.file(comparison_to_recent_data_plot_path(), package = 'utilities'))
   })
   
   # Debug Printout Server ----

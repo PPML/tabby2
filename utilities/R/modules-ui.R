@@ -286,6 +286,39 @@ debugPrintouts <- function() {
   uiOutput('debugPrintouts')
 }
 
+comparisonDataChoices <- c(
+  total_population = "Population: Total, US, and Non-US Born",
+  `total-deaths-by-age` = "Total TB Deaths by Age Group",
+  percent_of_cases_in_non_usb = "Percent of TB Cases in Non-US-Born 2000-2014",
+  `percent-of-non-usb-cases-in-recent-immigrants` = "Percent of Non-US Born Cases Arrived in Past 2 Years",
+  mortality_by_age = "Mortality by Age",
+  mortality = "Mortality: Total, US, and Non-US Born",
+  `ltbi-prev-by-age-usb` = "LTBI in US Born Population by Age",
+  `ltbi-prev-by-age-non-usb` = "LTBI in Non-US Born Population by Age",
+  diagnosed_cases_2000 = "Total TB Cases Identified, 2000-2014",
+  diagnosed_cases_1953 = "Total TB Cases Identified, 1953-2014",
+  age_distribution_all_ages = "Total Population by Age Group 2014",
+  age_distribution = "Population by Age for Non-US Born and US Born",
+  treatment_outcomes = "Treatment Outcomes"
+)
+  
+  
+  
 
 comparison_to_recent_data <- function() {
+  tagList(fluidRow(
+    column(12, h2("Comparison to Recent Data")),
+    column(
+      width = 4,
+      class = "tab-content",
+      radioButtons(inputId = "comparisonDataChoice",
+                   label = "Select an option below to compare the model's performance to observed data.", 
+                   choices = as.character(comparisonDataChoices))
+    ),
+    column(
+      width = 8,
+      class = "tab-content",
+      plotOutput('calib_total_population')
+    )
+  ))
 }
