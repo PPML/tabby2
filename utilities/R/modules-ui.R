@@ -318,7 +318,7 @@ comparison_to_recent_data <- function() {
     column(
       width = 8,
       class = "tab-content",
-      plotOutput('calib_total_population')
+      plotOutput('calib_total_population', height = '500px')
     )
   ))
 }
