@@ -1,6 +1,6 @@
 # Organization of the tool
 
-TabbyII has as its major components an Introduction, Scenarios, Outcomes, 
+Tabby2 has as its major components an Introduction, Scenarios, Outcomes, 
 Downloads, and Further Description. 
 
 ## Scenarios

@@ -1,11 +1,11 @@
 aboutUI <- function() {
   fluidRow(
-    column(12, h1("About TabbyII")),
+    column(12, h1("About Tabby2")),
     column(6, includeMarkdown("inst/md/about.md")),
     column(6, wellPanel(
       tags$h4("Select a Location"),
       tags$p(
-        "After specifying a location, TabbyII will load historical data and model parameters calibrated to that location."
+        "After specifying a location, Tabby2 will load historical data and model parameters calibrated to that location."
       ), 
       selectInput(inputId = "state",
                   label = "Select a Location",
@@ -213,7 +213,7 @@ downloadsAndSettingsUI <- function() {
         h1("Downloads"),
         br(),
 "By downloading the user interface settings and the model outcomes
-at the same time, projections from TabbyII can be saved with the 
+at the same time, projections from Tabby2 can be saved with the 
 configuration that yielded those outcomes for reproducible results.",
         br(),
         br(),

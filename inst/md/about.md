@@ -1,4 +1,4 @@
-TabbyII is a web application providing predictions of future TB
+Tabby2 is a web application providing predictions of future TB
 epidemiology in the United States under a range of different assumptions
 and policy scenarios. Users can select a health outcome and
 subpopulation of interest, then select one or multiple scenarios to
@@ -7,7 +7,7 @@ the user the graphs update automatically to reflect the new selections.
 Visualizations can be downloaded in various formats, and the estimates
 underlying the graphs can also be downloaded in tabular format.
 
-The estimates shown by TabbyII are based on a transmission-dynamic model
+The estimates shown by Tabby2 are based on a transmission-dynamic model
 of TB epidemiology in the US, incorporating TB transmission and natural
 history; TB drug resistance patterns; prior and future TB prevention and
 control; the impact of HIV on TB; heterogeneity in TB risks among
