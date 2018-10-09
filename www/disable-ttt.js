@@ -13,6 +13,6 @@ $(document).ready(function() {
     }
   };
   
-  $('#ttt1risk').on('change', function() {setTimeout(f, 100)});
+  $('#ttt1risk').on('change', function() {setInterval(f, 100)});
 
 });
