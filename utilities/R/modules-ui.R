@@ -22,7 +22,7 @@ standardInterventionsUI <- function() {
     column(12,
            tags$h1("Prebuilt Scenarios")
     ),
-    column(6, 
+    column(8, 
            includeMarkdown("inst/md/standard-interventions.md")
     )
   )
