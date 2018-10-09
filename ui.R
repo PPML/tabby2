@@ -1,5 +1,6 @@
 library(shiny)
 library(shinydashboard)
+library(shinyjs)
 devtools::load_all("utilities")
 source("tabby1/tabby1dependencies.R")
 devtools::load_all("tabby1/tabby1utilities")
@@ -65,6 +66,7 @@ sidebar <- dashboardSidebar(
 # Dashboard Body ----
 body <- dashboardBody(
   tagList(
+    useShinyjs(debug=T),
     tags$head(
       tags$style(HTML(
 "
@@ -75,7 +77,8 @@ font-family: 'Josefin Slab' !important ;
 font-size: 25px !important;
 }
 ")),
-tags$script(src='add-logo.js')
+tags$script(src='add-logo.js'),
+tags$script(src='disable-ttt.js')
       ),
     
   # This is an anonymous function which does the exact same thing 

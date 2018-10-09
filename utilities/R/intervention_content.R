@@ -133,44 +133,7 @@ intervention_content <- function(n=1) {
           )
         ),
         # __risk group parameters ----
-        wellPanel(
-          tags$h4("Risk Group Rate Ratios"),
-          fluidRow(
-            column(
-              6,
-              numericInput(
-                inputId = paste0(tttn, "progression-rate-slider"),
-                label = "Rate Ratio of LTBI Progression",
-                min = 1,
-                max = 40,
-                value = 1,
-                width = '200px',
-              )
-            ),
-            column(
-              6,
-              numericInput(
-                inputId = paste0(tttn, "prevalence-rate-slider"),
-                label = "Rate Ratio of LTBI Prevalence",
-                min = 1,
-                max = 40,
-                value = 1,
-                width = '200px'
-              )
-            ),
-            column(
-              6,
-              numericInput(
-                inputId = paste0(tttn, "mortality-rate-slider"),
-                label = "Rate Ratio of Mortality",
-                min = 1,
-                max = 40,
-                value = 1,
-                width = '200px',
-              )
-            )
-          )
-        )
+        uiOutput(paste0(tttn, 'risk_group_rate_ratios'))
       ) # end of column
     ) # end of fluidRow
   ) # end of return 
