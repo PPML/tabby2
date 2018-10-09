@@ -77,7 +77,6 @@ font-family: 'Josefin Slab' !important ;
 font-size: 25px !important;
 }
 ")),
-tags$script(src='add-logo.js'),
 tags$script(src='disable-ttt.js')
       ),
     
