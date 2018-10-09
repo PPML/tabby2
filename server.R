@@ -149,16 +149,6 @@ shinyServer(function(input, output, session) {
   tttPrevalence <- reactive({ paste0(tttn(), "prevalence-rate") })
   tttMortality <- reactive({ paste0(tttn(), "mortality-rate") })
   
-  # ltbiprogressionrate <- reactive({ numericInput(
-  #   inputId = paste0('ttt1', "progression-rate"),
-  #   label = "Rate Ratio of LTBI Progression",
-  #   min = 1,
-  #   max = 40,
-  #   value = values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_progression']],
-  #   width = '200px'
-  # )
-  # })
-  
   observeEvent(input[[tttRisk()]], {
     
     if (input[[tttRisk()]] == 'All Individuals') {
@@ -219,6 +209,89 @@ shinyServer(function(input, output, session) {
         )
       )
     })  })
+    
+    output$ttt2risk_group_rate_ratios <-  renderUI({ isolate({
+      wellPanel(
+        tags$h4("Risk Group Rate Ratios"),
+        fluidRow(
+          column(
+            6,
+            numericInput(
+              inputId = isolate({ tttProgression() }),
+              label = "Rate Ratio of LTBI Progression",
+              min = 1,
+              max = 40,
+              value = isolate({ values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_progression']]}), 
+              width = '200px'
+            )
+          ),
+          column(
+            6,
+            numericInput(
+              inputId = tttPrevalence(),
+              label = "Rate Ratio of LTBI Prevalence",
+              min = 1,
+              max = 40,
+              value = values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_prevalence']],
+              width = '200px'
+            )
+          ),
+          column(
+            6,
+            numericInput(
+              inputId = tttMortality(),
+              label = "Rate Ratio of Mortality",
+              min = 1,
+              max = 40,
+              value = values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_mortality']],
+              width = '200px'
+            )
+          )
+        )
+      )
+    })  })
+    
+    output$ttt3risk_group_rate_ratios <-  renderUI({ isolate({
+      wellPanel(
+        tags$h4("Risk Group Rate Ratios"),
+        fluidRow(
+          column(
+            6,
+            numericInput(
+              inputId = isolate({ tttProgression() }),
+              label = "Rate Ratio of LTBI Progression",
+              min = 1,
+              max = 40,
+              value = isolate({ values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_progression']]}), 
+              width = '200px'
+            )
+          ),
+          column(
+            6,
+            numericInput(
+              inputId = tttPrevalence(),
+              label = "Rate Ratio of LTBI Prevalence",
+              min = 1,
+              max = 40,
+              value = values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_prevalence']],
+              width = '200px'
+            )
+          ),
+          column(
+            6,
+            numericInput(
+              inputId = tttMortality(),
+              label = "Rate Ratio of Mortality",
+              min = 1,
+              max = 40,
+              value = values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_mortality']],
+              width = '200px'
+            )
+          )
+        )
+      )
+    })  })
+    
     
   })
   
