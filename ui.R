@@ -66,7 +66,7 @@ sidebar <- dashboardSidebar(
 # Dashboard Body ----
 body <- dashboardBody(
   tagList(
-    useShinyjs(debug=T),
+    useShinyjs(),
     tags$head(
       tags$style(HTML(
 "
