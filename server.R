@@ -1,3 +1,76 @@
+#
+#                        Shiny App Server for Tabby2 ----
+#                    ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ 
+# 
+#   This R script, in conjunction with ui.R, runs the application Tabby2. In
+#   particular, this server script handles the processing of user input, running
+#   MITUS based on that input, and returning the output as data and plots.
+#
+#   This server includes the following components: 
+# 
+#   Reactive Values 
+#    ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+#     The reactive values store the user's input for targeted testing and
+#     treatment scenarios and program changes.
+#
+#     To allow the user to have multiple targeted testing and treatment
+#     scenarios as well as multiple program changes, we add to the scenario
+#     specification input a choice for which scenario (of 1 through 3) the user
+#     is defining. Their input is then filled into the corresponding reactive
+#     values.
+#
+#     This approach is preferred to having separate input for each of the
+#     scenarios and program changes because it saves space as compared to
+#     rendering separate input for each of the 3 available scenarios to fill in.
+#
+#     Targeted Testing and Treatment Input
+#      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ 
+#       Fill in the reactive values  values with the user's input for targeted
+#       testing and treatment.
+#   
+#     Program Changes Input
+#      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ 
+#       Fill in the reactive values  values with the user's input for program
+#       changes.
+# 
+#   Custom Scenarios
+#    ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ 
+#       Render the user input for the specification of custom scenarios
+#       incorporating the names of the targeted testing and treatment scenarios
+#       and the program changes the user has previously specified.
+# 
+#   Output Server
+#    ̅ ̅ ̅ ̅ ̅ ̅̅ ̅ ̅ ̅ ̅ ̅̅ ̅ ̅  
+#       Produce output given the user input. For the time being, this runs 
+#       the codebase of Tabby (1) as a module to serve the content from the 
+#       original application as a demonstration. This section of code will be
+#       updated to run MITUS for each of the custom scenarios the user specifies
+#       and to produce corresponding outputs, including downloads and plots.
+#   
+#   Custom Scenarios Choice in Output
+#    ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅̅ ̅ ̅ ̅ ̅ 
+#       Provide choices for which custom scenarios are plotted in the outcome
+#       figures. This chunk of code appends the names of the user-defined custom
+#       scenarios to the scenarios available in a checkbox group for toggling on
+#       or off in the plots.
+# 
+#   Plots for Comparison to Recent Data
+#    ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅̅ ̅̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅̅ ̅ ̅ ̅ ̅ 
+#       Fetch plots depicting a comparison of model performance to the data
+#       available. First a reactive element computes the path to the RDS file
+#       containing the plot corresponding to the user's choice in which
+#       comparison to visualize, then the RDS file is read and the plot object
+#       is rendered as output with renderPlot.
+#       
+#   Debug Print Server
+#    ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+#       To help with debugging the reactive values used in this application, a 
+#       debugging option can be turned on inside the application which adds 
+#       another sidebarPanel to the application in which the contents of the 
+#       values object is rendered as text. To use this feature, assign
+#       debug <- TRUE before running the application via runApp().
+
+
 library(shiny)
 library(shinydashboard)
 library(shinyjs)
@@ -57,7 +130,7 @@ shinyServer(function(input, output, session) {
     )
 
 
-    # Update TTT Reactive Values --------------------------------------------------------------
+    # Targeted Testing and Treatment Input ----
     n <- ttt_to_update
     tttn <- paste0("ttt", n)
     tttName <- paste0(tttn, "name")
@@ -108,7 +181,7 @@ shinyServer(function(input, output, session) {
     # }
     
 
-    # Update Program Changes Reactive Values ----------------------------------
+    # Program Changes Input ----
     program_change_to_update <-
       if (is.null(input$currentlySelectedProgramChange)) 1
     else as.integer(input$currentlySelectedProgramChange)
@@ -328,54 +401,14 @@ shinyServer(function(input, output, session) {
         }
       })
 
-
-    #
-  # 
+    # ⠀⠀TTT Number Targeted
+    # These are to display in the summary statistics for the TTT interventions.
+    output$ttt1numberTargeted <- renderText({input$ttt1numberTargeted})
+    output$ttt2numberTargeted <- renderText({input$ttt2numberTargeted})
+    output$ttt3numberTargeted <- renderText({input$ttt3numberTargeted})
+    
+  # Custom Scenarios ----
   
-  # observeEvent(
-    # input[[tttRisk()]],{
-  #           
-  #           disable(tttProgression)
-  #           disable(tttPrevalence)
-  #           disable(tttMortality)
-  #           
-  #           if (input[[tttRisk]] == 'All Individuals') {
-  #             disable(tttProgression)
-  #             disable(tttPrevalence)
-  #             disable(tttMortality)
-  #             values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_progression']] = 1
-  #             values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_mortality']] = 1
-  #             values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_prevalence']] = 1
-  #           } else if (input[[tttRisk]] != 'Define a Custom Risk Group') {
-  #             disable(tttProgression)
-  #             disable(tttPrevalence)
-  #             disable(tttMortality)
-  #             rate_ratio_row <- which(risk_group_rate_ratios$population == as.character(input[[tttRisk]]))
-  #             values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_progression']] = risk_group_rate_ratios[[rate_ratio_row, 2]]
-  #             values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_mortality']] = risk_group_rate_ratios[[rate_ratio_row, 4]]
-  #             values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_prevalence']] = risk_group_rate_ratios[[rate_ratio_row, 3]]
-  #           } else { # Custom Risk Group
-  #             # enable(tttProgression)
-  #             # enable(tttPrevalence)
-  #             # enable(tttMortality)
-  #             values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_progression']] = input[[tttProgression]]
-  #             values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_mortality']] = input[[tttMortality]]
-  #             values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_prevalence']] = input[[tttPrevalence]]
-  #           }
-  #           
-  # })
-
-  
-  # Scenarios Server ----
-  
-  # __TTT Number Targeted
-  # These are to display in the summary statistics for the TTT interventions.
-  output$ttt1numberTargeted <- renderText({input$ttt1numberTargeted})
-  output$ttt2numberTargeted <- renderText({input$ttt2numberTargeted})
-  output$ttt3numberTargeted <- renderText({input$ttt3numberTargeted})
-  
-  
-  # __TTT Intervention Scenarios as Choices in Custom Scenarios ----
   # These are the options for TTT Interventions (by Name) available as 
   # choices in the Custom Scenarios.
   renderTTTRadioChoice <- function(n) {
@@ -394,6 +427,8 @@ shinyServer(function(input, output, session) {
   output$custom2TTTRadios <- renderTTTRadioChoice(2)
   output$custom3TTTRadios <- renderTTTRadioChoice(3)
   
+  # These are the options for Program Changes (by Name) available as 
+  # choices in the Custom Scenarios.
   renderProgramChangesChoice <- function(n) {
     renderUI({
       radioButtons(
@@ -412,14 +447,14 @@ shinyServer(function(input, output, session) {
   output$custom3ProgramChangeRadios <- renderProgramChangesChoice(3)
   
   # Output Server ----
-  # __Tabby1 Server ----
+  # ⠀Tabby1 Server ----
   callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1")) 
   
   output$downloadParameters <- downloadHandler(
     filename = function() { "input_parameters.yaml" },
     content = function(file) { cat(yaml::as.yaml(reactiveValuesToList(input)), file = file) })
   
-  # __Options for Outcomes from Custom Scenarios ----
+  # Custom Scenarios Choice in Output ----
   # These are the Model Scenarios available in the Outcomes - Estimates page
   output$estimatesInterventions <- renderUI({
     checkboxGroup2(
@@ -465,8 +500,7 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  # __ Plots for Comparison to Recent Data
-  
+  # Plots for Comparison to Recent Data ----
   comparison_to_recent_data_plot_path <- reactive({
     file <- names(comparisonDataChoices)[[which(comparisonDataChoices == input$comparisonDataChoice)]]
     return(paste0('calibration_plots/US/', file, ".rds"))
