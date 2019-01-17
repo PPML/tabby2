@@ -9,8 +9,14 @@ aboutUI <- function() {
       ), 
       selectInput(inputId = "state",
                   label = "Select a Location",
-                  choices = c('United States', state.name),
-                  selected = 'United States')
+                  choices = c('United States', 'Massachusetts'),
+                  selected = 'United States'),
+      shiny::actionButton(
+        inputId = 'toPredefinedScenarios',
+        label = 'Next Page',
+        class = 'btn btn-primary',
+        style = 'color: white;'
+      )
     ))
   )
 }
@@ -23,7 +29,25 @@ standardInterventionsUI <- function() {
            tags$h1("Prebuilt Scenarios")
     ),
     column(8, 
-           includeMarkdown("inst/md/standard-interventions.md")
+           includeMarkdown("inst/md/standard-interventions.md"),
+           p("If the pre-defined interventions are sufficient for your needs, feel free to proceed directly to outcomes."),
+           p("Otherwise, go on to build custom scenarios."),
+           shiny::actionButton(
+             inputId = 'toAbout',
+             label = 'Back'
+           ),
+           shiny::actionButton(
+             inputId = 'toEstimates',
+             label = 'Go to Outcomes',
+             class = 'btn-primary',
+             style = 'color: white;'
+           ),
+           shiny::actionButton(
+             inputId = 'toBuildScenarios',
+             label = 'Go to Build Scenarios',
+             class = 'btn-primary',
+             style = 'color: white;'
+           )
     )
   )
 }
@@ -286,21 +310,7 @@ debugPrintouts <- function() {
   uiOutput('debugPrintouts')
 }
 
-comparisonDataChoices <- c(
-  total_population = "Population: Total, US, and Non-US Born",
-  `total-deaths-by-age` = "Total TB Deaths by Age Group",
-  percent_of_cases_in_non_usb = "Percent of TB Cases in Non-US-Born 2000-2014",
-  `percent-of-non-usb-cases-in-recent-immigrants` = "Percent of Non-US Born Cases Arrived in Past 2 Years",
-  mortality_by_age = "Mortality by Age",
-  mortality = "Mortality: Total, US, and Non-US Born",
-  `ltbi-prev-by-age-usb` = "LTBI in US Born Population by Age",
-  `ltbi-prev-by-age-non-usb` = "LTBI in Non-US Born Population by Age",
-  diagnosed_cases_2000 = "Total TB Cases Identified, 2000-2014",
-  diagnosed_cases_1953 = "Total TB Cases Identified, 1953-2014",
-  age_distribution_all_ages = "Total Population by Age Group 2014",
-  age_distribution = "Population by Age for Non-US Born and US Born",
-  treatment_outcomes = "Treatment Outcomes"
-)
+
   
   
   
@@ -311,14 +321,12 @@ comparison_to_recent_data <- function() {
       width = 4,
       class = "tab-content",
       h2("Comparison to Recent Data"),
-      radioButtons(inputId = "comparisonDataChoice",
-                   label = "Select an option below to compare the model's performance to observed data.", 
-                   choices = as.character(comparisonDataChoices))
+      uiOutput('comparison_to_recent_data_buttons')
     ),
     column(
       width = 8,
       class = "tab-content",
-      plotOutput('calib_total_population', height = '500px')
+      plotOutput('calib_data_target_plot', height = '500px')
     )
   ))
 }

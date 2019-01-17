@@ -1,5 +1,10 @@
-tabby1Server <- function(input, output, session, ns) {
+tabby1Server <- function(input, output, session, ns, geo_short_code) {
   # (to use these headings press COMMAND+SHIFT+O)
+  # data server ----
+  AGEGROUPS_DATA <- reactive({
+    readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"), package = "tabby1utilities", mustWork = TRUE))
+  })
+  
   # estimates server ----
   # __calculate data ----
   estimatesData <- reactive({
@@ -7,6 +12,7 @@ tabby1Server <- function(input, output, session, ns) {
       input[[estimates$IDs$controls$comparators]], input[[estimates$IDs$controls$outcomes]],
       c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case")
     )
+    
     
     ESTIMATES_DATA %>%
       filter(
@@ -84,7 +90,7 @@ tabby1Server <- function(input, output, session, ns) {
     sprintf(
       "Projected %s in the %s, %s",
       estimates$outcomes$labels[[input[[estimates$IDs$controls$outcomes]]]],
-      estimates$populations$formatted[[input[[estimates$IDs$controls$populations]]]],
+      gsub('US', geo_short_code(), estimates$populations$formatted[[input[[estimates$IDs$controls$populations]]]]),
       estimates$ages$formatted[[input[[estimates$IDs$controls$ages]]]]
     )
   })
@@ -255,7 +261,7 @@ tabby1Server <- function(input, output, session, ns) {
     sprintf(
       "Projected %s in the %s, %s",
       trends$outcomes$labels[[input[[trends$IDs$controls$outcomes]]]],
-      trends$populations$formatted[[input[[trends$IDs$controls$populations]]]],
+      gsub('US', geo_short_code(), trends$populations$formatted[[input[[trends$IDs$controls$populations]]]]),
       trends$ages$formatted[[input[[trends$IDs$controls$ages]]]]
     )
   })
@@ -400,8 +406,8 @@ tabby1Server <- function(input, output, session, ns) {
       input[[agegroups$IDs$controls$years]] >= 2016 &&
         input[[agegroups$IDs$controls$years]] <= 2100
     )
-
-    AGEGROUPS_DATA %>%
+    
+    AGEGROUPS_DATA() %>%
       filter(
         population == input[[agegroups$IDs$controls$populations]],
         outcome == input[[agegroups$IDs$controls$outcomes]],
@@ -411,8 +417,17 @@ tabby1Server <- function(input, output, session, ns) {
           input[[agegroups$IDs$controls$interventions]],
           input[[agegroups$IDs$controls$analyses]],
           "base_case"
-        )
-      )
+        ),
+        comparator == 'absolute_value'
+      ) -> out
+    
+    colnames(out)[colnames(out) == 'statistic'] <- 'type'
+    
+    out %>% mutate_if(is.factor, as.character) -> out
+    
+    
+    
+    out
   })
 
   # __set title ----
@@ -427,7 +442,7 @@ tabby1Server <- function(input, output, session, ns) {
     sprintf(
       "Projected %s in the %s, for %s",
       agegroups$outcomes$labels[[input[[agegroups$IDs$controls$outcomes]]]],
-      agegroups$populations$formatted[[input[[agegroups$IDs$controls$populations]]]],
+      gsub('US', geo_short_code(), agegroups$populations$formatted[[input[[agegroups$IDs$controls$populations]]]]),
       input[[agegroups$IDs$controls$years]]
     )
   })

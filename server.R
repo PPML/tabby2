@@ -74,14 +74,38 @@
 library(shiny)
 library(shinydashboard)
 library(shinyjs)
+library(MITUS)
 devtools::load_all("utilities")
 source("tabby1/tabby1dependencies.R")
 devtools::load_all("tabby1/tabby1utilities")
 source("tabby1/tabby1global.R")
 
+# have these functions added to MITUS
+source("../2019/model_load_environment.R")
+source("../2019/OutputZInt_env.R")
+
 risk_group_rate_ratios <- load_risk_group_data()
 
 shinyServer(function(input, output, session) {
+  
+  # Global Helper Reactives and Outputs ----  
+  
+  # Geography Short Code 
+  # Get the abbreviated version of the geography name -- i.e. United States ->
+  # US, Massachusetts -> MA
+  geo_short_code <- reactive({
+    l <- state.abb
+    names(l) <- state.name
+    l <- c(`United States` = 'US', l)
+    l[[input$state]]
+  })
+  
+  # Output the Selected Geography
+  output$location_selected <- renderUI({
+    tags$a(paste0('Location: ', input$state))
+  })
+  
+  output$geo_short_code <- renderText({ geo_short_code() })
   
   # Reactive Values ----
   values <- reactiveValues(n_ttt_updates = 0)
@@ -156,31 +180,6 @@ shinyServer(function(input, output, session) {
     values[['scenarios']][['ttt']][[ttt_to_update]][['stop_year']] = input[[tttStopYear]]
     
     
-    # if (input[[tttRisk]] == 'All Individuals') {
-    #   disable(tttProgression)
-    #   disable(tttPrevalence)
-    #   disable(tttMortality)
-    #   values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_progression']] = 1
-    #   values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_mortality']] = 1
-    #   values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_prevalence']] = 1
-    # } else if (input[[tttRisk]] != 'Define a Custom Risk Group') {
-    #   disable(tttProgression)
-    #   disable(tttPrevalence)
-    #   disable(tttMortality)
-    #   rate_ratio_row <- which(risk_group_rate_ratios$population == as.character(input[[tttRisk]]))
-    #   values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_progression']] = risk_group_rate_ratios[[rate_ratio_row, 2]]
-    #   values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_mortality']] = risk_group_rate_ratios[[rate_ratio_row, 4]]
-    #   values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_prevalence']] = risk_group_rate_ratios[[rate_ratio_row, 3]]
-    # } else { # Custom Risk Group
-    #   enable(tttProgression)
-    #   enable(tttPrevalence)
-    #   enable(tttMortality)
-    #   values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_progression']] = input[[tttProgression]]
-    #   values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_mortality']] = input[[tttMortality]]
-    #   values[['scenarios']][['ttt']][[ttt_to_update]][['rate_ratio_prevalence']] = input[[tttPrevalence]]
-    # }
-    
-
     # Program Changes Input ----
     program_change_to_update <-
       if (is.null(input$currentlySelectedProgramChange)) 1
@@ -446,9 +445,57 @@ shinyServer(function(input, output, session) {
   output$custom2ProgramChangeRadios <- renderProgramChangesChoice(2)
   output$custom3ProgramChangeRadios <- renderProgramChangesChoice(3)
   
+  # Next/Back Page Buttons ----
+  observeEvent(input$toPredefinedScenarios, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))
+  observeEvent(input$toAbout, updateTabItems(session = session, inputId = 'sidebar', selected = "about"))
+  observeEvent(input$toEstimates, updateTabItems(session = session, inputId = 'sidebar', selected = "estimates"))
+  observeEvent(input$toBuildScenarios, updateTabItems(session = session, inputId = 'sidebar', selected = "customscenarios"))
+  
+  
+  # MITUS Interaction Server ----
+
+  
+  get_predefined_scenarios_and_base_case <- reactive({
+    data('MA_restab2.rda', package = 'MITUS', envir = environment())
+  })
+  
+  # get_data_and_run_model will be used later for running the custom scenarios in real-time 
+  # for the user. 
+  get_data_and_run_model <- reactive({
+    if (input$state %in% c('United States', 'Massachusetts')) {
+      mitus_env <- model_load_env(geo_short_code()) # load the parameters into MITUS for the location
+      calib_param_file <- 
+        switch(geo_short_code(),
+               US = 'US_parAll10_2018-12-10.rda',
+               MA = 'MA_parAll10_2019-01-15.rda')
+      data(calib_param_file, package="MITUS", envir = environment()) 
+      
+      # TODO: running the model needs to be split from loading the parameters
+      with(mitus_env, {
+        OutputsZint_env(
+          1, 
+          ParMatrix = ParMatrix, 
+          startyr = 1950, 
+          endyr = 2050, 
+          Int1 = 0, 
+          Int2 = 0, 
+          Int3 = 0, 
+          Int4 = 0, 
+          Int5 = 0, 
+          Scen1 = 0, 
+          Scen2 = 0, 
+          Scen3 = 0
+        )
+      })
+    }
+  })
+  
+  output$mitus_df <- renderDataTable(get_data_and_run_model())
+  
+  
   # Output Server ----
   # ⠀Tabby1 Server ----
-  callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1")) 
+  callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1"), geo_short_code = geo_short_code) 
   
   output$downloadParameters <- downloadHandler(
     filename = function() { "input_parameters.yaml" },
@@ -501,18 +548,69 @@ shinyServer(function(input, output, session) {
   })
   
   # Plots for Comparison to Recent Data ----
-  comparison_to_recent_data_plot_path <- reactive({
-    file <- names(comparisonDataChoices)[[which(comparisonDataChoices == input$comparisonDataChoice)]]
-    return(paste0('calibration_plots/US/', file, ".rds"))
+  
+  # comparisonDataChoices is a vector mapping the filenames (without .rds) or
+  # short-versions of the calibration data targets to their proper names as they
+  # appear in the titles of the calibration plots.
+  comparisonDataChoices <- c(
+    total_population = "Population: Total, US, and Non-US Born",
+    `total-deaths-by-age` = "Total TB Deaths by Age Group",
+    percent_of_cases_in_non_usb = "Percent of TB Cases in Non-US-Born 2000-2014",
+    `percent-of-non-usb-cases-in-recent-immigrants` = "Percent of Non-US Born Cases Arrived in Past 2 Years",
+    mortality_by_age = "Mortality by Age",
+    mortality = "Mortality: Total, US, and Non-US Born",
+    `ltbi-prev-by-age-usb` = "LTBI in US Born Population by Age",
+    `ltbi-prev-by-age-non-usb` = "LTBI in Non-US Born Population by Age",
+    diagnosed_cases_2006 = "Total TB Cases Identified, 2006-2016",
+    age_distribution_all_ages = "Total Population by Age Group 2014",
+    age_distribution = "Population by Age for Non-US Born and US Born",
+    treatment_outcomes = "Treatment Outcomes",
+    `age-distribution-of-cases` = "TB Cases By Age (2000-16)"
+  )
+  
+  # Reverse comparisonDataChoices so that we can look up short codes from the 
+  # users choice, given as the proper name (with spaces and title casing). 
+  # This is used in the comparison_to_recent_data_plot_path reactive below.
+  comparisonDataChoices_rev <- names(comparisonDataChoices)
+  names(comparisonDataChoices_rev) <- unlist(comparisonDataChoices)
+  
+  # Render the options for calibration data targets  (Comparison to Recent Data)
+  # depending on the geo_short_code (geography selected by the user). This is
+  # dynamic because the states and US differ in which data targets are available
+  # / calibrated to.
+  output$comparison_to_recent_data_buttons <- renderUI({
+    req(input[['state']])
+    radioButtons(
+      inputId = "comparisonDataChoice",
+      label = "Select an option below to compare the model's performance to observed data.",
+      choices = as.character(comparisonDataChoices[
+        gsub(".rds",
+             "",
+             list.files(
+               paste0("utilities/inst/calibration_plots/", geo_short_code(), "/")
+             ))])
+    )
   })
-  output$calib_total_population <- renderPlot({
+  
+  # Get the path to the comparison plot chosen by the user
+  comparison_to_recent_data_plot_path <- reactive({
+    req(input[['comparisonDataChoice']], input[['state']])
+    file <- comparisonDataChoices_rev[input$comparisonDataChoice]
+    return(paste0('calibration_plots/', geo_short_code(), '/', file, ".rds"))
+  })
+  
+  # Render the calibration data target from its RDS file
+  output$calib_data_target_plot <- renderPlot({
     readRDS(system.file(comparison_to_recent_data_plot_path(), package = 'utilities'))
   })
   
   # Debug Printout Server ----
   if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
     output$debugPrintouts <- renderUI({ 
-      HTML(paste0(capture.output(Hmisc::list.tree(reactiveValuesToList(values), maxlen = 80)), collapse = "<br>"))
+      tagList(
+        HTML(paste0(capture.output(Hmisc::list.tree(reactiveValuesToList(values), maxlen = 80)), collapse = "<br>")),
+        dataTableOutput('mitus_df')
+      )
     })
   }
   

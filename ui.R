@@ -40,11 +40,11 @@ if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
 
 # Sidebar Menu ----
 sidebar <- dashboardSidebar(
-  sidebarMenu(
+  sidebarMenu(id = 'sidebar',
     menuItem(tabnames[[1]], tabName = names(tabnames)[[1]], selected = T), # intro
     menuItem(tabnames[[2]], tabName = names(tabnames)[[2]], startExpanded = T, # scenarios menu dropdown
-      menuItem(tabnames[[3]], tabName = names(tabnames)[[3]]), # custom model scenarios
-      menuItem(tabnames[[4]], tabName = names(tabnames)[[4]]) # ltbi ttt
+      menuItem(tabnames[[3]], tabName = names(tabnames)[[3]]), # pre-defined scenarios
+      menuItem(tabnames[[4]], tabName = names(tabnames)[[4]]) # custom scenarios
     ),
     menuItem(
       "Outcomes", startExpanded = T,
@@ -59,7 +59,10 @@ sidebar <- dashboardSidebar(
     if (
       exists('debug', envir = .GlobalEnv) && isTRUE(debug)
       ) { menuItem(tabnames[[11]], tabName = names(tabnames)[[11]]) # debug printouts
-    } else { NULL }
+    } else { NULL },
+    # tags$li(paste0("<a>", textOutput('location_selected'), style = 'position: absolute; bottom: 0', '</a>'))
+    # tags$li(tags$link(textOutput('location_selected')), style = 'position: absolute; bottom: 0')
+    tags$li(uiOutput('location_selected'), style = 'position: absolute; bottom: 20px; left: 20px;')
   )
 )
 
