@@ -48,7 +48,7 @@ populations:
     usb_population: US-born
     fb_population: Non-US-born
   formatted:
-    all_populations: total US population
+    all_populations: total population
     usb_population: US-born population
     fb_population: non-US-born population
   selected:
