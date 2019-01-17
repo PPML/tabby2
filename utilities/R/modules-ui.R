@@ -165,7 +165,7 @@ programChangePanel <- function(n) {
         tagList(
       tags$h4("TB Treatment Cascade:"),
       numericInput(inputId = paste0(id, "AverageTimeToTreatment"),
-                   label = "Average Time to Treatment of an Incident Case as a Multiple of the Current Rate (0-100% of current value).",
+                   label = "Duration of Infectiousness (0-100% of current value).",
                    value = 1, min = 0, max = 100),
       numericInput(inputId = paste0(id, "DefaultRate"),
                    label = "Fraction Discontinuing/Defaulting from Treatment (%)",
