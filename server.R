@@ -81,8 +81,8 @@ devtools::load_all("tabby1/tabby1utilities")
 source("tabby1/tabby1global.R")
 
 # have these functions added to MITUS
-source("../2019/model_load_environment.R")
-source("../2019/OutputZInt_env.R")
+# source("../2019/model_load_environment.R"
+# source("../2019/OutputZInt_env.R")
 
 risk_group_rate_ratios <- load_risk_group_data()
 
@@ -455,40 +455,40 @@ shinyServer(function(input, output, session) {
   # MITUS Interaction Server ----
 
   
-  get_predefined_scenarios_and_base_case <- reactive({
-    data('MA_restab2.rda', package = 'MITUS', envir = environment())
-  })
+  # get_predefined_scenarios_and_base_case <- reactive({
+  #   data('MA_restab2.rda', package = 'MITUS', envir = environment())
+  # })
   
   # get_data_and_run_model will be used later for running the custom scenarios in real-time 
   # for the user. 
-  get_data_and_run_model <- reactive({
-    if (input$state %in% c('United States', 'Massachusetts')) {
-      mitus_env <- model_load_env(geo_short_code()) # load the parameters into MITUS for the location
-      calib_param_file <- 
-        switch(geo_short_code(),
-               US = 'US_parAll10_2018-12-10.rda',
-               MA = 'MA_parAll10_2019-01-15.rda')
-      data(calib_param_file, package="MITUS", envir = environment()) 
-      
-      # TODO: running the model needs to be split from loading the parameters
-      with(mitus_env, {
-        OutputsZint_env(
-          1, 
-          ParMatrix = ParMatrix, 
-          startyr = 1950, 
-          endyr = 2050, 
-          Int1 = 0, 
-          Int2 = 0, 
-          Int3 = 0, 
-          Int4 = 0, 
-          Int5 = 0, 
-          Scen1 = 0, 
-          Scen2 = 0, 
-          Scen3 = 0
-        )
-      })
-    }
-  })
+  # get_data_and_run_model <- reactive({
+  #   if (input$state %in% c('United States', 'Massachusetts')) {
+  #     mitus_env <- model_load_env(geo_short_code()) # load the parameters into MITUS for the location
+  #     calib_param_file <- 
+  #       switch(geo_short_code(),
+  #              US = 'US_parAll10_2018-12-10.rda',
+  #              MA = 'MA_parAll10_2019-01-15.rda')
+  #     data(calib_param_file, package="MITUS", envir = environment()) 
+  #     
+  #     # TODO: running the model needs to be split from loading the parameters
+  #     with(mitus_env, {
+  #       OutputsZint_env(
+  #         1, 
+  #         ParMatrix = ParMatrix, 
+  #         startyr = 1950, 
+  #         endyr = 2050, 
+  #         Int1 = 0, 
+  #         Int2 = 0, 
+  #         Int3 = 0, 
+  #         Int4 = 0, 
+  #         Int5 = 0, 
+  #         Scen1 = 0, 
+  #         Scen2 = 0, 
+  #         Scen3 = 0
+  #       )
+  #     })
+  #   }
+  # })
   
   output$mitus_df <- renderDataTable(get_data_and_run_model())
   
