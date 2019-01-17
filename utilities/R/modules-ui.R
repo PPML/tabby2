@@ -30,8 +30,6 @@ standardInterventionsUI <- function() {
     ),
     column(8, 
            includeMarkdown("inst/md/standard-interventions.md"),
-           p("If the pre-defined interventions are sufficient for your needs, feel free to proceed directly to outcomes."),
-           p("Otherwise, go on to build custom scenarios."),
            shiny::actionButton(
              inputId = 'toAbout',
              label = 'Back'
@@ -310,10 +308,6 @@ debugPrintouts <- function() {
   uiOutput('debugPrintouts')
 }
 
-
-  
-  
-  
 
 comparison_to_recent_data <- function() {
   tagList(fluidRow(
