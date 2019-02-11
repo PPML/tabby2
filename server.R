@@ -10,23 +10,8 @@
 # 
 #   Reactive Values 
 #    ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
-#     The reactive values store the user's input for targeted testing and
-#     treatment scenarios and program changes.
-#
-#     To allow the user to have multiple targeted testing and treatment
-#     scenarios as well as multiple program changes, we add to the scenario
-#     specification input a choice for which scenario (of 1 through 3) the user
-#     is defining. Their input is then filled into the corresponding reactive
-#     values.
-#
-#     This approach is preferred to having separate input for each of the
-#     scenarios and program changes because it saves space as compared to
-#     rendering separate input for each of the 3 available scenarios to fill in.
-#
 #     Targeted Testing and Treatment Input
 #      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ 
-#       Fill in the reactive values  values with the user's input for targeted
-#       testing and treatment.
 #   
 #     Program Changes Input
 #      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ 
@@ -83,30 +68,56 @@ source("tabby1/tabby1global.R")
 risk_group_rate_ratios <- load_risk_group_data()
 
 shinyServer(function(input, output, session) {
-  
-  # Global Helper Reactives and Outputs ----  
-  
-  # Geography Short Code 
+
+	# --------------------------------------------------------------------------
+  # Globally Available Helper Function & Reactive
+  # Geography Short Code
   # Get the abbreviated version of the geography name -- i.e. United States ->
   # US, Massachusetts -> MA
+	# --------------------------------------------------------------------------
+
+	# Geography Short Code
   geo_short_code <- reactive({
     l <- state.abb
     names(l) <- state.name
-    l <- c(`United States` = 'US', l)
+    l <- c(`United States` = "US", l)
     l[[input$state]]
   })
-  
+
   # Output the Selected Geography
   output$location_selected <- renderUI({
-    tags$a(paste0('Location: ', input$state))
+    tags$a(paste0("Location: ", input$state))
   })
-  
+
   output$geo_short_code <- renderText({ geo_short_code() })
-  
-  # Reactive Values ----
-  values <- reactiveValues(n_ttt_updates = 0)
-  # template for targeted testing & treatment
-  ttt_template <- list(
+
+	# ---------------------------------------------------------------------------
+	#  Reactive Values 
+	#   ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+	#    The reactive values store the user's input for targeted testing and
+	#    treatment scenarios and program changes.
+	# 
+	#    To allow the user to have multiple targeted testing and treatment
+	#    scenarios as well as multiple program changes, we add to the scenario
+	#    specification input a choice for which scenario (of 1 through 3) the
+	#    user is defining. Their input is then filled into the corresponding
+	#    reactive values.
+	# 
+	#    This approach is preferred to having separate input for each of the
+	#    scenarios and program changes because it saves space as compared to
+	#    rendering separate input for each of the 3 available scenarios to fill
+	#    in.
+	# --------------------------------------------------------------------------
+	
+	#  Setup `values` to contain our reactiveValues. 
+  values <- reactiveValues()
+
+	#  The ttt_template list is going to be used three times later in filling 
+	#  in constructing placeholders inside the reactive `values` object 
+	# 
+	#  These list elements correspond to the values the user can set in the TTT
+	#  panel of the application.
+	ttt_template <- list(
     name = NULL,
     risk_group = NULL,
     nativity_group = NULL,
@@ -119,7 +130,12 @@ shinyServer(function(input, output, session) {
     rate_ratio_mortality = 1,
     rate_ratio_prevalence = 1
   )
-  # template for the program changes
+
+	# The programChanges_template is used later to fill in placeholders inside
+	# the reactive `values` object.
+	# 
+	#  These list elements correspond to the values the user can set in the
+	#  program changes panel of the application.
   programChanges_template <- list(
     name = NULL,
     ltbi_screening_coverage_multiplier = NULL,
@@ -129,6 +145,13 @@ shinyServer(function(input, output, session) {
     average_time_to_treatment_active = NULL,
     fraction_defaulting_from_treatment_active = NULL
   )
+
+	# Use the ttt_template and programChanges_template to construct placeholders
+	# for the scenarios inside the reactive `values` object.
+	# 
+	# Each of the 3 definable TTT and Program Changes will be given their own 
+	# place within `values`, i.e. 1, 2, & 3 inside 
+	# values[['scenarios']][['ttt']]` and similar for program changes.
   values[['scenarios']] <-
     list(
       ttt = list(ttt_template,
@@ -136,21 +159,25 @@ shinyServer(function(input, output, session) {
                  ttt_template),
       program_changes = list(programChanges_template,
                              programChanges_template,
-                             programChanges_template),
-      scenarios = list(list(),
-                       list(),
-                       list())
-    )
+                             programChanges_template))
   
+	# Watch for Updates to Custom Scenarios
+  # 
+	# Now we run `observe` module that fills in `values[['scenarios']][['ttt']]`
+	# and `values[['scenarios']][['program_changes']]` accordingly. 
+	# 
+	# This is done by watching for changes in the currentlySelectedTTT and 
+	# currentlySelectedProgramChanges. 
   observe({
+		# ttt_to_update is a safe version of currentlySelectedTTT
     ttt_to_update <- ifelse(
       is.null(input$currentlySelectedTTT),
       1,
       as.integer(input$currentlySelectedTTT)
     )
 
-
-    # Targeted Testing and Treatment Input ----
+		# Use ttt_to_update to get the specifications for the TTT scenario that is 
+		# currently being defined.
     n <- ttt_to_update
     tttn <- paste0("ttt", n)
     tttName <- paste0(tttn, "name")
@@ -165,7 +192,7 @@ shinyServer(function(input, output, session) {
     tttPrevalence <- paste0(tttn, "prevalence-rate")
     tttMortality <- paste0(tttn, "mortality-rate")
     
-    
+    # Fill the user-input into the `values` object.
     values[['scenarios']][['ttt']][[ttt_to_update]][['name']] = input[[tttName]]
     values[['scenarios']][['ttt']][[ttt_to_update]][['risk_group']] = input[[tttRisk]]
     values[['scenarios']][['ttt']][[ttt_to_update]][['nativity_group']] = input[[tttNativity]]
@@ -175,12 +202,14 @@ shinyServer(function(input, output, session) {
     values[['scenarios']][['ttt']][[ttt_to_update]][['start_year']] = input[[tttStartYear]]
     values[['scenarios']][['ttt']][[ttt_to_update]][['stop_year']] = input[[tttStopYear]]
     
-    
-    # Program Changes Input ----
+    # program_changes_to_update is the safe version of 
+		# input$currentlySelectedProgramChange
     program_change_to_update <-
       if (is.null(input$currentlySelectedProgramChange)) 1
     else as.integer(input$currentlySelectedProgramChange)
     
+		# Use program_change_to_update to get the specification for the Program
+		# Change scenario that is currently being defined.
     pcn <- paste0("programChange", program_change_to_update)
     programChangeName = paste0(pcn, 'Name')
     programChangeLtbi_screening_coverage_multiplier = paste0(pcn, "CoverageRate")
@@ -190,6 +219,7 @@ shinyServer(function(input, output, session) {
     programChangeAverage_time_to_treatment_active = paste0(pcn, "AverageTimeToTreatment")
     programChangeFraction_defaulting_from_treatment_active = paste0(pcn, "DefaultRate")
     
+    # Fill the user-input into the `values` object.
     values[['scenarios']][['program_changes']][[program_change_to_update]] <-
       list(
         name = input[[programChangeName]],
@@ -571,6 +601,4 @@ shinyServer(function(input, output, session) {
       )
     })
   }
-  
-  
 })
