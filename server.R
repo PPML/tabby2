@@ -10,13 +10,6 @@
 # 
 #   Reactive Values 
 #    ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
-#     Targeted Testing and Treatment Input
-#      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ 
-#   
-#     Program Changes Input
-#      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ 
-#       Fill in the reactive values  values with the user's input for program
-#       changes.
 # 
 #   Custom Scenarios
 #    ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ 
@@ -233,6 +226,11 @@ shinyServer(function(input, output, session) {
   })
   
   
+	# In the following reactives and observeEvent code-blocks we store and render
+	# the risk groups' relative rates of LTBI prevalence, mortality, and 
+	# latent to active progression. 
+
+	# ttt_to_update is a safe version of currentlySelectedTTT
   ttt_to_update <- reactive({ ifelse(
     is.null(input$currentlySelectedTTT),
     1,
@@ -240,8 +238,8 @@ shinyServer(function(input, output, session) {
   )
   })
   
+	# Use ttt_to_update to get the names of the risk-groups' relative-rate fields
   tttn <- reactive({ paste0("ttt", ttt_to_update()) })
-
   tttRisk <- reactive({ paste0(tttn(), "risk") })
   tttProgression <- reactive({ paste0(tttn(), "progression-rate") })
   tttPrevalence <- reactive({ paste0(tttn(), "prevalence-rate") })
