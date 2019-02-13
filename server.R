@@ -220,20 +220,20 @@ shinyServer(function(input, output, session) {
   observeEvent(input[[tttRisk()]], {
     
     if (input[[tttRisk()]] == 'All Individuals') {
-      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_progression']] = 1
-      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_prevalence']] = 1
-      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_mortality']] = 1
+      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_progression']]  <- 1
+      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_prevalence']]  <- 1
+      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_mortality']]  <- 1
       
     } else if (input[[tttRisk()]] != 'Define a Custom Risk Group') {
       rate_ratio_row <- which(risk_group_rate_ratios$population == as.character(input[[tttRisk()]]))
-      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_progression']] = risk_group_rate_ratios[[rate_ratio_row, 2]]
-      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_prevalence']] = risk_group_rate_ratios[[rate_ratio_row, 3]]
-      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_mortality']] = risk_group_rate_ratios[[rate_ratio_row, 4]]
+      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_progression']]  <- risk_group_rate_ratios[[rate_ratio_row, 2]]
+      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_prevalence']]  <-  risk_group_rate_ratios[[rate_ratio_row, 3]]
+      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_mortality']]  <- risk_group_rate_ratios[[rate_ratio_row, 4]]
       
     } else { # Custom Risk Group
-      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_progression']] = input[[tttProgression()]]
-      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_prevalence']] = input[[tttPrevalence()]]
-      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_mortality']] = input[[tttMortality()]]
+      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_progression']]  <- input[[tttProgression()]]
+      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_prevalence']]  <- input[[tttPrevalence()]]
+      values[['scenarios']][['ttt']][[ttt_to_update()]][['rate_ratio_mortality']]  <- input[[tttMortality()]]
       
     }
     
