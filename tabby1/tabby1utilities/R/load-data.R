@@ -92,6 +92,5 @@ data_agegroups <- function() {
       age_group = str_replace(age_group, "_", "-"),
       age_group = str_replace(age_group, "p$", "+")
     ) %>%
-    rename(type = statistic) %>%
     mutate_if(is.factor, as.character)
 }
