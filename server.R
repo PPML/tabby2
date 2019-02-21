@@ -48,7 +48,7 @@ shinyServer(function(input, output, session) {
 	callModule(nextBackButtons, NULL)
   
   # MITUS Interaction Server
-  # output$mitus_df <- renderDataTable(get_data_and_run_model())
+	callModule(mitusInteractionServer, NULL)
   
   # Tabby1 Server
   callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1"), geo_short_code = geo_short_code) 
