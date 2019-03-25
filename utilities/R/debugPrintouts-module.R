@@ -6,7 +6,7 @@
 #' values object is rendered as text. To use this feature, assign
 #' debug <- TRUE before running the application via runApp().
 
-debugPrintouts <- function(input, output, session, values) {
+debugPrintoutsModule <- function(input, output, session, values) {
   if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
     output$debugPrintouts <- renderUI({ 
       tagList(

@@ -48,7 +48,7 @@ shinyServer(function(input, output, session) {
 	callModule(nextBackButtons, NULL)
   
   # MITUS Interaction Server
-	callModule(mitusInteractionServer, NULL)
+	callModule(mitusInteractionServer, NULL, geo_short_code = geo_short_code)
   
   # Tabby1 Server
   callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1"), geo_short_code = geo_short_code) 
@@ -60,5 +60,5 @@ shinyServer(function(input, output, session) {
 	callModule(comparisonToRecentData, NULL, geo_short_code)
 
   # Debug Printout Server 
-	callModule(debugPrinouts, NULL, values)
+	callModule(debugPrintoutsModule, NULL, values = values)
 })
