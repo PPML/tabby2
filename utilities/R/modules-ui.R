@@ -250,9 +250,19 @@ configuration that yielded those outcomes for reproducible results.",
 
 
 readmoreUI <- function() {
-  fluidRow(
-    column(8, includeMarkdown("inst/md/readmore.md"))
-  )
+	navlistPanel(
+							 "Header A",
+							 tabPanel("Component 1", "text goes here"),
+							 tabPanel("Component 2", "more text goes here"),
+							 "Header B",
+							 tabPanel("Component 3"),
+							 tabPanel("Component 4"),
+							 "-----",
+							 tabPanel("Component 5")
+	)
+  # fluidRow(
+  #   column(8, includeMarkdown("inst/md/readmore.md"))
+  # )
 }
 
 
