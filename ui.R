@@ -71,7 +71,8 @@ body <- dashboardBody(
   tagList(
     useShinyjs(),
     tags$head(
-      tags$style(HTML(
+      tags$style(
+			HTML(
 "
 @import url('//fonts.googleapis.com/css?family=Josefin+Slab');
 
@@ -79,7 +80,8 @@ body <- dashboardBody(
 font-family: 'Josefin Slab' !important ;
 font-size: 25px !important;
 }
-")),
+")
+),
 tags$script(src='disable-ttt.js')
       ),
     
