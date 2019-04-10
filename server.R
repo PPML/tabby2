@@ -34,7 +34,7 @@ tabnames <- c(
 )
 
 tabcontents <- list(
-  about = aboutUI(),
+  about = uiOutput('aboutUI'),
   scenarios = NULL,
   predefined = standardInterventionsUI(),
   customscenarios = scenariosUI(),
@@ -56,9 +56,13 @@ if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
 library(datasets)
 Logged <- FALSE
 PASSWORD <- data.frame(
-  Username = c("withr", 'earlyAccess'), 
-	Password = c("25d55ad283aa400af464c76d713c07ad", 'fcce0e290f8059681e31d617930a663d')
+  Username = c('earlyAccess'), 
+	Password = c('fcce0e290f8059681e31d617930a663d')
 	)
+
+states <- setNames(nm = state.abb, state.name)
+states[['US']] <- 'United States'
+states[['DC']] <- 'District of Columbia'
 
 risk_group_rate_ratios <- load_risk_group_data()
 
@@ -96,7 +100,7 @@ shinyServer(function(input, output, session) {
 		geo_short_code <- callModule(geoShortCode, NULL)
 
 		# Re-Render About UI
-		# callModule(updateAboutUI, NULL)
+		callModule(updateAboutUI, NULL)
 
 		#  Setup `values` to contain our reactiveValues
 		values <- callModule(constructReactiveValues, NULL)

@@ -21,7 +21,13 @@ aboutUI <- function() {
   )
 }
 
-updateAboutUI <- function(input, output, session, geo_short_code) {
+updateAboutUI <- function(input, output, session) {
+  available_geographies <- load_optim()
+
+	available_geography_names <- states[available_geographies]
+
+	
+
   output$aboutUI <- renderUI({
   fluidRow(
     column(12, h1("About Tabby2")),
@@ -33,7 +39,7 @@ updateAboutUI <- function(input, output, session, geo_short_code) {
       ), 
       selectInput(inputId = "state",
                   label = "Select a Location",
-                  choices = c('United States', 'Massachusetts'),
+                  choices = unname(available_geography_names),
                   selected = 'United States'),
       shiny::actionButton(
         inputId = 'toPredefinedScenarios',
