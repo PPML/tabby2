@@ -19,46 +19,90 @@ source("tabby1/tabby1dependencies.R")
 devtools::load_all("tabby1/tabby1utilities")
 source("tabby1/tabby1global.R")
 
+
+# Simple MD5 Username/Password Authentication Schema 
+library(datasets)
+Logged <- FALSE
+PASSWORD <- data.frame(
+  Username = c("withr", 'earlyAccess'), 
+	Password = c("25d55ad283aa400af464c76d713c07ad", 'fcce0e290f8059681e31d617930a663d')
+	)
+
 risk_group_rate_ratios <- load_risk_group_data()
 
 shinyServer(function(input, output, session) {
+  # Authentication UI
+  source("www/Login.R",  local = TRUE)
 
-	# Geography Short Code
-	geo_short_code <- callModule(geoShortCode, NULL)
 
-	#  Setup `values` to contain our reactiveValues
-  values <- callModule(constructReactiveValues, NULL)
+			output$page <- renderUI({
+			if (USER$Logged == FALSE) { # Render Login Page
+					div(class = "login", id = 'uiLogin',
+							uiOutput("uiLogin"),
+							textOutput("pass")
+					)
+			} else { # Render tabPanel Contents
+				(function (...) 
+				{
+					lapply(..., shinydashboard:::tagAssert, class = "tab-pane")
+					div(class = "tab-content", ...)
+				})(lapply(seq_along(tabnames), function(x) {
+					tabItem(tabName = names(tabnames)[[x]], tabcontents[[x]])
+				}))
+			}})
 
-	# Watch for Updates to Custom Scenarios
-	values <- callModule(updateProgramChanges, NULL, values)
-  
-	# Update reactiveValues to reflect selected/defined risk group rate ratios
-	values <- callModule(updateTargetedRiskGroupRates, NULL, risk_group_rate_ratios, values)
 
-	# Display the summary statistics in the TTT interventions
-	callModule(summaryStatistics, NULL)
-    
-	# Add TTT Interventions to the Custom Scenarios tab
-	callModule(customScenarioTTTChoices, NULL)
-  
-	# Add Program Change Interventions to the Custom Scenarios tab
-	callModule(customScenarioProgramChangeChoices, NULL)
-  
-  # Next/Back Page Buttons
-	callModule(nextBackButtons, NULL)
-  
-  # MITUS Interaction Server
-	callModule(mitusInteractionServer, NULL, geo_short_code = geo_short_code)
-  
-  # Tabby1 Server
-  callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1"), geo_short_code = geo_short_code) 
-  
-  # Custom Scenarios Choice in Output
-	callModule(outputIncludeCustomScenarioOptions, NULL)
-  
-  # Plots for Comparison to Recent Data
-	callModule(comparisonToRecentData, NULL, geo_short_code)
+	observe({
+	  if (USER$Logged == TRUE) {
+			observeEvent(USER$Logged, {
+			  updateTabsetPanel(session = session, inputId = 'sidebar', selected = 'predefined')
+			  updateTabsetPanel(session = session, inputId = 'sidebar', selected = 'about')
 
-  # Debug Printout Server 
-	callModule(debugPrintoutsModule, NULL, values = values)
+			})
+
+		# Geography Short Code
+		geo_short_code <- callModule(geoShortCode, NULL)
+
+		# Re-Render About UI
+		callModule(updateAboutUI, NULL)
+
+		#  Setup `values` to contain our reactiveValues
+		values <- callModule(constructReactiveValues, NULL)
+
+		# Watch for Updates to Custom Scenarios
+		values <- callModule(updateProgramChanges, NULL, values)
+		
+		# Update reactiveValues to reflect selected/defined risk group rate ratios
+		values <- callModule(updateTargetedRiskGroupRates, NULL, risk_group_rate_ratios, values)
+
+		# Display the summary statistics in the TTT interventions
+		callModule(summaryStatistics, NULL)
+			
+		# Add TTT Interventions to the Custom Scenarios tab
+		callModule(customScenarioTTTChoices, NULL)
+		
+		# Add Program Change Interventions to the Custom Scenarios tab
+		callModule(customScenarioProgramChangeChoices, NULL)
+		
+		# Next/Back Page Buttons
+		callModule(nextBackButtons, NULL)
+		
+		# MITUS Interaction Server
+		callModule(mitusInteractionServer, NULL, geo_short_code = geo_short_code)
+		
+		# Tabby1 Server
+		callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1"), geo_short_code = geo_short_code) 
+		
+		# Custom Scenarios Choice in Output
+		callModule(outputIncludeCustomScenarioOptions, NULL)
+		
+		# Plots for Comparison to Recent Data
+		callModule(comparisonToRecentData, NULL, geo_short_code)
+
+		# Debug Printout Server 
+		callModule(debugPrintoutsModule, NULL, values = values)
+
+	} # else {
+	
+	})
 })

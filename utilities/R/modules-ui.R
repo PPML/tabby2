@@ -21,6 +21,31 @@ aboutUI <- function() {
   )
 }
 
+updateAboutUI <- function(input, output, session, geo_short_code) {
+  output$aboutUI <- renderUI({
+  fluidRow(
+    column(12, h1("About Tabby2")),
+    column(6, includeMarkdown("inst/md/about.md")),
+    column(6, wellPanel(
+      tags$h4("Select a Location"),
+      tags$p(
+        "After specifying a location, Tabby2 will load historical data and model parameters calibrated to that location."
+      ), 
+      selectInput(inputId = "state",
+                  label = "Select a Location",
+                  choices = c('United States', 'Massachusetts'),
+                  selected = 'United States'),
+      shiny::actionButton(
+        inputId = 'toPredefinedScenarios',
+        label = 'Next Page',
+        class = 'btn btn-primary',
+        style = 'color: white;'
+      )
+    ))
+  )
+	})
+}
+
 
 
 standardInterventionsUI <- function() {

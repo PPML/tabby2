@@ -21,7 +21,7 @@ tabnames <- c(
 )
 
 tabcontents <- list(
-  about = aboutUI(),
+  about = uiOutput('aboutUI'),
   scenarios = NULL,
   predefined = standardInterventionsUI(),
   customscenarios = scenariosUI(),
@@ -60,8 +60,7 @@ sidebar <- dashboardSidebar(
       exists('debug', envir = .GlobalEnv) && isTRUE(debug)
       ) { menuItem(tabnames[[11]], tabName = names(tabnames)[[11]]) # debug printouts
     } else { NULL },
-    # tags$li(paste0("<a>", textOutput('location_selected'), style = 'position: absolute; bottom: 0', '</a>'))
-    # tags$li(tags$link(textOutput('location_selected')), style = 'position: absolute; bottom: 0')
+		# render location selected
     tags$li(uiOutput('location_selected'), style = 'position: absolute; bottom: 20px; left: 20px;')
   )
 )
@@ -71,19 +70,17 @@ body <- dashboardBody(
   tagList(
     useShinyjs(),
     tags$head(
-      tags$style(
-			HTML(
-"
-@import url('//fonts.googleapis.com/css?family=Josefin+Slab');
 
-.logo {
-font-family: 'Josefin Slab' !important ;
-font-size: 25px !important;
-}
-")
-),
-tags$script(src='disable-ttt.js')
+			tags$link(rel="stylesheet", type="text/css",href="style.css"),
+			tags$script(type="text/javascript", src = "md5.js"),
+			tags$script(type="text/javascript", src = "passwdInputBinding.js"),
+			tags$script(src='disable-ttt.js')
       ),
+
+		# div(class = "login", id = 'uiLogin', uiOutput("uiLogin"), textOutput("pass")),
+
+		uiOutput('page')
+	
     
   # This is an anonymous function which does the exact same thing 
   # as tabItems() except that it does not call list() on `...`.
@@ -92,24 +89,23 @@ tags$script(src='disable-ttt.js')
   # This is just 
   # tabItems(tabItem(), ...), but written in a way that allows me
   # to automatically loop over my tabnames and tabcontents variables.
-  (function (...) 
-  {
-    lapply(..., shinydashboard:::tagAssert, class = "tab-pane")
-    div(class = "tab-content", ...)
-  })(lapply(seq_along(tabnames), function(x) {
-    tabItem(tabName = names(tabnames)[[x]], tabcontents[[x]])
-  }))
+  # (function (...) 
+  # {
+  #   lapply(..., shinydashboard:::tagAssert, class = "tab-pane")
+  #   div(class = "tab-content", ...)
+  # })(lapply(seq_along(tabnames), function(x) {
+  #   tabItem(tabName = names(tabnames)[[x]], tabcontents[[x]])
+  # }))
   )
   
 )
 
-# Run the Application ----
-shinyUI(
-  dashboardPage(
-    dashboardHeader(title = "Tabby2"),
-    # tags$img(src='https://image.flaticon.com/icons/svg/528/528309.svg', width=25, height=25, `vertical-align`='baseline')
-    sidebar,
-    body
-))
 
+# Run the Application ----
+
+shinyUI(dashboardPage(
+    dashboardHeader(title = "Tabby2"),
+    sidebar,
+		body
+	))
 
