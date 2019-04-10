@@ -11,9 +11,8 @@ font-size: 25px !important;
 div.login { 
   text-align: left;
   position:absolute;
-  top: 40%;
-  left: 50%;
-  margin-top: -100px;
+  margin-top: 15%;
+	margin-left: 15%
 } 
 
 div#pass {

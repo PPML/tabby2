@@ -20,6 +20,38 @@ devtools::load_all("tabby1/tabby1utilities")
 source("tabby1/tabby1global.R")
 
 
+tabnames <- c(
+  about = "Introduction",
+  scenarios = "Scenarios",
+  predefined = "Predefined Scenarios",
+  customscenarios = "Build Scenarios",
+  estimates = "Estimates",
+  timetrends = "Time Trends",
+  agegroups = "Age Groups",
+  calibration = "Comparison to Recent Data",
+  downloads = "Downloads",
+  readmore = "Further Description"
+)
+
+tabcontents <- list(
+  about = aboutUI(),
+  scenarios = NULL,
+  predefined = standardInterventionsUI(),
+  customscenarios = scenariosUI(),
+  estimates = tabby1Estimates('tabby1'),
+  timetrends = tabby1TimeTrends('tabby1'),
+  agegroups = tabby1AgeGroups('tabby1'),
+  calibration = comparison_to_recent_data(),
+  downloads = downloadsAndSettingsUI(),
+  readmore = readmoreUI()
+)
+
+if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
+  tabnames[['debug']] <- 'Debug Printouts'
+  tabcontents[['debug']] <- debugPrintouts()
+}
+
+
 # Simple MD5 Username/Password Authentication Schema 
 library(datasets)
 Logged <- FALSE
@@ -64,7 +96,7 @@ shinyServer(function(input, output, session) {
 		geo_short_code <- callModule(geoShortCode, NULL)
 
 		# Re-Render About UI
-		callModule(updateAboutUI, NULL)
+		# callModule(updateAboutUI, NULL)
 
 		#  Setup `values` to contain our reactiveValues
 		values <- callModule(constructReactiveValues, NULL)
