@@ -45,7 +45,7 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
         gsub(".rds",
              "",
              list.files(
-               paste0("utilities/inst/calibration_plots/", geo_short_code(), "/")
+               system.file(paste0(geo_short_code(), "/calibplots/"), package='MITUS')
              ))])
     )
   })
@@ -54,12 +54,13 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
   comparison_to_recent_data_plot_path <- reactive({
     req(input[['comparisonDataChoice']], input[['state']])
     file <- comparisonDataChoices_rev[input$comparisonDataChoice]
-    return(paste0('calibration_plots/', geo_short_code(), '/', file, ".rds"))
+    return(paste0(geo_short_code(), '/calibplots/', file, ".rds"))
   })
   
   # Render the calibration data target from its RDS file
   output$calib_data_target_plot <- renderPlot({
-    readRDS(system.file(comparison_to_recent_data_plot_path(), package = 'utilities'))
+    replayPlot(readRDS(system.file(comparison_to_recent_data_plot_path(), package = 'MITUS')))
+		# replayPlot(readRDS(system.file('TX/calibplots/total_population.rds', package='MITUS')))
   })
 
 	# Download server ----
