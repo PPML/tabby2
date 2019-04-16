@@ -21,12 +21,10 @@ aboutUI <- function() {
   )
 }
 
-updateAboutUI <- function(input, output, session) {
+updateAboutUI <- function(input, output, session, geographies) {
   available_geographies <- load_optim()
 
-	available_geography_names <- states[available_geographies]
-
-	
+	available_geography_names <- geographies[available_geographies]
 
   output$aboutUI <- renderUI({
   fluidRow(

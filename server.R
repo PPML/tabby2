@@ -60,9 +60,9 @@ PASSWORD <- data.frame(
 	Password = c('fcce0e290f8059681e31d617930a663d')
 	)
 
-states <- setNames(nm = state.abb, state.name)
-states[['US']] <- 'United States'
-states[['DC']] <- 'District of Columbia'
+geographies <- setNames(nm = state.abb, state.name)
+geographies[['US']] <- 'United States'
+geographies[['DC']] <- 'District of Columbia'
 
 risk_group_rate_ratios <- load_risk_group_data()
 
@@ -97,10 +97,10 @@ shinyServer(function(input, output, session) {
 			})
 
 		# Geography Short Code
-		geo_short_code <- callModule(geoShortCode, NULL)
+		geo_short_code <- callModule(geoShortCode, NULL, geographies)
 
 		# Re-Render About UI
-		callModule(updateAboutUI, NULL)
+		callModule(updateAboutUI, NULL, geographies)
 
 		#  Setup `values` to contain our reactiveValues
 		values <- callModule(constructReactiveValues, NULL)
