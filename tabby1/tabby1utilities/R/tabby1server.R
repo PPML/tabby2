@@ -1,9 +1,99 @@
 tabby1Server <- function(input, output, session, ns, geo_short_code) {
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
-  AGEGROUPS_DATA <- reactive({
-    readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"), package = "tabby1utilities", mustWork = TRUE))
-  })
+  # AGEGROUPS_DATA <- reactive({
+  #   readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"), package = "tabby1utilities", mustWork = TRUE))
+  # })
+
+	# Import and format Age Groups Data
+	AGEGROUPS_DATA <- reactive({
+		# Lookup sm_restab2 by geo_short_code, cast the data as.data.frame
+		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "sm_restab2.rds",
+		package="MITUS", mustWork = TRUE)))
+
+		# Specify the levels of each dimension to the data
+		CatList <- list()
+		CatList[[1]] <- c(
+			"ltbi_000s",
+			"pct_ltbi",
+			"tb_incidence_000s",
+			"tb_incidence_per_mil",
+			"tb_mortality_000s",
+			"tb_mortality_per_mil")
+		CatList[[2]] <- c('base_case')
+		CatList[[3]] <- c("all_populations","usb_population","fb_population")
+		CatList[[4]] <- c("0-4",paste(0:8*10+5,1:9*10+4,sep="-"),"95+")
+		CatList[[5]] <- c("absolute_value","pct_basecase_same_year","pct_basecase_2016")
+		CatList[[6]] <- 2018:2049
+
+		# Re-Factorize each column
+		for (i in 1:6) {
+			restab2[,i] <- factor(restab2[,i], labels = CatList[[i]])
+		}
+
+    # Temporary Fix for Trivial Confidence Intervals 
+		# If confidence intervals aren't present (because the statistic
+		# column hasn't been rendered yet, just duplicate (triplicate) the 
+		# data for mean/ci_high/ci_low.
+		if (! 'statistic' %in% colnames(restab2)) {
+			restab2 <- 
+				do.call(rbind.data.frame, list(
+				cbind.data.frame(restab2, type = 'mean'),
+				cbind.data.frame(restab2, type = 'ci_high'),
+				cbind.data.frame(restab2, type = 'ci_low')))
+		}
+
+    restab2 %>% mutate_if(is.factor, as.character) -> restab2
+		return(restab2)
+	})
+
+	# Import and format Age Groups Data
+	TRENDS_DATA <- reactive({
+
+		# Lookup bg_restab2 by geo_short_code, cast the data as.data.frame
+		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "bg_restab2.rds",
+		package="MITUS", mustWork = TRUE)))
+
+		# Specify the levels of each dimension to the data
+		CatList <- list()
+		CatList[[1]] <- c(
+			"ltbi_000s",
+			"pct_ltbi",
+			"tb_incidence_per_mil",
+			"tb_infection_per_mil",
+			"tb_mortality_000s",
+			"tb_deaths_per_mil")
+		CatList[[2]] <- c('base_case')
+		CatList[[3]] <- c("all_populations","usb_population","fb_population")
+		CatList[[4]] <- c("all_ages", "age_0_24","age_25_64","age_65p")
+		CatList[[5]] <- c("absolute_value","pct_basecase_same_year","pct_basecase_2016")
+		CatList[[6]] <- 2018:2049
+
+		# Re-Factorize each column
+		for (i in 1:6) {
+			restab2[,i] <- factor(restab2[,i], labels = CatList[[i]])
+		}
+
+		# Temporary Fix for Trivial Confidence Intervals 
+		# If confidence intervals aren't present (because the statistic
+		# column hasn't been rendered yet, just duplicate (triplicate) the 
+		# data for mean/ci_high/ci_low.
+		# if (! 'statistic' %in% colnames(restab2)) {
+			restab2 <- 
+				do.call(rbind.data.frame, list(
+				cbind.data.frame(restab2, type = 'mean'),
+				cbind.data.frame(restab2, type = 'ci_high'),
+				cbind.data.frame(restab2, type = 'ci_low')))
+		# }
+
+    restab2 %>% mutate_if(is.factor, as.character) -> restab2
+		restab2$year <- as.numeric(restab2$year)
+		return(restab2)
+	})
+
+  ESTIMATES_DATA <- reactive({ 
+		filter(TRENDS_DATA(), year %in% c(2018, 2020, 2025, 2035, 2049))
+	})
   
   # estimates server ----
   # __calculate data ----
@@ -12,9 +102,8 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
       input[[estimates$IDs$controls$comparators]], input[[estimates$IDs$controls$outcomes]],
       c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case")
     )
-    
-    
-    ESTIMATES_DATA %>%
+
+    ESTIMATES_DATA() %>%
       filter(
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
@@ -25,9 +114,10 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
       arrange(scenario) %>%
       mutate(
         year_adj = year + position_year(scenario),
-        year_adj = if_else(year < 2025, year, year_adj)
+        year_adj = if_else(year < 2020, year, year_adj)
       )
-  })
+
+ })
 
   
   # __generate point labels ----
