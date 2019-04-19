@@ -54,42 +54,61 @@ if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
 
 # Simple MD5 Username/Password Authentication Schema 
 library(datasets)
-Logged <- FALSE
+Logged <- TRUE
 PASSWORD <- data.frame(
   Username = c('earlyAccess'), 
 	Password = c('fcce0e290f8059681e31d617930a663d')
 	)
 
+# Set up a named vector for geographies calibrated in MITUS
 geographies <- setNames(nm = state.abb, state.name)
 geographies[['US']] <- 'United States'
 geographies[['DC']] <- 'District of Columbia'
+# Subset geographies to include only geographies with rendered results
+available_geographies <- geographies[scan_for_available_geographies(names(geographies))]
 
+# Load risk group rate ratios for use in the targeted testing and treatment
+# intervention builder
 risk_group_rate_ratios <- load_risk_group_data()
 
+
+
 shinyServer(function(input, output, session) {
-  # Authentication UI
+  # Load Authentication UI
   source("www/Login.R",  local = TRUE)
 
+  # Either render the Login/Authentication Page or Render 
+	# the application pages.
+	output$page <- renderUI({
+	if (USER$Logged == FALSE) { # Render Login Page
+			div(class = "login", id = 'uiLogin',
+					uiOutput("uiLogin"),
+					textOutput("pass")
+			)
+	} else { 
+	  # Render tabPanel Contents
 
-			output$page <- renderUI({
-			if (USER$Logged == FALSE) { # Render Login Page
-					div(class = "login", id = 'uiLogin',
-							uiOutput("uiLogin"),
-							textOutput("pass")
-					)
-			} else { # Render tabPanel Contents
-				(function (...) 
-				{
-					lapply(..., shinydashboard:::tagAssert, class = "tab-pane")
-					div(class = "tab-content", ...)
-				})(lapply(seq_along(tabnames), function(x) {
-					tabItem(tabName = names(tabnames)[[x]], tabcontents[[x]])
-				}))
-			}})
+		# In order to wrap everything in tab-pane and tab-content html tags 
+		# properly, an anonymous function is built that takes expanded tagLists,
+		# tagAsserts them to tab-panes, and wraps them with class=tab-content divs.
 
+		# Then we apply this anonymous function to the output of an lapply that 
+		# runs along our tabnames and tabcontents lists to construct tabItems out of 
+		# each correspondent pair.
+		(function (...) 
+		{
+			lapply(..., shinydashboard:::tagAssert, class = "tab-pane")
+			div(class = "tab-content", ...)
+		})(lapply(seq_along(tabnames), function(x) {
+			tabItem(tabName = names(tabnames)[[x]], tabcontents[[x]])
+		}))
+	}})
 
+  # Only render application features if the user is logged in
 	observe({
 	  if (USER$Logged == TRUE) {
+			# Once the user is logged in, toggle which panel is selected (imperceptibly fast) 
+			# so that the About-UI Re-renders.
 			observeEvent(USER$Logged, {
 			  updateTabsetPanel(session = session, inputId = 'sidebar', selected = 'predefined')
 			  updateTabsetPanel(session = session, inputId = 'sidebar', selected = 'about')
@@ -100,7 +119,7 @@ shinyServer(function(input, output, session) {
 		geo_short_code <- callModule(geoShortCode, NULL, geographies)
 
 		# Re-Render About UI
-		callModule(updateAboutUI, NULL, geographies)
+		callModule(updateAboutUI, NULL, available_geographies)
 
 		#  Setup `values` to contain our reactiveValues
 		values <- callModule(constructReactiveValues, NULL)
@@ -124,7 +143,7 @@ shinyServer(function(input, output, session) {
 		callModule(nextBackButtons, NULL)
 		
 		# MITUS Interaction Server
-		callModule(mitusInteractionServer, NULL, geo_short_code = geo_short_code)
+		# callModule(mitusInteractionServer, NULL, geo_short_code = geo_short_code)
 		
 		# Tabby1 Server
 		callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1"), geo_short_code = geo_short_code) 
