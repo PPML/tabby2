@@ -57,7 +57,7 @@ library(datasets)
 Logged <- TRUE
 PASSWORD <- data.frame(
   Username = c('earlyAccess'), 
-	Password = c('fcce0e290f8059681e31d617930a663d')
+	Password = c('fcce0e290f8059681e31d617930a663d') # generate MD5 hashed passwords with digest::digest(..., serialize=FALSE)
 	)
 
 # Set up a named vector for geographies calibrated in MITUS
