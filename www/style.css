@@ -3,17 +3,23 @@
 .logo {
 font-family: 'Josefin Slab' !important ;
 font-size: 25px !important;
-  /* vertical-align: baseline !important; */
-  /* height: 25px !important; */
-  /* width: 25px !important; */
 }
 
 div.login { 
   text-align: left;
   position:absolute;
-  margin-top: 15%;
-	margin-left: 15%
+	width: 90%;
+	max-width: 400px;
 } 
+
+.login .well {
+	padding-left: 55px;
+}
+
+.login input {
+	max-width: 250px;
+}
+
 
 div#pass {
   text-align: left;

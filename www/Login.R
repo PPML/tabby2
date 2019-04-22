@@ -12,12 +12,20 @@ passwdInput <- function(inputId, label) {
 
 output$uiLogin <- renderUI({
   if (USER$Logged == FALSE) {
-    wellPanel(
-      textInput("userName", "Username:"),
-      passwdInput("passwd", "Password:"),
-      br(),
-      actionButton("Login", "Login")
-    )
+		column(width = 12,
+			wellPanel(
+				h4("Please Login"), 
+				br(),
+				"For questions/concerns email ", 
+				a("ppml@hsph.harvard.edu", href="mailto:ppml@hsph.harvard.edu"),
+				br(),
+				br(),
+				textInput("userName", "Username:"),
+				passwdInput("passwd", "Password:"),
+				br(),
+				actionButton("Login", "Login")
+			)
+		)
   }
 })
 
