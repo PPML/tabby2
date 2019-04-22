@@ -1,6 +1,33 @@
 nextBackButtons <- function(input, output, session) {
+  # main sidebar next/back buttons
   observeEvent(input$toPredefinedScenarios, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))
+  observeEvent(input$toPredefinedScenarios1, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))
+  observeEvent(input$toPredefinedScenarios2, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))
+  observeEvent(input$toPredefinedScenarios3, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))
+  observeEvent(input$toPredefinedScenarios4, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))
+  observeEvent(input$toPredefinedScenarios5, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))
+  observeEvent(input$toPredefinedScenarios6, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))
   observeEvent(input$toAbout, updateTabItems(session = session, inputId = 'sidebar', selected = "about"))
   observeEvent(input$toEstimates, updateTabItems(session = session, inputId = 'sidebar', selected = "estimates"))
+  observeEvent(input$toEstimates1, updateTabItems(session = session, inputId = 'sidebar', selected = "estimates"))
+  observeEvent(input$toEstimates2, updateTabItems(session = session, inputId = 'sidebar', selected = "estimates"))
+  observeEvent(input$toEstimates3, updateTabItems(session = session, inputId = 'sidebar', selected = "estimates"))
+  observeEvent(input$toEstimates4, updateTabItems(session = session, inputId = 'sidebar', selected = "estimates"))
+  observeEvent(input$toEstimates5, updateTabItems(session = session, inputId = 'sidebar', selected = "estimates"))
+  observeEvent(input$toEstimates6, updateTabItems(session = session, inputId = 'sidebar', selected = "estimates"))
   observeEvent(input$toBuildScenarios, updateTabItems(session = session, inputId = 'sidebar', selected = "customscenarios"))
+
+  # next/back buttons within custom scenario builder
+  observeEvent(input$toProgramChanges1, updateTabsetPanel(session = session, inputId = 'CustomScenariosBuilder', selected = "programchanges"))
+  observeEvent(input$toProgramChanges2, updateTabsetPanel(session = session, inputId = 'CustomScenariosBuilder', selected = "programchanges"))
+  observeEvent(input$toProgramChanges3, updateTabsetPanel(session = session, inputId = 'CustomScenariosBuilder', selected = "programchanges"))
+  observeEvent(input$toCustomScenarios1, updateTabsetPanel(session = session, inputId = 'CustomScenariosBuilder', selected = "customscenarios"))
+  observeEvent(input$toCustomScenarios2, updateTabsetPanel(session = session, inputId = 'CustomScenariosBuilder', selected = "customscenarios"))
+  observeEvent(input$toCustomScenarios3, updateTabsetPanel(session = session, inputId = 'CustomScenariosBuilder', selected = "customscenarios"))
+  observeEvent(input$toPC2, updateTabsetPanel(session = session, inputId = 'currentlySelectedProgramChange', selected = "2"))
+  observeEvent(input$toPC3, updateTabsetPanel(session = session, inputId = 'currentlySelectedProgramChange', selected = "3"))
+  observeEvent(input$toTTT2, updateTabsetPanel(session = session, inputId = 'currentlySelectedTTT', selected = '2'))
+  observeEvent(input$toTTT3, updateTabsetPanel(session = session, inputId = 'currentlySelectedTTT', selected = '3'))
+  observeEvent(input$toCS2, updateTabsetPanel(session = session, inputId = 'combinationScenarios', selected = '2'))
+  observeEvent(input$toCS3, updateTabsetPanel(session = session, inputId = 'combinationScenarios', selected = '2'))
 }

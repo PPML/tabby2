@@ -134,7 +134,33 @@ intervention_content <- function(n=1) {
         ),
         # __risk group parameters ----
         uiOutput(paste0(tttn, 'risk_group_rate_ratios'))
-      ) # end of column
+      ), # end of column
+			column(width = 12, 
+				actionButton(
+					inputId = paste0('toPredefinedScenarios', n),
+					label = 'Back to Predefined Scenarios'
+					),
+				if (n < 3) { 
+					actionButton(
+						inputId = paste0('toTTT', n+1),
+						label = 'Define Another TTT Intervention',
+						class = 'btn-primary',
+						style = 'color: white;'
+					)
+				} else NULL,
+				actionButton(
+					inputId = paste0('toProgramChanges', n),
+					label = 'Define Program Change Scenarios',
+					class = 'btn-primary',
+					style = 'color: white;'
+				),
+				actionButton(
+					inputId = paste0('toEstimates', n),
+					label = 'Go to Outcomes',
+					class = 'btn-primary',
+					style = 'color: white;'
+				)
+			) # end of 12-column for buttons
     ) # end of fluidRow
   ) # end of return 
 }

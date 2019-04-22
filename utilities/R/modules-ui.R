@@ -90,19 +90,19 @@ customInterventionsUI <- function() {
     id = 'currentlySelectedTTT',
     tabPanel(
       title = "Intervention 1",
-      value = 1,
+      value = '1',
       tags$br(),
       intervention_content(1)
     ),
     tabPanel(
       title = "Intervention 2",
-      value = 2,
+      value = '2',
       tags$br(),
       intervention_content(2)
     ),
     tabPanel(
       title = "Intervention 3",
-      value = 3,
+      value = '3',
       tags$br(),
       intervention_content(3)
     )
@@ -115,19 +115,19 @@ scenariosUI <- function() {
     column(
       12,
       tags$h1("Build Custom Model Scenarios"),
-      tabsetPanel(
-        tabPanel("Targeted Testing and Treatment Interventions", {
+      tabsetPanel(id = 'CustomScenariosBuilder',
+        tabPanel(title = "Targeted Testing and Treatment Interventions", value = 'ttt', {
           customInterventionsUI()
           }),
-        tabPanel("Program Changes", {
+        tabPanel(title = "Program Changes", value = 'programchanges', {
           programChanges()
           }),
-        tabPanel("Custom Scenarios", {
+        tabPanel(title = "Custom Scenarios", value = 'customscenarios', {
           tagList(
             br(),
             p("Custom Scenarios allow users to simulate combinations of Targeted Testing 
 and Treatment interventions and Program Changes."),
-          tabsetPanel(
+          tabsetPanel(id = 'combinationScenarios',
             customScenarioPanel(1),
             customScenarioPanel(2),
             customScenarioPanel(3)
@@ -145,13 +145,13 @@ programChanges <- function() {
     p("Program Changes allow users to change model parameters related to the 
 LTBI treatment and active TB treatment care cascades."),
   tabsetPanel(id = "currentlySelectedProgramChange",
-    tabPanel(title = "Program Change 1", value = 1, {
+    tabPanel(title = "Program Change 1", value = '1', {
       programChangePanel(1)
     }),
-    tabPanel(title = "Program Change 2", value = 2, {
+    tabPanel(title = "Program Change 2", value = '2', {
       programChangePanel(2)
     }),
-    tabPanel(title = "Program Change 3", value = 3, {
+    tabPanel(title = "Program Change 3", value = '3', {
       programChangePanel(3)
     })
   )
@@ -161,6 +161,7 @@ LTBI treatment and active TB treatment care cascades."),
 programChangePanel <- function(n) {
   id <- paste0("programChange", n)
   return(
+	tagList(
     wellPanel(
       fluidRow(
         column(6, 
@@ -200,8 +201,35 @@ programChangePanel <- function(n) {
       })
                   
     )
-    )
+    ),
+		column(12,
+			actionButton(
+				inputId = paste0('toPredefinedScenarios', 3+n),
+				label = 'Back to Predefined Scenarios'
+				),
+			if (n < 3) { 
+				actionButton(
+					inputId = paste0('toPC', n+1),
+					label = 'Define Another Program Change Scenario',
+					class = 'btn-primary',
+					style = 'color: white;'
+				)
+			} else NULL,
+			actionButton(
+				inputId = paste0('toCustomScenarios', n),
+				label = 'Define Custom Scenarios',
+				class = 'btn-primary',
+				style = 'color: white;'
+			),
+			actionButton(
+				inputId = paste0('toEstimates', 3+n),
+				label = 'Go to Outcomes',
+				class = 'btn-primary',
+				style = 'color: white;'
+			)
+		)
   )
+	)
   
 }
 
@@ -210,6 +238,7 @@ customScenarioPanel <- function(n) {
   return(
     tabPanel(
       title = paste0("Custom Scenario ", n),
+			value = as.character(n),
       wellPanel(
         tags$h4("Define a Custom Scenario"),
         textInput(
@@ -218,7 +247,28 @@ customScenarioPanel <- function(n) {
           placeholder = paste0("Custom Scenario ", n)),
         uiOutput(paste0('custom', n, 'TTTRadios')),
         uiOutput(paste0('custom', n, 'ProgramChangeRadios'))
-      )
+      ),
+
+			column(12,
+				actionButton(
+					inputId = paste0('toPredefinedScenarios', 6+n),
+					label = 'Back to Predefined Scenarios'
+					),
+				if (n < 3) { 
+					actionButton(
+						inputId = paste0('toCS', n+1),
+						label = 'Define Another Custom Scenario',
+						class = 'btn-primary',
+						style = 'color: white;'
+					)
+				} else NULL,
+				actionButton(
+					inputId = paste0('toEstimates', 3+n),
+					label = 'Go to Outcomes',
+					class = 'btn-primary',
+					style = 'color: white;'
+				)
+			)
     )
   )
 }
