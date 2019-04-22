@@ -113,6 +113,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
       ) %>%
       arrange(scenario) %>%
       mutate(
+        year = recode(as.character(year), '2018'=2000, '2020'=2025, '2025'=2050, '2035'=2075, '2049'=2100),
         year_adj = year + position_year(scenario),
         year_adj = if_else(year < 2020, year, year_adj)
       )
@@ -257,7 +258,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
       scale_x_continuous(
         name = "Year",
         breaks = plots$region$year,
-        labels = c("2016", "2025", "2050", "2075", "2100"),
+        labels = c("2018", "2020", "2025", "2035", "2050"),
         limits = range(plots$region$right_bound, plots$region$left_bound),
         expand = c(0, 0)
       ) +
@@ -322,7 +323,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
       )
     )
 
-    TRENDS_DATA %>%
+    TRENDS_DATA() %>%
       filter(
         population == input[[trends$IDs$controls$populations]],
         age_group == input[[trends$IDs$controls$ages]],
@@ -417,7 +418,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
       ) +
       scale_x_continuous(
         name = "Year",
-        breaks = c(2016, 2025, 2050, 2075, 2100)
+        breaks = c(2018, 2020, 2025, 2035, 2050)
       ) +
       scale_y_continuous(
         name = trends$outcomes$formatted[[input[[trends$IDs$controls$outcomes]]]]
@@ -509,15 +510,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
           "base_case"
         ),
         comparator == 'absolute_value'
-      ) -> out
-    
-    colnames(out)[colnames(out) == 'statistic'] <- 'type'
-    
-    out %>% mutate_if(is.factor, as.character) -> out
-    
-    
-    
-    out
+      )
   })
 
   # __set title ----
