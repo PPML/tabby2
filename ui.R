@@ -5,38 +5,39 @@ devtools::load_all("utilities")
 source("tabby1/tabby1dependencies.R")
 devtools::load_all("tabby1/tabby1utilities")
 source("tabby1/tabby1global.R")
+source("globals.R")
 
 # Global Variables ----
-tabnames <- c(
-  about = "Introduction",
-  scenarios = "Scenarios",
-  predefined = "Predefined Scenarios",
-  customscenarios = "Build Scenarios",
-  estimates = "Estimates",
-  timetrends = "Time Trends",
-  agegroups = "Age Groups",
-  calibration = "Comparison to Recent Data",
-  downloads = "Downloads",
-  readmore = "Further Description"
-)
+# tabnames <- c(
+#   about = "Introduction",
+#   scenarios = "Scenarios",
+#   predefined = "Predefined Scenarios",
+#   customscenarios = "Build Scenarios",
+#   estimates = "Estimates",
+#   timetrends = "Time Trends",
+#   agegroups = "Age Groups",
+#   calibration = "Comparison to Recent Data",
+#   downloads = "Downloads",
+#   readmore = "Further Description"
+# )
 
-tabcontents <- list(
-  about = aboutUI(),
-  scenarios = NULL,
-  predefined = standardInterventionsUI(),
-  customscenarios = scenariosUI(),
-  estimates = tabby1Estimates('tabby1'),
-  timetrends = tabby1TimeTrends('tabby1'),
-  agegroups = tabby1AgeGroups('tabby1'),
-  calibration = comparison_to_recent_data(),
-  downloads = downloadsAndSettingsUI(),
-  readmore = readmoreUI()
-)
+# tabcontents <- list(
+#   about = aboutUI(),
+#   scenarios = NULL,
+#   predefined = standardInterventionsUI(),
+#   customscenarios = scenariosUI(),
+#   estimates = tabby1Estimates('tabby1'),
+#   timetrends = tabby1TimeTrends('tabby1'),
+#   agegroups = tabby1AgeGroups('tabby1'),
+#   calibration = comparison_to_recent_data(),
+#   downloads = downloadsAndSettingsUI(),
+#   readmore = readmoreUI()
+# )
 
-if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
-  tabnames[['debug']] <- 'Debug Printouts'
-  tabcontents[['debug']] <- debugPrintouts()
-}
+# if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
+#   tabnames[['debug']] <- 'Debug Printouts'
+#   tabcontents[['debug']] <- debugPrintouts()
+# }
 
 # Sidebar Menu ----
 sidebar <- dashboardSidebar(
@@ -54,8 +55,9 @@ sidebar <- dashboardSidebar(
       menuItem(tabnames[[8]], tabName = names(tabnames)[[8]])  # comparison to recent data
       
     ),
-    menuItem(tabnames[[9]], tabName = names(tabnames)[[9]]), # downloads
-    menuItem(tabnames[[10]], tabName = names(tabnames)[[10]]),  # further description
+    # menuItem(tabnames[[9]], tabName = names(tabnames)[[9]]), # downloads
+    menuItem(tabnames[[9]], tabName = names(tabnames)[[9]]),  # further description
+		menuItem(tabnames[[10]], tabName = names(tabnames)[[10]]),
     if (
       exists('debug', envir = .GlobalEnv) && isTRUE(debug)
       ) { menuItem(tabnames[[11]], tabName = names(tabnames)[[11]]) # debug printouts
