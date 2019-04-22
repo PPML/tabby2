@@ -16,7 +16,7 @@ updateProgramChanges <- function(input, output, session, values) {
     tttAge <- paste0(tttn, "agegroups")
     tttNativity <- paste0(tttn, "nativity")
     tttNumberTargeted <- paste0(tttn, "numberTargeted")
-    tttFractionScreened <- paste0(tttn, "fumberScreened")
+    tttFractionScreened <- paste0(tttn, "numberScreened")
     tttStartYear <- paste0(tttn, "startyear")
     tttStopYear <- paste0(tttn, "stopyear")
     tttProgression <- paste0(tttn, "progression-rate")
