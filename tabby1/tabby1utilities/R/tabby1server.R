@@ -212,10 +212,11 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
     )
 
     sprintf(
-      "Projected %s in the %s, %s",
+      "Projected %s in the %s, %s in %s",
       estimates$outcomes$labels[[input[[estimates$IDs$controls$outcomes]]]],
       estimates$populations$formatted[[input[[estimates$IDs$controls$populations]]]],
-      estimates$ages$formatted[[input[[estimates$IDs$controls$ages]]]]
+      estimates$ages$formatted[[input[[estimates$IDs$controls$ages]]]],
+			if (geo_short_code() == 'US') 'the US' else unname(geographies[geo_short_code()])
     )
   })
 
@@ -386,10 +387,11 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
     )
 
     sprintf(
-      "Projected %s in the %s, %s",
+      "Projected %s in the %s, %s in %s",
       trends$outcomes$labels[[input[[trends$IDs$controls$outcomes]]]],
       trends$populations$formatted[[input[[trends$IDs$controls$populations]]]],
-      trends$ages$formatted[[input[[trends$IDs$controls$ages]]]]
+      trends$ages$formatted[[input[[trends$IDs$controls$ages]]]],
+			if (geo_short_code() == 'US') 'the US' else unname(geographies[geo_short_code()])
     )
   })
 
@@ -562,10 +564,11 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
     )
 
     sprintf(
-      "Projected %s in the %s, for %s",
+      "Projected %s in the %s, for %s in %s",
       agegroups$outcomes$labels[[input[[agegroups$IDs$controls$outcomes]]]],
       agegroups$populations$formatted[[input[[agegroups$IDs$controls$populations]]]],
-      input[[agegroups$IDs$controls$years]]
+      input[[agegroups$IDs$controls$years]],
+			if (geo_short_code() == 'US') 'the US' else unname(geographies[geo_short_code()])
     )
   })
 
