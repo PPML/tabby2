@@ -23,7 +23,7 @@ tabcontents <- list(
   calibration = comparison_to_recent_data(),
   # downloads = downloadsAndSettingsUI(),
   readmore = readmoreUI(),
-	feedback = NULL
+	feedback = feedbackForm()
 )
 
 if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
