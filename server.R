@@ -36,7 +36,8 @@ geographies <- setNames(nm = state.abb, state.name)
 geographies[['US']] <- 'United States'
 geographies[['DC']] <- 'District of Columbia'
 # Subset geographies to include only geographies with rendered results
-available_geographies <- geographies[scan_for_available_geographies(names(geographies))]
+# available_geographies <- geographies[scan_for_available_geographies(names(geographies))]
+available_geographies <- c(US = 'United States')
 
 # Load risk group rate ratios for use in the targeted testing and treatment
 # intervention builder
