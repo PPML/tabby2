@@ -24,7 +24,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 			"tb_incidence_per_mil",
 			"tb_mortality_000s",
 			"tb_mortality_per_mil")
-		CatList[[2]] <- c('base_case')
+		CatList[[2]] <- c("base_case",paste("intervention_",1:5,sep=""),paste("scenario_",1:3,sep=""))
 		CatList[[3]] <- c("all_populations","usb_population","fb_population")
 		CatList[[4]] <- c("0-4",paste(0:8*10+5,1:9*10+4,sep="-"),"95+")
 		CatList[[5]] <- c("absolute_value","pct_basecase_same_year","pct_basecase_2016")
@@ -69,7 +69,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 			"tb_infection_per_mil",
 			"tb_mortality_000s",
 			"tb_deaths_per_mil")
-		CatList[[2]] <- c('base_case')
+		CatList[[2]] <- c("base_case",paste("intervention_",1:5,sep=""),paste("scenario_",1:3,sep=""))
 		CatList[[3]] <- c("all_populations","usb_population","fb_population")
 		CatList[[4]] <- c("all_ages", "age_0_24","age_25_64","age_65p")
 		CatList[[5]] <- c("absolute_value","pct_basecase_same_year","pct_basecase_2016")
