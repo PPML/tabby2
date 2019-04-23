@@ -1,7 +1,7 @@
 #' Function to Determine Geographies Available in MITUS
 #' 
 #' A temporary/patched feature of this function is that it will
-#' always include the United States and Massachusetts
+#' always include the United States.
 #' 
 #' @param geography_ids A Vector of Two-Character Codes Corresponding to Geographies 
 #' @return A vector of two-character codes corresponding to geographies which have 
@@ -19,7 +19,7 @@
 scan_for_available_geographies <- function(geography_ids) {
   # available_geographies <- MITUS::load_optim()
 	# available_geography_names <- geographies[available_geographies]
-	c('US', 'MA', geography_ids[sapply(geography_ids, function(loc) {
+	c('US', geography_ids[sapply(geography_ids, function(loc) {
 	  all(c(
 		  any(grepl(paste0(loc, "_Optim_all|opt_all"), list.files(system.file(loc,
             package = "MITUS"), full.names = TRUE))),
