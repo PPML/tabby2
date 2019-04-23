@@ -120,8 +120,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
       arrange(scenario) %>%
       mutate(
         year = recode(as.character(year), '2018'=2000, '2020'=2025, '2025'=2050, '2035'=2075, '2049'=2100),
-        year_adj = year + position_year(scenario),
-        year_adj = if_else(year < 2020, year, year_adj)
+        year_adj = year + position_year(scenario)
       )
 
  })
