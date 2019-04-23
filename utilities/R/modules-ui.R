@@ -263,7 +263,7 @@ customScenarioPanel <- function(n) {
 					)
 				} else NULL,
 				actionButton(
-					inputId = paste0('toEstimates', 3+n),
+					inputId = paste0('toEstimates', 6+n),
 					label = 'Go to Outcomes',
 					class = 'btn-primary',
 					style = 'color: white;'
