@@ -154,7 +154,6 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 
  })
 
-  
   # __generate point labels ----
   estimatesLabels <- reactive({
     padding_x <- 5
@@ -333,7 +332,10 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
         panel.border = element_blank(),
         panel.ontop = TRUE
       ) +
-      expand_limits(y=0)
+      expand_limits(y=0) + 
+		  annotate("text", x = Inf, y = -Inf, label = "DRAFT",
+				hjust=1.1, vjust=-1.1, col="dimgrey", cex=28,
+				fontface = "bold", alpha = 0.8)
   })
 
   output[[estimates$IDs$plot]] <- renderPlot({
@@ -490,7 +492,10 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(size = 0.15, color = "#989898")
       ) +
-      expand_limits(y=0)
+      expand_limits(y=0) + 
+		  annotate("text", x = Inf, y = -Inf, label = "DRAFT",
+				hjust=1.1, vjust=-1.1, col="dimgrey", cex=28,
+				fontface = "bold", alpha = 0.8)
 
     if(input[['trendsUncertaintyInterval-1']]) {
       p <- p +
@@ -657,7 +662,10 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
         strip.background = element_blank(),
         strip.text = element_blank()
       ) +
-      expand_limits(y=0)
+      expand_limits(y=0) + 
+		  annotate("text", x = Inf, y = -Inf, label = "DRAFT",
+				hjust=1.1, vjust=-1.1, col="dimgrey", cex=28,
+				fontface = "bold", alpha = 0.8)
   })
 
   output[[agegroups$IDs$plot]] <- renderPlot({
