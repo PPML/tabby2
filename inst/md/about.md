@@ -18,9 +18,6 @@ for this analysis are described in detail in "Prospects for tuberculosis
 elimination in the United States: results of a transmission dynamic
 model".
 
-The findings and conclusions described in this web application and
-linked journal article are those of the author(s) and do not necessarily
-represent the views of the US Centers for Disease Control and
-Prevention. This web tool was funded by the CDC, National Center for
+This web tool was funded by the CDC, National Center for
 HIV, Viral Hepatitis, STD, and TB Prevention Epidemiologic and Economic
 Modeling Agreement (NEEMA, \# 5U38PS004644-01).
