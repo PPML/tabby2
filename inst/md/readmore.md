@@ -14,7 +14,7 @@ In the Targeted LTBI Testing and Treatment scenario we allow users
 to simulate scenarios where the amount of LTBI treatment is increased
 by screening specific populations.
 
-Pre-Built scenarios modify the base case in the following specified ways:
+Predefined scenarios modify the base case in the following specified ways:
 
 **Modeled Scenarios**
 

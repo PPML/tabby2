@@ -1,6 +1,6 @@
 Tabby2 not only predicts the trajectory of TB given the current conditions of
 testing and treatment, but also can make hypothetical predictions that are the
-result of changes to testing and treatment in the future. Our Prebuilt Scenarios
+result of changes to testing and treatment in the future. Our Predefined Scenarios
 include 5 hypothetical scenarios which model changes to TB testing and
 treatment. These are options available for visualization in the Outcomes pages,
 selectable as Model Scenarios.
@@ -24,7 +24,7 @@ from current levels.
 described above.
 
 If these satisfy your modeling needs, you can proceed to the Outcomes pages
-and view the predicted outcomes corresponding to these Prebuilt Scenarios. On 
-the other hand, if you would like to model a scenario not listed here 
+and view the predicted outcomes corresponding to these Predefined Scenarios. 
+If you would like to model a scenario not listed here 
 comprised of hypothetical Targeted Testing and Treatment interventions and
-Program Changes, then proceed to Custom Scenarios.
+Program Changes, then proceed to Build Scenarios.
