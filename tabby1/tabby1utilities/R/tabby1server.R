@@ -9,7 +9,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 	AGEGROUPS_DATA <- reactive({
 		if (geo_short_code() == 'US') {
 			# readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"), package = "tabby1utilities", mustWork = TRUE))
-			return(data_agegroups())
+			return(data_agegroups() %>% rename(type = statistic))
 		} 
 		# Lookup sm_restab2 by geo_short_code, cast the data as.data.frame
 		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "sm_restab2.rds",
