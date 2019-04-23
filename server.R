@@ -54,7 +54,7 @@ if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
 
 # Simple MD5 Username/Password Authentication Schema 
 library(datasets)
-Logged <- TRUE
+Logged <- FALSE
 PASSWORD <- data.frame(
   Username = c('earlyAccess'), 
 	Password = c('fcce0e290f8059681e31d617930a663d')
