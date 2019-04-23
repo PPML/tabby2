@@ -5,10 +5,10 @@ outputIncludeCustomScenarioOptions <- function(input, output, session) {
         id = paste0('tabby1-', estimates$IDs$controls$interventions),
         heading = estimates$interventions$heading,
         labels = c(
-          estimates$interventions$labels,
-          if (input$scenario1Name != '') input$scenario1Name else NULL,
-          if (input$scenario2Name != '') input$scenario2Name else NULL,
-          if (input$scenario3Name != '') input$scenario3Name else NULL
+          estimates$interventions$labels# ,
+          # if (input$scenario1Name != '') input$scenario1Name else NULL,
+          # if (input$scenario2Name != '') input$scenario2Name else NULL,
+          # if (input$scenario3Name != '') input$scenario3Name else NULL
         ),
         values = estimates$interventions$values
       )
@@ -20,10 +20,10 @@ outputIncludeCustomScenarioOptions <- function(input, output, session) {
       id = paste0('tabby1-', trends$IDs$controls$interventions),
       heading = trends$interventions$heading,
       labels = c(
-        estimates$interventions$labels,
-        if (input$scenario1Name != '') input$scenario1Name else NULL,
-        if (input$scenario2Name != '') input$scenario2Name else NULL,
-        if (input$scenario3Name != '') input$scenario3Name else NULL
+        estimates$interventions$labels #,
+        # if (input$scenario1Name != '') input$scenario1Name else NULL,
+        # if (input$scenario2Name != '') input$scenario2Name else NULL,
+        # if (input$scenario3Name != '') input$scenario3Name else NULL
       ),
       values = trends$interventions$values
     )
@@ -35,10 +35,10 @@ outputIncludeCustomScenarioOptions <- function(input, output, session) {
       id = paste0('tabby1-', agegroups$IDs$controls$interventions),
       heading = agegroups$interventions$heading,
       labels = c(
-        estimates$interventions$labels,
-        if (input$scenario1Name != '') input$scenario1Name else NULL,
-        if (input$scenario2Name != '') input$scenario2Name else NULL,
-        if (input$scenario3Name != '') input$scenario3Name else NULL
+        estimates$interventions$labels #,
+        # if (input$scenario1Name != '') input$scenario1Name else NULL,
+        # if (input$scenario2Name != '') input$scenario2Name else NULL,
+        # if (input$scenario3Name != '') input$scenario3Name else NULL
       ),
       values = agegroups$interventions$values
     )
