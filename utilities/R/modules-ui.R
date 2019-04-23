@@ -61,14 +61,14 @@ standardInterventionsUI <- function() {
              label = 'Back'
            ),
            shiny::actionButton(
-             inputId = 'toEstimates',
-             label = 'Go to Outcomes',
+             inputId = 'toBuildScenarios',
+             label = 'Build Additional Scenarios',
              class = 'btn-primary',
              style = 'color: white;'
            ),
            shiny::actionButton(
-             inputId = 'toBuildScenarios',
-             label = 'Go to Build Scenarios',
+             inputId = 'toEstimates',
+             label = 'View Outcomes',
              class = 'btn-primary',
              style = 'color: white;'
            )
@@ -115,6 +115,7 @@ scenariosUI <- function() {
     column(
       12,
       tags$h1("Build Custom Model Scenarios"),
+			tags$h4("Beta - Not Linked to Outcomes"),
       tabsetPanel(id = 'CustomScenariosBuilder',
         tabPanel(title = "Targeted Testing and Treatment Interventions", value = 'ttt', {
           customInterventionsUI()
@@ -217,13 +218,13 @@ programChangePanel <- function(n) {
 			} else NULL,
 			actionButton(
 				inputId = paste0('toCustomScenarios', n),
-				label = 'Define Custom Scenarios',
+				label = 'Build Custom Scenarios',
 				class = 'btn-primary',
 				style = 'color: white;'
 			),
 			actionButton(
 				inputId = paste0('toEstimates', 3+n),
-				label = 'Go to Outcomes',
+				label = 'View Outcomes',
 				class = 'btn-primary',
 				style = 'color: white;'
 			)

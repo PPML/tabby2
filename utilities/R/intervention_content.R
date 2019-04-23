@@ -156,7 +156,7 @@ intervention_content <- function(n=1) {
 				),
 				actionButton(
 					inputId = paste0('toEstimates', n),
-					label = 'Go to Outcomes',
+					label = 'View Outcomes',
 					class = 'btn-primary',
 					style = 'color: white;'
 				)
