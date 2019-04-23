@@ -16,7 +16,10 @@ feedbackForm <- function() {
 								width = '600px'),
 		  textAreaInput(inputId = 'feedback-body',
 										label = 'Body: ',
-										width = '600px', rows=5)
+										width = '600px', rows=5),
+			actionButton(inputId = 'feedback-submit', label = 'Submit'),
+			br(),
+			uiOutput(outputId = 'feedback-confirmation')
 		)
 	)
 }

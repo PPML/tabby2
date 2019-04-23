@@ -125,10 +125,11 @@ shinyServer(function(input, output, session) {
 		# Plots for Comparison to Recent Data
 		callModule(comparisonToRecentData, NULL, geo_short_code)
 
+		# Call Module for Saving Feedback Form Input
+		callModule(feedbackFormModule, NULL)
+
 		# Debug Printout Server 
 		callModule(debugPrintoutsModule, NULL, values = values)
-
-	} # else {
-	
-	})
+	} # end of if USER$Logged == TRUE
+	}) # end of observer on USER$Logged
 })
