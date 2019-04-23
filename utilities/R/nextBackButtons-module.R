@@ -32,5 +32,5 @@ nextBackButtons <- function(input, output, session) {
   observeEvent(input$toTTT2, updateTabsetPanel(session = session, inputId = 'currentlySelectedTTT', selected = '2'))
   observeEvent(input$toTTT3, updateTabsetPanel(session = session, inputId = 'currentlySelectedTTT', selected = '3'))
   observeEvent(input$toCS2, updateTabsetPanel(session = session, inputId = 'combinationScenarios', selected = '2'))
-  observeEvent(input$toCS3, updateTabsetPanel(session = session, inputId = 'combinationScenarios', selected = '2'))
+  observeEvent(input$toCS3, updateTabsetPanel(session = session, inputId = 'combinationScenarios', selected = '3'))
 }
