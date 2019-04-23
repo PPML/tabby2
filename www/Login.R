@@ -16,6 +16,10 @@ output$uiLogin <- renderUI({
 			wellPanel(
 				h4("Please Login"), 
 				br(),
+				"This application is available as a beta-version upon authentication.",
+				"The figures and results presented here do not represent finalized research findings.",
+				br(),
+				br(),
 				"For questions/concerns email ", 
 				a("ppml@hsph.harvard.edu", href="mailto:ppml@hsph.harvard.edu"),
 				br(),
