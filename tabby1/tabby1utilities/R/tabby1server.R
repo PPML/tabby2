@@ -7,6 +7,10 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 
 	# Import and format Age Groups Data
 	AGEGROUPS_DATA <- reactive({
+		if (geo_short_code() == 'US') {
+			# readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"), package = "tabby1utilities", mustWork = TRUE))
+			return(data_agegroups())
+		} 
 		# Lookup sm_restab2 by geo_short_code, cast the data as.data.frame
 		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "sm_restab2.rds",
 		package="MITUS", mustWork = TRUE)))
@@ -20,7 +24,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 			"tb_incidence_per_mil",
 			"tb_mortality_000s",
 			"tb_mortality_per_mil")
-		CatList[[2]] <- c('base_case')
+		CatList[[2]] <- c("base_case",paste("intervention_",1:5,sep=""),paste("scenario_",1:3,sep=""))
 		CatList[[3]] <- c("all_populations","usb_population","fb_population")
 		CatList[[4]] <- c("0-4",paste(0:8*10+5,1:9*10+4,sep="-"),"95+")
 		CatList[[5]] <- c("absolute_value","pct_basecase_same_year","pct_basecase_2016")
@@ -31,7 +35,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 			restab2[,i] <- factor(restab2[,i], labels = CatList[[i]])
 		}
 
-    # Temporary Fix for Trivial Confidence Intervals 
+		# Temporary Fix for Trivial Confidence Intervals 
 		# If confidence intervals aren't present (because the statistic
 		# column hasn't been rendered yet, just duplicate (triplicate) the 
 		# data for mean/ci_high/ci_low.
@@ -43,12 +47,14 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 				cbind.data.frame(restab2, type = 'ci_low')))
 		}
 
-    restab2 %>% mutate_if(is.factor, as.character) -> restab2
+		restab2 %>% mutate_if(is.factor, as.character) -> restab2
 		return(restab2)
 	})
 
 	# Import and format Age Groups Data
 	TRENDS_DATA <- reactive({
+
+		if (geo_short_code() == 'US') { return(data_trends()) }
 
 		# Lookup bg_restab2 by geo_short_code, cast the data as.data.frame
 		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "bg_restab2.rds",
@@ -63,7 +69,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 			"tb_infection_per_mil",
 			"tb_mortality_000s",
 			"tb_deaths_per_mil")
-		CatList[[2]] <- c('base_case')
+		CatList[[2]] <- c("base_case",paste("intervention_",1:5,sep=""),paste("scenario_",1:3,sep=""))
 		CatList[[3]] <- c("all_populations","usb_population","fb_population")
 		CatList[[4]] <- c("all_ages", "age_0_24","age_25_64","age_65p")
 		CatList[[5]] <- c("absolute_value","pct_basecase_same_year","pct_basecase_2016")
@@ -418,7 +424,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
       ) +
       scale_x_continuous(
         name = "Year",
-        breaks = c(2018, 2020, 2025, 2035, 2050)
+        breaks = if (geo_short_code() == 'US') c(2018, 2025, 2050, 2075, 2100) else c(2018, 2020, 2025, 2035, 2050)
       ) +
       scale_y_continuous(
         name = trends$outcomes$formatted[[input[[trends$IDs$controls$outcomes]]]]

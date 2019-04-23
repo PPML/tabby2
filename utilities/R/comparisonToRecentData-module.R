@@ -41,11 +41,14 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
     radioButtons(
       inputId = "comparisonDataChoice",
       label = "Select an option below to compare the model's performance to observed data.",
-      choices = as.character(comparisonDataChoices[
+      choices = # unname(comparisonDataChoices)
+				as.character(comparisonDataChoices[
         gsub(".rds",
              "",
              list.files(
-               system.file(paste0(geo_short_code(), "/calibplots/"), package='MITUS')
+               # if (geo_short_code() == 'US') { system.file('calibration_plots/US/', package='utilities') } 
+							 # else 
+												system.file(paste0(geo_short_code(), "/calibplots/"), package='MITUS')
              ))])
     )
   })
@@ -54,12 +57,14 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
   comparison_to_recent_data_plot_path <- reactive({
     req(input[['comparisonDataChoice']], input[['state']])
     file <- comparisonDataChoices_rev[input$comparisonDataChoice]
-    return(paste0(geo_short_code(), '/calibplots/', file, ".rds"))
+		# if (geo_short_code() == 'US') return(system.file(paste0('calibration_plots/US/', file, '.rds'), package = 'utilities'))
+    return(system.file(paste0(geo_short_code(), '/calibplots/', file, ".rds"), package = 'MITUS'))
   })
   
   # Render the calibration data target from its RDS file
   output$calib_data_target_plot <- renderPlot({
-    replayPlot(readRDS(system.file(comparison_to_recent_data_plot_path(), package = 'MITUS')))
+		cat(comparison_to_recent_data_plot_path(), '\n')
+    replayPlot(readRDS(comparison_to_recent_data_plot_path()))
 		# replayPlot(readRDS(system.file('TX/calibplots/total_population.rds', package='MITUS')))
   })
 

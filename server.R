@@ -18,38 +18,9 @@ devtools::load_all("utilities")
 source("tabby1/tabby1dependencies.R")
 devtools::load_all("tabby1/tabby1utilities")
 source("tabby1/tabby1global.R")
+source("globals.R")
 
 
-tabnames <- c(
-  about = "Introduction",
-  scenarios = "Scenarios",
-  predefined = "Predefined Scenarios",
-  customscenarios = "Build Scenarios",
-  estimates = "Estimates",
-  timetrends = "Time Trends",
-  agegroups = "Age Groups",
-  calibration = "Comparison to Recent Data",
-  downloads = "Downloads",
-  readmore = "Further Description"
-)
-
-tabcontents <- list(
-  about = uiOutput('aboutUI'),
-  scenarios = NULL,
-  predefined = standardInterventionsUI(),
-  customscenarios = scenariosUI(),
-  estimates = tabby1Estimates('tabby1'),
-  timetrends = tabby1TimeTrends('tabby1'),
-  agegroups = tabby1AgeGroups('tabby1'),
-  calibration = comparison_to_recent_data(),
-  downloads = downloadsAndSettingsUI(),
-  readmore = readmoreUI()
-)
-
-if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
-  tabnames[['debug']] <- 'Debug Printouts'
-  tabcontents[['debug']] <- debugPrintouts()
-}
 
 
 # Simple MD5 Username/Password Authentication Schema 
@@ -57,7 +28,7 @@ library(datasets)
 Logged <- FALSE
 PASSWORD <- data.frame(
   Username = c('earlyAccess'), 
-	Password = c('fcce0e290f8059681e31d617930a663d')
+	Password = c('fcce0e290f8059681e31d617930a663d') # generate MD5 hashed passwords with digest::digest(..., serialize=FALSE)
 	)
 
 # Set up a named vector for geographies calibrated in MITUS
@@ -154,10 +125,11 @@ shinyServer(function(input, output, session) {
 		# Plots for Comparison to Recent Data
 		callModule(comparisonToRecentData, NULL, geo_short_code)
 
+		# Call Module for Saving Feedback Form Input
+		callModule(feedbackFormModule, NULL)
+
 		# Debug Printout Server 
 		callModule(debugPrintoutsModule, NULL, values = values)
-
-	} # else {
-	
-	})
+	} # end of if USER$Logged == TRUE
+	}) # end of observer on USER$Logged
 })
