@@ -106,7 +106,20 @@ body <- dashboardBody(
 # Run the Application ----
 
 shinyUI(dashboardPage(
-    dashboardHeader(title = "Tabby2"),
+    dashboardHeader(title = "Tabby2",
+			dropdownMenu(type = 'notifications', icon = icon('link'), # badgeStatus = F,
+				notificationItem(
+				  text = "Go to the PPML Website", 
+					href='https://prevention-policy-modeling-lab.sph.harvard.edu/',
+					icon = icon("link")
+				),
+				notificationItem(
+				  text = "Go to ppmltools.org",
+					href='https://ppmltools.org/',
+					icon = icon('link')
+				)
+			)
+		),
     sidebar,
 		body
 	))
