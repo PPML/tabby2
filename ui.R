@@ -77,6 +77,17 @@ body <- dashboardBody(
 			tags$script(type="text/javascript", src = "md5.js"),
 			tags$script(type="text/javascript", src = "passwdInputBinding.js"),
 			tags$script(src='disable-ttt.js')
+			HTML(
+				"<!-- Global site tag (gtag.js) - Google Analytics -->
+				<script async src='https://www.googletagmanager.com/gtag/js?id=UA-108248643-2'></script>
+				<script>
+					window.dataLayer = window.dataLayer || [];
+					function gtag(){dataLayer.push(arguments);}
+					gtag('js', new Date());
+
+					gtag('config', 'UA-108248643-2');
+				</script>
+				")
       ),
 
 		# div(class = "login", id = 'uiLogin', uiOutput("uiLogin"), textOutput("pass")),
