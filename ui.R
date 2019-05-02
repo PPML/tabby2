@@ -76,7 +76,7 @@ body <- dashboardBody(
 			tags$link(rel="stylesheet", type="text/css",href="style.css"),
 			tags$script(type="text/javascript", src = "md5.js"),
 			tags$script(type="text/javascript", src = "passwdInputBinding.js"),
-			tags$script(src='disable-ttt.js')
+			tags$script(src='disable-ttt.js'),
 			HTML(
 				"<!-- Global site tag (gtag.js) - Google Analytics -->
 				<script async src='https://www.googletagmanager.com/gtag/js?id=UA-108248643-2'></script>
