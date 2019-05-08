@@ -36,8 +36,8 @@ geographies <- setNames(nm = state.abb, state.name)
 geographies[['US']] <- 'United States'
 geographies[['DC']] <- 'District of Columbia'
 # Subset geographies to include only geographies with rendered results
-# available_geographies <- geographies[scan_for_available_geographies(names(geographies))]
-available_geographies <- c(US = 'United States')
+available_geographies <- geographies[scan_for_available_geographies(names(geographies))]
+# available_geographies <- c(US = 'United States')
 
 # Load risk group rate ratios for use in the targeted testing and treatment
 # intervention builder
@@ -118,7 +118,7 @@ shinyServer(function(input, output, session) {
 		# callModule(mitusInteractionServer, NULL, geo_short_code = geo_short_code)
 		
 		# Tabby1 Server
-		callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1"), geo_short_code = geo_short_code) 
+		callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1"), geo_short_code = geo_short_code, geographies) 
 		
 		# Custom Scenarios Choice in Output
 		callModule(outputIncludeCustomScenarioOptions, NULL)

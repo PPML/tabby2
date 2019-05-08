@@ -1,4 +1,4 @@
-tabby1Server <- function(input, output, session, ns, geo_short_code) {
+tabby1Server <- function(input, output, session, ns, geo_short_code, geographies) {
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
   # AGEGROUPS_DATA <- reactive({
