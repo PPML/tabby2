@@ -92,12 +92,17 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 		# Specify the levels of each dimension to the data
 		CatList <- list()
 		CatList[[1]] <- c(
-			"ltbi_000s",
+			# "ltbi_000s",
+			# "pct_ltbi",
+			# "tb_incidence_per_mil",
+			# "tb_infection_per_mil",
+			# "tb_mortality_000s",
+			# "tb_deaths_per_mil")
 			"pct_ltbi",
-			"tb_incidence_per_mil",
 			"tb_infection_per_mil",
-			"tb_mortality_000s",
-			"tb_deaths_per_mil")
+			"tb_incidence_per_mil",
+			"tb_deaths_per_mil"
+			)
 		CatList[[2]] <- c("base_case",paste("intervention_",1:5,sep=""),paste("scenario_",1:3,sep=""))
 		CatList[[3]] <- c("all_populations","usb_population","fb_population")
 		CatList[[4]] <- c("all_ages", "age_0_24","age_25_64","age_65p")
