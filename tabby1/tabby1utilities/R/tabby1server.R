@@ -8,38 +8,12 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 	# Import and format Age Groups Data
 	AGEGROUPS_DATA <- reactive({
 		if (geo_short_code() == 'US') {
-			# readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"), package = "tabby1utilities", mustWork = TRUE))
 			return(data_agegroups() %>% rename(type = statistic))
 		}
-		if (geo_short_code() == 'MA') {
-			return(
-				readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"),
-				package = "tabby1utilities", mustWork = TRUE)) %>%
-				rename(type = statistic))
-		}
+
 		# Lookup sm_restab2 by geo_short_code, cast the data as.data.frame
 		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "sm_restab2.rds",
 		package="MITUS", mustWork = TRUE)))
-
-		# Specify the levels of each dimension to the data
-		CatList <- list()
-		CatList[[1]] <- c(
-			"ltbi_000s",
-			"pct_ltbi",
-			"tb_incidence_000s",
-			"tb_incidence_per_mil",
-			"tb_mortality_000s",
-			"tb_mortality_per_mil")
-		CatList[[2]] <- c("base_case",paste("intervention_",1:5,sep=""),paste("scenario_",1:3,sep=""))
-		CatList[[3]] <- c("all_populations","usb_population","fb_population")
-		CatList[[4]] <- c("0-4",paste(0:8*10+5,1:9*10+4,sep="-"),"95+")
-		CatList[[5]] <- c("absolute_value","pct_basecase_same_year","pct_basecase_2016")
-		CatList[[6]] <- 2018:2049
-
-		# Re-Factorize each column
-		for (i in 1:6) {
-			restab2[,i] <- factor(restab2[,i], labels = CatList[[i]])
-		}
 
 		# Temporary Fix for Trivial Confidence Intervals 
 		# If confidence intervals aren't present (because the statistic
@@ -62,57 +36,9 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
 		if (geo_short_code() == 'US') { return(data_trends()) }
 
-    if (geo_short_code() == 'MA') {
-		  # ages_bin <- data.frame(
-			  # age_group = c("0-4",paste(0:8*10+5,1:9*10+4,sep="-"),"95+"),
-				# big_ages = c(rep("age_0_24", 3), rep("age_25_64", 4), rep("age_65p", 4)))
-
-
-				# df <- readRDS(system.file(paste0("MITUS/MA_restab.rds"),
-					# package = "tabby1utilities", mustWork = TRUE)) %>% 
-					# merge(ages_bin)
-
-				# all_ages <- df %>% select(-c(age_group, big_ages)) %>%
-				# group_by(outcome, scenario, population, comparator, year, statistic) %>% 
-				# mutate(value = mean(value, na.rm=T), age_group = "all_ages")
-
-				# big_ages <- df %>% select(-age_group) %>% group_by(outcome, scenario,
-				# population, comparator, year, big_ages, statistic) %>% mutate(value =
-				# mean(value, na.rm=T), age_group = big_ages) %>% ungroup %>% select(-big_ages)
-
-				# return(rbind.data.frame(all_ages, big_ages) %>% rename(type = statistic))
-				return(readRDS(system.file("MITUS/MA_restab_bg.rds", package='tabby1utilities')))
-				  
-			}
-
 		# Lookup bg_restab2 by geo_short_code, cast the data as.data.frame
 		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "bg_restab2.rds",
 		package="MITUS", mustWork = TRUE)))
-
-		# Specify the levels of each dimension to the data
-		CatList <- list()
-		CatList[[1]] <- c(
-			# "ltbi_000s",
-			# "pct_ltbi",
-			# "tb_incidence_per_mil",
-			# "tb_infection_per_mil",
-			# "tb_mortality_000s",
-			# "tb_deaths_per_mil")
-			"pct_ltbi",
-			"tb_infection_per_mil",
-			"tb_incidence_per_mil",
-			"tb_deaths_per_mil"
-			)
-		CatList[[2]] <- c("base_case",paste("intervention_",1:5,sep=""),paste("scenario_",1:3,sep=""))
-		CatList[[3]] <- c("all_populations","usb_population","fb_population")
-		CatList[[4]] <- c("all_ages", "age_0_24","age_25_64","age_65p")
-		CatList[[5]] <- c("absolute_value","pct_basecase_same_year","pct_basecase_2016")
-		CatList[[6]] <- 2018:2049
-
-		# Re-Factorize each column
-		for (i in 1:6) {
-			restab2[,i] <- factor(restab2[,i], labels = CatList[[i]])
-		}
 
 		# Temporary Fix for Trivial Confidence Intervals 
 		# If confidence intervals aren't present (because the statistic
