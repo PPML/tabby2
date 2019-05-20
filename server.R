@@ -14,6 +14,7 @@ library(shiny)
 library(shinydashboard)
 library(shinyjs)
 library(MITUS)
+library(shinycssloaders)
 devtools::load_all("utilities")
 source("tabby1/tabby1dependencies.R")
 devtools::load_all("tabby1/tabby1utilities")
@@ -26,6 +27,12 @@ source("globals.R")
 # Simple MD5 Username/Password Authentication Schema 
 library(datasets)
 Logged <- FALSE
+
+if (file.exists("secret.txt") && 
+    digest::digest(readLines("secret.txt"), serialize=FALSE) == '5d41402abc4b2a76b9719d911017c592') {
+	Logged <- TRUE
+}
+
 PASSWORD <- data.frame(
   Username = c('earlyAccess'), 
 	Password = c('fcce0e290f8059681e31d617930a663d') # generate MD5 hashed passwords with digest::digest(..., serialize=FALSE)

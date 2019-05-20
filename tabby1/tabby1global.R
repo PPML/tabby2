@@ -14,6 +14,7 @@ library(officer)
 library(scales)
 library(naturalsort)
 library(yaml)
+library(shinycssloaders)
 
 ESTIMATES_DATA <- data_estimates()
 TRENDS_DATA <- data_trends()

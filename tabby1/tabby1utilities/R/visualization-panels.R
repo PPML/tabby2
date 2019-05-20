@@ -1,5 +1,5 @@
 estimatesVisualizationPanel <- function(ns) {
-  tagAppendAttributes(
+	tagAppendAttributes(
     visualizationPanel(
       id = ns(estimates$IDs$panels$visualization),
       title = ns(estimates$IDs$title),
@@ -64,13 +64,13 @@ visualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NU
       tagAppendAttributes,
       c(
         list(
-          tag = tags$div(
+          tag = withSpinner(tags$div(
             id = plot,
             class = "shiny-plot-output",
             style = "width: 90%; height: 600px;",
             `data-alt` = alt,
             tags$img(alt = alt)
-          )
+          ))
         )
       )
     )
