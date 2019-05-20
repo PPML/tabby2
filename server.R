@@ -34,8 +34,8 @@ if (file.exists("secret.txt") &&
 }
 
 PASSWORD <- data.frame(
-  Username = c('earlyAccess'), 
-	Password = c('fcce0e290f8059681e31d617930a663d') # generate MD5 hashed passwords with digest::digest(..., serialize=FALSE)
+  Username = c('alphaVersion'), 
+	Password = c('7ecc08db431548ba58865fc3fc09e831') # generate MD5 hashed passwords with digest::digest(..., serialize=FALSE)
 	)
 
 # Set up a named vector for geographies calibrated in MITUS
