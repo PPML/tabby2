@@ -126,7 +126,10 @@ intervention_content <- function(n=1) {
               tags$b("Age-Nativity Group"),
               tags$br(),
               tags$br(),
-              tags$p("Incidence: 0%\n"),
+              # tags$p(paste0("Incidence: ", 
+							p(textOutput(paste0(tttn, "AgeNativityIncidence"))), 
+							# "%\n")),
+							
               tags$p("LTBI Prevalence: 0%"),
               tags$p("Population Size: 0")
             )
