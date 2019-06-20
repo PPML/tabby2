@@ -46,13 +46,13 @@ intervention_content <- function(n=1) {
             radioButtons(
               inputId = paste0(tttn, "nativity"),
               label = "Targeted Nativity Groups",
-              choices = c("All Nativity Groups", "U.S. Born", "Non-U.S. Born")
+              choices = c(`All Nativity Groups` = 'all_populations',  `U.S. Born` = 'usb_population', `Non-U.S. Born` = 'fb_population')
             ),
             # __subcol1: choose age group ----
             radioButtons(
               inputId = paste0(tttn, "agegroups"),
               label = "Targeted Age Groups",
-              choices = c("All Ages", "0 to 24", "25 to 64", "65+")
+              choices = c(`All Ages` = "all_ages", `0 to 24` = "age_0_24", `25 to 64` = "age_25_64", `65+` = "age_65p")
             )
           ),
           column(
@@ -125,12 +125,8 @@ intervention_content <- function(n=1) {
               tags$br(),
               tags$b("Age-Nativity Group"),
               tags$br(),
-              tags$br(),
-              # tags$p(paste0("Incidence: ", 
-							p(textOutput(paste0(tttn, "AgeNativityIncidence"))), 
-							# "%\n")),
-							
-              tags$p("LTBI Prevalence: 0%"),
+							p(textOutput(paste0(tttn, 'AgeNativityIncidence'))),
+							p(textOutput(paste0(tttn, 'AgeNativityPrevalence'))),
               tags$p("Population Size: 0")
             )
           )
