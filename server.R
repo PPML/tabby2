@@ -110,7 +110,7 @@ shinyServer(function(input, output, session) {
 		values <- callModule(updateTargetedRiskGroupRates, NULL, risk_group_rate_ratios, values)
 
 		# Display the summary statistics in the TTT interventions
-		callModule(summaryStatistics, NULL)
+		tttAgeNativity <- callModule(summaryStatistics, NULL, values)
 			
 		# Add TTT Interventions to the Custom Scenarios tab
 		callModule(customScenarioTTTChoices, NULL)
@@ -125,7 +125,14 @@ shinyServer(function(input, output, session) {
 		# callModule(mitusInteractionServer, NULL, geo_short_code = geo_short_code)
 		
 		# Tabby1 Server
-		callModule(module = tabby1Server, id = "tabby1", ns = NS("tabby1"), geo_short_code = geo_short_code, geographies) 
+		values <- callModule(
+		    module = tabby1Server, 
+				id = "tabby1", 
+				ns = NS("tabby1"), 
+				geo_short_code = geo_short_code, 
+				geographies, 
+				tttAgeNativity,
+				values) 
 		
 		# Custom Scenarios Choice in Output
 		callModule(outputIncludeCustomScenarioOptions, NULL)
