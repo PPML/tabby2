@@ -123,14 +123,18 @@ shinyServer(function(input, output, session) {
 		
 		# MITUS Interaction Server
 		# callModule(mitusInteractionServer, NULL, geo_short_code = geo_short_code)
-		
+
+		# Load Data Server
+		sim_data <- callModule(load_data, id = NULL, geo_short_code = geo_short_code)
+
 		# Tabby1 Server
 		values <- callModule(
 		    module = tabby1Server, 
 				id = "tabby1", 
 				ns = NS("tabby1"), 
+				sim_data = sim_data,
 				geo_short_code = geo_short_code, 
-				geographies, 
+				geographies = geographies, 
 				tttAgeNativity,
 				values) 
 		

@@ -1,67 +1,12 @@
-tabby1Server <- function(input, output, session, ns, geo_short_code, geographies, tttAgeNativity, values) {
+tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, geographies, tttAgeNativity, values) {
 
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
-  # AGEGROUPS_DATA <- reactive({
-  #   readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"), package = "tabby1utilities", mustWork = TRUE))
-  # })
+	AGEGROUPS_DATA <- sim_data[['AGEGROUPS_DATA']]()
+	ESTIMATES_DATA <- sim_data[['ESTIMATES_DATA']]()
+	TRENDS_DATA <- sim_data[['TRENDS_DATA']]()
 
-	# Import and format Age Groups Data
-	AGEGROUPS_DATA <- reactive({
-		if (geo_short_code() == 'US') {
-			return(data_agegroups() %>% rename(type = statistic))
-		}
 
-		# Lookup sm_restab2 by geo_short_code, cast the data as.data.frame
-		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "sm_restab2.rds",
-		package="MITUS", mustWork = TRUE)))
-
-		# Temporary Fix for Trivial Confidence Intervals 
-		# If confidence intervals aren't present (because the statistic
-		# column hasn't been rendered yet, just duplicate (triplicate) the 
-		# data for mean/ci_high/ci_low.
-		if (! 'statistic' %in% colnames(restab2)) {
-			restab2 <- 
-				do.call(rbind.data.frame, list(
-				cbind.data.frame(restab2, type = 'mean'),
-				cbind.data.frame(restab2, type = 'ci_high'),
-				cbind.data.frame(restab2, type = 'ci_low')))
-		}
-
-		restab2 %>% mutate_if(is.factor, as.character) -> restab2
-		return(restab2)
-	})
-
-	# Import and format Age Groups Data
-	TRENDS_DATA <- reactive({
-
-		if (geo_short_code() == 'US') { return(data_trends()) }
-
-		# Lookup bg_restab2 by geo_short_code, cast the data as.data.frame
-		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "bg_restab2.rds",
-		package="MITUS", mustWork = TRUE)))
-
-		# Temporary Fix for Trivial Confidence Intervals 
-		# If confidence intervals aren't present (because the statistic
-		# column hasn't been rendered yet, just duplicate (triplicate) the 
-		# data for mean/ci_high/ci_low.
-		# if (! 'statistic' %in% colnames(restab2)) {
-			restab2 <- 
-				do.call(rbind.data.frame, list(
-				cbind.data.frame(restab2, type = 'mean'),
-				cbind.data.frame(restab2, type = 'ci_high'),
-				cbind.data.frame(restab2, type = 'ci_low')))
-		# }
-
-    restab2 %>% mutate_if(is.factor, as.character) -> restab2
-		restab2$year <- as.numeric(restab2$year)
-		return(restab2)
-	})
-
-  ESTIMATES_DATA <- reactive({ 
-		filter(TRENDS_DATA(), year %in% c(2018, 2020, 2025, 2035, 2049))
-	})
-  
   # estimates server ----
   # __calculate data ----
   estimatesData <- reactive({
@@ -70,9 +15,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
       c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case")
     )
 
-
-
-    ESTIMATES_DATA() %>%
+    ESTIMATES_DATA %>%
       filter(
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
@@ -89,37 +32,37 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
  })
 
 
-# Reactive Values for the Incidence in Age-Nativity Group
-values[['ttt1AgeNativityIncidence']] <- reactive({
+	# Reactive Values for the Incidence in Age-Nativity Group
+	values[['ttt1AgeNativityIncidence']] <- reactive({
 
-	value <- TRENDS_DATA() %>% 
-		filter(age_group == tttAgeNativity()[[1]],
-					 population == tttAgeNativity()[[4]],
-					 outcome == 'tb_incidence_per_mil',
-					 scenario == 'base_case',
-					 year == 2018,
-					 comparator == 'absolute_value',
-					 type == 'mean'
-					 ) %>% `[[`('value')
+		value <- TRENDS_DATA %>% 
+			filter(age_group == tttAgeNativity()[[1]],
+						 population == tttAgeNativity()[[4]],
+						 outcome == 'tb_incidence_per_mil',
+						 scenario == 'base_case',
+						 year == 2018,
+						 comparator == 'absolute_value',
+						 type == 'mean'
+						 ) %>% `[[`('value')
 
-		paste0("Incidence per Million: ", round(value, 2))
-				 })
+			paste0("Incidence per Million: ", round(value, 2))
+					 })
 
-# Reactive Values for the Prevalence in Age-Nativity Group
-values[['ttt1AgeNativityPrevalence']] <- reactive({
+	# Reactive Values for the Prevalence in Age-Nativity Group
+	values[['ttt1AgeNativityPrevalence']] <- reactive({
 
-	value <- TRENDS_DATA() %>% 
-		filter(age_group == tttAgeNativity()[[1]],
-					 population == tttAgeNativity()[[4]],
-					 outcome == 'pct_ltbi',
-					 scenario == 'base_case',
-					 year == 2018,
-					 comparator == 'absolute_value',
-					 type == 'mean'
-					 ) %>% `[[`('value')
+		value <- TRENDS_DATA %>% 
+			filter(age_group == tttAgeNativity()[[1]],
+						 population == tttAgeNativity()[[4]],
+						 outcome == 'pct_ltbi',
+						 scenario == 'base_case',
+						 year == 2018,
+						 comparator == 'absolute_value',
+						 type == 'mean'
+						 ) %>% `[[`('value')
 
-		paste0("LTBI Prevalence: ", round(value, 2), "%")
-				 })
+			paste0("LTBI Prevalence: ", round(value, 2), "%")
+					 })
 
   # __generate point labels ----
   estimatesLabels <- reactive({
@@ -327,7 +270,7 @@ values[['ttt1AgeNativityPrevalence']] <- reactive({
       )
     )
 
-    TRENDS_DATA() %>%
+    TRENDS_DATA %>%
       filter(
         population == input[[trends$IDs$controls$populations]],
         age_group == input[[trends$IDs$controls$ages]],
@@ -506,7 +449,7 @@ values[['ttt1AgeNativityPrevalence']] <- reactive({
         input[[agegroups$IDs$controls$years]] <= 2100
     )
     
-    AGEGROUPS_DATA() %>%
+    AGEGROUPS_DATA %>%
       filter(
         population == input[[agegroups$IDs$controls$populations]],
         outcome == input[[agegroups$IDs$controls$outcomes]],
