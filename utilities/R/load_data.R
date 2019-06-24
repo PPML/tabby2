@@ -1,6 +1,5 @@
-# Functions to Load Simulation Data
-
-load_data <- function(input, output, session, values, geo_short_code) { 
+# Module to Load Simulation Data
+load_data <- function(input, output, session, geo_short_code) { 
   data <- reactiveValues()
 
 	# Import and format Age Groups Data
@@ -38,17 +37,16 @@ load_data <- function(input, output, session, values, geo_short_code) {
 		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "bg_restab2.rds",
 		package="MITUS", mustWork = TRUE)))
 
+    # !!!!!!!!! 
 		# Temporary Fix for Trivial Confidence Intervals 
 		# If confidence intervals aren't present (because the statistic
 		# column hasn't been rendered yet, just duplicate (triplicate) the 
 		# data for mean/ci_high/ci_low.
-		# if (! 'statistic' %in% colnames(restab2)) {
 			restab2 <- 
 				do.call(rbind.data.frame, list(
 				cbind.data.frame(restab2, type = 'mean'),
 				cbind.data.frame(restab2, type = 'ci_high'),
 				cbind.data.frame(restab2, type = 'ci_low')))
-		# }
 
     restab2 %>% mutate_if(is.factor, as.character) -> restab2
 		restab2$year <- as.numeric(restab2$year)

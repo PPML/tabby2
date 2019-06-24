@@ -1,4 +1,4 @@
-tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, geographies, tttAgeNativity, values) {
+tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, geographies) {
 
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
@@ -32,37 +32,6 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
  })
 
 
-	# Reactive Values for the Incidence in Age-Nativity Group
-	values[['ttt1AgeNativityIncidence']] <- reactive({
-
-		value <- TRENDS_DATA %>% 
-			filter(age_group == tttAgeNativity()[[1]],
-						 population == tttAgeNativity()[[4]],
-						 outcome == 'tb_incidence_per_mil',
-						 scenario == 'base_case',
-						 year == 2018,
-						 comparator == 'absolute_value',
-						 type == 'mean'
-						 ) %>% `[[`('value')
-
-			paste0("Incidence per Million: ", round(value, 2))
-					 })
-
-	# Reactive Values for the Prevalence in Age-Nativity Group
-	values[['ttt1AgeNativityPrevalence']] <- reactive({
-
-		value <- TRENDS_DATA %>% 
-			filter(age_group == tttAgeNativity()[[1]],
-						 population == tttAgeNativity()[[4]],
-						 outcome == 'pct_ltbi',
-						 scenario == 'base_case',
-						 year == 2018,
-						 comparator == 'absolute_value',
-						 type == 'mean'
-						 ) %>% `[[`('value')
-
-			paste0("LTBI Prevalence: ", round(value, 2), "%")
-					 })
 
   # __generate point labels ----
   estimatesLabels <- reactive({
@@ -862,5 +831,4 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
     }
   )
 
-	values
 }
