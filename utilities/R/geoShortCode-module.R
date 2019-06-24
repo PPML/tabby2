@@ -1,12 +1,15 @@
 geoShortCode <- function(input, output, session, geographies) { 
   geo_short_code <- reactive({
+	  req(input$state)
     # l <- state.abb
     # names(l) <- state.name
     # l <- c(`United States` = "US", l)
     # l[[input$state]]
 		# geographies[[input$state]]
 		invert_geographies <- setNames(nm = unname(geographies), object = names(geographies))
-		invert_geographies[[input$state]]
+		# if (!is.null(input$state)) {
+		  invert_geographies[[input$state]]
+		# } else 'US'
   })
 
   # Output the Selected Geography
