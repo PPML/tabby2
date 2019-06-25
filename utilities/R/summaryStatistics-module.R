@@ -1,6 +1,6 @@
 summaryStatistics <- function(input, output, session, values, sim_data) {
 
-	TRENDS_DATA <- sim_data[['TRENDS_DATA']]()
+	TRENDS_DATA <- sim_data[['TRENDS_DATA']]
 
 	output$ttt1numberTargeted <- renderText({input$ttt1numberTargeted})
 	output$ttt2numberTargeted <- renderText({input$ttt2numberTargeted})

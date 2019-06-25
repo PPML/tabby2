@@ -2,9 +2,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
-	AGEGROUPS_DATA <- sim_data[['AGEGROUPS_DATA']]()
-	ESTIMATES_DATA <- sim_data[['ESTIMATES_DATA']]()
-	TRENDS_DATA <- sim_data[['TRENDS_DATA']]()
+	AGEGROUPS_DATA <- sim_data[['AGEGROUPS_DATA']]
+	ESTIMATES_DATA <- sim_data[['ESTIMATES_DATA']]
+	TRENDS_DATA <- sim_data[['TRENDS_DATA']]
 
 
   # estimates server ----

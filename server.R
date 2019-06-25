@@ -14,6 +14,7 @@ library(shiny)
 library(shinydashboard)
 library(shinyjs)
 library(MITUS)
+library(tabus)
 library(shinycssloaders)
 devtools::load_all("utilities")
 source("tabby1/tabby1dependencies.R")
@@ -123,6 +124,9 @@ shinyServer(function(input, output, session) {
 
 		# Display the summary statistics in the TTT interventions
 		callModule(summaryStatistics, NULL, values, sim_data = sim_data)
+
+		# Run & Append Program Changes Custom Scenarios to Sim Data
+		# sim_data <- callModule(runProgramChanges, NULL, values, geo_short_code, sim_data)
 
 		# Tabby1 Server
 	  callModule(
