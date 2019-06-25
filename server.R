@@ -23,7 +23,13 @@ source("tabby1/tabby1global.R")
 source("globals.R")
 
 
-
+# The c++ reshaper has to be built from the source code inside 
+# the tabus package
+cpp_reshaper <- cxxfunction(
+	signature(ResTab='numeric', ResTabus='numeric', ResTabfb='numeric', res_tab2 = 'numeric'),
+	plugin='Rcpp',
+	body=readr::read_file(
+		system.file('inline_cpp/format_restab2.cpp', package='tabus')))
 
 # Simple MD5 Username/Password Authentication Schema 
 library(datasets)
@@ -126,7 +132,7 @@ shinyServer(function(input, output, session) {
 		callModule(summaryStatistics, NULL, values, sim_data = sim_data)
 
 		# Run & Append Program Changes Custom Scenarios to Sim Data
-		# sim_data <- callModule(runProgramChanges, NULL, values, geo_short_code, sim_data)
+		sim_data <- callModule(runProgramChanges, NULL, values, geo_short_code, sim_data)
 
 		# Tabby1 Server
 	  callModule(

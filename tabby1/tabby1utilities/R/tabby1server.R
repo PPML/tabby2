@@ -6,7 +6,6 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 	ESTIMATES_DATA <- sim_data[['ESTIMATES_DATA']]
 	TRENDS_DATA <- sim_data[['TRENDS_DATA']]
 
-
   # estimates server ----
   # __calculate data ----
   estimatesData <- reactive({
@@ -20,7 +19,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
         outcome == input[[estimates$IDs$controls$outcomes]],
-        scenario %in% c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case"),
+        scenario %in% c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case", 'custom_scenario'),
         comparator == input[[estimates$IDs$controls$comparators]]
       ) %>%
       arrange(scenario) %>%
@@ -247,7 +246,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         scenario %in% c(
           input[[trends$IDs$controls$interventions]],
           input[[trends$IDs$controls$analyses]],
-          "base_case"
+          "base_case",
+					"custom_scenario"
         ),
         comparator == input[[trends$IDs$controls$comparators]]
       ) %>%
@@ -427,7 +427,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         scenario %in% c(
           input[[agegroups$IDs$controls$interventions]],
           input[[agegroups$IDs$controls$analyses]],
-          "base_case"
+          "base_case",
+					'custom_scenario'
         ),
         comparator == 'absolute_value'
       )
