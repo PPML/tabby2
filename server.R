@@ -132,15 +132,20 @@ shinyServer(function(input, output, session) {
 		callModule(summaryStatistics, NULL, values, sim_data = sim_data)
 
 		# Run & Append Program Changes Custom Scenarios to Sim Data
-		sim_data <- callModule(runProgramChanges, NULL, values, geo_short_code, sim_data)
+		sim_data_w_program_changes <- 
+			callModule(runProgramChanges, NULL, values, geo_short_code, sim_data)
 
 		# Tabby1 Server
-	  # user_filtered_data <- 
+		# outcomes_filtered_data <- 
+		#   callModule(filterOutcomes, NULL, sim_data_w_program_changes)
+
+		# Tabby1 Visualization Server
+		filtered_data <- 
 			callModule(
 					module = tabby1Server, 
 					id = "tabby1", 
 					ns = NS("tabby1"), 
-					sim_data = sim_data,
+					sim_data = sim_data_w_program_changes,
 					geo_short_code = geo_short_code, 
 					geographies = geographies) 
 			
@@ -157,17 +162,17 @@ shinyServer(function(input, output, session) {
 		callModule(debugPrintoutsModule, NULL, values = values)
 
 		output[['estimatesData']] <- 
-			DT::renderDataTable( sim_data[['ESTIMATES_DATA']], 
+			DT::renderDataTable( filtered_data[['estimatesData']](), 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
 
 		output[['trendsData']] <- 
-			DT::renderDataTable( sim_data[['TRENDS_DATA']], 
+			DT::renderDataTable( sim_data_w_program_changes[['TRENDS_DATA']], 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
 
 		output[['agegroupsData']] <- 
-			DT::renderDataTable( sim_data[['AGEGROUPS_DATA']], 
+			DT::renderDataTable( sim_data_w_program_changes[['AGEGROUPS_DATA']], 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
 

@@ -6,6 +6,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 	ESTIMATES_DATA <- sim_data[['ESTIMATES_DATA']]
 	TRENDS_DATA <- sim_data[['TRENDS_DATA']]
 
+
 	# user_filtered_data <- reactiveValues()
 
   # estimates server ----
@@ -13,7 +14,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   estimatesData <- reactive({
     req(
       input[[estimates$IDs$controls$comparators]], input[[estimates$IDs$controls$outcomes]],
-      c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case")
+      input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]]
     )
 
     ESTIMATES_DATA %>%
@@ -31,7 +32,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       )
   })
 
-	# user_filtered_data[['estimatesData']] <- estimatesData()
+	# user_filtered_data[['estimatesData()']] <- estimatesData()
 
   # __generate point labels ----
   estimatesLabels <- reactive({
@@ -259,7 +260,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       )
   })
 
-	# user_filtered_data[['trendsData']] <- trendsData()
+	# user_filtered_data[['trendsData()']] <- trendsData()
 
   # __set title ----
   trendsTitle <- reactive({
@@ -438,7 +439,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       )
   })
 
-	# user_filtered_data[['agegroupsData']] <- agegroupsData()
+	# user_filtered_data[['agegroupsData()']] <- agegroupsData()
 
   # __set title ----
   agegroupsTitle <- reactive({
@@ -838,5 +839,6 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
     }
   )
 
-  # return(user_filtered_data)
+  filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData)
+  return(filtered_data)
 }
