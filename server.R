@@ -135,14 +135,15 @@ shinyServer(function(input, output, session) {
 		sim_data <- callModule(runProgramChanges, NULL, values, geo_short_code, sim_data)
 
 		# Tabby1 Server
-	  callModule(
-		    module = tabby1Server, 
-				id = "tabby1", 
-				ns = NS("tabby1"), 
-				sim_data = sim_data,
-				geo_short_code = geo_short_code, 
-				geographies = geographies) 
-		
+	  # user_filtered_data <- 
+			callModule(
+					module = tabby1Server, 
+					id = "tabby1", 
+					ns = NS("tabby1"), 
+					sim_data = sim_data,
+					geo_short_code = geo_short_code, 
+					geographies = geographies) 
+			
 		# Custom Scenarios Choice in Output
 		callModule(outputIncludeCustomScenarioOptions, NULL)
 		
@@ -160,13 +161,21 @@ shinyServer(function(input, output, session) {
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
 
-  output[[estimates$IDs$plot]] <- renderPlot({
-    estimatesPlot() +
-      theme(
-        plot.title = element_blank(),
-        plot.subtitle = element_blank()
-      )
-  })
+		output[['trendsData']] <- 
+			DT::renderDataTable( sim_data[['TRENDS_DATA']], 
+				options = list(pageLength = 25, scrollX = TRUE), 
+				rownames=FALSE )  
+
+		output[['agegroupsData']] <- 
+			DT::renderDataTable( sim_data[['AGEGROUPS_DATA']], 
+				options = list(pageLength = 25, scrollX = TRUE), 
+				rownames=FALSE )  
+
+		output[['extraDebugOutputs']] <- 
+			renderText({
+				capture.output(str(sim_data[['ESTIMATES_DATA']]))
+			})
+
 	} # end of if USER$Logged == TRUE
 	}) # end of observer on USER$Logged
 })

@@ -68,10 +68,13 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, da
 
 	new_data[['AGEGROUPS_DATA']] <- rbind.data.frame(data[['AGEGROUPS_DATA']], restab_small)
 
-	new_data[['TRENDS_DATA']] <- rbind.data.frame(data[['TRENDS_DATA']], restab_big)
+	trendsData <- rbind.data.frame(data[['TRENDS_DATA']], restab_big)
+	trendsData$year <- as.integer(trendsData$year)
+
+	new_data[['TRENDS_DATA']] <- trendsData
 
 	new_data[['ESTIMATES_DATA']] <- rbind.data.frame(data[['ESTIMATES_DATA']], 
-		filter(restab_big, year %in% c(2018, 2020, 2025, 2035, 2049)))
+		dplyr::filter(restab_big, as.integer(as.character(year)) %in% c(2018, 2020, 2025, 2035, 2049)))
 
   return(new_data)
 }

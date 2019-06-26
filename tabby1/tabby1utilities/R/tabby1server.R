@@ -6,6 +6,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 	ESTIMATES_DATA <- sim_data[['ESTIMATES_DATA']]
 	TRENDS_DATA <- sim_data[['TRENDS_DATA']]
 
+	# user_filtered_data <- reactiveValues()
+
   # estimates server ----
   # __calculate data ----
   estimatesData <- reactive({
@@ -28,6 +30,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         year_adj = year + position_year(scenario)
       )
   })
+
+	# user_filtered_data[['estimatesData']] <- estimatesData()
 
   # __generate point labels ----
   estimatesLabels <- reactive({
@@ -214,6 +218,15 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   })
 
 
+  output[[estimates$IDs$plot]] <- renderPlot({
+    estimatesPlot() +
+      theme(
+        plot.title = element_blank(),
+        plot.subtitle = element_blank()
+      )
+  })
+
+
   # trends server ----
   # __calculate data ----
   trendsData <- reactive({
@@ -236,7 +249,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           input[[trends$IDs$controls$interventions]],
           input[[trends$IDs$controls$analyses]],
           "base_case",
-					"custom_scenario"
+					"programChange1"
         ),
         comparator == input[[trends$IDs$controls$comparators]]
       ) %>%
@@ -246,11 +259,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       )
   })
 
-  # output[['trendsData']] <- DT::renderDataTable({ iris })#DT::datatable(trendsData()) })
-		output[['trendsData']] <- 
-			DT::renderDataTable( trendsData(), 
-				options = list(pageLength = 25, scrollX = TRUE), 
-				rownames=FALSE )  
+	# user_filtered_data[['trendsData']] <- trendsData()
 
   # __set title ----
   trendsTitle <- reactive({
@@ -423,16 +432,13 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           input[[agegroups$IDs$controls$interventions]],
           input[[agegroups$IDs$controls$analyses]],
           "base_case",
-					'custom_scenario'
+					'programChange1'
         ),
         comparator == 'absolute_value'
       )
   })
 
-	output[['agegroupsData']] <- 
-		DT::renderDataTable( agegroupsData(), 
-			options = list(pageLength = 25, scrollX = TRUE), 
-			rownames=FALSE )  
+	# user_filtered_data[['agegroupsData']] <- agegroupsData()
 
   # __set title ----
   agegroupsTitle <- reactive({
@@ -832,4 +838,5 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
     }
   )
 
+  # return(user_filtered_data)
 }

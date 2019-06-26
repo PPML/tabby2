@@ -8,11 +8,17 @@
 
 debugPrintoutsModule <- function(input, output, session, values) {
   if (exists('debug', envir = .GlobalEnv) && isTRUE(get('debug', envir = .GlobalEnv))) {
-	  cat(str(values))
     output$debugPrintouts <- renderUI({ 
-      tagList(
-        HTML(paste0(capture.output(Hmisc::list.tree(reactiveValuesToList(values), maxlen = 80)), collapse = "<br>"))
-      )
+		  tabsetPanel(
+			  tabPanel(title = 'user_settings', 
+					tagList(
+						HTML(paste0(capture.output(Hmisc::list.tree(reactiveValuesToList(values), maxlen = 80)), collapse = "<br>"))
+					)
+				),
+				tabPanel(title = 'extraDebugOutputs', 
+				  verbatimTextOutput('extraDebugOutputs')
+				)
+			)
     })
   }
 }
