@@ -24,9 +24,9 @@ outputIncludeCustomScenarioOptions <- function(input, output, session) {
           if (input$programChange1Name != '') 'programChange1' else NULL,
           if (input$programChange2Name != '') 'programChange2' else NULL,
           if (input$programChange3Name != '') 'programChange3' else NULL,
-          if (input$scenario1Name != '') 'scenario1' else NULL,
-          if (input$scenario2Name != '') 'scenario2' else NULL,
-          if (input$scenario3Name != '') 'scenario3' else NULL
+					if (input$scenario1Name != '') 'scenario1' else NULL,
+					if (input$scenario2Name != '') 'scenario2' else NULL,
+					if (input$scenario3Name != '') 'scenario3' else NULL
 				)
       )
   })
@@ -56,9 +56,9 @@ outputIncludeCustomScenarioOptions <- function(input, output, session) {
 				if (input$programChange1Name != '') 'programChange1' else NULL,
 				if (input$programChange2Name != '') 'programChange2' else NULL,
 				if (input$programChange3Name != '') 'programChange3' else NULL,
-				if (input$scenario1Name != '') 'scenario1' else NULL,
-				if (input$scenario2Name != '') 'scenario2' else NULL,
-				if (input$scenario3Name != '') 'scenario3' else NULL
+				if (input$scenario1Name != '') 'combination1' else NULL,
+				if (input$scenario2Name != '') 'combination2' else NULL,
+				if (input$scenario3Name != '') 'combination3' else NULL
 			)
     )
   })
@@ -88,9 +88,9 @@ outputIncludeCustomScenarioOptions <- function(input, output, session) {
 				if (input$programChange1Name != '') 'programChange1' else NULL,
 				if (input$programChange2Name != '') 'programChange2' else NULL,
 				if (input$programChange3Name != '') 'programChange3' else NULL,
-				if (input$scenario1Name != '') 'scenario1' else NULL,
-				if (input$scenario2Name != '') 'scenario2' else NULL,
-				if (input$scenario3Name != '') 'scenario3' else NULL
+				if (input$scenario1Name != '') 'combination1' else NULL,
+				if (input$scenario2Name != '') 'combination2' else NULL,
+				if (input$scenario3Name != '') 'combination3' else NULL
 			)
     )
   })
