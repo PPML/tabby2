@@ -154,6 +154,19 @@ shinyServer(function(input, output, session) {
 
 		# Debug Printout Server 
 		callModule(debugPrintoutsModule, NULL, values = values)
+
+		output[['estimatesData']] <- 
+			DT::renderDataTable( sim_data[['ESTIMATES_DATA']], 
+				options = list(pageLength = 25, scrollX = TRUE), 
+				rownames=FALSE )  
+
+  output[[estimates$IDs$plot]] <- renderPlot({
+    estimatesPlot() +
+      theme(
+        plot.title = element_blank(),
+        plot.subtitle = element_blank()
+      )
+  })
 	} # end of if USER$Logged == TRUE
 	}) # end of observer on USER$Logged
 })

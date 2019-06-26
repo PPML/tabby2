@@ -27,7 +27,7 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, da
 	ResTabC_big <- mean_big_restabs(restabs)
 
 	# reshape small results
-	restab <- restab1 <- make_empty_res_tab(intvs = c('basecase', 'custom_scenario'), big_or_small = 'small')
+	restab <- restab1 <- make_empty_res_tab(intvs = c('basecase', 'programChange1'), big_or_small = 'small')
 	restab %<>% mutate_if(is.factor, as.integer) %>% as.matrix
 	restab_small <- cpp_reshaper(ResTabC_small[[1]], ResTabC_small[[2]], ResTabC_small[[3]], restab)
 	restab_small %<>% as.data.frame
@@ -37,7 +37,7 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, da
 	}
 
 	# reshape big results
-	restab <- restab1 <- make_empty_res_tab(intvs = c('basecase', 'custom_scenario'), big_or_small = 'big')
+	restab <- restab1 <- make_empty_res_tab(intvs = c('basecase', 'programChange1'), big_or_small = 'big')
 	restab %<>% mutate_if(is.factor, as.integer) %>% as.matrix
 	restab_big <- cpp_reshaper(ResTabC_big[[1]], ResTabC_big[[2]], ResTabC_big[[3]], restab)
 	restab_big %<>% as.data.frame
@@ -65,6 +65,7 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, da
 
 
 	new_data <- reactiveValues()
+
 	new_data[['AGEGROUPS_DATA']] <- rbind.data.frame(data[['AGEGROUPS_DATA']], restab_small)
 
 	new_data[['TRENDS_DATA']] <- rbind.data.frame(data[['TRENDS_DATA']], restab_big)

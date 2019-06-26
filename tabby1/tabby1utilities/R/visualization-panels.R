@@ -13,6 +13,7 @@ estimatesVisualizationPanel <- function(ns) {
       ),
       click = clickOpts(estimates$IDs$click),
       dblclick = dblclickOpts(estimates$IDs$dblclick),
+			data = 'estimatesData'
     ),
     class = "estimates-tab"
   )
@@ -25,7 +26,8 @@ trendsVisualizationPanel <- function(ns) {
       title = ns(trends$IDs$title),
       subtitle = ns(trends$IDs$subtitle),
       plot = ns(trends$IDs$plot),
-      alt = "New TB infections, in the total US population, all age groups"
+      alt = "New TB infections, in the total US population, all age groups",
+			data = 'trendsData'
     ),
     class = "trends-tab"
   )
@@ -38,41 +40,51 @@ agegroupsVisualizationPanel <- function(ns) {
       title = ns(agegroups$IDs$title),
       subtitle = NULL,
       plot = ns(agegroups$IDs$plot),
-      alt = "LTBI prevalence (per million), in the total US population, for 2016"
+      alt = "LTBI prevalence (per million), in the total US population, for 2016",
+			data = 'agegroupsData'
     ),
     class = "agegroups-tab"
   )
 }
 
 visualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NULL,
-                               click = NULL, dblclick = NULL, active = TRUE) {
+                               click = NULL, dblclick = NULL, active = TRUE, data) {
   class <- paste0(id, "-tab")
   
-  tags$div(
-    class = paste(c(class, "tab-pane", if (active) " active"), collapse = " "),
-    if (!is.null(title)) {
-      tags$h3(
-        textOutput(title)
-      )
-    },
-    if (!is.null(subtitle)) {
-      tags$h4(
-        textOutput(subtitle)
-      )
-    },
-    do.call(
-      tagAppendAttributes,
-      c(
-        list(
-          tag = withSpinner(tags$div(
-            id = plot,
-            class = "shiny-plot-output",
-            style = "width: 90%; height: 600px;",
-            `data-alt` = alt,
-            tags$img(alt = alt)
-          ))
-        )
-      )
-    )
-  )
+	tabsetPanel(
+	  tabPanel(title = 'plot', {
+			tags$div(
+				class = paste(c(class, "tab-pane", if (active) " active"), collapse = " "),
+				if (!is.null(title)) {
+					tags$h3(
+						textOutput(title)
+					)
+				},
+				if (!is.null(subtitle)) {
+					tags$h4(
+						textOutput(subtitle)
+					)
+				},
+				do.call(
+					tagAppendAttributes,
+					c(
+						list(
+							tag = withSpinner(tags$div(
+								id = plot,
+								class = "shiny-plot-output",
+								style = "width: 90%; height: 600px;",
+								`data-alt` = alt,
+								tags$img(alt = alt)
+							))
+						)
+					)
+				)
+			)
+		}),
+		tabPanel(title = data, 
+		  # p('hi')
+		  # tableOutput(outputId = data)
+			DT::dataTableOutput(outputId = data)
+		)
+	)
 }

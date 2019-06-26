@@ -19,7 +19,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
         outcome == input[[estimates$IDs$controls$outcomes]],
-        scenario %in% c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case", 'custom_scenario'),
+        scenario %in% c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case", 'programChange1'),
         comparator == input[[estimates$IDs$controls$comparators]]
       ) %>%
       arrange(scenario) %>%
@@ -27,10 +27,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         year = recode(as.character(year), '2018'=2000, '2020'=2025, '2025'=2050, '2035'=2075, '2049'=2100),
         year_adj = year + position_year(scenario)
       )
-
- })
-
-
+  })
 
   # __generate point labels ----
   estimatesLabels <- reactive({
@@ -108,7 +105,6 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
     title
   })
-  # output[[estimates$IDs$title]] <- renderText(estimatesTitle())
 
   # __set subtitle ----
   output[[estimates$IDs$subtitle]] <- reactive({
@@ -217,13 +213,6 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 				fontface = "bold", alpha = 0.8)
   })
 
-  output[[estimates$IDs$plot]] <- renderPlot({
-    estimatesPlot() +
-      theme(
-        plot.title = element_blank(),
-        plot.subtitle = element_blank()
-      )
-  })
 
   # trends server ----
   # __calculate data ----
@@ -256,6 +245,12 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         year_adj = year + position_year(scenario)
       )
   })
+
+  # output[['trendsData']] <- DT::renderDataTable({ iris })#DT::datatable(trendsData()) })
+		output[['trendsData']] <- 
+			DT::renderDataTable( trendsData(), 
+				options = list(pageLength = 25, scrollX = TRUE), 
+				rownames=FALSE )  
 
   # __set title ----
   trendsTitle <- reactive({
@@ -433,6 +428,11 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         comparator == 'absolute_value'
       )
   })
+
+	output[['agegroupsData']] <- 
+		DT::renderDataTable( agegroupsData(), 
+			options = list(pageLength = 25, scrollX = TRUE), 
+			rownames=FALSE )  
 
   # __set title ----
   agegroupsTitle <- reactive({
