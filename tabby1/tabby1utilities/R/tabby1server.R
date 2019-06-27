@@ -14,7 +14,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   estimatesData <- reactive({
     req(
       input[[estimates$IDs$controls$comparators]], input[[estimates$IDs$controls$outcomes]],
-      input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]]
+      c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], 'base_case')
     )
 
     ESTIMATES_DATA %>%

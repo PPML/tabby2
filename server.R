@@ -16,6 +16,7 @@ library(shinyjs)
 library(MITUS)
 library(tabus)
 library(shinycssloaders)
+library(DT)
 devtools::load_all("utilities")
 source("tabby1/tabby1dependencies.R")
 devtools::load_all("tabby1/tabby1utilities")
@@ -167,12 +168,12 @@ shinyServer(function(input, output, session) {
 				rownames=FALSE )  
 
 		output[['trendsData']] <- 
-			DT::renderDataTable( sim_data_w_program_changes[['TRENDS_DATA']], 
+			DT::renderDataTable( filtered_data[['trendsData']](), 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
 
 		output[['agegroupsData']] <- 
-			DT::renderDataTable( sim_data_w_program_changes[['AGEGROUPS_DATA']], 
+			DT::renderDataTable( filtered_data[['agegroupsData']](), 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
 
