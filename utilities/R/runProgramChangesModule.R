@@ -17,7 +17,7 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, da
 			"tb_txdef_frc") #Fraction Discontinuing/Defaulting from Treatment
 
 	# simulate program changes scenario
-	custom_scenario_output <- new_OutputsInt(loc = 'US', ParMatrix = StartVal, prg_chng = prg_chng)
+	custom_scenario_output <- new_OutputsInt(loc = 'US', ParMatrix = StartVal[1:2,], prg_chng = prg_chng)
 
 	# reformat into small/big restabs (two lists of (ResTab, ResTabus, ResTabfb) for small/big)
 	restabs <- format_as_restab_for_custom_scenarios('US', custom_scenario_output)
@@ -27,7 +27,7 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, da
 	ResTabC_big <- mean_big_restabs(restabs)
 
 	# reshape small results
-	restab <- restab1 <- make_empty_res_tab2sm(intvs = c('base_case', 'programChange1'))
+	restab <- restab1 <- make_empty_res_tab2sm(intvs = c('base_case2', 'programChange1'))
 	restab %<>% mutate_if(is.factor, as.integer) %>% as.matrix
 	restab_small <- cpp_reshaper(ResTabC_small[[1]], ResTabC_small[[2]], ResTabC_small[[3]], restab)
 	restab_small %<>% as.data.frame
@@ -37,7 +37,7 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, da
 	}
 
 	# reshape big results
-	restab <- restab1 <- make_empty_res_tab2bg(intvs = c('base_case', 'programChange1'))
+	restab <- restab1 <- make_empty_res_tab2bg(intvs = c('base_case2', 'programChange1'))
 	restab %<>% mutate_if(is.factor, as.integer) %>% as.matrix
 	restab_big <- cpp_reshaper(ResTabC_big[[1]], ResTabC_big[[2]], ResTabC_big[[3]], restab)
 	restab_big %<>% as.data.frame
@@ -47,8 +47,8 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, da
 	}
 
 	# filter out the basecase
-	restab_small <- filter(restab_small, scenario != 'base_case')
-	restab_big <- filter(restab_big, scenario != 'base_case')
+	# restab_small <- filter(restab_small, scenario != 'base_case2')
+	# restab_big <- filter(restab_big, scenario != 'base_case2')
 
 	# add a type column
 	restab_small <- 

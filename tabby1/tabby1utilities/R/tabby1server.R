@@ -22,7 +22,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
         outcome == input[[estimates$IDs$controls$outcomes]],
-        scenario %in% c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case", 'programChange1'),
+        scenario %in% c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case", 'base_case2', 'programChange1'),
         comparator == input[[estimates$IDs$controls$comparators]]
       ) %>%
       arrange(scenario) %>%
@@ -250,6 +250,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           input[[trends$IDs$controls$interventions]],
           input[[trends$IDs$controls$analyses]],
           "base_case",
+					"base_case2",
 					"programChange1"
         ),
         comparator == input[[trends$IDs$controls$comparators]]
@@ -433,6 +434,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           input[[agegroups$IDs$controls$interventions]],
           input[[agegroups$IDs$controls$analyses]],
           "base_case",
+					"base_case2",
 					'programChange1'
         ),
         comparator == 'absolute_value'
