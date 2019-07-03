@@ -106,10 +106,12 @@ shinyServer(function(input, output, session) {
 		geo_short_code <- callModule(geoShortCode, NULL, geographies)
 
 		# Re-Render About UI
-		callModule(updateAboutUI, NULL, available_geographies)
+		# callModule(updateAboutUI, NULL, available_geographies)
 
 		#  Setup `values` to contain our reactiveValues
 		values <- callModule(constructReactiveValues, NULL)
+
+    prg_chng_default <- callModule(fillDefaultProgramChangeValues, NULL, geo_short_code)
 
 		# Watch for Updates to Custom Scenarios
 		values <- callModule(updateProgramChanges, NULL, values)
@@ -132,23 +134,26 @@ shinyServer(function(input, output, session) {
 		# Display the summary statistics in the TTT interventions
 		callModule(summaryStatistics, NULL, values, sim_data = sim_data)
 
+    # runSimulationsButton <- reactive({ input[['1RunSimulations']] })
+
 		# Run & Append Program Changes Custom Scenarios to Sim Data
-		sim_data_w_program_changes <- 
-			callModule(runProgramChanges, NULL, values, geo_short_code, sim_data)
+    sim_data_w_program_changes <- eventReactive(input[['1RunSimulations']], {
+				callModule(runProgramChanges, NULL, values, geo_short_code, sim_data, prg_chng_default)
+		})
 
 		# Tabby1 Server
 		# outcomes_filtered_data <- 
 		#   callModule(filterOutcomes, NULL, sim_data_w_program_changes)
 
 		# Tabby1 Visualization Server
-		filtered_data <- 
-			callModule(
-					module = tabby1Server, 
-					id = "tabby1", 
-					ns = NS("tabby1"), 
-					sim_data = sim_data_w_program_changes,
-					geo_short_code = geo_short_code, 
-					geographies = geographies) 
+			filtered_data <- 
+				callModule(
+						module = tabby1Server, 
+						id = "tabby1", 
+						ns = NS("tabby1"), 
+						sim_data = sim_data_w_program_changes,
+						geo_short_code = geo_short_code, 
+						geographies = geographies) 
 			
 		# Custom Scenarios Choice in Output
 		callModule(outputIncludeCustomScenarioOptions, NULL)
@@ -163,7 +168,7 @@ shinyServer(function(input, output, session) {
 		callModule(debugPrintoutsModule, NULL, values = values)
 
 		output[['estimatesData']] <- 
-			DT::renderDataTable( filtered_data[['estimatesData']](), 
+			DT::renderDataTable( sim_data_w_program_changes()[['ESTIMATES_DATA']],# filtered_data[['estimatesData']](), 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
 

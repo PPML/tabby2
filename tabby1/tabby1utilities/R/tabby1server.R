@@ -2,9 +2,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
-	AGEGROUPS_DATA <- sim_data[['AGEGROUPS_DATA']]
-	ESTIMATES_DATA <- sim_data[['ESTIMATES_DATA']]
-	TRENDS_DATA <- sim_data[['TRENDS_DATA']]
+	AGEGROUPS_DATA <- sim_data()[['AGEGROUPS_DATA']]
+	ESTIMATES_DATA <- sim_data()[['ESTIMATES_DATA']]
+	TRENDS_DATA <- sim_data()[['TRENDS_DATA']]
 
 
 	# user_filtered_data <- reactiveValues()
@@ -22,7 +22,15 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
         outcome == input[[estimates$IDs$controls$outcomes]],
-        scenario %in% c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case", 'base_case2', 'programChange1'),
+				scenario %in% 
+				  c(input[[estimates$IDs$controls$interventions]],
+						input[[estimates$IDs$controls$analyses]], 
+						"base_case", 
+						'base_case2',
+				    'programChange0', 
+						'programChange1', 
+						'programChange2', 
+						'programChange3'),
         comparator == input[[estimates$IDs$controls$comparators]]
       ) %>%
       arrange(scenario) %>%
@@ -251,7 +259,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           input[[trends$IDs$controls$analyses]],
           "base_case",
 					"base_case2",
-					"programChange1"
+					"programChange0",
+					"programChange1",
+					"programChange2",
+					"programChange3"
         ),
         comparator == input[[trends$IDs$controls$comparators]]
       ) %>%
@@ -435,7 +446,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           input[[agegroups$IDs$controls$analyses]],
           "base_case",
 					"base_case2",
-					'programChange1'
+					'programChange0',
+					'programChange1',
+					'programChange2',
+					'programChange3'
         ),
         comparator == 'absolute_value'
       )
