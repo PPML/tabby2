@@ -175,29 +175,37 @@ programChangePanel <- function(n) {
       column(6, {
         tagList(
         tags$h4("LTBI Treatment Cascade:"),
-        numericInput(inputId = paste0(id, "CoverageRate"),
-                    label = "Screening Coverage Rate as a Multiple of the Current Rate",
-                    value = 1, min = 1, max = 5),
-        numericInput(inputId = paste0(id, "IGRACoverage"),
-                     label = "Fraction of Individuals Receiving IGRA (%)",
-                     value = 0, min = 0, max = 100),
-        numericInput(inputId = paste0(id, "AcceptingTreatmentFraction"),
-                     label = "Fraction of Individuals Testing Positive who Accept Treatment (%)",
-                     value = 1, min = 0, max = 100),
-        numericInput(inputId = paste0(id, "CompletionRate"),
-                     label = "Fraction of Individuals Initiating Treatment Who Complete Treatment (%)",
-                     value = 1, min = 0, max = 100)
+				numericInput(label = 'Start Year', inputId = paste0(id, "StartYear"),
+				             value = 2018, min = 2018, max = 2050),
+				uiOutput(paste0(id, 'CoverageRateInput')),
+        # numericInput(inputId = paste0(id, "CoverageRate"),
+        #             label = "Screening Coverage Rate as a Multiple of the Current Rate",
+        #             value = 1, min = 1, max = 5),
+				uiOutput(paste0(id, 'IGRACoverageInput')),
+        # numericInput(inputId = paste0(id, "IGRACoverage"),
+        #              label = "Fraction of Individuals Receiving IGRA (%)",
+        #              value = 0, min = 0, max = 100),
+				uiOutput(paste0(id, 'AcceptingTrtFrcInput')),
+        # numericInput(inputId = paste0(id, "AcceptingTreatmentFraction"),
+        #              label = "Fraction of Individuals Testing Positive who Accept Treatment (%)",
+        #              value = 1, min = 0, max = 100),
+				uiOutput(paste0(id, 'CompletionRateInput'))
+        # numericInput(inputId = paste0(id, "CompletionRate"),
+        #              label = "Fraction of Individuals Initiating Treatment Who Complete Treatment (%)",
+        #              value = 1, min = 0, max = 100)
         )
       }),
       column(6, {
         tagList(
       tags$h4("TB Treatment Cascade:"),
-      numericInput(inputId = paste0(id, "AverageTimeToTreatment"),
-                   label = "Duration of Infectiousness (0-100% of current value)",
-                   value = 1, min = 0, max = 100),
-      numericInput(inputId = paste0(id, "DefaultRate"),
-                   label = "Fraction Discontinuing/Defaulting from Treatment (%)",
-                   value = 0, min = 0, max = 100)
+				uiOutput(paste0(id, 'AvgTimeToTrtInput')),
+      # numericInput(inputId = paste0(id, "AverageTimeToTreatment"),
+      #              label = "Duration of Infectiousness (0-100% of current value)",
+      #              value = 1, min = 0, max = 100),
+				uiOutput(paste0(id, 'TrtDefaultInput'))
+      # numericInput(inputId = paste0(id, "DefaultRate"),
+      #              label = "Fraction Discontinuing/Defaulting from Treatment (%)",
+      #              value = 0, min = 0, max = 100)
         )
       })
                   
@@ -227,7 +235,8 @@ programChangePanel <- function(n) {
 				label = 'View Outcomes',
 				class = 'btn-primary',
 				style = 'color: white;'
-			)
+			),
+			actionButton(paste0(n, 'RunSimulations'), label = 'Run Model!')
 		)
   )
 	)
