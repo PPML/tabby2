@@ -43,6 +43,7 @@ updateProgramChanges <- function(input, output, session, values) {
 		# Change scenario that is currently being defined.
     pcn <- paste0("programChange", program_change_to_update)
     programChangeName = paste0(pcn, 'Name')
+    programChangeStartYear = paste0(pcn, 'StartYear')
     programChangeLtbi_screening_coverage_multiplier = paste0(pcn, "CoverageRate")
     programChangeFraction_receiving_igra = paste0(pcn, "IGRACoverage")
     programChangeFraction_accepting_ltbi_treatment = paste0(pcn, "AcceptingTreatmentFraction")
@@ -54,6 +55,7 @@ updateProgramChanges <- function(input, output, session, values) {
     values[['scenarios']][['program_changes']][[program_change_to_update]] <-
       list(
         name = input[[programChangeName]],
+				start_year = input[[programChangeStartYear]],
         ltbi_screening_coverage_multiplier = input[[programChangeLtbi_screening_coverage_multiplier]],
         fraction_receiving_igra = input[[programChangeFraction_receiving_igra]],
         fraction_accepting_ltbi_treatment = input[[programChangeFraction_accepting_ltbi_treatment]],
