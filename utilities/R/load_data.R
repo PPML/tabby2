@@ -3,10 +3,10 @@ load_data <- function(input, output, session, geo_short_code) {
   data <- reactiveValues()
 
 	# Import and format Age Groups Data
-		if (geo_short_code() == 'US') {
-			data[['AGEGROUPS_DATA']] <- 
-				(data_agegroups() %>% rename(type = statistic))
-		} else {
+		# if (geo_short_code() == 'US') {
+		# 	data[['AGEGROUPS_DATA']] <- 
+		# 		(data_agegroups() %>% rename(type = statistic))
+		# } else {
 
 			# Lookup sm_restab2 by geo_short_code, cast the data as.data.frame
 			restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "sm_restab2.rds",
@@ -27,14 +27,14 @@ load_data <- function(input, output, session, geo_short_code) {
 			restab2 %>% mutate_if(is.factor, as.character) -> restab2
 			
 			data[['AGEGROUPS_DATA']] <- restab2
-		}
+		# }
 	
 
 	# Import and format Age Groups Data
 
-	if (geo_short_code() == 'US') { 
-		data[['TRENDS_DATA']] <-data_trends()
-	} else {
+	# if (geo_short_code() == 'US') { 
+	# 	data[['TRENDS_DATA']] <-data_trends()
+	# } else {
 
 		# Lookup bg_restab2 by geo_short_code, cast the data as.data.frame
 		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "bg_restab2.rds",
@@ -54,7 +54,7 @@ load_data <- function(input, output, session, geo_short_code) {
     restab2 %>% mutate_if(is.factor, as.character) -> restab2
 		restab2$year <- as.numeric(restab2$year)
 		data[['TRENDS_DATA']] <- restab2
-	}
+	# }
 	
   data[['ESTIMATES_DATA']] <-  
 		filter(data[['TRENDS_DATA']], year %in% c(2018, 2020, 2025, 2035, 2049))
