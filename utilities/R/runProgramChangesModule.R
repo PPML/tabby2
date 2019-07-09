@@ -1,6 +1,7 @@
-runProgramChanges <- function(input, output, session, values, geo_short_code, data, prg_chng_default) { 
+runProgramChanges <- function(input, output, session, values, geo_short_code, sim_data, prg_chng_default) { 
 
 
+  if (! input$programChange1Name == '') {
 	# load the geography data into mitus
 	model_load(geo_short_code())
 
@@ -164,14 +165,14 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, da
 
 	new_data <- reactiveValues()
 
-	new_data[['AGEGROUPS_DATA']] <- rbind.data.frame(data[['AGEGROUPS_DATA']], restab_small)
+	new_data[['AGEGROUPS_DATA']] <- rbind.data.frame(sim_data[['AGEGROUPS_DATA']], restab_small)
 
-	trendsData <- rbind.data.frame(data[['TRENDS_DATA']], restab_big)
+	trendsData <- rbind.data.frame(sim_data[['TRENDS_DATA']], restab_big)
 		trendsData$year <- as.integer(trendsData$year)
 
 	new_data[['TRENDS_DATA']] <- trendsData
 
-		new_data[['ESTIMATES_DATA']] <- rbind.data.frame(data[['ESTIMATES_DATA']], 
+		new_data[['ESTIMATES_DATA']] <- rbind.data.frame(sim_data[['ESTIMATES_DATA']], 
 		dplyr::filter(restab_big, as.integer(as.character(year)) %in% c(2018, 2020, 2025, 2035, 2049)))
 
     # cat('about to return newnewdata')
@@ -201,4 +202,5 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, da
 	# }
 
   return(new_data)
+	} else return(sim_data)
 }

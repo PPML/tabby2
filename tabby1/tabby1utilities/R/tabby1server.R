@@ -2,9 +2,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
-	AGEGROUPS_DATA <- sim_data()[['AGEGROUPS_DATA']]
-	ESTIMATES_DATA <- sim_data()[['ESTIMATES_DATA']]
-	TRENDS_DATA <- sim_data()[['TRENDS_DATA']]
+	AGEGROUPS_DATA <- sim_data[['AGEGROUPS_DATA']]
+	ESTIMATES_DATA <- sim_data[['ESTIMATES_DATA']]
+	TRENDS_DATA <- sim_data[['TRENDS_DATA']]
 
 
 	# user_filtered_data <- reactiveValues()
@@ -26,7 +26,6 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 				  c(input[[estimates$IDs$controls$interventions]],
 						input[[estimates$IDs$controls$analyses]], 
 						"base_case", 
-						'base_case2',
 				    'programChange0', 
 						'programChange1', 
 						'programChange2', 
@@ -258,7 +257,6 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           input[[trends$IDs$controls$interventions]],
           input[[trends$IDs$controls$analyses]],
           "base_case",
-					"base_case2",
 					"programChange0",
 					"programChange1",
 					"programChange2",
@@ -445,7 +443,6 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           input[[agegroups$IDs$controls$interventions]],
           input[[agegroups$IDs$controls$analyses]],
           "base_case",
-					"base_case2",
 					'programChange0',
 					'programChange1',
 					'programChange2',

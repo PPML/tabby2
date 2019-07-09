@@ -131,15 +131,35 @@ shinyServer(function(input, output, session) {
 		# Load Data Server
 		sim_data <- callModule(load_data, id = NULL, geo_short_code = geo_short_code)
 
-		# Display the summary statistics in the TTT interventions
-		callModule(summaryStatistics, NULL, values, sim_data = sim_data)
 
     # runSimulationsButton <- reactive({ input[['1RunSimulations']] })
 
 		# Run & Append Program Changes Custom Scenarios to Sim Data
-    # sim_data_w_program_changes <- eventReactive(input[['1RunSimulations']], {
-				# callModule(runProgramChanges, NULL, values, geo_short_code, sim_data, prg_chng_default)
+    # observeEvent(input[['1RunSimulations']], {
+		sim_data2 <- callModule(runProgramChanges, NULL, values, geo_short_code, sim_data, prg_chng_default)
 		# })
+
+		# sim_data_w_custom_scenarios <- reactive({ 
+		#   if (exists('sim_data2') && ! is.null(sim_data2)) { 
+		# 	  cat("not null!\n")
+		# 	  return(reactive({ sim_data2 })) 
+		# 	} else {
+		# 		return(sim_data)
+		# 	}
+		# })
+
+    # sim_data <- eventReactive({ 
+		  # geo_short_code()
+			# input[['1RunSimulations']] }, {
+
+			# callModule(constructSimulationDFs, 
+				# id = NULL, 
+				# geo_short_code = geo_short_code,
+				# prg_chng_default = prg_chng_default)
+		# })
+
+		# Display the summary statistics in the TTT interventions
+		callModule(summaryStatistics, NULL, values, sim_data = sim_data)
 
 		# Tabby1 Server
 		# outcomes_filtered_data <- 
@@ -151,7 +171,7 @@ shinyServer(function(input, output, session) {
 						module = tabby1Server, 
 						id = "tabby1", 
 						ns = NS("tabby1"), 
-						sim_data = reactive({ sim_data }),
+						sim_data = sim_data2,
 						geo_short_code = geo_short_code, 
 						geographies = geographies) 
 			
@@ -168,7 +188,7 @@ shinyServer(function(input, output, session) {
 		callModule(debugPrintoutsModule, NULL, values = values)
 
 		output[['estimatesData']] <- 
-			DT::renderDataTable( filtered_data[['estimatesData']](),# filtered_data[['estimatesData']](), 
+			DT::renderDataTable( sim_data[['ESTIMATES_DATA']],# filtered_data[['estimatesData']](), 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
 
