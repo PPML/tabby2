@@ -2,9 +2,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
-	AGEGROUPS_DATA <- sim_data[['AGEGROUPS_DATA']]
-	ESTIMATES_DATA <- sim_data[['ESTIMATES_DATA']]
-	TRENDS_DATA <- sim_data[['TRENDS_DATA']]
+	AGEGROUPS_DATA <- reactive({ sim_data()[['AGEGROUPS_DATA']] })
+	ESTIMATES_DATA <- reactive({ sim_data()[['ESTIMATES_DATA']] })
+	TRENDS_DATA <- reactive({ sim_data()[['TRENDS_DATA']] })
 
 
 	# user_filtered_data <- reactiveValues()
@@ -17,7 +17,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], 'base_case')
     )
 
-    ESTIMATES_DATA %>%
+    ESTIMATES_DATA() %>%
       filter(
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
@@ -248,7 +248,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       )
     )
 
-    TRENDS_DATA %>%
+    TRENDS_DATA() %>%
       filter(
         population == input[[trends$IDs$controls$populations]],
         age_group == input[[trends$IDs$controls$ages]],
@@ -433,7 +433,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         input[[agegroups$IDs$controls$years]] <= 2100
     )
     
-    AGEGROUPS_DATA %>%
+    AGEGROUPS_DATA() %>%
       filter(
         population == input[[agegroups$IDs$controls$populations]],
         outcome == input[[agegroups$IDs$controls$outcomes]],

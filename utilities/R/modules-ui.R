@@ -147,19 +147,19 @@ programChanges <- function() {
 LTBI treatment and active TB treatment care cascades."),
   tabsetPanel(id = "currentlySelectedProgramChange",
     tabPanel(title = "Program Change 1", value = '1', {
-      programChangePanel(1)
+			uiOutput('programChange1')
     }),
     tabPanel(title = "Program Change 2", value = '2', {
-      programChangePanel(2)
+			uiOutput('programChange2')
     }),
     tabPanel(title = "Program Change 3", value = '3', {
-      programChangePanel(3)
+			uiOutput('programChange3')
     })
   )
   )
 }
 
-programChangePanel <- function(n) {
+programChangePanel <- function(n, prg_chng) {
   id <- paste0("programChange", n)
   return(
 	tagList(
@@ -176,36 +176,33 @@ programChangePanel <- function(n) {
         tagList(
         tags$h4("LTBI Treatment Cascade:"),
 				numericInput(label = 'Start Year', inputId = paste0(id, "StartYear"),
-				             value = 2018, min = 2018, max = 2050),
-				uiOutput(paste0(id, 'CoverageRateInput')),
-        # numericInput(inputId = paste0(id, "CoverageRate"),
-        #             label = "Screening Coverage Rate as a Multiple of the Current Rate",
-        #             value = 1, min = 1, max = 5),
-				uiOutput(paste0(id, 'IGRACoverageInput')),
-        # numericInput(inputId = paste0(id, "IGRACoverage"),
-        #              label = "Fraction of Individuals Receiving IGRA (%)",
-        #              value = 0, min = 0, max = 100),
-				uiOutput(paste0(id, 'AcceptingTrtFrcInput')),
-        # numericInput(inputId = paste0(id, "AcceptingTreatmentFraction"),
-        #              label = "Fraction of Individuals Testing Positive who Accept Treatment (%)",
-        #              value = 1, min = 0, max = 100),
-				uiOutput(paste0(id, 'CompletionRateInput'))
-        # numericInput(inputId = paste0(id, "CompletionRate"),
-        #              label = "Fraction of Individuals Initiating Treatment Who Complete Treatment (%)",
-        #              value = 1, min = 0, max = 100)
+				             value = 2020, min = 2020, max = 2050),
+        numericInput(inputId = paste0(id, "CoverageRate"),
+                    label = "Screening Coverage Rate as a Multiple of the Current Rate",
+                    value = round(prg_chng['scrn_cov'], 2), min = 1, max = 5),
+        numericInput(inputId = paste0(id, "IGRACoverage"),
+                     label = "Percentage of Individuals Receiving IGRA (%)",
+                     value = round(prg_chng['IGRA_frc']*100, 2), min = 0, max = 100),
+        numericInput(inputId = paste0(id, "AcceptingTreatmentFraction"),
+                     label = "Percentage of Individuals Testing Positive who Accept Treatment (%)",
+                     value = round(prg_chng['ltbi_init_frc']*100, 2), min = 0, max = 100),
+        numericInput(inputId = paste0(id, "CompletionRate"),
+                     label = "Percentage of Individuals Initiating Treatment Who Complete Treatment (%)",
+                     value = round(prg_chng['ltbi_comp_frc']*100, 2), min = 0, max = 100),
+				numericInput(inputId = paste0(id, "TreatmentEffectiveness"),
+										 label = "Percentage of LTBI Treatment Effectiveness (%)",
+				             value = round(prg_chng['ltbi_eff_frc']*100, 2))
         )
       }),
       column(6, {
         tagList(
       tags$h4("TB Treatment Cascade:"),
-				uiOutput(paste0(id, 'AvgTimeToTrtInput')),
-      # numericInput(inputId = paste0(id, "AverageTimeToTreatment"),
-      #              label = "Duration of Infectiousness (0-100% of current value)",
-      #              value = 1, min = 0, max = 100),
-				uiOutput(paste0(id, 'TrtDefaultInput'))
-      # numericInput(inputId = paste0(id, "DefaultRate"),
-      #              label = "Fraction Discontinuing/Defaulting from Treatment (%)",
-      #              value = 0, min = 0, max = 100)
+      numericInput(inputId = paste0(id, "AverageTimeToTreatment"),
+                   label = "Duration of Infectiousness (0-100% of current value)",
+                   value = round(prg_chng['tb_tim2tx_frc'], 2), min = 0, max = 100),
+      numericInput(inputId = paste0(id, "DefaultRate"),
+                   label = "Percentage Discontinuing/Defaulting from Treatment (%)",
+                   value = round(prg_chng['tb_txdef_frc']*100, 2), min = 0, max = 100)
         )
       })
                   

@@ -92,7 +92,7 @@ body <- dashboardBody(
 
 		# div(class = "login", id = 'uiLogin', uiOutput("uiLogin"), textOutput("pass")),
 
-		uiOutput('page')
+		# uiOutput('page')
 	
     
   # This is an anonymous function which does the exact same thing 
@@ -102,13 +102,13 @@ body <- dashboardBody(
   # This is just 
   # tabItems(tabItem(), ...), but written in a way that allows me
   # to automatically loop over my tabnames and tabcontents variables.
-  # (function (...) 
-  # {
-  #   lapply(..., shinydashboard:::tagAssert, class = "tab-pane")
-  #   div(class = "tab-content", ...)
-  # })(lapply(seq_along(tabnames), function(x) {
-  #   tabItem(tabName = names(tabnames)[[x]], tabcontents[[x]])
-  # }))
+  (function (...) 
+  {
+    lapply(..., shinydashboard:::tagAssert, class = "tab-pane")
+    div(class = "tab-content", ...)
+  })(lapply(seq_along(tabnames), function(x) {
+    tabItem(tabName = names(tabnames)[[x]], tabcontents[[x]])
+  }))
   )
   
 )

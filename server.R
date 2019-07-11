@@ -54,6 +54,8 @@ geographies[['DC']] <- 'District of Columbia'
 available_geographies <- geographies[scan_for_available_geographies(names(geographies))]
 # available_geographies <- c(US = 'United States')
 
+invert_geographies <- setNames(nm = unname(geographies), object = names(geographies))
+
 # Load risk group rate ratios for use in the targeted testing and treatment
 # intervention builder
 risk_group_rate_ratios <- load_risk_group_data()
@@ -62,17 +64,17 @@ risk_group_rate_ratios <- load_risk_group_data()
 
 shinyServer(function(input, output, session) {
   # Load Authentication UI
-  source("www/Login.R",  local = TRUE)
+  # source("www/Login.R",  local = TRUE)
 
   # Either render the Login/Authentication Page or Render 
 	# the application pages.
 	output$page <- renderUI({
-	if (USER$Logged == FALSE) { # Render Login Page
-			div(class = "login", id = 'uiLogin',
-					uiOutput("uiLogin"),
-					textOutput("pass")
-			)
-	} else { 
+	# if (USER$Logged == FALSE) { # Render Login Page
+	# 		div(class = "login", id = 'uiLogin',
+	# 				uiOutput("uiLogin"),
+	# 				textOutput("pass")
+	# 		)
+	# } else { 
 	  # Render tabPanel Contents
 
 		# In order to wrap everything in tab-pane and tab-content html tags 
@@ -89,21 +91,43 @@ shinyServer(function(input, output, session) {
 		})(lapply(seq_along(tabnames), function(x) {
 			tabItem(tabName = names(tabnames)[[x]], tabcontents[[x]])
 		}))
-	}})
+	})
 
   # Only render application features if the user is logged in
-	observe({
-	  if (USER$Logged == TRUE) {
+	# observe({
+	#   if (USER$Logged == TRUE) {
 			# Once the user is logged in, toggle which panel is selected (imperceptibly fast) 
 			# so that the About-UI Re-renders.
-			observeEvent(USER$Logged, {
-			  updateTabsetPanel(session = session, inputId = 'sidebar', selected = 'predefined')
-			  updateTabsetPanel(session = session, inputId = 'sidebar', selected = 'about')
+			# observeEvent(USER$Logged, {
+			#   updateTabsetPanel(session = session, inputId = 'sidebar', selected = 'predefined')
+			#   updateTabsetPanel(session = session, inputId = 'sidebar', selected = 'about')
 
-			})
+			# })
+
+		# Output the Selected Geography
+		output$location_selected <- renderUI({
+			tags$a(paste0("Location: ", input$state))
+		})
 
 		# Geography Short Code
-		geo_short_code <- callModule(geoShortCode, NULL, geographies)
+		geo_short_code <- 
+			reactive({
+				req(input$state)
+				cat('how often is this being run?')
+				invert_geographies[[input$state]]
+			})
+			
+			# callModule(geoShortCode, NULL, geographies)
+
+		# Output short-code for use in plot titles
+		output$geo_short_code <- renderText({ geo_short_code() }) 	
+
+		# Specify sim_data to be a reactiveList which will hold our simulation outcomes,
+		# both pre-simulated and simulated on the fly.
+		sim_data <- reactiveValues(presimulated = NULL,
+		  programChanges1 = NULL,
+		  programChanges2 = NULL,
+		  programChanges3 = NULL)
 
 		# Re-Render About UI
 		# callModule(updateAboutUI, NULL, available_geographies)
@@ -111,10 +135,14 @@ shinyServer(function(input, output, session) {
 		#  Setup `values` to contain our reactiveValues
 		values <- callModule(constructReactiveValues, NULL)
 
-    prg_chng_default <- callModule(fillDefaultProgramChangeValues, NULL, geo_short_code)
+    default_prg_chng <- callModule(compute_default_prg_chng, NULL, geo_short_code)
 
 		# Watch for Updates to Custom Scenarios
 		values <- callModule(updateProgramChanges, NULL, values)
+
+		output$programChange1 <- renderUI({ programChangePanel(1, default_prg_chng() ) })
+		output$programChange2 <- renderUI({ programChangePanel(2, default_prg_chng() ) })
+		output$programChange3 <- renderUI({ programChangePanel(3, default_prg_chng() ) })
 		
 		# Update reactiveValues to reflect selected/defined risk group rate ratios
 		values <- callModule(updateTargetedRiskGroupRates, NULL, risk_group_rate_ratios, values)
@@ -128,16 +156,58 @@ shinyServer(function(input, output, session) {
 		# Next/Back Page Buttons
 		callModule(nextBackButtons, NULL)
 		
+    # Get a Reactive that Returns Pre-Simulated Data based on geo_short_code
+		# presimulated_data <- callModule(load_data, NULL, geo_short_code)
+
 		# Load Data Server
-		sim_data <- callModule(load_data, id = NULL, geo_short_code = geo_short_code)
+		observeEvent(geo_short_code(), {
+			sim_data[['presimulated']] <- load_data(geo_short_code()) # presimulated_data()
+			sim_data[['programChanges1']] <- NULL
+			sim_data[['programChanges2']] <- NULL
+			sim_data[['programChanges3']] <- NULL
+		})
 
-
-    # runSimulationsButton <- reactive({ input[['1RunSimulations']] })
+		compute_program_change_1 <- callModule(runProgramChanges, NULL, n = 1, values, geo_short_code, sim_data, default_prg_chng)
+		compute_program_change_2 <- callModule(runProgramChanges, NULL, n = 2, values, geo_short_code, sim_data, default_prg_chng)
+		compute_program_change_3 <- callModule(runProgramChanges, NULL, n = 3, values, geo_short_code, sim_data, default_prg_chng)
 
 		# Run & Append Program Changes Custom Scenarios to Sim Data
-    # observeEvent(input[['1RunSimulations']], {
-		sim_data2 <- callModule(runProgramChanges, NULL, values, geo_short_code, sim_data, prg_chng_default)
-		# })
+    observeEvent(input[['1RunSimulations']], {
+			sim_data[['programChanges1']] <- compute_program_change_1()
+		})
+
+    observeEvent(input[['2RunSimulations']], {
+			sim_data[['programChanges2']] <- compute_program_change_2()
+		})
+
+    observeEvent(input[['3RunSimulations']], {
+			sim_data[['programChanges3']] <- compute_program_change_3()
+		})
+			# sim_data[['programChanges2']] <- callModule(runProgramChanges, NULL, n = 2, values, geo_short_code, sim_data, default_prg_chng)
+			# sim_data[['programChanges3']] <- callModule(runProgramChanges, NULL, n = 3, values, geo_short_code, sim_data, default_prg_chng)
+
+		combined_data <- reactive({ 
+			list(
+			AGEGROUPS_DATA = rbind.data.frame(
+				sim_data[['presimulated']][['AGEGROUPS_DATA']],
+				sim_data[['programChanges1']][['AGEGROUPS_DATA']],
+				sim_data[['programChanges2']][['AGEGROUPS_DATA']],
+				sim_data[['programChanges3']][['AGEGROUPS_DATA']]
+			),
+			ESTIMATES_DATA = rbind.data.frame(
+				sim_data[['presimulated']][['ESTIMATES_DATA']],
+				sim_data[['programChanges1']][['ESTIMATES_DATA']],
+				sim_data[['programChanges2']][['ESTIMATES_DATA']],
+				sim_data[['programChanges3']][['ESTIMATES_DATA']]
+			),
+		  TRENDS_DATA = rbind.data.frame(
+				sim_data[['presimulated']][['TRENDS_DATA']],
+				sim_data[['programChanges1']][['TRENDS_DATA']],
+				sim_data[['programChanges2']][['TRENDS_DATA']],
+				sim_data[['programChanges3']][['TRENDS_DATA']]
+			)
+			)
+		})
 
 		# sim_data_w_custom_scenarios <- reactive({ 
 		#   if (exists('sim_data2') && ! is.null(sim_data2)) { 
@@ -159,21 +229,21 @@ shinyServer(function(input, output, session) {
 		# })
 
 		# Display the summary statistics in the TTT interventions
-		callModule(summaryStatistics, NULL, values, sim_data = sim_data)
+		# callModule(summaryStatistics, NULL, values, sim_data = sim_data)
 
 		# Tabby1 Server
 		# outcomes_filtered_data <- 
 		#   callModule(filterOutcomes, NULL, sim_data_w_program_changes)
 
 		# Tabby1 Visualization Server
-			filtered_data <- 
-				callModule(
-						module = tabby1Server, 
-						id = "tabby1", 
-						ns = NS("tabby1"), 
-						sim_data = sim_data2,
-						geo_short_code = geo_short_code, 
-						geographies = geographies) 
+		filtered_data <- 
+			callModule(
+					module = tabby1Server, 
+					id = "tabby1", 
+					ns = NS("tabby1"), 
+					sim_data = combined_data,
+					geo_short_code = geo_short_code, 
+					geographies = geographies) 
 			
 		# Custom Scenarios Choice in Output
 		callModule(outputIncludeCustomScenarioOptions, NULL)
@@ -187,26 +257,26 @@ shinyServer(function(input, output, session) {
 		# Debug Printout Server 
 		callModule(debugPrintoutsModule, NULL, values = values)
 
-		output[['estimatesData']] <- 
-			DT::renderDataTable( sim_data[['ESTIMATES_DATA']],# filtered_data[['estimatesData']](), 
-				options = list(pageLength = 25, scrollX = TRUE), 
-				rownames=FALSE )  
+		# output[['estimatesData']] <- 
+		# 	DT::renderDataTable( sim_data[['ESTIMATES_DATA']],# filtered_data[['estimatesData']](), 
+		# 		options = list(pageLength = 25, scrollX = TRUE), 
+		# 		rownames=FALSE )  
 
-		output[['trendsData']] <- 
-			DT::renderDataTable( filtered_data[['trendsData']](), 
-				options = list(pageLength = 25, scrollX = TRUE), 
-				rownames=FALSE )  
+		# output[['trendsData']] <- 
+		# 	DT::renderDataTable( filtered_data[['trendsData']](), 
+		# 		options = list(pageLength = 25, scrollX = TRUE), 
+		# 		rownames=FALSE )  
 
-		output[['agegroupsData']] <- 
-			DT::renderDataTable( filtered_data[['agegroupsData']](), 
-				options = list(pageLength = 25, scrollX = TRUE), 
-				rownames=FALSE )  
+		# output[['agegroupsData']] <- 
+		# 	DT::renderDataTable( filtered_data[['agegroupsData']](), 
+		# 		options = list(pageLength = 25, scrollX = TRUE), 
+		# 		rownames=FALSE )  
 
-		output[['extraDebugOutputs']] <- 
-			renderText({
-				capture.output(str(sim_data[['ESTIMATES_DATA']]))
-			})
+		# output[['extraDebugOutputs']] <- 
+		# 	renderText({
+		# 		capture.output(str(sim_data[['ESTIMATES_DATA']]))
+		# 	})
 
-	} # end of if USER$Logged == TRUE
-	}) # end of observer on USER$Logged
+	# } # end of if USER$Logged == TRUE
+	# }) # end of observer on USER$Logged
 })

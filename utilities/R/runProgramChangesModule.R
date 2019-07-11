@@ -1,11 +1,12 @@
-runProgramChanges <- function(input, output, session, values, geo_short_code, sim_data, prg_chng_default) { 
+runProgramChanges <- function(input, output, session, n, values, geo_short_code, sim_data, prg_chng_default) { 
+	reactive({
 
+	prefix <- function(x) paste0('programChange', n, x) 
 
-  if (! input$programChange1Name == '') {
 	# load the geography data into mitus
 	model_load(geo_short_code())
 
-  prg_chng <- prg_chng_default
+  prg_chng <- prg_chng_default()
 	# # replace this shortly with the user defined prg_chng
 	# prg_chng<-c(2020,2,.90,.95,.85,.90,.8,.25)
 	# names(prg_chng)<-
@@ -56,7 +57,7 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, si
 		# new_data[['TRENDS_DATA']] <- data[['TRENDS_DATA']]
 		# new_data[['ESTIMATES_DATA']] <- data[['ESTIMATES_DATA']]
 
-    cat(input[['1RunSimulations']])
+    cat(input[[paste0(n, 'RunSimulations')]])
 
     # req(input[['programChange1CoverageRate']])
     # req(input[['programChange1StartYear']])
@@ -75,33 +76,37 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, si
 
 			cat("did anything happen?\n")
 
-			prg_chng['start_yr'] <- 
-				isolate( input[['programChange1StartYear']] )
-# values[['program_changes']][[1]][['start_year']]
+		prg_chng[['start_yr']] <- input[[prefix('StartYear')]]
+			# prg_chng[['start_yr']] <- 
+			# 	input[[prefix('StartYear')]] 
+# # values[['program_changes']][[1]][['start_year']]
 
-			prg_chng['scrn_cov'] <- 
-				isolate( input[['programChange1CoverageRate']] )
+			prg_chng[['scrn_cov']] <- 
+				input[[prefix('CoverageRate')]] 
 
-# # # values[['program_changes']][[1]][['ltbi_screening_coverage_multiplier']]
-			prg_chng['IGRA_frc'] <- 
-				isolate( input[['programChange1IGRACoverage']] )
+# # # # values[['program_changes']][[1]][['ltbi_screening_coverage_multiplier']]
+			prg_chng[['IGRA_frc']] <- 
+				input[[prefix('IGRACoverage')]] / 100
 
-# # # values[['program_changes']][[1]][['fraction_receiving_igra']] 
-			prg_chng['ltbi_init_frc'] <- 
-				input[['programChange1AcceptingTreatmentFraction']]
+# # # # values[['program_changes']][[1]][['fraction_receiving_igra']] 
+			prg_chng[['ltbi_init_frc']] <- 
+				input[[prefix('AcceptingTreatmentFraction')]] / 100
 
-# # # values[['program_changes']][[1]][['fraction_accepting_ltbi_treatment']] 
-			prg_chng['ltbi_comp_frc'] <- 
-				input[['programChange1CompletionRate']]
+# # # # values[['program_changes']][[1]][['fraction_accepting_ltbi_treatment']] 
+			prg_chng[['ltbi_comp_frc']] <- 
+				input[[prefix('CompletionRate')]] / 100
 
-# # values[['program_changes']][[1]][['fraction_completing_ltbi_treatment']] 
+			prg_chng[['ltbi_eff_frc']] <- 
+				input[[prefix('TreatmentEffectiveness')]] / 100
 
-			# # prg_chng['ltbi_eff_frc'] <- 
-			prg_chng['tb_tim2tx_frc'] <- 
-        input[['programChange1AverageTimeToTreatment']]
+# # # values[['program_changes']][[1]][['fraction_completing_ltbi_treatment']] 
 
-			prg_chng['tb_txdef_frc'] <- 
-				input[['programChange1DefaultRate']]
+			# # # prg_chng['ltbi_eff_frc'] <- 
+			prg_chng[['tb_tim2tx_frc']] <- 
+        input[[prefix('AverageTimeToTreatment')]] 
+
+			prg_chng[['tb_txdef_frc']] <- 
+				input[[prefix('DefaultRate')]] / 100
 
         # values[['program_changes']][[1]][['average_time_to_treatment_active']] 
 
@@ -123,7 +128,7 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, si
 	ResTabC_big <- mean_big_restabs(restabs)
 
 	# # reshape small results
-	restab <- restab1 <- make_empty_res_tab2sm(intvs = c('base_case2', 'programChange0'))
+	restab <- restab1 <- make_empty_res_tab2sm(intvs = c('base_case2', paste0('programChange', n)))
 	restab %<>% mutate_if(is.factor, as.integer) %>% as.matrix
 	restab_small <- cpp_reshaper(ResTabC_small[[1]], ResTabC_small[[2]], ResTabC_small[[3]], restab)
 	restab_small %<>% as.data.frame
@@ -133,7 +138,7 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, si
 	}
 
 	# # reshape big results
-	restab <- restab1 <- make_empty_res_tab2bg(intvs = c('base_case2', 'programChange0'))
+	restab <- restab1 <- make_empty_res_tab2bg(intvs = c('base_case2', paste0('programChange', n)))
 	restab %<>% mutate_if(is.factor, as.integer) %>% as.matrix
 	restab_big <- cpp_reshaper(ResTabC_big[[1]], ResTabC_big[[2]], ResTabC_big[[3]], restab)
 	restab_big %<>% as.data.frame
@@ -159,48 +164,20 @@ runProgramChanges <- function(input, output, session, values, geo_short_code, si
 		cbind.data.frame(restab_big, type = 'ci_high'),
 		cbind.data.frame(restab_big, type = 'ci_low')))
 
+	new_data <- list()
 
-	# new_data <- reactiveValues()
+	new_data[['AGEGROUPS_DATA']] <-  restab_small
 
+	restab_big$year <- as.integer(as.character(restab_big$year))
+	new_data[['TRENDS_DATA']] <- restab_big
+	# new_data[['TRENDS_DATA']]['year'] <- as.integer(new_data[['TRENDS_DATA']]['year'])
 
-	new_data <- reactiveValues()
+	new_data[['ESTIMATES_DATA']] <- 
+		dplyr::filter(restab_big, year %in% c(2018, 2020, 2025, 2035, 2049))
 
-	new_data[['AGEGROUPS_DATA']] <- rbind.data.frame(sim_data[['AGEGROUPS_DATA']], restab_small)
-
-	trendsData <- rbind.data.frame(sim_data[['TRENDS_DATA']], restab_big)
-		trendsData$year <- as.integer(trendsData$year)
-
-	new_data[['TRENDS_DATA']] <- trendsData
-
-		new_data[['ESTIMATES_DATA']] <- rbind.data.frame(sim_data[['ESTIMATES_DATA']], 
-		dplyr::filter(restab_big, as.integer(as.character(year)) %in% c(2018, 2020, 2025, 2035, 2049)))
-
-    # cat('about to return newnewdata')
-
-		# new_data[['AGEGROUPS_DATA']] <- rbind.data.frame(new_data[['AGEGROUPS_DATA']], restab_small)
-
-		# trendsData <- rbind.data.frame(data[['TRENDS_DATA']], restab_big)
-		# trendsData$year <- as.integer(trendsData$year)
-
-		# new_data[['TRENDS_DATA']] <- rbind.data.frame(new_data[['TRENDS_DATA']], restab_big)
-
-		# new_data[['ESTIMATES_DATA']] <- rbind.data.frame(new_data[['ESTIMATES_DATA']], 
-		# 	dplyr::filter(restab_big, as.integer(as.character(year)) %in% c(2018, 2020, 2025, 2035, 2049)))
-
-   cat('new data has: ', as.character(nrow(filter(new_data[['TRENDS_DATA']], scenario == 'programChange0'))),
+   cat('new data has: ', as.character(nrow(filter(new_data[['TRENDS_DATA']], scenario == paste0('programChange', n)))),
        'new_data rows\n')
 
-    # cat("about to return new data!\n")
-    # return(new_data)
-		# })
-
-
-  # return(list(restab_big = restab_big, restab_small=restab_small))
-	# })
-
-  # if (! any(is.null(c(new_sims[['restab_small']], new_sims[['restab_big']])))) { 
-	# }
-
   return(new_data)
-	} else return(sim_data)
+	})
 }
