@@ -26,11 +26,12 @@ source("globals.R")
 
 # The c++ reshaper has to be built from the source code inside 
 # the tabus package
-cpp_reshaper <- cxxfunction(
-	signature(ResTab='numeric', ResTabus='numeric', ResTabfb='numeric', res_tab2 = 'numeric'),
-	plugin='Rcpp',
-	body=readr::read_file(
-		system.file('inline_cpp/format_restab2.cpp', package='tabus')))
+# cpp_reshaper <- cxxfunction(
+# 	signature(ResTab='numeric', ResTabus='numeric', ResTabfb='numeric', res_tab2 = 'numeric'),
+# 	plugin='Rcpp',
+# 	body=readr::read_file(
+# 		system.file('inline_cpp/format_restab2.cpp', package='tabus')))
+assign('cpp_reshaper', tabus::construct_cpp_reshaper(), envir = .GlobalEnv)
 
 # Simple MD5 Username/Password Authentication Schema 
 library(datasets)
