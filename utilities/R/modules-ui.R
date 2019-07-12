@@ -79,6 +79,8 @@ standardInterventionsUI <- function() {
 
 customInterventionsUI <- function() {
   tagList(
+		br(),
+		h4("Inactive - Not Linked to Outcomes"),
     br(),
            p(
              "Use the custom Targeted Testing and Treatment to create scenarios that simulate
@@ -115,7 +117,7 @@ scenariosUI <- function() {
     column(
       12,
       tags$h1("Build Custom Model Scenarios"),
-			tags$h4("Beta - Not Linked to Outcomes"),
+			br(),
       tabsetPanel(id = 'CustomScenariosBuilder',
         tabPanel(title = "Targeted Testing and Treatment Interventions", value = 'ttt', {
           customInterventionsUI()
@@ -125,6 +127,8 @@ scenariosUI <- function() {
           }),
         tabPanel(title = "Custom Scenarios", value = 'customscenarios', {
           tagList(
+						br(),
+						h4("Inactive - Not Linked to Outcomes"),
             br(),
             p("Custom Scenarios allow users to simulate combinations of Targeted Testing 
 and Treatment interventions and Program Changes."),
@@ -165,12 +169,13 @@ programChangePanel <- function(n, prg_chng) {
 	tagList(
     wellPanel(
       fluidRow(
-        column(6, 
-               tags$h4("Define a Program Change"),
+				column(6, 
+
+			 tags$h4("Define a Program Change"),
         textInput(inputId = paste0(id, "Name"),
                   label = "Program Change Name",
                   placeholder = paste0("Program Change ", n))
-        )),
+			)),
       fluidRow(
       column(6, {
         tagList(
@@ -202,10 +207,10 @@ programChangePanel <- function(n, prg_chng) {
                    value = round(prg_chng['tb_tim2tx_frc'], 2), min = 0, max = 100),
       numericInput(inputId = paste0(id, "DefaultRate"),
                    label = "Percentage Discontinuing/Defaulting from Treatment (%)",
-                   value = round(prg_chng['tb_txdef_frc']*100, 2), min = 0, max = 100)
+                   value = round(prg_chng['tb_txdef_frc']*100, 2), min = 0, max = 100),
+			actionButton(paste0(n, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;')
         )
       })
-                  
     )
     ),
 		column(12,
@@ -232,8 +237,7 @@ programChangePanel <- function(n, prg_chng) {
 				label = 'View Outcomes',
 				class = 'btn-primary',
 				style = 'color: white;'
-			),
-			actionButton(paste0(n, 'RunSimulations'), label = 'Run Model!')
+			)
 		)
   )
 	)

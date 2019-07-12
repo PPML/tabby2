@@ -114,7 +114,6 @@ shinyServer(function(input, output, session) {
 		geo_short_code <- 
 			reactive({
 				req(input$state)
-				cat('how often is this being run?')
 				invert_geographies[[input$state]]
 			})
 			
@@ -230,7 +229,7 @@ shinyServer(function(input, output, session) {
 		# })
 
 		# Display the summary statistics in the TTT interventions
-		# callModule(summaryStatistics, NULL, values, sim_data = sim_data)
+		callModule(summaryStatistics, NULL, values, sim_data = sim_data)
 
 		# Tabby1 Server
 		# outcomes_filtered_data <- 

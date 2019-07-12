@@ -1,6 +1,6 @@
 summaryStatistics <- function(input, output, session, values, sim_data) {
 
-	TRENDS_DATA <- sim_data[['presimulated']][['TRENDS_DATA']]
+	TRENDS_DATA <- reactive({ sim_data[['presimulated']][['TRENDS_DATA']] })
 
 	output$ttt1numberTargeted <- renderText({input$ttt1numberTargeted})
 	output$ttt2numberTargeted <- renderText({input$ttt2numberTargeted})
@@ -9,7 +9,7 @@ summaryStatistics <- function(input, output, session, values, sim_data) {
 	# Reactive Values for the Incidence in Age-Nativity Group
   ageNativityIncidenceForTTT <- function(n) { 
 		reactive({
-			value <- TRENDS_DATA %>% 
+			value <- TRENDS_DATA() %>% 
 				filter(age_group == input[[paste0('ttt', n, 'agegroups')]],
 							 population == input[[paste0('ttt', n, 'nativity')]],
 							 outcome == 'tb_incidence_per_mil',
@@ -25,7 +25,7 @@ summaryStatistics <- function(input, output, session, values, sim_data) {
 
   ageNativityPrevalenceForTTT <- function(n) { 
 		reactive({
-			value <- TRENDS_DATA %>% 
+			value <- TRENDS_DATA() %>% 
 				filter(age_group == input[[paste0('ttt', n, 'agegroups')]],
 							 population == input[[paste0('ttt', n, 'nativity')]],
 							 outcome == 'pct_ltbi',
