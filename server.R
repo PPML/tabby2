@@ -258,25 +258,25 @@ shinyServer(function(input, output, session) {
 		# Debug Printout Server 
 		callModule(debugPrintoutsModule, NULL, values = values)
 
-		# output[['estimatesData']] <- 
-		# 	DT::renderDataTable( sim_data[['ESTIMATES_DATA']],# filtered_data[['estimatesData']](), 
-		# 		options = list(pageLength = 25, scrollX = TRUE), 
-		# 		rownames=FALSE )  
+		output[['estimatesData']] <- 
+			DT::renderDataTable( filtered_data[['estimatesData']](), 
+				options = list(pageLength = 25, scrollX = TRUE), 
+				rownames=FALSE )  
 
-		# output[['trendsData']] <- 
-		# 	DT::renderDataTable( filtered_data[['trendsData']](), 
-		# 		options = list(pageLength = 25, scrollX = TRUE), 
-		# 		rownames=FALSE )  
+		output[['trendsData']] <- 
+			DT::renderDataTable( filtered_data[['trendsData']](), 
+				options = list(pageLength = 25, scrollX = TRUE), 
+				rownames=FALSE )  
 
-		# output[['agegroupsData']] <- 
-		# 	DT::renderDataTable( filtered_data[['agegroupsData']](), 
-		# 		options = list(pageLength = 25, scrollX = TRUE), 
-		# 		rownames=FALSE )  
+		output[['agegroupsData']] <- 
+			DT::renderDataTable( filtered_data[['agegroupsData']](), 
+				options = list(pageLength = 25, scrollX = TRUE), 
+				rownames=FALSE )  
 
-		# output[['extraDebugOutputs']] <- 
-		# 	renderText({
-		# 		capture.output(str(sim_data[['ESTIMATES_DATA']]))
-		# 	})
+		output[['extraDebugOutputs']] <- 
+			renderText({
+				capture.output(str(sim_data[['ESTIMATES_DATA']]))
+			})
 
 	# } # end of if USER$Logged == TRUE
 	# }) # end of observer on USER$Logged
