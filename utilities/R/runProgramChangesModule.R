@@ -20,6 +20,11 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 	# 		"tb_txdef_frc") #Fraction Discontinuing/Defaulting from Treatment
 
 
+	if (input[[prefix('Name')]] == '') { 
+		scenario_name <- prefix('')
+	} else {
+		scenario_name <- input[[prefix('Name')]]
+	}
 
   # new_data <- reactiveValues() 
 
@@ -124,11 +129,11 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 	restabs <- format_as_restab_for_custom_scenarios('US', custom_scenario_output)
 
 	# # mean the simulations
-	ResTabC_small <- mean_small_restabs(restabs)
-	ResTabC_big <- mean_big_restabs(restabs)
+	ResTabC_small <- mean_small_restabs(restabs, nr = 2, nints = 2)
+	ResTabC_big <- mean_big_restabs(restabs, nr = 2, nints = 2)
 
 	# # reshape small results
-	restab <- restab1 <- make_empty_res_tab2sm(intvs = c('base_case2', paste0('programChange', n)))
+	restab <- restab1 <- make_empty_res_tab2sm(intvs = c('base_case2', prefix('')))
 	restab %<>% mutate_if(is.factor, as.integer) %>% as.matrix
 	restab_small <- cpp_reshaper(ResTabC_small[[1]], ResTabC_small[[2]], ResTabC_small[[3]], restab)
 	restab_small %<>% as.data.frame
@@ -138,7 +143,7 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 	}
 
 	# # reshape big results
-	restab <- restab1 <- make_empty_res_tab2bg(intvs = c('base_case2', paste0('programChange', n)))
+	restab <- restab1 <- make_empty_res_tab2bg(intvs = c('base_case2', prefix('')))
 	restab %<>% mutate_if(is.factor, as.integer) %>% as.matrix
 	restab_big <- cpp_reshaper(ResTabC_big[[1]], ResTabC_big[[2]], ResTabC_big[[3]], restab)
 	restab_big %<>% as.data.frame
@@ -175,7 +180,7 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 	new_data[['ESTIMATES_DATA']] <- 
 		dplyr::filter(restab_big, year %in% c(2018, 2020, 2025, 2035, 2049))
 
-   cat('new data has: ', as.character(nrow(filter(new_data[['TRENDS_DATA']], scenario == paste0('programChange', n)))),
+   cat('new data has: ', as.character(nrow(filter(new_data[['TRENDS_DATA']], scenario == scenario_name))),
        'new_data rows\n')
 
   return(new_data)

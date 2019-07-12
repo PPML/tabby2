@@ -29,7 +29,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 				    'programChange0', 
 						'programChange1', 
 						'programChange2', 
-						'programChange3'),
+						'programChange3',
+						input[['programChange1Name']],
+						input[['programChange2Name']],
+						input[['programChange3Name']]),
         comparator == input[[estimates$IDs$controls$comparators]]
       ) %>%
       arrange(scenario) %>%
@@ -446,7 +449,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 					'programChange0',
 					'programChange1',
 					'programChange2',
-					'programChange3'
+					input[['programChange1Name']],
+					input[['programChange2Name']],
+					input[['programChange3Name']]
         ),
         comparator == 'absolute_value'
       )
