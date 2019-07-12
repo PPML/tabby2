@@ -120,13 +120,13 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 		
 
 	# simulate program changes scenario
-	custom_scenario_output <- new_OutputsInt(loc = 'US', ParMatrix = Par[1:2,], prg_chng = prg_chng)
+	custom_scenario_output <- new_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng)
 	# # custom_scenario_output <- new_OutputsZint(ParMatrix = Par, prg_chng = prg_chng, samp_i = 1)
 
 	# # custom_scenario_output <- array(custom_scenario_output, dim = c(1, dim(custom_scenario_output)))
 
 	# reformat into small/big restabs (two lists of (ResTab, ResTabus, ResTabfb) for small/big)
-	restabs <- format_as_restab_for_custom_scenarios('US', custom_scenario_output)
+	restabs <- format_as_restab_for_custom_scenarios(geo_short_code(), custom_scenario_output)
 
 	# # mean the simulations
 	ResTabC_small <- mean_small_restabs(restabs, nr = 2, nints = 2)
