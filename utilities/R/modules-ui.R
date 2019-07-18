@@ -208,7 +208,11 @@ programChangePanel <- function(n, prg_chng) {
       numericInput(inputId = paste0(id, "DefaultRate"),
                    label = "Percentage Discontinuing/Defaulting from Treatment (%)",
                    value = round(prg_chng['tb_txdef_frc']*100, 2), min = 0, max = 100),
-			actionButton(paste0(n, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;')
+			tags$br(),
+			actionButton(paste0(id, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
+			disabled(actionButton(paste0(id, 'ChangeSettings'), label = 'Change Settings')),
+			disabled(actionButton(paste0(id, 'ViewOutcomes'), label = 'View Outcomes'))
+
         )
       })
     )

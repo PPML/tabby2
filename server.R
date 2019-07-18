@@ -172,15 +172,31 @@ shinyServer(function(input, output, session) {
 		compute_program_change_3 <- callModule(runProgramChanges, NULL, n = 3, values, geo_short_code, sim_data, default_prg_chng)
 
 		# Run & Append Program Changes Custom Scenarios to Sim Data
-    observeEvent(input[['1RunSimulations']], {
+    observeEvent(input[['programChange1RunSimulations']], {
 			sim_data[['programChanges1']] <- compute_program_change_1()
+
+			sapply(paste0('programChange1', c('Name', 'StartYear', 'CoverageRate', 'IGRACoverage',
+			'IGRA_frc', 'AcceptingTreatmentFraction', 'CompletionRate',
+			'TreatmentEffectiveness', 'AverageTimeToTreatment', 'DefaultRate', 'RunSimulations')), disable)
+
+			sapply(c('programChange1ChangeSettings', 'programChange1ViewOutcomes'), enable)
 		})
 
-    observeEvent(input[['2RunSimulations']], {
+		observeEvent(input[['programChange1ChangeSettings']], {
+			sim_data[['programChanges1']] <- NULL
+
+			sapply(paste0('programChange1', c('Name', 'StartYear', 'CoverageRate', 'IGRACoverage',
+			'IGRA_frc', 'AcceptingTreatmentFraction', 'CompletionRate',
+			'TreatmentEffectiveness', 'AverageTimeToTreatment', 'DefaultRate', 'RunSimulations')), enable)
+
+			sapply(c('programChange1ChangeSettings', 'programChange1ViewOutcomes'), disable)
+		})
+
+    observeEvent(input[['programChange2RunSimulations']], {
 			sim_data[['programChanges2']] <- compute_program_change_2()
 		})
 
-    observeEvent(input[['3RunSimulations']], {
+    observeEvent(input[['programChange3RunSimulations']], {
 			sim_data[['programChanges3']] <- compute_program_change_3()
 		})
 			# sim_data[['programChanges2']] <- callModule(runProgramChanges, NULL, n = 2, values, geo_short_code, sim_data, default_prg_chng)
