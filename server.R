@@ -1,14 +1,5 @@
-#
-#            Shiny App Server for Tabby2
-#             ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
-#   This server includes the following components/modules: 
-#     - Get short-codes for the user's selected geography
-#     - Reactive Values to store custom scenarios' definitions
-#     - Render custom scenarios' input settings UI
-#     - Use the Tabby1 Output Server for plot generation
-#     - Custom Scenarios Choice in Output Plots
-#     - Plots for Comparison to Recent Data
-#     - Debug Print Server (Optional) 
+
+### Load Dependencies ###
 
 library(shiny)
 library(shinydashboard)
@@ -23,42 +14,72 @@ devtools::load_all("tabby1/tabby1utilities")
 source("tabby1/tabby1global.R")
 source("globals.R")
 
+#
+#            Shiny Server for Tabby2
+#             ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+#   This server includes the following components/modules: 
+#     - Get short-codes for the user's selected geography
+#     - Reactive Values to store custom scenarios' definitions
+#     - Render custom scenarios' input settings UI
+#     - Use the Tabby1 Output Server for plot generation
+#     - Custom Scenarios Choice in Output Plots
+#     - Plots for Comparison to Recent Data
+#     - Debug Print Server (Optional) 
 
-# The c++ reshaper has to be built from the source code inside 
-# the tabus package
-# cpp_reshaper <- cxxfunction(
-# 	signature(ResTab='numeric', ResTabus='numeric', ResTabfb='numeric', res_tab2 = 'numeric'),
-# 	plugin='Rcpp',
-# 	body=readr::read_file(
-# 		system.file('inline_cpp/format_restab2.cpp', package='tabus')))
+# In approximate steps, this server.R file does the following: 
+#
+#   - Load the risk group rate ratios data.
+
+#   - Using the risk group rate ratios, and the user input 
+
+# 
+
+# Depending on the geography selected, load the presimulated data from MITUS
+# and present it using the original tabby UI and server as a module. 
+
+
+
+### cpp_reshaper ###
+
+# This cpp_reshaper is a function, written in C++, which reshapes simulation data from
+# the Modeling Interventions on Tuberculosis in the United States (MITUS) package.
+#
+# The reshaper converts 4 dimentional arrays with measures of TB outcomes (like
+# LTBI per million, TB related deaths, etc.), and converts those arrays into 2-dimensional
+# `tidy` data frames suitable for plotting with ggplot2.
+#
+# cpp_reshaper is built using construct_cpp_reshaper() from the tabus package, which uses
+# the inline package which compiles Rcpp functions
+# source code from the R-session.
+
 assign('cpp_reshaper', tabus::construct_cpp_reshaper(), envir = .GlobalEnv)
 
-# Simple MD5 Username/Password Authentication Schema 
-library(datasets)
-Logged <- FALSE
 
-if (file.exists("secret.txt") && 
-    digest::digest(readLines("secret.txt"), serialize=FALSE) == '5d41402abc4b2a76b9719d911017c592') {
-	Logged <- TRUE
-}
+### Geographies Available in MITUS ### 
 
-PASSWORD <- data.frame(
-  Username = c('alphaVersion'), 
-	Password = c('7ecc08db431548ba58865fc3fc09e831') # generate MD5 hashed passwords with digest::digest(..., serialize=FALSE)
-	)
+# These functions should scan the MITUS package for directories which have data available 
+# in the format that Tabby2 requires to visualize outcomes for a specific geography.
 
-# Set up a named vector for geographies calibrated in MITUS
+# Such folders are automatically detected using the scan_for_available_geographies function.
+
+# Get all possible geographies, assumed at this time to be the US, DC, and the 50 states.
 geographies <- setNames(nm = state.abb, state.name)
 geographies[['US']] <- 'United States'
 geographies[['DC']] <- 'District of Columbia'
-# Subset geographies to include only geographies with rendered results
-available_geographies <- geographies[scan_for_available_geographies(names(geographies))]
-# available_geographies <- c(US = 'United States')
 
+# Filter the possible geographies for those available in MITUS.
+available_geographies <- geographies[scan_for_available_geographies(names(geographies))]
+
+# Invert the available geographies for using as a hash-table to go back and forth 
+# between long-names and short-names for the available geographies.
 invert_geographies <- setNames(nm = unname(geographies), object = names(geographies))
+
+
+### Risk Group Rate Ratios ###
 
 # Load risk group rate ratios for use in the targeted testing and treatment
 # intervention builder
+
 risk_group_rate_ratios <- load_risk_group_data()
 
 
