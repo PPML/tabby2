@@ -73,3 +73,6 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
     filename = function() { "input_parameters.yaml" },
     content = function(file) { cat(yaml::as.yaml(reactiveValuesToList(input)), file = file) })
 }
+
+
+

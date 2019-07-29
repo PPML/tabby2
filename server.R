@@ -177,10 +177,7 @@ shinyServer(function(input, output, session) {
 		# Next/Back Page Buttons
 		callModule(nextBackButtons, NULL)
 		
-    # Get a Reactive that Returns Pre-Simulated Data based on geo_short_code
-		# presimulated_data <- callModule(load_data, NULL, geo_short_code)
-
-		# Load Data Server
+		# Load Presimulated Data Data Server Reactively Based on geo_short_code
 		observeEvent(geo_short_code(), {
 			sim_data[['presimulated']] <- load_data(geo_short_code()) # presimulated_data()
 			sim_data[['programChanges1']] <- NULL
@@ -188,24 +185,56 @@ shinyServer(function(input, output, session) {
 			sim_data[['programChanges3']] <- NULL
 		})
 
+    # Construct Reactive Objects Which Return Program Change Custom Scenarios
 		compute_program_change_1 <- callModule(runProgramChanges, NULL, n = 1, values, geo_short_code, sim_data, default_prg_chng)
 		compute_program_change_2 <- callModule(runProgramChanges, NULL, n = 2, values, geo_short_code, sim_data, default_prg_chng)
 		compute_program_change_3 <- callModule(runProgramChanges, NULL, n = 3, values, geo_short_code, sim_data, default_prg_chng)
 
-		# Run & Append Program Changes Custom Scenarios to Sim Data
-    observeEvent(input[['1RunSimulations']], {
+
+		# Run & Append Program Changes Custom Scenarios to Sim Data When programChange1RunSimulations Button is Pressed
+    observeEvent(input[['programChange1RunSimulations']], {
+      
+      # Compute and Fill in Data Into sim_data reactiveList
 			sim_data[['programChanges1']] <- compute_program_change_1()
+
+      # Disable Input for the programChange Scenario
+			sapply(paste0('programChange1', c('Name', 'StartYear', 'CoverageRate', 'IGRACoverage',
+			'IGRA_frc', 'AcceptingTreatmentFraction', 'CompletionRate',
+			'TreatmentEffectiveness', 'AverageTimeToTreatment', 'DefaultRate', 'RunSimulations')), disable)
+
+      # Enable the Change Settings and View Outcomes Button
+			sapply(c('programChange1ChangeSettings', 'programChange1ViewOutcomes'), enable)
 		})
 
-    observeEvent(input[['2RunSimulations']], {
+
+
+
+		observeEvent(input[['programChange1ChangeSettings']], {
+			sim_data[['programChanges1']] <- NULL
+
+			sapply(paste0('programChange1', c('Name', 'StartYear', 'CoverageRate', 'IGRACoverage',
+			'IGRA_frc', 'AcceptingTreatmentFraction', 'CompletionRate',
+			'TreatmentEffectiveness', 'AverageTimeToTreatment', 'DefaultRate', 'RunSimulations')), enable)
+
+			sapply(c('programChange1ChangeSettings', 'programChange1ViewOutcomes'), disable)
+		})
+
+
+
+
+    observeEvent(input[['programChange2RunSimulations']], {
 			sim_data[['programChanges2']] <- compute_program_change_2()
 		})
 
-    observeEvent(input[['3RunSimulations']], {
+
+
+
+    observeEvent(input[['programChange3RunSimulations']], {
 			sim_data[['programChanges3']] <- compute_program_change_3()
 		})
-			# sim_data[['programChanges2']] <- callModule(runProgramChanges, NULL, n = 2, values, geo_short_code, sim_data, default_prg_chng)
-			# sim_data[['programChanges3']] <- callModule(runProgramChanges, NULL, n = 3, values, geo_short_code, sim_data, default_prg_chng)
+
+
+
 
 		combined_data <- reactive({ 
 			list(
@@ -270,7 +299,7 @@ shinyServer(function(input, output, session) {
 		callModule(outputIncludeCustomScenarioOptions, NULL)
 		
 		# Plots for Comparison to Recent Data
-		callModule(comparisonToRecentData, NULL, geo_short_code)
+		callModule(comparisonToRecentData2, NULL, geo_short_code)
 
 		# Call Module for Saving Feedback Form Input
 		callModule(feedbackFormModule, NULL)
