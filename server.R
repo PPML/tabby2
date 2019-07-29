@@ -265,7 +265,7 @@ shinyServer(function(input, output, session) {
 		callModule(outputIncludeCustomScenarioOptions, NULL)
 		
 		# Plots for Comparison to Recent Data
-		callModule(comparisonToRecentData, NULL, geo_short_code)
+		callModule(comparisonToRecentData2, NULL, geo_short_code)
 
 		# Call Module for Saving Feedback Form Input
 		callModule(feedbackFormModule, NULL)

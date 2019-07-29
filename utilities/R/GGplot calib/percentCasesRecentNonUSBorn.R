@@ -1,0 +1,50 @@
+#dependencies
+library(ggplot2)
+library(MITUS)
+library(reshape2)
+
+#set the location
+loc<-loc
+
+#read in the target data
+#find file name
+#FB stratification
+fn<-list.files(pattern="fb_recent_cases",system.file(paste0(loc,"/calibration_targets/"),package = "MITUS"))
+target_df0 <-readRDS(system.file(paste0(loc,"/calibration_targets/",fn),package="MITUS"))  #read in the model output data
+target_df0<-target_df0[,-3] #keep year and percentage
+target_df0<-target_df0[(nrow(target_df0)-10):nrow(target_df0),] #last 10 years
+##set the parameter for years
+years<-target_df0[,1]
+target_df<-as.data.frame(target_df0)
+
+#update the column names for legend use
+colnames(target_df)<-c("year", "% non-US born cases from recent immigrants (<2yrs) target")
+
+#read in the model output data
+#find file name
+fn<-list.files(pattern="percentRecentFBcases",system.file(paste0(loc,"/calibration_outputs/"),package = "MITUS"))
+outcomes_df0 <-readRDS(system.file(paste0(loc,"/calibration_outputs/",fn), package="MITUS"))
+
+#format the outcomes data into one dataframe and update column names for legend
+outcomes_df<-cbind(years,outcomes_df0[12:22])
+outcomes_df<-as.data.frame(outcomes_df)
+colnames(outcomes_df)<-c("year", "% non-US born cases from recent immigrants (<2yrs) model output")
+#reshape the target data
+rtarget<-melt(target_df,id="year",color=variable)
+#reshape the outcomes data
+routcomes<-melt(outcomes_df,id ="year",color=variable)
+#set up the plot options
+ggplot() + theme_bw() + ylab("") + theme(legend.position="bottom") + guides(colour=guide_legend(override.aes=list(linetype=c(1,2)))) +
+  scale_x_continuous(breaks = years) +
+  #add the target data
+  geom_line(data=rtarget, aes(x=year, y=value*100,color=variable), linetype="dashed") +
+  #add the model output
+  geom_line(data=routcomes, aes(x=year, y=value,color=variable)) +
+  #add legend
+  scale_color_manual(name = "", values=c("blue","black"))+
+  #add plot title
+  ggtitle(paste0("Percent of non-US born TB cases from recent immigrants (<2yrs) in ",loc," ", years[1],"-", years[11]))+
+  #add data source
+  labs(caption="target data source: Online Tuberculosis Information System (OTIS)")
+
+
