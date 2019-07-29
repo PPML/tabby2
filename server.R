@@ -192,50 +192,33 @@ shinyServer(function(input, output, session) {
 
 
 		# Run & Append Program Changes Custom Scenarios to Sim Data When programChange1RunSimulations Button is Pressed
-    observeEvent(input[['programChange1RunSimulations']], {
-      
-      # Compute and Fill in Data Into sim_data reactiveList
-			sim_data[['programChanges1']] <- compute_program_change_1()
-
-      # Disable Input for the programChange Scenario
-			sapply(paste0('programChange1', c('Name', 'StartYear', 'CoverageRate', 'IGRACoverage',
-			'IGRA_frc', 'AcceptingTreatmentFraction', 'CompletionRate',
-			'TreatmentEffectiveness', 'AverageTimeToTreatment', 'DefaultRate', 'RunSimulations')), disable)
-
-      # Enable the Change Settings and View Outcomes Button
-			sapply(c('programChange1ChangeSettings', 'programChange1ViewOutcomes'), enable)
+		observeEvent(input[['programChange1RunSimulations']], {
+			sim_data[['programChanges1']] <- callModule(programChangesRunButton, NULL, n = 1, compute_program_change_1, sim_data)
+		})
+		observeEvent(input[['programChange2RunSimulations']], {
+			sim_data[['programChanges2']] <- callModule(programChangesRunButton, NULL, n = 2, compute_program_change_2, sim_data)
+		})
+		observeEvent(input[['programChange3RunSimulations']], {
+			sim_data[['programChanges3']] <- callModule(programChangesRunButton, NULL, n = 3, compute_program_change_3, sim_data)
 		})
 
 
-
-
+		# Delete Program Changes Custom Scenarios from Sim Data When Change Settings Button is Pressed
 		observeEvent(input[['programChange1ChangeSettings']], {
 			sim_data[['programChanges1']] <- NULL
-
-			sapply(paste0('programChange1', c('Name', 'StartYear', 'CoverageRate', 'IGRACoverage',
-			'IGRA_frc', 'AcceptingTreatmentFraction', 'CompletionRate',
-			'TreatmentEffectiveness', 'AverageTimeToTreatment', 'DefaultRate', 'RunSimulations')), enable)
-
-			sapply(c('programChange1ChangeSettings', 'programChange1ViewOutcomes'), disable)
+			callModule(programChangesChangeSettingsButton, NULL, n = 1)
+		})
+		observeEvent(input[['programChange2ChangeSettings']], {
+			sim_data[['programChanges2']] <- NULL
+			callModule(programChangesChangeSettingsButton, NULL, n = 2)
+		})
+		observeEvent(input[['programChange3ChangeSettings']], {
+			sim_data[['programChanges3']] <- NULL
+			callModule(programChangesChangeSettingsButton, NULL, n = 3)
 		})
 
 
-
-
-    observeEvent(input[['programChange2RunSimulations']], {
-			sim_data[['programChanges2']] <- compute_program_change_2()
-		})
-
-
-
-
-    observeEvent(input[['programChange3RunSimulations']], {
-			sim_data[['programChanges3']] <- compute_program_change_3()
-		})
-
-
-
-
+		# Construct a Reactive Returning One Data Frame with Pre-Simulated and Custom Scenarios
 		combined_data <- reactive({ 
 			list(
 			AGEGROUPS_DATA = rbind.data.frame(
@@ -258,25 +241,6 @@ shinyServer(function(input, output, session) {
 			)
 			)
 		})
-
-		# sim_data_w_custom_scenarios <- reactive({ 
-		#   if (exists('sim_data2') && ! is.null(sim_data2)) { 
-		# 	  cat("not null!\n")
-		# 	  return(reactive({ sim_data2 })) 
-		# 	} else {
-		# 		return(sim_data)
-		# 	}
-		# })
-
-    # sim_data <- eventReactive({ 
-		  # geo_short_code()
-			# input[['1RunSimulations']] }, {
-
-			# callModule(constructSimulationDFs, 
-				# id = NULL, 
-				# geo_short_code = geo_short_code,
-				# prg_chng_default = prg_chng_default)
-		# })
 
 		# Display the summary statistics in the TTT interventions
 		callModule(summaryStatistics, NULL, values, sim_data = sim_data)
