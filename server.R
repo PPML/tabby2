@@ -218,6 +218,18 @@ shinyServer(function(input, output, session) {
 		})
 
 
+    # Restore Defaults for Program Change Scenarios
+    observeEvent(input[['programChange1RestoreDefaults']], {
+      output$programChange1 <- renderUI({ programChangePanel(1, default_prg_chng() ) })
+    })
+    observeEvent(input[['programChange2RestoreDefaults']], {
+      output$programChange1 <- renderUI({ programChangePanel(2, default_prg_chng() ) })
+    })
+    observeEvent(input[['programChange3RestoreDefaults']], {
+      output$programChange1 <- renderUI({ programChangePanel(3, default_prg_chng() ) })
+    })
+
+
 		# Construct a Reactive Returning One Data Frame with Pre-Simulated and Custom Scenarios
 		combined_data <- reactive({ 
 			list(
@@ -260,7 +272,7 @@ shinyServer(function(input, output, session) {
 					geographies = geographies) 
 			
 		# Custom Scenarios Choice in Output
-		callModule(outputIncludeCustomScenarioOptions, NULL)
+		callModule(outputIncludeCustomScenarioOptions, NULL, sim_data)
 		
 		# Plots for Comparison to Recent Data
 		callModule(comparisonToRecentData2, NULL, geo_short_code)
