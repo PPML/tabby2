@@ -25,14 +25,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 				scenario %in% 
 				  c(input[[estimates$IDs$controls$interventions]],
 						input[[estimates$IDs$controls$analyses]], 
-						"base_case", 
-				    'programChange0', 
-						'programChange1', 
-						'programChange2', 
-						'programChange3',
-						input[['programChange1Name']],
-						input[['programChange2Name']],
-						input[['programChange3Name']]),
+						"base_case" 
+						),
         comparator == input[[estimates$IDs$controls$comparators]]
       ) %>%
       arrange(scenario) %>%
@@ -193,7 +187,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         subtitle = estimates$comparators$formatted[[input[[estimates$IDs$controls$comparators]]]]
       ) +
       guides(
-        color = guide_legend(ncol = 4)
+        color = guide_legend(ncol = 3, nrow = max(ceiling(length(input[[estimates$IDs$controls$interventions]])/3 + (1/3)), 1))
       ) +
       theme_bw() +
       theme(
@@ -259,11 +253,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         scenario %in% c(
           input[[trends$IDs$controls$interventions]],
           input[[trends$IDs$controls$analyses]],
-          "base_case",
-					"programChange0",
-					"programChange1",
-					"programChange2",
-					"programChange3"
+          "base_case"
         ),
         comparator == input[[trends$IDs$controls$comparators]]
       ) %>%
@@ -363,7 +353,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         subtitle = trends$comparators$formatted[[input[[trends$IDs$controls$comparators]]]]
       ) +
       guides(
-        color = guide
+        color = guide_legend(ncol = 3, nrow = max(ceiling(length(input[[trends$IDs$controls$interventions]])/3 + (1/3)), 1))
       ) +
       theme_bw() +
       theme(
@@ -445,13 +435,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         scenario %in% c(
           input[[agegroups$IDs$controls$interventions]],
           input[[agegroups$IDs$controls$analyses]],
-          "base_case",
-					'programChange0',
-					'programChange1',
-					'programChange2',
-					input[['programChange1Name']],
-					input[['programChange2Name']],
-					input[['programChange3Name']]
+          "base_case"
         ),
         comparator == 'absolute_value'
       )
@@ -497,7 +481,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
     dodge <- position_dodge(0.85)
 
+    bands_data <- data.frame(xstart = seq(1,11,1)-.45, xend = seq(1,11,1)+.45, col = '#F5F5F5')
+
     ggplot(data, aes(x = age_group)) +
+      geom_rect(data = bands_data, mapping = aes(x = NULL, xmin = xstart, xmax = xend, ymin = -Inf, ymax = Inf), fill = '#F5F5F5') + 
       geom_pointrange(
         mapping = aes(
           y = mean,
@@ -539,7 +526,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       guides(
         fill = guide_legend(
           title = "Scenario",
-          nrow = min(n_distinct(data$scenario), 2)
+          ncol = 3, nrow = max(ceiling(length(input[[agegroups$IDs$controls$interventions]])/3 + (1/3)), 1)
         )
       ) +
       theme_bw() +
@@ -566,7 +553,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         legend.key.size = unit(2, "lines"), #unit(0.75, "cm"),
         panel.grid.minor = element_blank(),
         panel.grid.major.x = element_blank(),
-        panel.grid.major.y = element_line(size = 0.15, color = "#989898"),
+        panel.grid.major.y = element_blank(), # element_line(size = 0.15, color = "#989898"),
         strip.background = element_blank(),
         strip.text = element_blank()
       ) +

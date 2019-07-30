@@ -8,6 +8,7 @@ colors:
   - "#FF7F00"
   - "skyblue2"
   - "#FB9A99"
+  - "#E31A1C"
 shapes:
   - 4
   - 21
@@ -17,6 +18,7 @@ shapes:
   - 25
   - 22
   - 23
+  - 24
 fills:
   - "black"
   - "dodgerblue2"
@@ -24,6 +26,7 @@ fills:
   - "green4"
   - "purple"
   - "#FF7F00"
+  - "#F5F5F5"
   - "#F5F5F5"
   - "#F5F5F5"
 linetypes:
