@@ -210,8 +210,8 @@ programChangePanel <- function(n, prg_chng) {
                    value = round(prg_chng['tb_txdef_frc']*100, 2), min = 0, max = 100),
 			tags$br(),
 			actionButton(paste0(id, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
-			disabled(actionButton(paste0(id, 'ChangeSettings'), label = 'Change Settings')),
-			disabled(actionButton(paste0(id, 'ViewOutcomes'), label = 'View Outcomes'))
+			actionButton(paste0(id, 'RestoreDefaults'), label = 'Restore Defaults'),
+			disabled(actionButton(paste0(id, 'ChangeSettings'), label = 'Change Settings'))
 
         )
       })
