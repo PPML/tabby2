@@ -52,7 +52,7 @@ visualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NU
   class <- paste0(id, "-tab")
   
 	tabsetPanel(
-	  tabPanel(title = 'plot', {
+	  tabPanel(title = 'Plot', {
 			tags$div(
 				class = paste(c(class, "tab-pane", if (active) " active"), collapse = " "),
 				if (!is.null(title)) {
@@ -81,9 +81,7 @@ visualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NU
 				)
 			)
 		}),
-		tabPanel(title = data, 
-		  # p('hi')
-		  # tableOutput(outputId = data)
+		tabPanel(title = 'Data Table', 
 			DT::dataTableOutput(outputId = data)
 		)
 	)
