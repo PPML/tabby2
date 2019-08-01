@@ -8,19 +8,19 @@ comparisonToRecentData2 <- function(input, output, session, geo_short_code) {
   comparisonDataChoices <- c(
     total_population = "Population: Total, US, and Non-US Born",
     `total-deaths-by-age` = "Total TB Deaths by Age Group",
-    percent_of_cases_in_non_usb = "Percent of TB Cases in Non-US-Born 2000-2014",
+    percent_of_cases_in_non_usb = "Percent of TB Cases in Non-US-Born",
     `percent-of-non-usb-cases-in-recent-immigrants` = "Percent of Non-US Born Cases Arrived in Past 2 Years",
     # mortality_by_age = "Mortality by Age",
     mortality = "Mortality: Total, US, and Non-US Born",
     `ltbi-prev-by-age-usb` = "LTBI in US Born Population by Age",
     `ltbi-prev-by-age-non-usb` = "LTBI in Non-US Born Population by Age",
-    tb_cases_2006 = "Total TB Cases Identified, 2006-2016",
+    tb_cases_2006 = "Total TB Cases Identified",
     # age_distribution_all_ages = "Total Population by Age Group 2014",
     age_distribution = "Population by Age for Non-US Born and US Born",
     treatment_outcomes = "Treatment Outcomes",
-    `age-distribution-of-cases` = "TB Cases By Age (2000-16)",
-    `tb_deaths_last_ten_years` = "TB Deaths in Recent Years ()",
-		`tb_cases_1953` = "Total TB Cases Identified, 1953-2016"
+    `age-distribution-of-cases` = "TB Cases By Age",
+    `tb_deaths_last_ten_years` = "TB Deaths in Recent Years",
+		`tb_cases_1953` = "Total TB Cases Identified"
   )
 
   # Reverse comparisonDataChoices so that we can look up short codes from the 

@@ -467,6 +467,7 @@ calib_plt_tb_cases_identified_over_ten_years <- function(loc) {
 	#set up the plot options
 	ggplot() + theme_bw() + ylab("TB Cases (000s) ") + theme(legend.position="bottom") + guides(colour=guide_legend(override.aes=list(linetype=c(rep(c(1,2),times=3))))) +
 		scale_x_continuous(breaks = years) +
+    expand_limits(y=0) + 
 		#add the target data
 		geom_line(data=rtarget, aes(x=year, y=value,color=variable), linetype="dashed", alpha=.5) +
 		#add the model output
