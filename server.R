@@ -161,9 +161,9 @@ shinyServer(function(input, output, session) {
 		# Watch for Updates to Custom Scenarios
 		values <- callModule(updateProgramChanges, NULL, values)
 
-		output$programChange1 <- renderUI({ if (geo_short_code() == 'US') programChangePanel(1, default_prg_chng()) else tagList(br(), p("Program Changes are currently only available for the US.")) })
-		output$programChange2 <- renderUI({ if (geo_short_code() == 'US') programChangePanel(2, default_prg_chng()) else tagList(br(), p("Program Changes are currently only available for the US.")) })
-		output$programChange3 <- renderUI({ if (geo_short_code() == 'US') programChangePanel(3, default_prg_chng()) else tagList(br(), p("Program Changes are currently only available for the US.")) })
+		output$programChange1 <- renderUI({ programChangePanel(1, default_prg_chng()) })
+		output$programChange2 <- renderUI({ programChangePanel(2, default_prg_chng()) })
+		output$programChange3 <- renderUI({ programChangePanel(3, default_prg_chng()) })
 
 		
 		# Update reactiveValues to reflect selected/defined risk group rate ratios
