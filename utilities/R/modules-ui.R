@@ -196,7 +196,7 @@ programChangePanel <- function(n, prg_chng) {
                      value = round(prg_chng['ltbi_comp_frc']*100, 2), min = 0, max = 100),
 				numericInput(inputId = paste0(id, "TreatmentEffectiveness"),
 										 label = "Percentage of LTBI Treatment Effectiveness (%)",
-				             value = round(prg_chng['ltbi_eff_frc']*100, 2))
+				             value = round(prg_chng['ltbi_eff_frc']*100, 2), min = 0, max = 100)
         )
       }),
       column(6, {
