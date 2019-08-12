@@ -42,12 +42,11 @@ estimatesControlPanel  <- function(ns) {
       choices = estimates$labels$labels,
       selectize = FALSE
     ),
-		downloads = NULL
-    # downloads = downloadButtonBar(
-    #   ids = ns(estimates$IDs$downloads),
-    #   heading = estimates$downloads$heading,
-    #   labels = estimates$downloads$labels
-    # )
+    downloads = downloadButtonBar(
+      ids = ns(estimates$IDs$downloads),
+      heading = estimates$downloads$heading,
+      labels = estimates$downloads$labels
+    )
   )
 }
 
@@ -90,12 +89,11 @@ trendsControlPanel <- function(ns) {
       labels = trends$analyses$labels,
       values = trends$analyses$values,
     ),
-		download = NULL
-    # downloads = downloadButtonBar(
-    #   ids = ns(trends$IDs$downloads),
-    #   heading = trends$downloads$heading,
-    #   labels = trends$downloads$labels
-    # )
+    downloads = downloadButtonBar(
+      ids = ns(trends$IDs$downloads),
+      heading = trends$downloads$heading,
+      labels = trends$downloads$labels
+    )
   )
 }
 
@@ -133,12 +131,11 @@ agegroupsControlPanel <- function(ns) {
       labels = agegroups$analyses$labels,
       values = agegroups$analyses$values
     ),
-		downloads = NULL
-    # downloads = downloadButtonBar(
-    #   ids = ns(agegroups$IDs$downloads),
-    #   heading = agegroups$downloads$heading,
-    #   labels = agegroups$downloads$labels
-    # )
+    downloads = downloadButtonBar(
+      ids = ns(agegroups$IDs$downloads),
+      heading = agegroups$downloads$heading,
+      labels = agegroups$downloads$labels
+    )
   )
 }
 

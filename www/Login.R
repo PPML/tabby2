@@ -16,8 +16,9 @@ output$uiLogin <- renderUI({
 			wellPanel(
 				h4("Please Login"), 
 				br(),
-				"This application is available as a beta-version upon authentication.",
+				"This application is available as a alpha-version upon authentication.",
 				"The figures and results presented here do not represent finalized research findings.",
+				"These results are meant for development purposes only and are for the exclusive use of the Prevention Policy Modeling Lab and its collaborators.",
 				br(),
 				br(),
 				"For questions/concerns email ", 

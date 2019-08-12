@@ -79,6 +79,8 @@ standardInterventionsUI <- function() {
 
 customInterventionsUI <- function() {
   tagList(
+		br(),
+		h4("Inactive - Not Linked to Outcomes"),
     br(),
            p(
              "Use the custom Targeted Testing and Treatment to create scenarios that simulate
@@ -115,7 +117,7 @@ scenariosUI <- function() {
     column(
       12,
       tags$h1("Build Custom Model Scenarios"),
-			tags$h4("Beta - Not Linked to Outcomes"),
+			br(),
       tabsetPanel(id = 'CustomScenariosBuilder',
         tabPanel(title = "Targeted Testing and Treatment Interventions", value = 'ttt', {
           customInterventionsUI()
@@ -125,6 +127,8 @@ scenariosUI <- function() {
           }),
         tabPanel(title = "Custom Scenarios", value = 'customscenarios', {
           tagList(
+						br(),
+						h4("Inactive - Not Linked to Outcomes"),
             br(),
             p("Custom Scenarios allow users to simulate combinations of Targeted Testing 
 and Treatment interventions and Program Changes."),
@@ -147,46 +151,52 @@ programChanges <- function() {
 LTBI treatment and active TB treatment care cascades."),
   tabsetPanel(id = "currentlySelectedProgramChange",
     tabPanel(title = "Program Change 1", value = '1', {
-      programChangePanel(1)
+			uiOutput('programChange1')
     }),
     tabPanel(title = "Program Change 2", value = '2', {
-      programChangePanel(2)
+			uiOutput('programChange2')
     }),
     tabPanel(title = "Program Change 3", value = '3', {
-      programChangePanel(3)
+			uiOutput('programChange3')
     })
   )
   )
 }
 
-programChangePanel <- function(n) {
+programChangePanel <- function(n, prg_chng) {
   id <- paste0("programChange", n)
   return(
 	tagList(
     wellPanel(
       fluidRow(
-        column(6, 
-               tags$h4("Define a Program Change"),
+				column(6, 
+
+			 tags$h4("Define a Program Change"),
         textInput(inputId = paste0(id, "Name"),
                   label = "Program Change Name",
                   placeholder = paste0("Program Change ", n))
-        )),
+			)),
       fluidRow(
       column(6, {
         tagList(
         tags$h4("LTBI Treatment Cascade:"),
+				numericInput(label = 'Start Year', inputId = paste0(id, "StartYear"),
+				             value = 2020, min = 2020, max = 2050),
         numericInput(inputId = paste0(id, "CoverageRate"),
                     label = "Screening Coverage Rate as a Multiple of the Current Rate",
-                    value = 1, min = 1, max = 5),
+                    value = round(prg_chng['scrn_cov'], 2), min = 1, max = 5),
         numericInput(inputId = paste0(id, "IGRACoverage"),
-                     label = "Fraction of Individuals Receiving IGRA (%)",
-                     value = 0, min = 0, max = 100),
+                     label = "Percentage of Individuals Receiving IGRA (%)",
+                     value = round(prg_chng['IGRA_frc']*100, 2), min = 0, max = 100),
         numericInput(inputId = paste0(id, "AcceptingTreatmentFraction"),
-                     label = "Fraction of Individuals Testing Positive who Accept Treatment (%)",
-                     value = 1, min = 0, max = 100),
+                     label = "Percentage of Individuals Testing Positive who Accept Treatment (%)",
+                     value = round(prg_chng['ltbi_init_frc']*100, 2), min = 0, max = 100),
         numericInput(inputId = paste0(id, "CompletionRate"),
-                     label = "Fraction of Individuals Initiating Treatment Who Complete Treatment (%)",
-                     value = 1, min = 0, max = 100)
+                     label = "Percentage of Individuals Initiating Treatment Who Complete Treatment (%)",
+                     value = round(prg_chng['ltbi_comp_frc']*100, 2), min = 0, max = 100),
+				numericInput(inputId = paste0(id, "TreatmentEffectiveness"),
+										 label = "Percentage of LTBI Treatment Effectiveness (%)",
+				             value = round(prg_chng['ltbi_eff_frc']*100, 2))
         )
       }),
       column(6, {
@@ -194,13 +204,17 @@ programChangePanel <- function(n) {
       tags$h4("TB Treatment Cascade:"),
       numericInput(inputId = paste0(id, "AverageTimeToTreatment"),
                    label = "Duration of Infectiousness (0-100% of current value)",
-                   value = 1, min = 0, max = 100),
+                   value = round(prg_chng['tb_tim2tx_frc'], 2), min = 0, max = 100),
       numericInput(inputId = paste0(id, "DefaultRate"),
-                   label = "Fraction Discontinuing/Defaulting from Treatment (%)",
-                   value = 0, min = 0, max = 100)
+                   label = "Percentage Discontinuing/Defaulting from Treatment (%)",
+                   value = round(prg_chng['tb_txdef_frc']*100, 2), min = 0, max = 100),
+			tags$br(),
+			actionButton(paste0(id, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
+			actionButton(paste0(id, 'RestoreDefaults'), label = 'Restore Defaults'),
+			disabled(actionButton(paste0(id, 'ChangeSettings'), label = 'Change Settings'))
+
         )
       })
-                  
     )
     ),
 		column(12,

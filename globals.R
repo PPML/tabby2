@@ -7,13 +7,12 @@ tabnames <- c(
   timetrends = "Time Trends",
   agegroups = "Age Groups",
   calibration = "Comparison to Recent Data",
-  # downloads = "Downloads",
   readmore = "Further Description",
 	feedback = "Feedback"
 )
 
 tabcontents <- list(
-  about = uiOutput('aboutUI'),
+  about = aboutUI(),#  uiOutput('aboutUI'),
   scenarios = NULL,
   predefined = standardInterventionsUI(),
   customscenarios = scenariosUI(),
@@ -21,7 +20,6 @@ tabcontents <- list(
   timetrends = tabby1TimeTrends('tabby1'),
   agegroups = tabby1AgeGroups('tabby1'),
   calibration = comparison_to_recent_data(),
-  # downloads = downloadsAndSettingsUI(),
   readmore = readmoreUI(),
 	feedback = feedbackForm()
 )

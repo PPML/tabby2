@@ -1,141 +1,20 @@
-tabby1Server <- function(input, output, session, ns, geo_short_code) {
+tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, geographies) {
+
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
-  # AGEGROUPS_DATA <- reactive({
-  #   readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"), package = "tabby1utilities", mustWork = TRUE))
-  # })
-
-	# Import and format Age Groups Data
-	AGEGROUPS_DATA <- reactive({
-		if (geo_short_code() == 'US') {
-			# readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"), package = "tabby1utilities", mustWork = TRUE))
-			return(data_agegroups() %>% rename(type = statistic))
-		}
-		if (geo_short_code() == 'MA') {
-			return(
-				readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"),
-				package = "tabby1utilities", mustWork = TRUE)) %>%
-				rename(type = statistic))
-		}
-		# Lookup sm_restab2 by geo_short_code, cast the data as.data.frame
-		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "sm_restab2.rds",
-		package="MITUS", mustWork = TRUE)))
-
-		# Specify the levels of each dimension to the data
-		CatList <- list()
-		CatList[[1]] <- c(
-			"ltbi_000s",
-			"pct_ltbi",
-			"tb_incidence_000s",
-			"tb_incidence_per_mil",
-			"tb_mortality_000s",
-			"tb_mortality_per_mil")
-		CatList[[2]] <- c("base_case",paste("intervention_",1:5,sep=""),paste("scenario_",1:3,sep=""))
-		CatList[[3]] <- c("all_populations","usb_population","fb_population")
-		CatList[[4]] <- c("0-4",paste(0:8*10+5,1:9*10+4,sep="-"),"95+")
-		CatList[[5]] <- c("absolute_value","pct_basecase_same_year","pct_basecase_2016")
-		CatList[[6]] <- 2018:2049
-
-		# Re-Factorize each column
-		for (i in 1:6) {
-			restab2[,i] <- factor(restab2[,i], labels = CatList[[i]])
-		}
-
-		# Temporary Fix for Trivial Confidence Intervals 
-		# If confidence intervals aren't present (because the statistic
-		# column hasn't been rendered yet, just duplicate (triplicate) the 
-		# data for mean/ci_high/ci_low.
-		if (! 'statistic' %in% colnames(restab2)) {
-			restab2 <- 
-				do.call(rbind.data.frame, list(
-				cbind.data.frame(restab2, type = 'mean'),
-				cbind.data.frame(restab2, type = 'ci_high'),
-				cbind.data.frame(restab2, type = 'ci_low')))
-		}
-
-		restab2 %>% mutate_if(is.factor, as.character) -> restab2
-		return(restab2)
-	})
-
-	# Import and format Age Groups Data
-	TRENDS_DATA <- reactive({
-
-		if (geo_short_code() == 'US') { return(data_trends()) }
-
-    if (geo_short_code() == 'MA') {
-		  # ages_bin <- data.frame(
-			  # age_group = c("0-4",paste(0:8*10+5,1:9*10+4,sep="-"),"95+"),
-				# big_ages = c(rep("age_0_24", 3), rep("age_25_64", 4), rep("age_65p", 4)))
+	AGEGROUPS_DATA <- reactive({ sim_data()[['AGEGROUPS_DATA']] })
+	ESTIMATES_DATA <- reactive({ sim_data()[['ESTIMATES_DATA']] })
+	TRENDS_DATA <- reactive({ sim_data()[['TRENDS_DATA']] })
 
 
-				# df <- readRDS(system.file(paste0("MITUS/MA_restab.rds"),
-					# package = "tabby1utilities", mustWork = TRUE)) %>% 
-					# merge(ages_bin)
+	# user_filtered_data <- reactiveValues()
 
-				# all_ages <- df %>% select(-c(age_group, big_ages)) %>%
-				# group_by(outcome, scenario, population, comparator, year, statistic) %>% 
-				# mutate(value = mean(value, na.rm=T), age_group = "all_ages")
-
-				# big_ages <- df %>% select(-age_group) %>% group_by(outcome, scenario,
-				# population, comparator, year, big_ages, statistic) %>% mutate(value =
-				# mean(value, na.rm=T), age_group = big_ages) %>% ungroup %>% select(-big_ages)
-
-				# return(rbind.data.frame(all_ages, big_ages) %>% rename(type = statistic))
-				return(readRDS(system.file("MITUS/MA_restab_bg.rds", package='tabby1utilities')))
-				  
-			}
-
-		# Lookup bg_restab2 by geo_short_code, cast the data as.data.frame
-		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "bg_restab2.rds",
-		package="MITUS", mustWork = TRUE)))
-
-		# Specify the levels of each dimension to the data
-		CatList <- list()
-		CatList[[1]] <- c(
-			"ltbi_000s",
-			"pct_ltbi",
-			"tb_incidence_per_mil",
-			"tb_infection_per_mil",
-			"tb_mortality_000s",
-			"tb_deaths_per_mil")
-		CatList[[2]] <- c("base_case",paste("intervention_",1:5,sep=""),paste("scenario_",1:3,sep=""))
-		CatList[[3]] <- c("all_populations","usb_population","fb_population")
-		CatList[[4]] <- c("all_ages", "age_0_24","age_25_64","age_65p")
-		CatList[[5]] <- c("absolute_value","pct_basecase_same_year","pct_basecase_2016")
-		CatList[[6]] <- 2018:2049
-
-		# Re-Factorize each column
-		for (i in 1:6) {
-			restab2[,i] <- factor(restab2[,i], labels = CatList[[i]])
-		}
-
-		# Temporary Fix for Trivial Confidence Intervals 
-		# If confidence intervals aren't present (because the statistic
-		# column hasn't been rendered yet, just duplicate (triplicate) the 
-		# data for mean/ci_high/ci_low.
-		# if (! 'statistic' %in% colnames(restab2)) {
-			restab2 <- 
-				do.call(rbind.data.frame, list(
-				cbind.data.frame(restab2, type = 'mean'),
-				cbind.data.frame(restab2, type = 'ci_high'),
-				cbind.data.frame(restab2, type = 'ci_low')))
-		# }
-
-    restab2 %>% mutate_if(is.factor, as.character) -> restab2
-		restab2$year <- as.numeric(restab2$year)
-		return(restab2)
-	})
-
-  ESTIMATES_DATA <- reactive({ 
-		filter(TRENDS_DATA(), year %in% c(2018, 2020, 2025, 2035, 2049))
-	})
-  
   # estimates server ----
   # __calculate data ----
   estimatesData <- reactive({
     req(
       input[[estimates$IDs$controls$comparators]], input[[estimates$IDs$controls$outcomes]],
-      c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case")
+      c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], 'base_case')
     )
 
     ESTIMATES_DATA() %>%
@@ -143,7 +22,11 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
         outcome == input[[estimates$IDs$controls$outcomes]],
-        scenario %in% c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case"),
+				scenario %in% 
+				  c(input[[estimates$IDs$controls$interventions]],
+						input[[estimates$IDs$controls$analyses]], 
+						"base_case" 
+						),
         comparator == input[[estimates$IDs$controls$comparators]]
       ) %>%
       arrange(scenario) %>%
@@ -151,8 +34,9 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
         year = recode(as.character(year), '2018'=2000, '2020'=2025, '2025'=2050, '2035'=2075, '2049'=2100),
         year_adj = year + position_year(scenario)
       )
+  })
 
- })
+	# user_filtered_data[['estimatesData()']] <- estimatesData()
 
   # __generate point labels ----
   estimatesLabels <- reactive({
@@ -230,7 +114,6 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 
     title
   })
-  # output[[estimates$IDs$title]] <- renderText(estimatesTitle())
 
   # __set subtitle ----
   output[[estimates$IDs$subtitle]] <- reactive({
@@ -304,7 +187,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
         subtitle = estimates$comparators$formatted[[input[[estimates$IDs$controls$comparators]]]]
       ) +
       guides(
-        color = guide_legend(ncol = 4)
+        color = guide_legend(ncol = 3, nrow = max(ceiling(length(input[[estimates$IDs$controls$interventions]])/3 + (1/3)), 1))
       ) +
       theme_bw() +
       theme(
@@ -339,6 +222,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 				fontface = "bold", alpha = 0.8)
   })
 
+
   output[[estimates$IDs$plot]] <- renderPlot({
     estimatesPlot() +
       theme(
@@ -346,6 +230,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
         plot.subtitle = element_blank()
       )
   })
+
 
   # trends server ----
   # __calculate data ----
@@ -377,6 +262,8 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
         year_adj = year + position_year(scenario)
       )
   })
+
+	# user_filtered_data[['trendsData()']] <- trendsData()
 
   # __set title ----
   trendsTitle <- reactive({
@@ -466,7 +353,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
         subtitle = trends$comparators$formatted[[input[[trends$IDs$controls$comparators]]]]
       ) +
       guides(
-        color = guide
+        color = guide_legend(ncol = 3, nrow = max(ceiling(length(input[[trends$IDs$controls$interventions]])/3 + (1/3)), 1))
       ) +
       theme_bw() +
       theme(
@@ -554,6 +441,8 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
       )
   })
 
+	# user_filtered_data[['agegroupsData()']] <- agegroupsData()
+
   # __set title ----
   agegroupsTitle <- reactive({
     req(
@@ -592,7 +481,10 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
 
     dodge <- position_dodge(0.85)
 
+    bands_data <- data.frame(xstart = seq(1,11,1)-.45, xend = seq(1,11,1)+.45, col = '#F5F5F5')
+
     ggplot(data, aes(x = age_group)) +
+      geom_rect(data = bands_data, mapping = aes(x = NULL, xmin = xstart, xmax = xend, ymin = -Inf, ymax = Inf), fill = '#F5F5F5') + 
       geom_pointrange(
         mapping = aes(
           y = mean,
@@ -634,7 +526,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
       guides(
         fill = guide_legend(
           title = "Scenario",
-          nrow = min(n_distinct(data$scenario), 2)
+          ncol = 3, nrow = max(ceiling(length(input[[agegroups$IDs$controls$interventions]])/3 + (1/3)), 1)
         )
       ) +
       theme_bw() +
@@ -661,7 +553,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
         legend.key.size = unit(2, "lines"), #unit(0.75, "cm"),
         panel.grid.minor = element_blank(),
         panel.grid.major.x = element_blank(),
-        panel.grid.major.y = element_line(size = 0.15, color = "#989898"),
+        panel.grid.major.y = element_blank(), # element_line(size = 0.15, color = "#989898"),
         strip.background = element_blank(),
         strip.text = element_blank()
       ) +
@@ -952,4 +844,6 @@ tabby1Server <- function(input, output, session, ns, geo_short_code) {
     }
   )
 
+  filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData)
+  return(filtered_data)
 }
