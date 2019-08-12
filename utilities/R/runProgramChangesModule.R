@@ -7,6 +7,7 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 	model_load(geo_short_code())
 
   prg_chng <- prg_chng_default()
+
 	# # replace this shortly with the user defined prg_chng
 	# prg_chng<-c(2020,2,.90,.95,.85,.90,.8,.25)
 	# names(prg_chng)<-
@@ -19,105 +20,40 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 	# 		"tb_tim2tx_frc", #Duration of Infectiousness 
 	# 		"tb_txdef_frc") #Fraction Discontinuing/Defaulting from Treatment
 
-
 	if (input[[prefix('Name')]] == '') { 
 		scenario_name <- prefix('')
 	} else {
 		scenario_name <- input[[prefix('Name')]]
 	}
 
-  # new_data <- reactiveValues() 
+  prg_chng[['start_yr']] <- input[[prefix('StartYear')]]
 
-	# new_data[['AGEGROUPS_DATA']] <- data[['AGEGROUPS_DATA']]
-	# new_data[['TRENDS_DATA']] <- data[['TRENDS_DATA']]
-	# new_data[['ESTIMATES_DATA']] <- data[['ESTIMATES_DATA']]
+  # validate(
+  #   need( input[[prefix('StartYear')]] > 2020 & input[[prefix('StartYear')]] < 2050, 
+  #   "Interventions must start and end between 2020 and 2050.")
+  # )
 
-  # new_sims <- reactiveValues()
-  # new_sims[['restab_small']] <- NULL
-  # new_sims[['restab_big']] <- NULL
+      prg_chng[['scrn_cov']] <- 
+        input[[prefix('CoverageRate')]] 
 
-	# if (!any(is.null(
-	# observeEvent({
+      prg_chng[['IGRA_frc']] <- 
+        input[[prefix('IGRACoverage')]] / 100
 
-    # runSimulationsButton()
+      prg_chng[['ltbi_init_frc']] <- 
+        input[[prefix('AcceptingTreatmentFraction')]] / 100
 
-    # input[['programChange1CoverageRate']]
-    # input[['programChange1StartYear']]
-    # input[['programChange1IGRACoverage']]
-    # input[['programChange1AcceptingTreatmentFraction']]
-    # input[['programChange1CompletionRate']]
+      prg_chng[['ltbi_comp_frc']] <- 
+        input[[prefix('CompletionRate')]] / 100
 
-		# values[['program_changes']][[1]][['start_year']]
-		# 	values[['program_changes']][[1]][['ltbi_screening_coverage_multiplier']]
-		# 	values[['program_changes']][[1]][['fraction_receiving_igra']]
-		# 	values[['program_changes']][[1]][['fraction_accepting_ltbi_treatment']]
-		# 	values[['program_changes']][[1]][['fraction_completing_ltbi_treatment']]
-		# 	values[['program_changes']][[1]][['average_time_to_treatment_active']]
-		# 	values[['program_changes']][[1]][['fraction_defaulting_from_treatment_active']]
-			# }, {
+      prg_chng[['ltbi_eff_frc']] <- 
+        input[[prefix('TreatmentEffectiveness')]] / 100
 
-		# new_data <- reactiveValues() 
 
-		# new_data[['AGEGROUPS_DATA']] <- data[['AGEGROUPS_DATA']]
-		# new_data[['TRENDS_DATA']] <- data[['TRENDS_DATA']]
-		# new_data[['ESTIMATES_DATA']] <- data[['ESTIMATES_DATA']]
-
-    cat(input[[paste0(n, 'RunSimulations')]])
-
-    # req(input[['programChange1CoverageRate']])
-    # req(input[['programChange1StartYear']])
-    # req(input[['programChange1IGRACoverage']])
-    # req(input[['programChange1AcceptingTreatmentFraction']])
-    # req(input[['programChange1CompletionRate']])
-
-    # if (! any(is.null( c(
-		# values[['program_changes']][[1]][['start_year']],
-		# values[['program_changes']][[1]][['ltbi_screening_coverage_multiplier']],
-		# values[['program_changes']][[1]][['fraction_receiving_igra']],
-		# values[['program_changes']][[1]][['fraction_accepting_ltbi_treatment']],
-		# values[['program_changes']][[1]][['fraction_completing_ltbi_treatment']],
-		# values[['program_changes']][[1]][['average_time_to_treatment_active']],
-		# values[['program_changes']][[1]][['fraction_defaulting_from_treatment_active']])))) { 
-
-			cat("did anything happen?\n")
-
-		prg_chng[['start_yr']] <- input[[prefix('StartYear')]]
-			# prg_chng[['start_yr']] <- 
-			# 	input[[prefix('StartYear')]] 
-# # values[['program_changes']][[1]][['start_year']]
-
-			prg_chng[['scrn_cov']] <- 
-				input[[prefix('CoverageRate')]] 
-
-# # # # values[['program_changes']][[1]][['ltbi_screening_coverage_multiplier']]
-			prg_chng[['IGRA_frc']] <- 
-				input[[prefix('IGRACoverage')]] / 100
-
-# # # # values[['program_changes']][[1]][['fraction_receiving_igra']] 
-			prg_chng[['ltbi_init_frc']] <- 
-				input[[prefix('AcceptingTreatmentFraction')]] / 100
-
-# # # # values[['program_changes']][[1]][['fraction_accepting_ltbi_treatment']] 
-			prg_chng[['ltbi_comp_frc']] <- 
-				input[[prefix('CompletionRate')]] / 100
-
-			prg_chng[['ltbi_eff_frc']] <- 
-				input[[prefix('TreatmentEffectiveness')]] / 100
-
-# # # values[['program_changes']][[1]][['fraction_completing_ltbi_treatment']] 
-
-			# # # prg_chng['ltbi_eff_frc'] <- 
-			prg_chng[['tb_tim2tx_frc']] <- 
+      prg_chng[['tb_tim2tx_frc']] <- 
         input[[prefix('AverageTimeToTreatment')]] 
 
-			prg_chng[['tb_txdef_frc']] <- 
-				input[[prefix('DefaultRate')]] / 100
-
-        # values[['program_changes']][[1]][['average_time_to_treatment_active']] 
-
-			# # prg_chng['tb_txdef_frc'] <- values[['program_changes']][[1]][['fraction_defaulting_from_treatment_active']] 
-		# }
-		
+      prg_chng[['tb_txdef_frc']] <- 
+        input[[prefix('DefaultRate')]] / 100
 
   # Load pre-simulated basecase
   # load_US_data <- function(i) {
@@ -134,9 +70,6 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 	# simulate program changes scenario
 	custom_scenario_output <- new_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng)
   custom_scenario_output <- list(presimulated_results[1:2,,], custom_scenario_output)
-	# # custom_scenario_output <- new_OutputsZint(ParMatrix = Par, prg_chng = prg_chng, samp_i = 1)
-
-	# # custom_scenario_output <- array(custom_scenario_output, dim = c(1, dim(custom_scenario_output)))
 
 	# reformat into small/big restabs (two lists of (ResTab, ResTabus, ResTabfb) for small/big)
 	# restabs <- format_as_restab_for_custom_scenarios(geo_short_code(), custom_scenario_output)
@@ -169,10 +102,6 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 		restab_big[,i] <- factor(restab_big[,i], labels = unique(restab1[,i]))
 	}
 
-	# # filter out the basecase
-	# restab_small <- filter(restab_small, scenario != 'base_case2')
-	# restab_big <- filter(restab_big, scenario != 'base_case2')
-
 	# add a type column
 	restab_small <- 
 		do.call(rbind.data.frame, list(
@@ -192,13 +121,12 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 
 	restab_big$year <- as.integer(as.character(restab_big$year))
 	new_data[['TRENDS_DATA']] <- restab_big
-	# new_data[['TRENDS_DATA']]['year'] <- as.integer(new_data[['TRENDS_DATA']]['year'])
 
 	new_data[['ESTIMATES_DATA']] <- 
 		dplyr::filter(restab_big, year %in% c(2018, 2020, 2025, 2035, 2049))
 
-   cat('new data has: ', as.character(nrow(filter(new_data[['TRENDS_DATA']], scenario == scenario_name))),
-       'new_data rows\n')
+   # cat('new data has: ', as.character(nrow(filter(new_data[['TRENDS_DATA']], scenario == scenario_name))),
+   #     'new_data rows\n')
 
   return(new_data)
 	})
