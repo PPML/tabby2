@@ -152,16 +152,16 @@ controlPanel <- function(class, active = TRUE, comparators = NULL,
     years,
     outcomes,
     interventions,
-    if (class=="trends-tab") {
-      checkboxGroup2(
-        id = paste0("tabby1-", strsplit(class, "-")[[1]][[1]],
-                    "UncertaintyInterval"),
-        heading = "Uncertainty Intervals",
-        labels = "Add uncertainty intervals to plots",
-        values = "uncertainty_intervals",
-        selected = TRUE
-      )
-    },
+    # if (class=="trends-tab") {
+    #   checkboxGroup2(
+    #     id = paste0("tabby1-", strsplit(class, "-")[[1]][[1]],
+    #                 "UncertaintyInterval"),
+    #     heading = "Uncertainty Intervals",
+    #     labels = "Add uncertainty intervals to plots",
+    #     values = "uncertainty_intervals",
+    #     selected = TRUE
+    #   )
+    # },
     labels,
     downloads
   )
