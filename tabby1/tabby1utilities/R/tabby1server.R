@@ -33,7 +33,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       mutate(
         year = recode(as.character(year), '2018'=2000, '2020'=2025, '2025'=2050, '2035'=2075, '2049'=2100),
         year_adj = year + position_year(scenario)
-      )
+      ) %>% 
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'))
   })
 
 	# user_filtered_data[['estimatesData()']] <- estimatesData()
@@ -187,7 +188,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         subtitle = estimates$comparators$formatted[[input[[estimates$IDs$controls$comparators]]]]
       ) +
       guides(
-        color = guide_legend(ncol = 3, nrow = max(ceiling(length(input[[estimates$IDs$controls$interventions]])/3 + (1/3)), 1))
+        color = guide_legend(ncol = 2)
       ) +
       theme_bw() +
       theme(
@@ -219,7 +220,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       expand_limits(y=0) + 
 		  annotate("text", x = Inf, y = -Inf, label = "DRAFT",
 				hjust=1.1, vjust=-1.1, col="dimgrey", cex=28,
-				fontface = "bold", alpha = 0.8)
+				fontface = "bold", alpha = 0.5)
   })
 
 
@@ -260,7 +261,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       arrange(scenario) %>%
       mutate(
         year_adj = year + position_year(scenario)
-      )
+      ) %>% 
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'))
   })
 
 	# user_filtered_data[['trendsData()']] <- trendsData()
@@ -312,7 +314,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
     title <- trendsTitle()
     guide <- guide_legend(
       title = "Scenario",
-      nrow = min(n_distinct(data$scenario), 2)
+      ncol = 2
+      # nrow = min(n_distinct(data$scenario), 2)
     )
 
     p <- ggplot(data) +
@@ -353,7 +356,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         subtitle = trends$comparators$formatted[[input[[trends$IDs$controls$comparators]]]]
       ) +
       guides(
-        color = guide_legend(ncol = 3, nrow = max(ceiling(length(input[[trends$IDs$controls$interventions]])/3 + (1/3)), 1))
+        color = guide_legend(title = 'Scenario', ncol = 2),
+        fill = guide_legend(title = 'Scenario', ncol = 2),
+        linetype = guide_legend(title = 'Scenario', ncol = 2)
       ) +
       theme_bw() +
       theme(
@@ -384,20 +389,20 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       expand_limits(y=0) + 
 		  annotate("text", x = Inf, y = -Inf, label = "DRAFT",
 				hjust=1.1, vjust=-1.1, col="dimgrey", cex=28,
-				fontface = "bold", alpha = 0.8)
+				fontface = "bold", alpha = 0.5)
 
-    if(input[['trendsUncertaintyInterval-1']]) {
-      p <- p +
-        geom_ribbon(
-          mapping = aes(
-            x = year,
-            ymin = ci_low,
-            ymax = ci_high,
-            fill = scenario
-          ),
-          alpha = 0.3
-        )
-    }
+    # if(input[['trendsUncertaintyInterval-1']]) {
+    #   p <- p +
+    #     geom_ribbon(
+    #       mapping = aes(
+    #         x = year,
+    #         ymin = ci_low,
+    #         ymax = ci_high,
+    #         fill = scenario
+    #       ),
+    #       alpha = 0.3
+    #     )
+    # }
 
     return(p)
   })
@@ -438,7 +443,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           "base_case"
         ),
         comparator == 'absolute_value'
-      )
+      ) %>% 
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'))
+
   })
 
 	# user_filtered_data[['agegroupsData()']] <- agegroupsData()
@@ -526,7 +533,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       guides(
         fill = guide_legend(
           title = "Scenario",
-          ncol = 3, nrow = max(ceiling(length(input[[agegroups$IDs$controls$interventions]])/3 + (1/3)), 1)
+          ncol = 2
         )
       ) +
       theme_bw() +
@@ -560,7 +567,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       expand_limits(y=0) + 
 		  annotate("text", x = Inf, y = -Inf, label = "DRAFT",
 				hjust=1.1, vjust=-1.1, col="dimgrey", cex=28,
-				fontface = "bold", alpha = 0.8)
+				fontface = "bold", alpha = 0.5)
   })
 
   output[[agegroups$IDs$plot]] <- renderPlot({
