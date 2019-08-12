@@ -165,6 +165,8 @@ shinyServer(function(input, output, session) {
 		output$programChange2 <- renderUI({ programChangePanel(2, default_prg_chng()) })
 		output$programChange3 <- renderUI({ programChangePanel(3, default_prg_chng()) })
 
+    # provide feedback for user input
+    callModule(shinyFeedbackModule, NULL)
 		
 		# Update reactiveValues to reflect selected/defined risk group rate ratios
 		values <- callModule(updateTargetedRiskGroupRates, NULL, risk_group_rate_ratios, values)
