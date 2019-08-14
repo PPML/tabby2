@@ -14,7 +14,7 @@ comparisonToRecentData2 <- function(input, output, session, geo_short_code) {
     mortality = "Mortality: Total, US, and Non-US Born",
     `ltbi-prev-by-age-usb` = "LTBI in US Born Population by Age",
     `ltbi-prev-by-age-non-usb` = "LTBI in Non-US Born Population by Age",
-    tb_cases_2006 = "Total TB Cases Identified",
+    tb_cases_2006 = "Total TB Cases Identified (Recent)",
     # age_distribution_all_ages = "Total Population by Age Group 2014",
     age_distribution = "Population by Age for Non-US Born and US Born",
     treatment_outcomes = "Treatment Outcomes",
