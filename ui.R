@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyFeedback)
 library(shinydashboard)
 library(shinyjs)
 devtools::load_all("utilities")
@@ -71,6 +72,7 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   tagList(
     useShinyjs(),
+    useShinyFeedback(),
     tags$head(
 
 			tags$link(rel="stylesheet", type="text/css",href="style.css"),
