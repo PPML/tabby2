@@ -32,3 +32,12 @@ programChangesChangeSettingsButton <- function(input, output, session, n) {
 	# Disable Change Settings and View Outcomes buttons
 	sapply(paste0(pc_n, c('ChangeSettings', 'ViewOutcomes')), disable)
 }
+
+
+tttRunButton <- function(input, output, session, n, compute_ttt_reactive) { 
+		# Compute and Return Data to Fill Into sim_data reactiveList
+		compute_ttt_reactive()
+}
+
+tttChangeSettingsButton <- function(input, output, session, n) {
+}

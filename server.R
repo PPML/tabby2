@@ -1,5 +1,25 @@
 
-### Load Dependencies ###
+
+###################
+### Description ### 
+###################
+
+#
+#            Shiny Server for Tabby2
+#             ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+#   This server includes the following components/modules: 
+#     - Get short-codes for the user's selected geography
+#     - Reactive Values to store custom scenarios' definitions
+#     - Render custom scenarios' input settings UI
+#     - Use the Tabby1 Output Server for plot generation
+#     - Custom Scenarios Choice in Output Plots
+#     - Plots for Comparison to Recent Data
+#     - Debug Print Server (Optional) 
+
+
+####################
+### Dependencies ###
+####################
 
 library(shiny)
 library(shinydashboard)
@@ -14,68 +34,58 @@ devtools::load_all("tabby1/tabby1utilities")
 source("tabby1/tabby1global.R")
 source("globals.R")
 
-#
-#            Shiny Server for Tabby2
-#             ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
-#   This server includes the following components/modules: 
-#     - Get short-codes for the user's selected geography
-#     - Reactive Values to store custom scenarios' definitions
-#     - Render custom scenarios' input settings UI
-#     - Use the Tabby1 Output Server for plot generation
-#     - Custom Scenarios Choice in Output Plots
-#     - Plots for Comparison to Recent Data
-#     - Debug Print Server (Optional) 
 
-# In approximate steps, this server.R file does the following: 
-#
-#   - Load the risk group rate ratios data.
-
-#   - Using the risk group rate ratios, and the user input 
-
-# 
-
-# Depending on the geography selected, load the presimulated data from MITUS
-# and present it using the original tabby UI and server as a module. 
-
-
-
+####################
 ### cpp_reshaper ###
+####################
 
-# This cpp_reshaper is a function, written in C++, which reshapes simulation data from
-# the Modeling Interventions on Tuberculosis in the United States (MITUS) package.
+# This cpp_reshaper is a function, written in C++, which reshapes simulation
+# data from the Modeling Interventions on Tuberculosis in the United States
+# (MITUS) package.
 #
 # The reshaper converts 4 dimentional arrays with measures of TB outcomes (like
-# LTBI per million, TB related deaths, etc.), and converts those arrays into 2-dimensional
-# `tidy` data frames suitable for plotting with ggplot2.
+# LTBI per million, TB related deaths, etc.), and converts those arrays into
+# 2-dimensional `tidy` data frames suitable for plotting with ggplot2.
 #
-# cpp_reshaper is built using construct_cpp_reshaper() from the tabus package, which uses
-# the inline package which compiles Rcpp functions
-# source code from the R-session.
+# cpp_reshaper is built using construct_cpp_reshaper() from the tabus package,
+# which uses the inline package which compiles Rcpp functions source code from
+# the R-session.
 
 assign('cpp_reshaper', tabus::construct_cpp_reshaper(), envir = .GlobalEnv)
 
 
+######################################
 ### Geographies Available in MITUS ### 
+######################################
 
-# These functions should scan the MITUS package for directories which have data available 
-# in the format that Tabby2 requires to visualize outcomes for a specific geography.
+# These functions should scan the MITUS package for directories which have data
+# available in the format that Tabby2 requires to visualize outcomes for a
+# specific geography.  Such folders are automatically detected using the
+# scan_for_available_geographies function.
 
-# Such folders are automatically detected using the scan_for_available_geographies function.
+# geographies is all possible geographies, assumed at this time to be the US,
+# DC, and the 50 states.
 
-# Get all possible geographies, assumed at this time to be the US, DC, and the 50 states.
+# available_geographies is filtered for the geographies available in MITUS
+# according to the criterion specified in scan_for_available_geographies.
+
+# invert_geographies is a list with geography names as keys and their
+# short-codes as values, inverted from geographies for use as a lookup to go
+# back and forth between long-names and short-names for the available
+# geographies.
+
 geographies <- setNames(nm = state.abb, state.name)
 geographies[['US']] <- 'United States'
 geographies[['DC']] <- 'District of Columbia'
 
-# Filter the possible geographies for those available in MITUS.
 available_geographies <- geographies[scan_for_available_geographies(names(geographies))]
 
-# Invert the available geographies for using as a hash-table to go back and forth 
-# between long-names and short-names for the available geographies.
 invert_geographies <- setNames(nm = unname(geographies), object = names(geographies))
 
 
+##############################
 ### Risk Group Rate Ratios ###
+##############################
 
 # Load risk group rate ratios for use in the targeted testing and treatment
 # intervention builder
@@ -83,21 +93,21 @@ invert_geographies <- setNames(nm = unname(geographies), object = names(geograph
 risk_group_rate_ratios <- load_risk_group_data()
 
 
+##############
+### Server ###
+##############
 
 shinyServer(function(input, output, session) {
-  # Load Authentication UI
-  # source("www/Login.R",  local = TRUE)
-
-  # Either render the Login/Authentication Page or Render 
-	# the application pages.
 	output$page <- renderUI({
-	# if (USER$Logged == FALSE) { # Render Login Page
-	# 		div(class = "login", id = 'uiLogin',
-	# 				uiOutput("uiLogin"),
-	# 				textOutput("pass")
-	# 		)
-	# } else { 
 	  # Render tabPanel Contents
+    
+    # The tabPanel contents are contained in a list generated in globals.R, 
+    # so we send the tabcontents and tabnames lists through two lapplys, 
+    # the first of which turns each into a tabItem, the second of which 
+    # appends class="tab-pane" into each tabItem.
+
+    # This should probably be done with %>% instead of the anonymous function 
+    # applied immediately used here.
 
 		# In order to wrap everything in tab-pane and tab-content html tags 
 		# properly, an anonymous function is built that takes expanded tagLists,
@@ -106,6 +116,7 @@ shinyServer(function(input, output, session) {
 		# Then we apply this anonymous function to the output of an lapply that 
 		# runs along our tabnames and tabcontents lists to construct tabItems out of 
 		# each correspondent pair.
+
 		(function (...) 
 		{
 			lapply(..., shinydashboard:::tagAssert, class = "tab-pane")
@@ -186,12 +197,19 @@ shinyServer(function(input, output, session) {
 			sim_data[['programChanges1']] <- NULL
 			sim_data[['programChanges2']] <- NULL
 			sim_data[['programChanges3']] <- NULL
+			sim_data[['ttt1']] <- NULL
+			sim_data[['ttt2']] <- NULL
+			sim_data[['ttt3']] <- NULL
 		})
 
-    # Construct Reactive Objects Which Return Program Change Custom Scenarios
+    # Construct Reactive Objects Which Return Program Change, TTT, and Combination Custom Scenarios
 		compute_program_change_1 <- callModule(runProgramChanges, NULL, n = 1, values, geo_short_code, sim_data, default_prg_chng)
 		compute_program_change_2 <- callModule(runProgramChanges, NULL, n = 2, values, geo_short_code, sim_data, default_prg_chng)
 		compute_program_change_3 <- callModule(runProgramChanges, NULL, n = 3, values, geo_short_code, sim_data, default_prg_chng)
+
+    compute_ttt_1 <- callModule(runTTT, NULL, n = 1, geo_short_code)
+    compute_ttt_2 <- callModule(runTTT, NULL, n = 1, geo_short_code)
+    compute_ttt_3 <- callModule(runTTT, NULL, n = 1, geo_short_code)
 
 
 		# Run & Append Program Changes Custom Scenarios to Sim Data When programChange1RunSimulations Button is Pressed
@@ -203,6 +221,10 @@ shinyServer(function(input, output, session) {
 		})
 		observeEvent(input[['programChange3RunSimulations']], {
 			sim_data[['programChanges3']] <- callModule(programChangesRunButton, NULL, n = 3, compute_program_change_3, sim_data)
+		})
+
+		observeEvent(input[['ttt1RunSimulations']], {
+			sim_data[['ttt1']] <- callModule(tttRunButton, NULL, n = 1, compute_ttt_1)
 		})
 
 
@@ -240,19 +262,28 @@ shinyServer(function(input, output, session) {
 				sim_data[['presimulated']][['AGEGROUPS_DATA']],
 				sim_data[['programChanges1']][['AGEGROUPS_DATA']],
 				sim_data[['programChanges2']][['AGEGROUPS_DATA']],
-				sim_data[['programChanges3']][['AGEGROUPS_DATA']]
+				sim_data[['programChanges3']][['AGEGROUPS_DATA']],
+        sim_data[['ttt1']][['AGEGROUPS_DATA']],
+        sim_data[['ttt2']][['AGEGROUPS_DATA']],
+        sim_data[['ttt3']][['AGEGROUPS_DATA']]
 			),
 			ESTIMATES_DATA = rbind.data.frame(
 				sim_data[['presimulated']][['ESTIMATES_DATA']],
 				sim_data[['programChanges1']][['ESTIMATES_DATA']],
 				sim_data[['programChanges2']][['ESTIMATES_DATA']],
-				sim_data[['programChanges3']][['ESTIMATES_DATA']]
+				sim_data[['programChanges3']][['ESTIMATES_DATA']],
+				sim_data[['ttt1']][['ESTIMATES_DATA']],
+				sim_data[['ttt2']][['ESTIMATES_DATA']],
+				sim_data[['ttt3']][['ESTIMATES_DATA']]
 			),
 		  TRENDS_DATA = rbind.data.frame(
 				sim_data[['presimulated']][['TRENDS_DATA']],
 				sim_data[['programChanges1']][['TRENDS_DATA']],
 				sim_data[['programChanges2']][['TRENDS_DATA']],
-				sim_data[['programChanges3']][['TRENDS_DATA']]
+				sim_data[['programChanges3']][['TRENDS_DATA']],
+				sim_data[['ttt1']][['TRENDS_DATA']],
+				sim_data[['ttt2']][['TRENDS_DATA']],
+				sim_data[['ttt3']][['TRENDS_DATA']]
 			)
 			)
 		})
