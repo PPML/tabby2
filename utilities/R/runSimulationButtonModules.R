@@ -35,9 +35,28 @@ programChangesChangeSettingsButton <- function(input, output, session, n) {
 
 
 tttRunButton <- function(input, output, session, n, compute_ttt_reactive) { 
+		# Construct programChange ID
+		tttn <- paste0('ttt', n)
+
+		# Disable Input for the programChange Scenario
+		sapply(paste0(tttn, c('name', 'risk', 'nativity', 'agegroups', 'numberTargeted',
+		'fractionScreened', 'startyear', 'stopyear', 'RunSimulations')), disable)
+
+		# Enable the Change Settings and View Outcomes Button
+		sapply(paste0(tttn, c('ChangeSettings', 'ViewOutcomes')), enable)
+
 		# Compute and Return Data to Fill Into sim_data reactiveList
 		compute_ttt_reactive()
 }
 
 tttChangeSettingsButton <- function(input, output, session, n) {
+		# Construct programChange ID
+		tttn <- paste0('ttt', n)
+
+		# Disable Input for the programChange Scenario
+		sapply(paste0(tttn, c('name', 'risk', 'nativity', 'agegroups', 'numberTargeted',
+		'fractionScreened', 'startyear', 'stopyear', 'RunSimulations')), enable)
+
+		# Enable the Change Settings and View Outcomes Button
+		sapply(paste0(tttn, c('ChangeSettings', 'ViewOutcomes')), disable)
 }

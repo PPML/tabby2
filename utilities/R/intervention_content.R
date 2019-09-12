@@ -101,7 +101,7 @@ intervention_content <- function(n=1) {
             fluidRow(
               column(6, 
                 actionButton(paste0(tttn, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
-                actionButton(paste0(tttn, 'RestoreDefaults'), label = 'Restore Defaults'),
+                # actionButton(paste0(tttn, 'RestoreDefaults'), label = 'Restore Defaults'),
                 disabled(actionButton(paste0(tttn, 'ChangeSettings'), label = 'Change Settings'))
               )
             )

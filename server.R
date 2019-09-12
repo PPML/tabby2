@@ -226,6 +226,12 @@ shinyServer(function(input, output, session) {
 		observeEvent(input[['ttt1RunSimulations']], {
 			sim_data[['ttt1']] <- callModule(tttRunButton, NULL, n = 1, compute_ttt_1)
 		})
+		observeEvent(input[['ttt2RunSimulations']], {
+			sim_data[['ttt2']] <- callModule(tttRunButton, NULL, n = 2, compute_ttt_2)
+		})
+		observeEvent(input[['ttt3RunSimulations']], {
+			sim_data[['ttt3']] <- callModule(tttRunButton, NULL, n = 3, compute_ttt_3)
+		})
 
 
 		# Delete Program Changes Custom Scenarios from Sim Data When Change Settings Button is Pressed
@@ -240,6 +246,19 @@ shinyServer(function(input, output, session) {
 		observeEvent(input[['programChange3ChangeSettings']], {
 			sim_data[['programChanges3']] <- NULL
 			callModule(programChangesChangeSettingsButton, NULL, n = 3)
+		})
+
+		observeEvent(input[['ttt1ChangeSettings']], {
+			sim_data[['ttt1']] <- NULL
+			callModule(tttChangeSettingsButton, NULL, n = 1)
+		})
+		observeEvent(input[['ttt2ChangeSettings']], {
+			sim_data[['ttt2']] <- NULL
+			callModule(tttChangeSettingsButton, NULL, n = 2)
+		})
+		observeEvent(input[['ttt3ChangeSettings']], {
+			sim_data[['ttt3']] <- NULL
+			callModule(tttChangeSettingsButton, NULL, n = 3)
 		})
 
 
