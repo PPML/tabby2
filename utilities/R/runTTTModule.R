@@ -54,11 +54,11 @@ runTTT <- function(input, output, session, n, geo_short_code) {
   prg_chng <- MITUS::def_prgchng(ParVec = Par[1,])
 
 
-  # presimulated_results_name <- load(system.file(paste0(geo_short_code(), "/", geo_short_code(), "_results_1.rda"),
-  #   package="MITUS"))
-  # presimulated_results <- get(presimulated_results_name)
+  presimulated_results_name <- load(system.file(paste0(geo_short_code(), "/", geo_short_code(), "_results_1.rda"),
+    package="MITUS"))
+  presimulated_results <- get(presimulated_results_name)
 
-  presimulated_results <- new2_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng, ttt_list = def_ttt())
+  # presimulated_results <- new2_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng, ttt_list = def_ttt())
 
 	# simulate program changes scenario
 	custom_scenario_output <- new2_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng, ttt_list = ttt_list)
@@ -67,13 +67,13 @@ runTTT <- function(input, output, session, n, geo_short_code) {
 	# reformat into small/big restabs (two lists of (ResTab, ResTabus, ResTabfb) for small/big)
 	# restabs <- format_as_restab_for_custom_scenarios(geo_short_code(), custom_scenario_output)
   restabs <- list()
-  restabs[['small_results']] <- format_as_restab_small_ages_indices(simulation_data=custom_scenario_output)
-  restabs[['big_results']] <- format_as_restab_big_ages_indices(simulation_data=custom_scenario_output)
+  restabs[['small_results']] <- format_as_restab_small_ages(simulation_data=custom_scenario_output)
+  restabs[['big_results']] <- format_as_restab_big_ages(simulation_data=custom_scenario_output)
 
 
 	# # mean the simulations
-	ResTabC_small <- mean_small_restabs_indices(restabs, nr = 2, nints = 2)
-	ResTabC_big <- mean_big_restabs_indices(restabs, nr = 2, nints = 2)
+	ResTabC_small <- mean_small_restabs(restabs, nr = 2, nints = 2)
+	ResTabC_big <- mean_big_restabs(restabs, nr = 2, nints = 2)
 
 	# # reshape small results
 	restab <- restab1 <- make_empty_res_tab2sm(intvs = c('base_case2', scenario_name)) # , prefix('')))

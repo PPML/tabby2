@@ -208,8 +208,8 @@ shinyServer(function(input, output, session) {
 		compute_program_change_3 <- callModule(runProgramChanges, NULL, n = 3, values, geo_short_code, sim_data, default_prg_chng)
 
     compute_ttt_1 <- callModule(runTTT, NULL, n = 1, geo_short_code)
-    compute_ttt_2 <- callModule(runTTT, NULL, n = 1, geo_short_code)
-    compute_ttt_3 <- callModule(runTTT, NULL, n = 1, geo_short_code)
+    compute_ttt_2 <- callModule(runTTT, NULL, n = 2, geo_short_code)
+    compute_ttt_3 <- callModule(runTTT, NULL, n = 3, geo_short_code)
 
 
 		# Run & Append Program Changes Custom Scenarios to Sim Data When programChange1RunSimulations Button is Pressed
