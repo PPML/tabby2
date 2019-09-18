@@ -35,21 +35,28 @@ runTTT <- function(input, output, session, n, geo_short_code) {
     # $RRPrev
     # [1] 1
 
-    ttt_list[['NativityGrp']] <- 
-      switch(input[[paste0('ttt', n, "nativity")]], 
-        all_populations = 'All',
-        usb_population = 'USB',
-        fb_population = 'NUSB')
+  ttt_list[['NativityGrp']] <- 
+    switch(input[[paste0('ttt', n, "nativity")]], 
+      all_populations = 'All',
+      usb_population = 'USB',
+      fb_population = 'NUSB')
 
-    ttt_list[['AgeGrp']] <- 
-      switch(input[[paste0('ttt', n, "agegroups")]],
-        all_ages = "All",
-        age_0_24 = "0 to 24",
-        age_25_64 = "25 to 64",
-        age_65p = "65+")
-    
-    ttt_list[['NRiskGrp']] <- input[[paste0('ttt', n, "numberTargeted")]]
-    ttt_list[['FrcScrn']] <- input[[paste0('ttt', n, "fractionScreened")]]
+  ttt_list[['AgeGrp']] <- 
+    switch(input[[paste0('ttt', n, "agegroups")]],
+      all_ages = "All",
+      age_0_24 = "0 to 24",
+      age_25_64 = "25 to 64",
+      age_65p = "65+")
+  
+  ttt_list[['NRiskGrp']] <- input[[paste0('ttt', n, "numberTargeted")]]
+  ttt_list[['FrcScrn']] <- input[[paste0('ttt', n, "fractionScreened")]]
+
+  ttt_list[['StartYr']] <- input[[paste0('ttt', n, 'startyear')]]
+  ttt_list[['EndYr']] <- input[[paste0('ttt', n, 'stopyear')]]
+
+  ttt_list[['RRprg']] <- input[[paste0('ttt', n, 'progression-rate')]]
+  ttt_list[['RRmu']] <- input[[paste0('ttt', n, 'mortality-rate')]]
+  ttt_list[['RRPrev']] <- input[[paste0('ttt', n, 'prevalence-rate')]]
 
   prg_chng <- MITUS::def_prgchng(ParVec = Par[1,])
 
