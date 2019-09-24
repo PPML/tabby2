@@ -12,7 +12,7 @@ tabnames <- c(
 )
 
 tabcontents <- list(
-  about = aboutUI(),#  uiOutput('aboutUI'),
+  about = uiOutput('aboutUI'),
   scenarios = NULL,
   predefined = standardInterventionsUI(),
   customscenarios = scenariosUI(),
