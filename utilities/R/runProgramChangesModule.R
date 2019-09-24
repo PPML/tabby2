@@ -28,32 +28,27 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 
   prg_chng[['start_yr']] <- input[[prefix('StartYear')]]
 
-  # validate(
-  #   need( input[[prefix('StartYear')]] > 2020 & input[[prefix('StartYear')]] < 2050, 
-  #   "Interventions must start and end between 2020 and 2050.")
-  # )
+  prg_chng[['scrn_cov']] <- 
+    input[[prefix('CoverageRate')]] 
 
-      prg_chng[['scrn_cov']] <- 
-        input[[prefix('CoverageRate')]] 
+  prg_chng[['IGRA_frc']] <- 
+    input[[prefix('IGRACoverage')]] / 100
 
-      prg_chng[['IGRA_frc']] <- 
-        input[[prefix('IGRACoverage')]] / 100
+  prg_chng[['ltbi_init_frc']] <- 
+    input[[prefix('AcceptingTreatmentFraction')]] / 100
 
-      prg_chng[['ltbi_init_frc']] <- 
-        input[[prefix('AcceptingTreatmentFraction')]] / 100
+  prg_chng[['ltbi_comp_frc']] <- 
+    input[[prefix('CompletionRate')]] / 100
 
-      prg_chng[['ltbi_comp_frc']] <- 
-        input[[prefix('CompletionRate')]] / 100
-
-      prg_chng[['ltbi_eff_frc']] <- 
-        input[[prefix('TreatmentEffectiveness')]] / 100
+  prg_chng[['ltbi_eff_frc']] <- 
+    input[[prefix('TreatmentEffectiveness')]] / 100
 
 
-      prg_chng[['tb_tim2tx_frc']] <- 
-        input[[prefix('AverageTimeToTreatment')]] 
+  prg_chng[['tb_tim2tx_frc']] <- 
+    input[[prefix('AverageTimeToTreatment')]] 
 
-      prg_chng[['tb_txdef_frc']] <- 
-        input[[prefix('DefaultRate')]] / 100
+  prg_chng[['tb_txdef_frc']] <- 
+    input[[prefix('DefaultRate')]] / 100
 
   # Load pre-simulated basecase
   # load_US_data <- function(i) {
