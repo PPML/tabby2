@@ -35,7 +35,7 @@ updateAboutUI <- function(input, output, session, available_geographies) {
       selectInput(inputId = "state",
                   label = "Select a Location",
                   choices = unname(available_geographies),
-                  selected = 'United States'),
+                  selected = 'US'),
       shiny::actionButton(
         inputId = 'toPredefinedScenarios',
         label = 'Next Page',
