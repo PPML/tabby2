@@ -149,7 +149,6 @@ shinyServer(function(input, output, session) {
 				invert_geographies[[input$state]]
 			})
 			
-			# callModule(geoShortCode, NULL, geographies)
 
 		# Output short-code for use in plot titles
 		output$geo_short_code <- renderText({ geo_short_code() }) 	
@@ -159,10 +158,17 @@ shinyServer(function(input, output, session) {
 		sim_data <- reactiveValues(presimulated = NULL,
 		  programChanges1 = NULL,
 		  programChanges2 = NULL,
-		  programChanges3 = NULL)
+		  programChanges3 = NULL,
+      ttt1 = NULL,
+      ttt2 = NULL,
+      ttt3 = NULL,
+      combination1 = NULL,
+      combination2 = NULL,
+      combination3 = NULL
+      )
 
 		# Re-Render About UI
-		# callModule(updateAboutUI, NULL, available_geographies)
+		callModule(updateAboutUI, NULL, available_geographies)
 
 		#  Setup `values` to contain our reactiveValues
 		values <- callModule(constructReactiveValues, NULL)
@@ -172,6 +178,7 @@ shinyServer(function(input, output, session) {
 		# Watch for Updates to Custom Scenarios
 		values <- callModule(updateProgramChanges, NULL, values)
 
+    # Render the program change input UI
 		output$programChange1 <- renderUI({ programChangePanel(1, default_prg_chng()) })
 		output$programChange2 <- renderUI({ programChangePanel(2, default_prg_chng()) })
 		output$programChange3 <- renderUI({ programChangePanel(3, default_prg_chng()) })
@@ -200,19 +207,32 @@ shinyServer(function(input, output, session) {
 			sim_data[['ttt1']] <- NULL
 			sim_data[['ttt2']] <- NULL
 			sim_data[['ttt3']] <- NULL
+			sim_data[['combination1']] <- NULL
+			sim_data[['combination2']] <- NULL
+			sim_data[['combination3']] <- NULL
 		})
 
-    # Construct Reactive Objects Which Return Program Change, TTT, and Combination Custom Scenarios
+    ### Set Up Reactives to Run Simulations ### 
+
+    # Construct Reactive Objects Which Return Program Change scenarios when called 
 		compute_program_change_1 <- callModule(runProgramChanges, NULL, n = 1, values, geo_short_code, sim_data, default_prg_chng)
 		compute_program_change_2 <- callModule(runProgramChanges, NULL, n = 2, values, geo_short_code, sim_data, default_prg_chng)
 		compute_program_change_3 <- callModule(runProgramChanges, NULL, n = 3, values, geo_short_code, sim_data, default_prg_chng)
 
+    # Construct Reactive Objects which return TTT scenario simulations when called
     compute_ttt_1 <- callModule(runTTT, NULL, n = 1, geo_short_code)
     compute_ttt_2 <- callModule(runTTT, NULL, n = 2, geo_short_code)
     compute_ttt_3 <- callModule(runTTT, NULL, n = 3, geo_short_code)
 
+    # Construct Reactive Objects which return Combination scenario simulations when called
+    # compute_combination_1 <- callModule(runCombination, NULL, n = 1, geo_short_code)
+    # compute_combination_2 <- callModule(runCombination, NULL, n = 2, geo_short_code)
+    # compute_combination_3 <- callModule(runCombination, NULL, n = 3, geo_short_code)
 
-		# Run & Append Program Changes Custom Scenarios to Sim Data When programChange1RunSimulations Button is Pressed
+
+    ### Run and Simulations and Append to Presimulated Data ### 
+
+		# Run & Append Program Changes Scenarios to Sim Data When RunSimulations Button is Pressed
 		observeEvent(input[['programChange1RunSimulations']], {
 			sim_data[['programChanges1']] <- callModule(programChangesRunButton, NULL, n = 1, compute_program_change_1, sim_data)
 		})
@@ -223,6 +243,7 @@ shinyServer(function(input, output, session) {
 			sim_data[['programChanges3']] <- callModule(programChangesRunButton, NULL, n = 3, compute_program_change_3, sim_data)
 		})
 
+		# Run & Append TTT Scenarios to Sim Data When RunSimulations Button is Pressed
 		observeEvent(input[['ttt1RunSimulations']], {
 			sim_data[['ttt1']] <- callModule(tttRunButton, NULL, n = 1, compute_ttt_1)
 		})
@@ -233,6 +254,18 @@ shinyServer(function(input, output, session) {
 			sim_data[['ttt3']] <- callModule(tttRunButton, NULL, n = 3, compute_ttt_3)
 		})
 
+		# Run & Append Combination Scenarios to Sim Data When RunSimulations Button is Pressed
+		# observeEvent(input[['combination1RunSimulations']], {
+		# 	sim_data[['combination1']] <- callModule(combinationRunButton, NULL, n = 1, compute_combination_1)
+		# })
+		# observeEvent(input[['combination2RunSimulations']], {
+		# 	sim_data[['combination2']] <- callModule(combinationRunButton, NULL, n = 2, compute_combination_2)
+		# })
+		# observeEvent(input[['combination3RunSimulations']], {
+		# 	sim_data[['combination3']] <- callModule(combinationRunButton, NULL, n = 3, compute_combination_3)
+		# })
+
+    ### Delete Custom Scenario Data when Change Settings is Clicked ###
 
 		# Delete Program Changes Custom Scenarios from Sim Data When Change Settings Button is Pressed
 		observeEvent(input[['programChange1ChangeSettings']], {
@@ -248,6 +281,7 @@ shinyServer(function(input, output, session) {
 			callModule(programChangesChangeSettingsButton, NULL, n = 3)
 		})
 
+		# Delete TTT Scenarios from Sim Data When Change Settings Button is Pressed
 		observeEvent(input[['ttt1ChangeSettings']], {
 			sim_data[['ttt1']] <- NULL
 			callModule(tttChangeSettingsButton, NULL, n = 1)
@@ -261,6 +295,7 @@ shinyServer(function(input, output, session) {
 			callModule(tttChangeSettingsButton, NULL, n = 3)
 		})
 
+    ### Restore Defaults Button Logic for Program Changes ### 
 
     # Restore Defaults for Program Change Scenarios
     observeEvent(input[['programChange1RestoreDefaults']], {
@@ -274,7 +309,9 @@ shinyServer(function(input, output, session) {
     })
 
 
-		# Construct a Reactive Returning One Data Frame with Pre-Simulated and Custom Scenarios
+    ### Aggregate All Simulation Data into a Reactive ###
+
+    # This is the data which gets sent to the tabby1 server
 		combined_data <- reactive({ 
 			list(
 			AGEGROUPS_DATA = rbind.data.frame(
@@ -284,7 +321,10 @@ shinyServer(function(input, output, session) {
 				sim_data[['programChanges3']][['AGEGROUPS_DATA']],
         sim_data[['ttt1']][['AGEGROUPS_DATA']],
         sim_data[['ttt2']][['AGEGROUPS_DATA']],
-        sim_data[['ttt3']][['AGEGROUPS_DATA']]
+        sim_data[['ttt3']][['AGEGROUPS_DATA']] #,
+        # sim_data[['combination1']][['AGEGROUPS_DATA']],
+        # sim_data[['combination2']][['AGEGROUPS_DATA']],
+        # sim_data[['combination3']][['AGEGROUPS_DATA']]
 			),
 			ESTIMATES_DATA = rbind.data.frame(
 				sim_data[['presimulated']][['ESTIMATES_DATA']],
@@ -293,7 +333,10 @@ shinyServer(function(input, output, session) {
 				sim_data[['programChanges3']][['ESTIMATES_DATA']],
 				sim_data[['ttt1']][['ESTIMATES_DATA']],
 				sim_data[['ttt2']][['ESTIMATES_DATA']],
-				sim_data[['ttt3']][['ESTIMATES_DATA']]
+				sim_data[['ttt3']][['ESTIMATES_DATA']] #,
+				# sim_data[['combination1']][['ESTIMATES_DATA']],
+				# sim_data[['combination2']][['ESTIMATES_DATA']],
+				# sim_data[['combination3']][['ESTIMATES_DATA']]
 			),
 		  TRENDS_DATA = rbind.data.frame(
 				sim_data[['presimulated']][['TRENDS_DATA']],
@@ -302,7 +345,10 @@ shinyServer(function(input, output, session) {
 				sim_data[['programChanges3']][['TRENDS_DATA']],
 				sim_data[['ttt1']][['TRENDS_DATA']],
 				sim_data[['ttt2']][['TRENDS_DATA']],
-				sim_data[['ttt3']][['TRENDS_DATA']]
+				sim_data[['ttt3']][['TRENDS_DATA']] #,
+				# sim_data[['combination1']][['TRENDS_DATA']],
+				# sim_data[['combination2']][['TRENDS_DATA']],
+				# sim_data[['combination3']][['TRENDS_DATA']]
 			)
 			)
 		})
