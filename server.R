@@ -190,11 +190,11 @@ shinyServer(function(input, output, session) {
 		values <- callModule(updateTargetedRiskGroupRates, NULL, risk_group_rate_ratios, values)
 
 		# Add TTT Interventions to the Custom Scenarios tab
-		callModule(customScenarioTTTChoices, NULL)
+		callModule(customScenarioTTTChoices, NULL, sim_data = sim_data)
 		
 		# Add Program Change Interventions to the Custom Scenarios tab
-		callModule(customScenarioProgramChangeChoices, NULL)
-		
+		callModule(customScenarioProgramChangeChoices, NULL, sim_data = sim_data)
+
 		# Next/Back Page Buttons
 		callModule(nextBackButtons, NULL)
 		
