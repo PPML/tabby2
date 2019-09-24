@@ -80,10 +80,10 @@ standardInterventionsUI <- function() {
 customInterventionsUI <- function() {
   tagList(
 		br(),
-		h4("Inactive - Not Linked to Outcomes"),
-    br(),
+		# h4("Inactive - Not Linked to Outcomes"),
+    # br(),
            p(
-             "Use the custom Targeted Testing and Treatment to create scenarios that simulate
+             "Use the Targeted Testing and Treatment input to create scenarios that simulate
              additional screening of specific risk groups over a period of specified years. Targeted groups
              can be specified by their risk, age, and nativity status. Custom risk groups can be defined by specifying
              rate ratios of LTBI prevalence, progression, and mortality."
@@ -249,19 +249,19 @@ programChangePanel <- function(n, prg_chng) {
 }
 
 customScenarioPanel <- function(n) {
-  scenarion <- paste0("scenario", n)
+  combinationn <- paste0("", n)
   return(
     tabPanel(
-      title = paste0("Custom Scenario ", n),
+      title = paste0("Combination Scenario ", n),
 			value = as.character(n),
       wellPanel(
-        tags$h4("Define a Custom Scenario"),
+        tags$h4("Define a Combination Scenario"),
         textInput(
           label = "Scenario Name",
-          inputId = paste0(scenarion, "Name"),
-          placeholder = paste0("Custom Scenario ", n)),
-        uiOutput(paste0('custom', n, 'TTTRadios')),
-        uiOutput(paste0('custom', n, 'ProgramChangeRadios'))
+          inputId = paste0(combinationn, "Name"),
+          placeholder = paste0("Combination Scenario ", n)),
+        uiOutput(paste0('combination', n, 'TTTRadios')),
+        uiOutput(paste0('combination', n, 'ProgramChangeRadios'))
       ),
 
 			column(12,
