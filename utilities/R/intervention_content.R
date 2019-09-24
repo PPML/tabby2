@@ -122,9 +122,9 @@ intervention_content <- function(n=1) {
               tags$b("Targeted Group"),
               tags$br(),
               tags$br(),
-              tags$p("Incidence: 0%\n"),
-              tags$p("LTBI Prevalence: 0%"),
-              tags$p("Population: ", textOutput(paste0(tttn, "numberTargeted"), inline = T))
+              tags$p("Incidence per million: ", textOutput(paste0(tttn, "TargetedIncidence"), inline=T), ""),
+              tags$p("LTBI Prevalence: ", textOutput(paste0(tttn, "TargetedLTBIPrevalence"), inline=T), "%"),
+              tags$p("Population: ", textOutput(paste0(tttn, "numberTargeted"), inline = T), " million")
               
             ),
             column(

@@ -1,52 +1,140 @@
 summaryStatistics <- function(input, output, session, values, sim_data) {
 
-	TRENDS_DATA <- reactive({ sim_data[['presimulated']][['TRENDS_DATA']] })
+  # the Summary Statistics computed here appear in the TTT scenario 
+  # builder in order to assist users with building their targeted group. 
 
+  # they consist of incidence, prevalence, population size for the 
+  # corresponding age and nativity group of their target group, as well 
+  # for the target group. 
+
+  # the LTBI prevalence and Incidence for the age-nativity group are 
+  # looked up from the presimulated ESTIMATES_DATA table. 
+
+  # the LTBI prevalence and incidence for the TTT group are then 
+  # computed (somewhat naively) from the risk group rate ratios specified 
+  # by the user for their targeted group.
+
+  # the formulas are:
+  # ltbi_prev_ttt = ltbi_prev_age_nat * RR_prev
+  # inc_ttt = inc_age_nat * RR_prev * RR_prog
+
+  # to look up the population size of the age-nat group, we look into the 
+  # results_1.rda file for the user specified location.
+
+	ESTIMATES_DATA <- reactive({ sim_data[['presimulated']][['ESTIMATES_DATA']] })
+
+  # output number targeted directly from user input
 	output$ttt1numberTargeted <- renderText({input$ttt1numberTargeted})
 	output$ttt2numberTargeted <- renderText({input$ttt2numberTargeted})
 	output$ttt3numberTargeted <- renderText({input$ttt3numberTargeted})
 
-	# Reactive Values for the Incidence in Age-Nativity Group
+  # function to output a reactive which computes the tb incidence of the age-nat group
+  constructTTTIncidenceReactive <- function(iter) { 
+    tttagegroups <- paste0('ttt', iter, 'agegroups')
+    tttnativity <- paste0('ttt', iter, 'nativity')
+
+    reactive({ 
+            ESTIMATES_DATA() %>% 
+              filter(age_group == input[[tttagegroups]],
+                     population == input[[tttnativity]],
+                     outcome == 'tb_incidence_per_mil',
+                     scenario == 'base_case',
+                     year == 2018,
+                     comparator == 'absolute_value',
+                     type == 'mean'
+                     ) %>% `[[`('value') 
+          })
+  }
+
+  # function to output a reactive which computes the ltbi prevalence of the age-nat group
+  constructTTTPrevalenceReactive <- function(iter) { 
+    tttagegroups <- paste0('ttt', iter, 'agegroups')
+    tttnativity <- paste0('ttt', iter, 'nativity')
+
+    reactive({ 
+            ESTIMATES_DATA() %>% 
+              filter(age_group == input[[tttagegroups]],
+                     population == input[[tttnativity]],
+                     outcome == 'pct_ltbi',
+                     scenario == 'base_case',
+                     year == 2018,
+                     comparator == 'absolute_value',
+                     type == 'mean'
+                     ) %>% `[[`('value') 
+          })
+  }
+
+  # build the incidence reactives for 1,2,3
+  ageNativityIncidence1 <- constructTTTIncidenceReactive(1)
+  ageNativityIncidence2 <- constructTTTIncidenceReactive(2)
+  ageNativityIncidence3 <- constructTTTIncidenceReactive(3)
+
+  # build ltbi prev reactives for 1,2,3
+  ageNativityPrevalence1 <- constructTTTPrevalenceReactive(1)
+  ageNativityPrevalence2 <- constructTTTPrevalenceReactive(2)
+  ageNativityPrevalence3 <- constructTTTPrevalenceReactive(3)
+
+
+	# Functions (2) to Produce Reactive Values with Formatted Incidence / LTBI Prev in Age-Nativity Group
+
+  # inc reactive formatted
   ageNativityIncidenceForTTT <- function(n) { 
 		reactive({
-			value <- TRENDS_DATA() %>% 
-				filter(age_group == input[[paste0('ttt', n, 'agegroups')]],
-							 population == input[[paste0('ttt', n, 'nativity')]],
-							 outcome == 'tb_incidence_per_mil',
-							 scenario == 'base_case',
-							 year == 2018,
-							 comparator == 'absolute_value',
-							 type == 'mean'
-							 ) %>% `[[`('value') 
-
+      value <- get(paste0('ageNativityIncidence', n))()
 			paste0("Incidence per Million: ", round(value, 2))
 		 })
 	 }
 
+  # prev reactive formatted
   ageNativityPrevalenceForTTT <- function(n) { 
 		reactive({
-			value <- TRENDS_DATA() %>% 
-				filter(age_group == input[[paste0('ttt', n, 'agegroups')]],
-							 population == input[[paste0('ttt', n, 'nativity')]],
-							 outcome == 'pct_ltbi',
-							 scenario == 'base_case',
-							 year == 2018,
-							 comparator == 'absolute_value',
-							 type == 'mean'
-							 ) %>% `[[`('value') 
-
+        value <- get(paste0('ageNativityPrevalence', n))()
 				paste0("LTBI Prevalence: ", round(value, 2), "%")
 		 })
 	 }
 
+   # function to produce reactives with rounded target-group prevalence computed from age-nat prevalence and inputted relative rate of prevalence
+   targetedPrevalence <- function(n, ageNativityPrevalenceReactive) { 
+     reactive({ 
+       round(ageNativityPrevalenceReactive * input[[paste0('ttt', n, 'prevalence-rate')]], 2)
+     })
+   }
 
-	# Reactive Values for the Prevalence in Age-Nativity Group
-	output$ttt1AgeNativityIncidence <- renderText({ ageNativityIncidenceForTTT(1)() })
-	output$ttt1AgeNativityPrevalence <- renderText({ ageNativityPrevalenceForTTT(1)() })
-	output$ttt2AgeNativityIncidence <- renderText({ ageNativityIncidenceForTTT(2)() })
-	output$ttt2AgeNativityPrevalence <- renderText({ ageNativityPrevalenceForTTT(2)() })
-	output$ttt3AgeNativityIncidence <- renderText({ ageNativityIncidenceForTTT(3)() })
-	output$ttt3AgeNativityPrevalence <- renderText({ ageNativityPrevalenceForTTT(3)() })
+   # function to produce reactives with rounded target-group incidence computed from age-nat incidence and input rr_prev, rr_prog
+   targetedIncidence <- function(n, ageNativityIncidenceReactive) { 
+     reactive({ 
+       round(ageNativityIncidenceReactive * input[[paste0('ttt', n, 'prevalence-rate')]] * input[[paste0('ttt', n, 'progression-rate')]], 2)
+     })
+   }
 
-	# return(tttAgeNativity)
+	### Reactives send the formatted results to UI as output
+
+  ## Age-Nat Outputs: 
+
+  # 1
+  output$ttt1AgeNativityIncidence <- renderText({ paste0("Incidence per million: ", round(ageNativityIncidence1(), 2)) })
+  output$ttt1AgeNativityPrevalence <- renderText({ paste0("LTBI Prevalence: ", round(ageNativityPrevalence1(), 2), "%") })
+
+  # 2
+  output$ttt2AgeNativityIncidence <- renderText({ paste0("Incidence per million: ", round(ageNativityIncidence2(), 2)) })
+  output$ttt2AgeNativityPrevalence <- renderText({ paste0("LTBI Prevalence: ", round(ageNativityPrevalence2(), 2), "%") })
+
+  # 3
+  output$ttt3AgeNativityIncidence <- renderText({ paste0("Incidence per million: ", round(ageNativityIncidence3(), 2)) })
+  output$ttt3AgeNativityPrevalence <- renderText({ paste0("LTBI Prevalence: ", round(ageNativityPrevalence3(), 2), "%") })
+
+  ## TTT Outputs:
+
+  # 1 
+  output$ttt1TargetedIncidence <- renderText({ targetedIncidence(1, ageNativityIncidence1())() })
+  output$ttt1TargetedLTBIPrevalence <- renderText({ targetedPrevalence(1, ageNativityPrevalence1())() })
+
+  # 2 
+  output$ttt2TargetedIncidence <- renderText({ targetedIncidence(2, ageNativityIncidence2())() })
+  output$ttt2TargetedLTBIPrevalence <- renderText({ targetedPrevalence(2, ageNativityPrevalence2())() })
+
+  # 3 
+  output$ttt3TargetedIncidence <- renderText({ targetedIncidence(3, ageNativityIncidence3())() })
+  output$ttt3TargetedLTBIPrevalence <- renderText({ targetedPrevalence(3, ageNativityPrevalence3())() })
+
 }
