@@ -225,9 +225,9 @@ shinyServer(function(input, output, session) {
     compute_ttt_3 <- callModule(runTTT, NULL, n = 3, geo_short_code)
 
     # Construct Reactive Objects which return Combination scenario simulations when called
-    # compute_combination_1 <- callModule(runCombination, NULL, n = 1, geo_short_code)
-    # compute_combination_2 <- callModule(runCombination, NULL, n = 2, geo_short_code)
-    # compute_combination_3 <- callModule(runCombination, NULL, n = 3, geo_short_code)
+    compute_combination_1 <- callModule(runCombination, NULL, n = 1, geo_short_code)
+    compute_combination_2 <- callModule(runCombination, NULL, n = 2, geo_short_code)
+    compute_combination_3 <- callModule(runCombination, NULL, n = 3, geo_short_code)
 
 
     ### Run and Simulations and Append to Presimulated Data ### 
@@ -255,15 +255,15 @@ shinyServer(function(input, output, session) {
 		})
 
 		# Run & Append Combination Scenarios to Sim Data When RunSimulations Button is Pressed
-		# observeEvent(input[['combination1RunSimulations']], {
-		# 	sim_data[['combination1']] <- callModule(combinationRunButton, NULL, n = 1, compute_combination_1)
-		# })
-		# observeEvent(input[['combination2RunSimulations']], {
-		# 	sim_data[['combination2']] <- callModule(combinationRunButton, NULL, n = 2, compute_combination_2)
-		# })
-		# observeEvent(input[['combination3RunSimulations']], {
-		# 	sim_data[['combination3']] <- callModule(combinationRunButton, NULL, n = 3, compute_combination_3)
-		# })
+		observeEvent(input[['combination1RunSimulations']], {
+			sim_data[['combination1']] <- callModule(combinationRunButton, NULL, n = 1, compute_combination_1)
+		})
+		observeEvent(input[['combination2RunSimulations']], {
+			sim_data[['combination2']] <- callModule(combinationRunButton, NULL, n = 2, compute_combination_2)
+		})
+		observeEvent(input[['combination3RunSimulations']], {
+			sim_data[['combination3']] <- callModule(combinationRunButton, NULL, n = 3, compute_combination_3)
+		})
 
     ### Delete Custom Scenario Data when Change Settings is Clicked ###
 
@@ -321,10 +321,10 @@ shinyServer(function(input, output, session) {
 				sim_data[['programChanges3']][['AGEGROUPS_DATA']],
         sim_data[['ttt1']][['AGEGROUPS_DATA']],
         sim_data[['ttt2']][['AGEGROUPS_DATA']],
-        sim_data[['ttt3']][['AGEGROUPS_DATA']] #,
-        # sim_data[['combination1']][['AGEGROUPS_DATA']],
-        # sim_data[['combination2']][['AGEGROUPS_DATA']],
-        # sim_data[['combination3']][['AGEGROUPS_DATA']]
+        sim_data[['ttt3']][['AGEGROUPS_DATA']],
+        sim_data[['combination1']][['AGEGROUPS_DATA']],
+        sim_data[['combination2']][['AGEGROUPS_DATA']],
+        sim_data[['combination3']][['AGEGROUPS_DATA']]
 			),
 			ESTIMATES_DATA = rbind.data.frame(
 				sim_data[['presimulated']][['ESTIMATES_DATA']],
@@ -333,10 +333,10 @@ shinyServer(function(input, output, session) {
 				sim_data[['programChanges3']][['ESTIMATES_DATA']],
 				sim_data[['ttt1']][['ESTIMATES_DATA']],
 				sim_data[['ttt2']][['ESTIMATES_DATA']],
-				sim_data[['ttt3']][['ESTIMATES_DATA']] #,
-				# sim_data[['combination1']][['ESTIMATES_DATA']],
-				# sim_data[['combination2']][['ESTIMATES_DATA']],
-				# sim_data[['combination3']][['ESTIMATES_DATA']]
+				sim_data[['ttt3']][['ESTIMATES_DATA']],
+				sim_data[['combination1']][['ESTIMATES_DATA']],
+				sim_data[['combination2']][['ESTIMATES_DATA']],
+				sim_data[['combination3']][['ESTIMATES_DATA']]
 			),
 		  TRENDS_DATA = rbind.data.frame(
 				sim_data[['presimulated']][['TRENDS_DATA']],
@@ -345,10 +345,10 @@ shinyServer(function(input, output, session) {
 				sim_data[['programChanges3']][['TRENDS_DATA']],
 				sim_data[['ttt1']][['TRENDS_DATA']],
 				sim_data[['ttt2']][['TRENDS_DATA']],
-				sim_data[['ttt3']][['TRENDS_DATA']] #,
-				# sim_data[['combination1']][['TRENDS_DATA']],
-				# sim_data[['combination2']][['TRENDS_DATA']],
-				# sim_data[['combination3']][['TRENDS_DATA']]
+				sim_data[['ttt3']][['TRENDS_DATA']],
+				sim_data[['combination1']][['TRENDS_DATA']],
+				sim_data[['combination2']][['TRENDS_DATA']],
+				sim_data[['combination3']][['TRENDS_DATA']]
 			)
 			)
 		})
