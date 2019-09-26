@@ -1,3 +1,5 @@
+**This product is currently under development.**
+
 Tabby2 is a web application providing predictions of future TB epidemiology in
 the United States under a wide range of policy scenarios. The application
 includes several pre-defined scenarios, which explore various changes in the
@@ -10,7 +12,6 @@ displayed graphically, and following inputs from the user the graphs update
 automatically to reflect the new selections. Visualizations can be downloaded
 in various formats, and the estimates underlying the graphs can also be
 downloaded in tabular format.
->>>>>>> 4768aca8fffa7bf3f351d426480adff47193b8f1
 
 The estimates shown by Tabby2 are based on an expansion of a published
 transmission-dynamic model of TB epidemiology in the US, which incorporates TB
