@@ -4,7 +4,11 @@ load_data <- function(geo_short_code) {
 
 	# Lookup sm_restab2 by geo_short_code, cast the data as.data.frame
 	restab2 <- as.data.frame(readRDS(system.file(geo_short_code, "sm_restab2.rds",
-																							 package="MITUS", mustWork = TRUE)))
+																							 package="MITUS", mustWork = TRUE))) %>% 
+    mutate(
+      outcome = recode(outcome, tb_incidence_per_mil = "tb_incidence_per_100k", 
+        tb_mortality_per_mil = "tb_mortality_per_100k"))
+
 
 	# Temporary Fix for Trivial Confidence Intervals 
 	# If confidence intervals aren't present (because the statistic
@@ -24,7 +28,12 @@ load_data <- function(geo_short_code) {
 
 	# Lookup bg_restab2 by geo_short_code, cast the data as.data.frame
 	restab2 <- as.data.frame(readRDS(system.file(geo_short_code, "bg_restab2.rds",
-																							 package="MITUS", mustWork = TRUE)))
+																							 package="MITUS", mustWork = TRUE))) %>% 
+    mutate(comparator = recode(comparator, pct_basecase_2016 = "pct_basecase_2018"),
+      outcome = recode(outcome, tb_incidence_per_mil = "tb_incidence_per_100k", 
+        tb_infection_per_mil = "tb_infection_per_100k",
+        tb_deaths_per_mil = "tb_deaths_per_100k"
+        ))
 
 	# !!!!!!!!! 
 	# Temporary Fix for Trivial Confidence Intervals 

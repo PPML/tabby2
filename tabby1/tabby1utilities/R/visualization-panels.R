@@ -40,7 +40,7 @@ agegroupsVisualizationPanel <- function(ns) {
       title = ns(agegroups$IDs$title),
       subtitle = NULL,
       plot = ns(agegroups$IDs$plot),
-      alt = "LTBI prevalence (per million), in the total US population, for 2016",
+      alt = "LTBI prevalence (per hundred thousand), in the total US population, for 2018",
 			data = 'agegroupsData'
     ),
     class = "agegroups-tab"

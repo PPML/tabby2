@@ -13,7 +13,7 @@ formatted_risk_group <- list(
   "Define a Custom Risk Group",
   `Elevated LTBI Prevalence` = c(
     "Non-US Born Individuals from High Burden Countries",
-    "Homeless or Incarcerated Individuals"
+    "Homeless Individuals"
   ),
   `Elevated Progression Risk` = c(
     "HIV Positive",
@@ -60,7 +60,7 @@ intervention_content <- function(n=1) {
             # __subcol2: choose number targeted ----
             numericInput(
               inputId = paste0(tttn, "numberTargeted"),
-              label = "Number of Individuals in the Risk Group in 2018",
+              label = "Number of Individuals in the Risk Group in 2018 in thousands",
               min = 0,
               value = 0
             ),
@@ -80,9 +80,9 @@ intervention_content <- function(n=1) {
                 numericInput(
                   inputId = paste0(tttn, 'startyear'),
                   label = "Start Year",
-                  min = 2018,
+                  min = 2020,
                   max = 2050,
-                  value = 2018,
+                  value = 2020,
                   step = 1
                 )
               ),
@@ -96,6 +96,13 @@ intervention_content <- function(n=1) {
                   value = 2050,
                   step = 1
                 )
+              )
+            ),
+            fluidRow(
+              column(6, 
+                actionButton(paste0(tttn, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
+                # actionButton(paste0(tttn, 'RestoreDefaults'), label = 'Restore Defaults'),
+                disabled(actionButton(paste0(tttn, 'ChangeSettings'), label = 'Change Settings'))
               )
             )
           )
@@ -114,9 +121,9 @@ intervention_content <- function(n=1) {
               tags$br(),
               tags$b("Targeted Group"),
               tags$br(),
-              tags$br(),
-              tags$p("Incidence: 0%\n"),
-              tags$p("LTBI Prevalence: 0%"),
+              tags$p(), # add an extra empty paragraph to match the one that erroneously/magically appears in the Age-Nativity box
+              tags$p("Incidence per hundred thousand: ", textOutput(paste0(tttn, "TargetedIncidence"), inline=T), ""),
+              tags$p("LTBI Prevalence: ", textOutput(paste0(tttn, "TargetedLTBIPrevalence"), inline=T), "%"),
               tags$p("Population: ", textOutput(paste0(tttn, "numberTargeted"), inline = T))
               
             ),
@@ -125,9 +132,9 @@ intervention_content <- function(n=1) {
               tags$br(),
               tags$b("Age-Nativity Group"),
               tags$br(),
-							p(textOutput(paste0(tttn, 'AgeNativityIncidence'))),
-							p(textOutput(paste0(tttn, 'AgeNativityPrevalence'))),
-              tags$p("Population Size: 0")
+							tags$p(textOutput(paste0(tttn, 'AgeNativityIncidence'))),
+							tags$p(textOutput(paste0(tttn, 'AgeNativityPrevalence'))),
+              tags$p("Population Size: ", textOutput(paste0(tttn, "ageNatPopsize"), inline=T))
             )
           )
         ),

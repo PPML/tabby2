@@ -73,7 +73,10 @@ data_estimates <- function() {
         `2099` = 2100
       )
     ) %>%
-    gather(type, value, mean, ci_high, ci_low)
+    gather(type, value, mean, ci_high, ci_low) %>% 
+    mutate(comparator = recode(comparator, pct_basecase_2016 = "pct_basecase_2018"),
+      outcome = recode(outcome, tb_incidence_per_mil = "tb_incidence_per_100k", 
+        tb_mortality_per_mil = "tb_mortality_per_100k"))
 }
 
 #' @rdname model-results
@@ -81,7 +84,10 @@ data_estimates <- function() {
 data_trends <- function() {
   results_trends() %>%
     gather(type, value, mean, ci_high, ci_low) %>%
-    mutate_if(is.factor, as.character)
+    mutate_if(is.factor, as.character) %>% 
+    mutate(comparator = recode(comparator, pct_basecase_2016 = "pct_basecase_2018"),
+      outcome = recode(outcome, tb_incidence_per_mil = "tb_incidence_per_100k", 
+        tb_mortality_per_mil = "tb_mortality_per_100k"))
 }
 
 #' @rdname model-results
@@ -92,5 +98,9 @@ data_agegroups <- function() {
       age_group = str_replace(age_group, "_", "-"),
       age_group = str_replace(age_group, "p$", "+")
     ) %>%
-    mutate_if(is.factor, as.character)
+    mutate_if(is.factor, as.character) %>% 
+    mutate(
+      outcome = recode(outcome, tb_incidence_per_mil = "tb_incidence_per_100k", 
+        tb_mortality_per_mil = "tb_mortality_per_100k"))
+
 }

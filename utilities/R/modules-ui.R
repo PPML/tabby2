@@ -35,7 +35,7 @@ updateAboutUI <- function(input, output, session, available_geographies) {
       selectInput(inputId = "state",
                   label = "Select a Location",
                   choices = unname(available_geographies),
-                  selected = 'United States'),
+                  selected = 'US'),
       shiny::actionButton(
         inputId = 'toPredefinedScenarios',
         label = 'Next Page',
@@ -52,7 +52,7 @@ updateAboutUI <- function(input, output, session, available_geographies) {
 standardInterventionsUI <- function() {
   fluidRow(
     column(12,
-           tags$h1("Prebuilt Scenarios")
+           tags$h1("Predefined Scenarios")
     ),
     column(8, 
            includeMarkdown("inst/md/standard-interventions.md"),
@@ -80,10 +80,10 @@ standardInterventionsUI <- function() {
 customInterventionsUI <- function() {
   tagList(
 		br(),
-		h4("Inactive - Not Linked to Outcomes"),
-    br(),
+		# h4("Inactive - Not Linked to Outcomes"),
+    # br(),
            p(
-             "Use the custom Targeted Testing and Treatment to create scenarios that simulate
+             "Use the Targeted Testing and Treatment input to create scenarios that simulate
              additional screening of specific risk groups over a period of specified years. Targeted groups
              can be specified by their risk, age, and nativity status. Custom risk groups can be defined by specifying
              rate ratios of LTBI prevalence, progression, and mortality."
@@ -125,12 +125,12 @@ scenariosUI <- function() {
         tabPanel(title = "Program Changes", value = 'programchanges', {
           programChanges()
           }),
-        tabPanel(title = "Custom Scenarios", value = 'customscenarios', {
+        tabPanel(title = "Combination Scenarios", value = 'customscenarios', {
           tagList(
 						br(),
-						h4("Inactive - Not Linked to Outcomes"),
-            br(),
-            p("Custom Scenarios allow users to simulate combinations of Targeted Testing 
+						# h4("Inactive - Not Linked to Outcomes"),
+            # br(),
+            p("Combination Scenarios allow users to simulate combinations of Targeted Testing 
 and Treatment interventions and Program Changes."),
           tabsetPanel(id = 'combinationScenarios',
             customScenarioPanel(1),
@@ -249,19 +249,22 @@ programChangePanel <- function(n, prg_chng) {
 }
 
 customScenarioPanel <- function(n) {
-  scenarion <- paste0("scenario", n)
+  combinationn <- paste0("combination", n)
   return(
     tabPanel(
-      title = paste0("Custom Scenario ", n),
+      title = paste0("Combination Scenario ", n),
 			value = as.character(n),
       wellPanel(
-        tags$h4("Define a Custom Scenario"),
+        tags$h4("Define a Combination Scenario"),
         textInput(
           label = "Scenario Name",
-          inputId = paste0(scenarion, "Name"),
-          placeholder = paste0("Custom Scenario ", n)),
-        uiOutput(paste0('custom', n, 'TTTRadios')),
-        uiOutput(paste0('custom', n, 'ProgramChangeRadios'))
+          inputId = paste0(combinationn, "Name"),
+          placeholder = paste0("Combination Scenario ", n)),
+        uiOutput(paste0('combination', n, 'TTTRadios')),
+        uiOutput(paste0('combination', n, 'ProgramChangeRadios')),
+
+        actionButton(paste0('combination', n, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
+        disabled(actionButton(paste0('combination', n, 'ChangeSettings'), label = 'Change Settings'))
       ),
 
 			column(12,

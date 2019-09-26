@@ -1,69 +1,74 @@
-runProgramChanges <- function(input, output, session, n, values, geo_short_code, sim_data, prg_chng_default) { 
+
+
+runTTT <- function(input, output, session, n, geo_short_code) { 
+  # return a reactive which runs the TTT scenario
 	reactive({
 
-	prefix <- function(x) paste0('programChange', n, x) 
+    prefix <- function(x) { paste0(paste0('ttt', n), x) } 
+    
+    if (input[[prefix('name')]] == '') { 
+      scenario_name <- prefix('')
+    } else {
+      scenario_name <- input[[prefix('name')]]
+    }
 
-	# load the geography data into mitus
-	model_load(geo_short_code())
+    model_load(geo_short_code())
 
-  prg_chng <- prg_chng_default()
+    ttt_list <- def_ttt()
 
-	# # replace this shortly with the user defined prg_chng
-	# prg_chng<-c(2020,2,.90,.95,.85,.90,.8,.25)
-	# names(prg_chng)<-
-	# 	c("start_yr", #year in which the program change starts (discontinuous step up to the values below at this year)
-	# 		"scrn_cov", #Screening Coverage Rate as a Multiple of the Current Rate
-	# 		"IGRA_frc", #Fraction of Individuals Receiving IGRA
-	# 		"ltbi_init_frc", #Fraction of Individuals Testing Positive who Accept Treatment
-	# 		"ltbi_comp_frc", #Fraction of Individuals Initiating Treatment Who Complete Treatment
-	# 		"ltbi_eff_frc", # LTBI Treatment Efficacy
-	# 		"tb_tim2tx_frc", #Duration of Infectiousness 
-	# 		"tb_txdef_frc") #Fraction Discontinuing/Defaulting from Treatment
+    # $NativityGrp
+    # [1] "All"
+    # $AgeGrp
+    # [1] "All"
+    # $NRiskGrp
+    # [1] 0
+    # $FrcScrn
+    # [1] 0
+    # $StartYr
+    # [1] 2018
+    # $EndYr
+    # [1] 2050
+    # $RRprg
+    # [1] 1
+    # $RRmu
+    # [1] 1
+    # $RRPrev
+    # [1] 1
 
-	if (input[[prefix('Name')]] == '') { 
-		scenario_name <- prefix('')
-	} else {
-		scenario_name <- input[[prefix('Name')]]
-	}
+  ttt_list[['NativityGrp']] <- 
+    switch(input[[paste0('ttt', n, "nativity")]], 
+      all_populations = 'All',
+      usb_population = 'USB',
+      fb_population = 'NUSB')
 
-  prg_chng[['start_yr']] <- input[[prefix('StartYear')]]
+  ttt_list[['AgeGrp']] <- 
+    switch(input[[paste0('ttt', n, "agegroups")]],
+      all_ages = "All",
+      age_0_24 = "0 to 24",
+      age_25_64 = "25 to 64",
+      age_65p = "65+")
+  
+  ttt_list[['NRiskGrp']] <- input[[paste0('ttt', n, "numberTargeted")]] / 1e3
+  ttt_list[['FrcScrn']] <- input[[paste0('ttt', n, "fractionScreened")]]
 
-  prg_chng[['scrn_cov']] <- 
-    input[[prefix('CoverageRate')]] 
+  ttt_list[['StartYr']] <- input[[paste0('ttt', n, 'startyear')]]
+  ttt_list[['EndYr']] <- input[[paste0('ttt', n, 'stopyear')]]
 
-  prg_chng[['IGRA_frc']] <- 
-    input[[prefix('IGRACoverage')]] / 100
+  ttt_list[['RRprg']] <- input[[paste0('ttt', n, 'progression-rate')]]
+  ttt_list[['RRmu']] <- input[[paste0('ttt', n, 'mortality-rate')]]
+  ttt_list[['RRPrev']] <- input[[paste0('ttt', n, 'prevalence-rate')]]
 
-  prg_chng[['ltbi_init_frc']] <- 
-    input[[prefix('AcceptingTreatmentFraction')]] / 100
-
-  prg_chng[['ltbi_comp_frc']] <- 
-    input[[prefix('CompletionRate')]] / 100
-
-  prg_chng[['ltbi_eff_frc']] <- 
-    input[[prefix('TreatmentEffectiveness')]] / 100
+  prg_chng <- MITUS::def_prgchng(ParVec = Par[1,])
 
 
-  prg_chng[['tb_tim2tx_frc']] <- 
-    input[[prefix('AverageTimeToTreatment')]] 
-
-  prg_chng[['tb_txdef_frc']] <- 
-    input[[prefix('DefaultRate')]] / 100
-
-  # Load pre-simulated basecase
-  # load_US_data <- function(i) {
-  #     data_name <- 
-  #     load(system.file(paste0("US/US_results_",i,".rda"), package='MITUS'))
-  #     return(get(data_name))
-  # }
-
-  # US_results <- lapply(1:9, load_US_data)
   presimulated_results_name <- load(system.file(paste0(geo_short_code(), "/", geo_short_code(), "_results_1.rda"),
     package="MITUS"))
   presimulated_results <- get(presimulated_results_name)
 
+  # presimulated_results <- new2_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng, ttt_list = def_ttt())
+
 	# simulate program changes scenario
-	custom_scenario_output <- new_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng)
+	custom_scenario_output <- new2_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng, ttt_list = ttt_list)
   custom_scenario_output <- list(presimulated_results[1:2,,], custom_scenario_output)
 
 	# reformat into small/big restabs (two lists of (ResTab, ResTabus, ResTabfb) for small/big)
@@ -124,5 +129,6 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
    #     'new_data rows\n')
 
   return(new_data)
-	})
+
+  })
 }
