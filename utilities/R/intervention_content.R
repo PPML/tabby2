@@ -60,7 +60,7 @@ intervention_content <- function(n=1) {
             # __subcol2: choose number targeted ----
             numericInput(
               inputId = paste0(tttn, "numberTargeted"),
-              label = "Number of Individuals in the Risk Group in 2018 in millions",
+              label = "Number of Individuals in the Risk Group in 2018 in thousands",
               min = 0,
               value = 0
             ),
@@ -124,7 +124,7 @@ intervention_content <- function(n=1) {
               tags$p(), # add an extra empty paragraph to match the one that erroneously/magically appears in the Age-Nativity box
               tags$p("Incidence per million: ", textOutput(paste0(tttn, "TargetedIncidence"), inline=T), ""),
               tags$p("LTBI Prevalence: ", textOutput(paste0(tttn, "TargetedLTBIPrevalence"), inline=T), "%"),
-              tags$p("Population: ", textOutput(paste0(tttn, "numberTargeted"), inline = T), " million")
+              tags$p("Population: ", textOutput(paste0(tttn, "numberTargeted"), inline = T), " thousand")
               
             ),
             column(
@@ -134,7 +134,7 @@ intervention_content <- function(n=1) {
               tags$br(),
 							tags$p(textOutput(paste0(tttn, 'AgeNativityIncidence'))),
 							tags$p(textOutput(paste0(tttn, 'AgeNativityPrevalence'))),
-              tags$p("Population Size: ", textOutput(paste0(tttn, "ageNatPopsize"), inline=T), " million")
+              tags$p("Population Size: ", textOutput(paste0(tttn, "ageNatPopsize"), inline=T))
             )
           )
         ),

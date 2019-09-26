@@ -48,7 +48,7 @@ runTTT <- function(input, output, session, n, geo_short_code) {
       age_25_64 = "25 to 64",
       age_65p = "65+")
   
-  ttt_list[['NRiskGrp']] <- input[[paste0('ttt', n, "numberTargeted")]]
+  ttt_list[['NRiskGrp']] <- input[[paste0('ttt', n, "numberTargeted")]] / 1e3
   ttt_list[['FrcScrn']] <- input[[paste0('ttt', n, "fractionScreened")]]
 
   ttt_list[['StartYr']] <- input[[paste0('ttt', n, 'startyear')]]

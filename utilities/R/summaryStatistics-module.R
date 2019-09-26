@@ -163,12 +163,18 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
     })
   }
 
+  format_population_size <- function(x) { 
+    if (x >= 1) return(paste0(as.character(round(x, 2)), " million"))
+    else if (x >= 1e-3) return(paste0(as.character(round(x*1e3, 2)), " thousand"))
+    else return(paste0(as.character(round(x*1e6, 2)), " people"))
+  }
+
   age_nat_popsize_1 <- generate_age_nat_popsize_reactive(1)
   age_nat_popsize_2 <- generate_age_nat_popsize_reactive(2)
   age_nat_popsize_3 <- generate_age_nat_popsize_reactive(3)
 
-  output$ttt1ageNatPopsize <- renderText({ age_nat_popsize_1() }) 
-  output$ttt2ageNatPopsize <- renderText({ age_nat_popsize_2() }) 
-  output$ttt3ageNatPopsize <- renderText({ age_nat_popsize_3() }) 
+  output$ttt1ageNatPopsize <- renderText({ format_population_size(age_nat_popsize_1()) }) 
+  output$ttt2ageNatPopsize <- renderText({ format_population_size(age_nat_popsize_2()) }) 
+  output$ttt3ageNatPopsize <- renderText({ format_population_size(age_nat_popsize_3()) }) 
 
 }

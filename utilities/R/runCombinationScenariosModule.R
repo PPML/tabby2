@@ -58,7 +58,7 @@ runCombination <- function(input, output, session, n, geo_short_code) {
         age_25_64 = "25 to 64",
         age_65p = "65+")
     
-    ttt_list[['NRiskGrp']] <- input[[paste0('ttt', selectedTTT, "numberTargeted")]]
+    ttt_list[['NRiskGrp']] <- input[[paste0('ttt', selectedTTT, "numberTargeted")]] / 1e3
     ttt_list[['FrcScrn']] <- input[[paste0('ttt', selectedTTT, "fractionScreened")]]
 
     ttt_list[['StartYr']] <- input[[paste0('ttt', selectedTTT, 'startyear')]]
