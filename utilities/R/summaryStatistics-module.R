@@ -23,10 +23,16 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
 
 	ESTIMATES_DATA <- reactive({ sim_data[['presimulated']][['ESTIMATES_DATA']] })
 
+  format_number_targeted <- function(x) { 
+    if (x >= 1e3) { paste0(as.character(round(x/1e3, 2)), " million") }
+    else if (x >= 1) { paste0(as.character(round(x, 2)), " thousand") }
+    else { paste0(as.character(round(x*1e3, 2)), " people") }
+  }
+
   # output number targeted directly from user input
-	output$ttt1numberTargeted <- renderText({input$ttt1numberTargeted})
-	output$ttt2numberTargeted <- renderText({input$ttt2numberTargeted})
-	output$ttt3numberTargeted <- renderText({input$ttt3numberTargeted})
+	output$ttt1numberTargeted <- renderText({format_number_targeted(input$ttt1numberTargeted)})
+	output$ttt2numberTargeted <- renderText({format_number_targeted(input$ttt2numberTargeted)})
+	output$ttt3numberTargeted <- renderText({format_number_targeted(input$ttt3numberTargeted)})
 
   # function to output a reactive which computes the tb incidence of the age-nat group
   constructTTTIncidenceReactive <- function(iter) { 
@@ -37,7 +43,7 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
             ESTIMATES_DATA() %>% 
               filter(age_group == input[[tttagegroups]],
                      population == input[[tttnativity]],
-                     outcome == 'tb_incidence_per_mil',
+                     outcome == 'tb_incidence_per_100k',
                      scenario == 'base_case',
                      year == 2018,
                      comparator == 'absolute_value',
@@ -81,7 +87,7 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
   ageNativityIncidenceForTTT <- function(n) { 
 		reactive({
       value <- get(paste0('ageNativityIncidence', n))()
-			paste0("Incidence per Million: ", round(value, 2))
+			paste0("Incidence per hundred thousand: ", round(value, 2))
 		 })
 	 }
 
@@ -112,15 +118,15 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
   ## Age-Nat Outputs: 
 
   # 1
-  output$ttt1AgeNativityIncidence <- renderText({ paste0("Incidence per million: ", round(ageNativityIncidence1(), 2)) })
+  output$ttt1AgeNativityIncidence <- renderText({ paste0("Incidence per hundred thousand: ", round(ageNativityIncidence1(), 2)) })
   output$ttt1AgeNativityPrevalence <- renderText({ paste0("LTBI Prevalence: ", round(ageNativityPrevalence1(), 2), "%") })
 
   # 2
-  output$ttt2AgeNativityIncidence <- renderText({ paste0("Incidence per million: ", round(ageNativityIncidence2(), 2)) })
+  output$ttt2AgeNativityIncidence <- renderText({ paste0("Incidence per hundred thousand: ", round(ageNativityIncidence2(), 2)) })
   output$ttt2AgeNativityPrevalence <- renderText({ paste0("LTBI Prevalence: ", round(ageNativityPrevalence2(), 2), "%") })
 
   # 3
-  output$ttt3AgeNativityIncidence <- renderText({ paste0("Incidence per million: ", round(ageNativityIncidence3(), 2)) })
+  output$ttt3AgeNativityIncidence <- renderText({ paste0("Incidence per hundred thousand: ", round(ageNativityIncidence3(), 2)) })
   output$ttt3AgeNativityPrevalence <- renderText({ paste0("LTBI Prevalence: ", round(ageNativityPrevalence3(), 2), "%") })
 
   ## TTT Outputs:
