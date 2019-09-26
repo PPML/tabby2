@@ -1,4 +1,4 @@
-summaryStatistics <- function(input, output, session, values, sim_data) {
+summaryStatistics <- function(input, output, session, values, sim_data, geo_short_code) {
 
   # the Summary Statistics computed here appear in the TTT scenario 
   # builder in order to assist users with building their targeted group. 
@@ -136,5 +136,39 @@ summaryStatistics <- function(input, output, session, values, sim_data) {
   # 3 
   output$ttt3TargetedIncidence <- renderText({ targetedIncidence(3, ageNativityIncidence3())() })
   output$ttt3TargetedLTBIPrevalence <- renderText({ targetedPrevalence(3, ageNativityPrevalence3())() })
+
+  # Age-Nativity Group Population Size
+
+  generate_age_nat_popsize_reactive <- function(n) { 
+    reactive({
+      load(system.file(paste0(geo_short_code(),"/", geo_short_code(),"_results_1.rda"), package="MITUS"))
+
+      tttagegroups <- paste0('ttt', n, 'agegroups')
+      tttnativity <- paste0('ttt', n, 'nativity')
+
+      ag<-switch(input[[tttagegroups]],
+                     "all_ages"=33:43,
+                     "age_0_24"=33:35,
+                     "age_25_64"=36:39,
+                     "age_65p"=40:43
+      )
+      na<-switch(input[[tttnativity]],
+                     "all_populations"=c(rep(0,length(ag)),rep(11,length(ag))),
+                     "usb_population"=rep(0,length(ag)),
+                     "fb_population"=rep(11,length(ag))
+      )
+
+      pop<-sum(out[1,69,ag+na])
+      return(pop)
+    })
+  }
+
+  age_nat_popsize_1 <- generate_age_nat_popsize_reactive(1)
+  age_nat_popsize_2 <- generate_age_nat_popsize_reactive(2)
+  age_nat_popsize_3 <- generate_age_nat_popsize_reactive(3)
+
+  output$ttt1ageNatPopsize <- renderText({ age_nat_popsize_1() }) 
+  output$ttt2ageNatPopsize <- renderText({ age_nat_popsize_2() }) 
+  output$ttt3ageNatPopsize <- renderText({ age_nat_popsize_3() }) 
 
 }

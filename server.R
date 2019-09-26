@@ -369,7 +369,8 @@ shinyServer(function(input, output, session) {
 		})
 
 		# Display the summary statistics in the TTT interventions
-		callModule(summaryStatistics, NULL, values, sim_data = sim_data)
+    callModule(summaryStatistics, NULL, values, sim_data = sim_data,
+      geo_short_code = geo_short_code)
 
 		# Tabby1 Server
 		# outcomes_filtered_data <- 
