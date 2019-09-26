@@ -52,7 +52,7 @@ updateAboutUI <- function(input, output, session, available_geographies) {
 standardInterventionsUI <- function() {
   fluidRow(
     column(12,
-           tags$h1("Prebuilt Scenarios")
+           tags$h1("Predefined Scenarios")
     ),
     column(8, 
            includeMarkdown("inst/md/standard-interventions.md"),
@@ -125,12 +125,12 @@ scenariosUI <- function() {
         tabPanel(title = "Program Changes", value = 'programchanges', {
           programChanges()
           }),
-        tabPanel(title = "Custom Scenarios", value = 'customscenarios', {
+        tabPanel(title = "Combination Scenarios", value = 'customscenarios', {
           tagList(
 						br(),
-						h4("Inactive - Not Linked to Outcomes"),
-            br(),
-            p("Custom Scenarios allow users to simulate combinations of Targeted Testing 
+						# h4("Inactive - Not Linked to Outcomes"),
+            # br(),
+            p("Combination Scenarios allow users to simulate combinations of Targeted Testing 
 and Treatment interventions and Program Changes."),
           tabsetPanel(id = 'combinationScenarios',
             customScenarioPanel(1),
@@ -249,7 +249,7 @@ programChangePanel <- function(n, prg_chng) {
 }
 
 customScenarioPanel <- function(n) {
-  combinationn <- paste0("", n)
+  combinationn <- paste0("combination", n)
   return(
     tabPanel(
       title = paste0("Combination Scenario ", n),
@@ -261,7 +261,10 @@ customScenarioPanel <- function(n) {
           inputId = paste0(combinationn, "Name"),
           placeholder = paste0("Combination Scenario ", n)),
         uiOutput(paste0('combination', n, 'TTTRadios')),
-        uiOutput(paste0('combination', n, 'ProgramChangeRadios'))
+        uiOutput(paste0('combination', n, 'ProgramChangeRadios')),
+
+        actionButton(paste0('combination', n, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
+        disabled(actionButton(paste0('combination', n, 'ChangeSettings'), label = 'Change Settings'))
       ),
 
 			column(12,
