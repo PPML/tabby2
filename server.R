@@ -296,6 +296,20 @@ shinyServer(function(input, output, session) {
 			callModule(tttChangeSettingsButton, NULL, n = 3)
 		})
 
+		# Delete Combination Scenarios from Sim Data When Change Settings Button is Pressed
+		observeEvent(input[['combination1ChangeSettings']], {
+			sim_data[['combination1']] <- NULL
+			callModule(combinationChangeSettingsButton, NULL, n = 1)
+		})
+		observeEvent(input[['combination2ChangeSettings']], {
+			sim_data[['combination2']] <- NULL
+			callModule(combinationChangeSettingsButton, NULL, n = 2)
+		})
+		observeEvent(input[['combination3ChangeSettings']], {
+			sim_data[['combination3']] <- NULL
+			callModule(combinationChangeSettingsButton, NULL, n = 3)
+		})
+
     ### Restore Defaults Button Logic for Program Changes ### 
 
     # Restore Defaults for Program Change Scenarios
