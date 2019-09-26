@@ -1,3 +1,12 @@
+
+geographies <- setNames(nm = state.abb, state.name)
+geographies[['US']] <- 'United States'
+geographies[['DC']] <- 'District of Columbia'
+
+available_geographies <- geographies[scan_for_available_geographies(names(geographies))]
+
+invert_geographies <- setNames(nm = unname(geographies), object = names(geographies))
+
 tabnames <- c(
   about = "Introduction",
   scenarios = "Scenarios",
@@ -12,7 +21,7 @@ tabnames <- c(
 )
 
 tabcontents <- list(
-  about = uiOutput('aboutUI'),
+  about = aboutUI(available_geographies),# uiOutput('aboutUI'),
   scenarios = NULL,
   predefined = standardInterventionsUI(),
   customscenarios = scenariosUI(),
