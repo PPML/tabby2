@@ -2,7 +2,7 @@ tabnames <- c(
   about = "Introduction",
   scenarios = "Scenarios",
   predefined = "Predefined Scenarios",
-  customscenarios = "Build Scenarios",
+  customscenarios = "Custom Scenarios",
   estimates = "Estimates",
   timetrends = "Time Trends",
   agegroups = "Age Groups",
