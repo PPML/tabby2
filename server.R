@@ -140,7 +140,7 @@ shinyServer(function(input, output, session) {
 
 		# Output the Selected Geography
 		output$location_selected <- renderUI({
-			tags$a(paste0("Location: ", input$state))
+      tags$a(paste0("Location: ", input$state))
 		})
 
 		# Geography Short Code
@@ -153,6 +153,9 @@ shinyServer(function(input, output, session) {
 
 		# Output short-code for use in plot titles
 		output$geo_short_code <- renderText({ geo_short_code() }) 	
+
+		# Re-Render About UI
+		# callModule(updateAboutUI, NULL, available_geographies)
 
 		# Specify sim_data to be a reactiveList which will hold our simulation outcomes,
 		# both pre-simulated and simulated on the fly.
@@ -168,8 +171,6 @@ shinyServer(function(input, output, session) {
       combination3 = NULL
       )
 
-		# Re-Render About UI
-		callModule(updateAboutUI, NULL, available_geographies)
 
 		#  Setup `values` to contain our reactiveValues
 		values <- callModule(constructReactiveValues, NULL)

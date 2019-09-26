@@ -1,4 +1,4 @@
-aboutUI <- function() {
+aboutUI <- function(available_geographies) {
   fluidRow(
     column(12, h1("About Tabby2")),
     column(6, includeMarkdown("inst/md/about.md")),
@@ -9,8 +9,8 @@ aboutUI <- function() {
       ), 
       selectInput(inputId = "state",
                   label = "Select a Location",
-                  choices = c('United States', 'Massachusetts'),
-                  selected = 'United States'),
+                  choices = unname(available_geographies),
+                  selected = 'US'),
       shiny::actionButton(
         inputId = 'toPredefinedScenarios',
         label = 'Next Page',
