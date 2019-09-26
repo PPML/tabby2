@@ -25,6 +25,7 @@ library(shiny)
 library(shinydashboard)
 library(shinyjs)
 library(MITUS)
+library(MITUSCalibPlots)
 library(tabus)
 library(shinycssloaders)
 library(DT)
@@ -374,7 +375,7 @@ shinyServer(function(input, output, session) {
 		callModule(outputIncludeCustomScenarioOptions, NULL, sim_data)
 		
 		# Plots for Comparison to Recent Data
-		callModule(comparisonToRecentData2, NULL, geo_short_code)
+		callModule(comparisonToRecentData, NULL, geo_short_code)
 
 		# Call Module for Saving Feedback Form Input
 		callModule(feedbackFormModule, NULL)
