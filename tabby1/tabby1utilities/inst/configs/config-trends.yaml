@@ -24,15 +24,15 @@ comparators:
   values:
   - absolute_value
   - pct_basecase_same_year
-  - pct_basecase_2016
+  - pct_basecase_2018
   labels:
     absolute_value: Absolute values
     pct_basecase_same_year: Percentage of base case value in the same year
-    pct_basecase_2016: Percentage of base case value in 2018
+    pct_basecase_2018: Percentage of base case value in 2018
   formatted:
     absolute_value: ''
     pct_basecase_same_year: Percentage of base case value in the same year
-    pct_basecase_2016: Percentage of base case value in 2018
+    pct_basecase_2018: Percentage of base case value in 2018
   selected:
   - yes
   - no
@@ -80,36 +80,36 @@ ages:
 outcomes:
   heading: Outcome
   values:
-  - tb_infection_per_mil
+  - tb_infection_per_100k
   - pct_ltbi
-  - tb_incidence_per_mil
-  - tb_deaths_per_mil
+  - tb_incidence_per_100k
+  - tb_deaths_per_100k
   labels:
-    tb_infection_per_mil: Incident M. tb Infections
+    tb_infection_per_100k: Incident M. tb Infections
     pct_ltbi: LTBI Prevalence
-    tb_incidence_per_mil: Active TB Incidence
-    tb_deaths_per_mil: TB-Related Deaths
+    tb_incidence_per_100k: Active TB Incidence
+    tb_deaths_per_100k: TB-Related Deaths
   formatted:
-    tb_infection_per_mil: |-
+    tb_infection_per_100k: |-
       Incident M. tb Infections
-      (per million)
+      (per hundred thousand)
     pct_ltbi: |-
       LTBI Prevalence
       (percentage)
-    tb_incidence_per_mil: |-
+    tb_incidence_per_100k: |-
       Active TB Incidence
-      (per million)
-    tb_deaths_per_mil: |-
+      (per hundred thousand)
+    tb_deaths_per_100k: |-
       TB-Related Deaths
-      (per million)
+      (per hundred thousand)
   descriptions:
-    tb_infection_per_mil: Incident M. TB infections each year due to transmission
+    tb_infection_per_100k: Incident M. TB infections each year due to transmission
       within the US (includes reinfection of individuals with prior infection, excludes
       migrants entering the US with established LTBI)
     pct_ltbi: Prevalence of latent M. TB infections at mid-point of year
-    tb_incidence_per_mil: TB cases identified each year (includes TB cases identified
+    tb_incidence_per_100k: TB cases identified each year (includes TB cases identified
       after death)
-    tb_deaths_per_mil: Number of deaths attributable to TB each year
+    tb_deaths_per_100k: Number of deaths attributable to TB each year
   selected:
   - yes
   - no
