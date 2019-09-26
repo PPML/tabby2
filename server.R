@@ -415,7 +415,7 @@ shinyServer(function(input, output, session) {
 
 		output[['extraDebugOutputs']] <- 
 			renderText({
-				capture.output(str(sim_data[['ESTIMATES_DATA']]))
+				paste0(apply(combined_data()[['ESTIMATES_DATA']], 2, unique), collapse = "\n")
 			})
 
 	# } # end of if USER$Logged == TRUE
