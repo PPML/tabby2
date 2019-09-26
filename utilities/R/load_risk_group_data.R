@@ -23,7 +23,7 @@ load_risk_group_data <- function() {
   # Rename Populations
   df$population <- 
     c("Non-US Born Individuals from High Burden Countries",
-      "Homeless or Incarcerated Individuals",
+      "Homeless Individuals",
       "HIV Positive",
       "Diabetics",
       "End Stage Renal Disease",

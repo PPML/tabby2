@@ -13,7 +13,7 @@ formatted_risk_group <- list(
   "Define a Custom Risk Group",
   `Elevated LTBI Prevalence` = c(
     "Non-US Born Individuals from High Burden Countries",
-    "Homeless or Incarcerated Individuals"
+    "Homeless Individuals"
   ),
   `Elevated Progression Risk` = c(
     "HIV Positive",
@@ -121,7 +121,6 @@ intervention_content <- function(n=1) {
               tags$br(),
               tags$b("Targeted Group"),
               tags$br(),
-              tags$br(),
               tags$p("Incidence per million: ", textOutput(paste0(tttn, "TargetedIncidence"), inline=T), ""),
               tags$p("LTBI Prevalence: ", textOutput(paste0(tttn, "TargetedLTBIPrevalence"), inline=T), "%"),
               tags$p("Population: ", textOutput(paste0(tttn, "numberTargeted"), inline = T), " million")
@@ -132,9 +131,9 @@ intervention_content <- function(n=1) {
               tags$br(),
               tags$b("Age-Nativity Group"),
               tags$br(),
-							p(textOutput(paste0(tttn, 'AgeNativityIncidence'))),
-							p(textOutput(paste0(tttn, 'AgeNativityPrevalence'))),
-              tags$p("Population Size: 0")
+							tags$p(textOutput(paste0(tttn, 'AgeNativityIncidence'))),
+							tags$p(textOutput(paste0(tttn, 'AgeNativityPrevalence'))),
+              tags$p("Population Size: ", textOutput(paste0(tttn, "ageNatPopsize"), inline=T), " million")
             )
           )
         ),
