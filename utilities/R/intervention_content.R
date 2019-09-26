@@ -121,6 +121,7 @@ intervention_content <- function(n=1) {
               tags$br(),
               tags$b("Targeted Group"),
               tags$br(),
+              tags$p(), # add an extra empty paragraph to match the one that erroneously/magically appears in the Age-Nativity box
               tags$p("Incidence per million: ", textOutput(paste0(tttn, "TargetedIncidence"), inline=T), ""),
               tags$p("LTBI Prevalence: ", textOutput(paste0(tttn, "TargetedLTBIPrevalence"), inline=T), "%"),
               tags$p("Population: ", textOutput(paste0(tttn, "numberTargeted"), inline = T), " million")
