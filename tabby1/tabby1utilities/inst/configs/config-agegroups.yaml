@@ -28,11 +28,11 @@ comparators:
   labels:
     absolute_value: Absolute values
     pct_basecase_same_year: Percentage of base case value in the same year
-    pct_basecase_2016: Percentage of base case value in 2016
+    pct_basecase_2016: Percentage of base case value in 2018
   formatted:
     absolute_value: ''
     pct_basecase_same_year: Percentage of base case value in the same year
-    pct_basecase_2016: Percentage of base case value in 2016
+    pct_basecase_2016: Percentage of base case value in 2018
   selected:
   - yes
   - no
@@ -150,25 +150,25 @@ analyses:
   - scenario_6
   - scenario_7
   labels:
-    scenario_1: No Transmission Within the US After 2016
-    scenario_2: No TB or LTBI in New Migrants After 2016
+    scenario_1: No Transmission Within the US After 2018
+    scenario_2: No TB or LTBI in New Migrants After 2018
     scenario_3: Reduced TB Prevention Effort
-    scenario_5: Future Immigration at 2016 Levels
+    scenario_5: Future Immigration at 2018 Levels
     scenario_6: Improving Global TB Control
     scenario_7: Rising Reactivation Risks
   formatted: # use |- to include newline characters
     scenario_1: |-
       No transmission within
-      the US after 2016
+      the US after 2018
     scenario_2: |-
       No TB or LTBI in new
-      migrants after 2016
+      migrants after 2018
     scenario_3: |-
       Reduced TB prevention
       effort
     scenario_5: |-
       Future immigration
-      at 2016 levels
+      at 2018 levels
     scenario_6: |-
       Improving global TB
       control
