@@ -1,4 +1,6 @@
 
+### Program Changes ### 
+
 # Behavior for when Run Simulation is clicked
 programChangesRunButton <- function(input, output, session, n, compute_program_change_reactive, sim_data) { 
 
@@ -33,6 +35,7 @@ programChangesChangeSettingsButton <- function(input, output, session, n) {
 	sapply(paste0(pc_n, c('ChangeSettings', 'ViewOutcomes')), disable)
 }
 
+### Targeted Testing and Treatment ### 
 
 tttRunButton <- function(input, output, session, n, compute_ttt_reactive) { 
 		# Construct programChange ID
@@ -59,4 +62,35 @@ tttChangeSettingsButton <- function(input, output, session, n) {
 
 		# Enable the Change Settings and View Outcomes Button
 		sapply(paste0(tttn, c('ChangeSettings', 'ViewOutcomes')), disable)
+}
+
+
+### Combination Scenarios ### 
+
+
+combinationRunButton <- function(input, output, session, n, compute_combination_reactive) { 
+		# Construct programChange ID
+		combinationn <- paste0('combination', n)
+
+		# Disable Input for the programChange Scenario
+		# sapply(paste0(combinationn, c('name', 'risk', 'nativity', 'agegroups', 'numberTargeted',
+		# 'fractionScreened', 'startyear', 'stopyear', 'RunSimulations')), disable)
+
+		# Enable the Change Settings and View Outcomes Button
+		# sapply(paste0(combinationn, c('ChangeSettings', 'ViewOutcomes')), enable)
+
+		# Compute and Return Data to Fill Into sim_data reactiveList
+		compute_combination_reactive()
+}
+
+combinationChangeSettingsButton <- function(input, output, session, n) {
+		# Construct programChange ID
+		combinationn <- paste0('combination', n)
+
+		# Disable Input for the programChange Scenario
+		# sapply(paste0(combinationn, c('name', 'risk', 'nativity', 'agegroups', 'numberTargeted',
+		# 'fractionScreened', 'startyear', 'stopyear', 'RunSimulations')), enable)
+
+		# Enable the Change Settings and View Outcomes Button
+		# sapply(paste0(combinationn, c('ChangeSettings', 'ViewOutcomes')), disable)
 }
