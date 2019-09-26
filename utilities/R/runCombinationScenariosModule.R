@@ -8,15 +8,15 @@ runCombination <- function(input, output, session, n, geo_short_code) {
     # Which TTT scenario and which Program Change Scenario did the user specify
     # in Combination Scenario n
 
-    selectedTTT <- input[[paste0('combination', n, 'SelectedTTT')]]
-    selectedPC <- input[[paste0('combination', n, 'SelectedProgramChange')]]
+    selectedTTT <- as.integer(input[[paste0('combination', n, 'SelectedTTT')]])
+    selectedPC <- as.integer(input[[paste0('combination', n, 'SelectedProgramChange')]])
 
     prefix <- function(x) { paste0(paste0('combination', n), x) } 
     
-    if (input[[prefix('name')]] == '') { 
+    if (input[[prefix('Name')]] == '') { 
       scenario_name <- prefix('')
     } else {
-      scenario_name <- input[[prefix('name')]]
+      scenario_name <- input[[prefix('Name')]]
     }
 
     model_load(geo_short_code())
@@ -44,65 +44,70 @@ runCombination <- function(input, output, session, n, geo_short_code) {
     # $RRPrev
     # [1] 1
 
-  ttt_list[['NativityGrp']] <- 
-    switch(input[[paste0('ttt', selectedTTT, "nativity")]], 
-      all_populations = 'All',
-      usb_population = 'USB',
-      fb_population = 'NUSB')
+  if (selectedTTT != 0) { 
+    ttt_list[['NativityGrp']] <- 
+      switch(input[[paste0('ttt', selectedTTT, "nativity")]], 
+        all_populations = 'All',
+        usb_population = 'USB',
+        fb_population = 'NUSB')
 
-  ttt_list[['AgeGrp']] <- 
-    switch(input[[paste0('ttt', selectedTTT, "agegroups")]],
-      all_ages = "All",
-      age_0_24 = "0 to 24",
-      age_25_64 = "25 to 64",
-      age_65p = "65+")
-  
-  ttt_list[['NRiskGrp']] <- input[[paste0('ttt', selectedTTT, "numberTargeted")]]
-  ttt_list[['FrcScrn']] <- input[[paste0('ttt', selectedTTT, "fractionScreened")]]
+    ttt_list[['AgeGrp']] <- 
+      switch(input[[paste0('ttt', selectedTTT, "agegroups")]],
+        all_ages = "All",
+        age_0_24 = "0 to 24",
+        age_25_64 = "25 to 64",
+        age_65p = "65+")
+    
+    ttt_list[['NRiskGrp']] <- input[[paste0('ttt', selectedTTT, "numberTargeted")]]
+    ttt_list[['FrcScrn']] <- input[[paste0('ttt', selectedTTT, "fractionScreened")]]
 
-  ttt_list[['StartYr']] <- input[[paste0('ttt', selectedTTT, 'startyear')]]
-  ttt_list[['EndYr']] <- input[[paste0('ttt', selectedTTT, 'stopyear')]]
+    ttt_list[['StartYr']] <- input[[paste0('ttt', selectedTTT, 'startyear')]]
+    ttt_list[['EndYr']] <- input[[paste0('ttt', selectedTTT, 'stopyear')]]
 
-  ttt_list[['RRprg']] <- input[[paste0('ttt', selectedTTT, 'progression-rate')]]
-  ttt_list[['RRmu']] <- input[[paste0('ttt', selectedTTT, 'mortality-rate')]]
-  ttt_list[['RRPrev']] <- input[[paste0('ttt', selectedTTT, 'prevalence-rate')]]
+    ttt_list[['RRprg']] <- input[[paste0('ttt', selectedTTT, 'progression-rate')]]
+    ttt_list[['RRmu']] <- input[[paste0('ttt', selectedTTT, 'mortality-rate')]]
+    ttt_list[['RRPrev']] <- input[[paste0('ttt', selectedTTT, 'prevalence-rate')]]
+  } 
 
   ### Set up Program Changes Specification ###
 
   prg_chng <- MITUS::def_prgchng(ParVec = Par[1,])
 
-  pc_prefix <- function(x) paste0('programChange', selectedPC, x) 
+  if (selectedPC != 0) { 
+    pc_prefix <- function(x) paste0('programChange', selectedPC, x) 
 
-  prg_chng[['start_yr']] <- input[[pc_prefix('StartYear')]]
+    prg_chng[['start_yr']] <- input[[pc_prefix('StartYear')]]
 
-  prg_chng[['scrn_cov']] <- 
-    input[[pc_prefix('CoverageRate')]] 
+    prg_chng[['scrn_cov']] <- 
+      input[[pc_prefix('CoverageRate')]] 
 
-  prg_chng[['IGRA_frc']] <- 
-    input[[pc_prefix('IGRACoverage')]] / 100
+    prg_chng[['IGRA_frc']] <- 
+      input[[pc_prefix('IGRACoverage')]] / 100
 
-  prg_chng[['ltbi_init_frc']] <- 
-    input[[pc_prefix('AcceptingTreatmentFraction')]] / 100
+    prg_chng[['ltbi_init_frc']] <- 
+      input[[pc_prefix('AcceptingTreatmentFraction')]] / 100
 
-  prg_chng[['ltbi_comp_frc']] <- 
-    input[[pc_prefix('CompletionRate')]] / 100
+    prg_chng[['ltbi_comp_frc']] <- 
+      input[[pc_prefix('CompletionRate')]] / 100
 
-  prg_chng[['ltbi_eff_frc']] <- 
-    input[[pc_prefix('TreatmentEffectiveness')]] / 100
+    prg_chng[['ltbi_eff_frc']] <- 
+      input[[pc_prefix('TreatmentEffectiveness')]] / 100
 
-  prg_chng[['tb_tim2tx_frc']] <- 
-    input[[pc_prefix('AverageTimeToTreatment')]] 
+    prg_chng[['tb_tim2tx_frc']] <- 
+      input[[pc_prefix('AverageTimeToTreatment')]] 
 
-  prg_chng[['tb_txdef_frc']] <- 
-    input[[pc_prefix('DefaultRate')]] / 100
+    prg_chng[['tb_txdef_frc']] <- 
+      input[[pc_prefix('DefaultRate')]] / 100
+  }
 
 
-
-
+  # Load Presimulated Results 
   presimulated_results_name <- load(system.file(paste0(geo_short_code(), "/", geo_short_code(), "_results_1.rda"),
     package="MITUS"))
   presimulated_results <- get(presimulated_results_name)
 
+  # Code for simulating the presimulated results, in case that's something one
+  # wants to do for diagnostics: 
   # presimulated_results <- new2_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng, ttt_list = def_ttt())
 
 	# simulate program changes scenario
