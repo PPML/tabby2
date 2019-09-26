@@ -60,7 +60,7 @@ intervention_content <- function(n=1) {
             # __subcol2: choose number targeted ----
             numericInput(
               inputId = paste0(tttn, "numberTargeted"),
-              label = "Number of Individuals in the Risk Group in 2018",
+              label = "Number of Individuals in the Risk Group in 2018 in millions",
               min = 0,
               value = 0
             ),
@@ -80,9 +80,9 @@ intervention_content <- function(n=1) {
                 numericInput(
                   inputId = paste0(tttn, 'startyear'),
                   label = "Start Year",
-                  min = 2018,
+                  min = 2020,
                   max = 2050,
-                  value = 2018,
+                  value = 2020,
                   step = 1
                 )
               ),
