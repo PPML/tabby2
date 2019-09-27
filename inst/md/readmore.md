@@ -1,62 +1,239 @@
-# Organization of the tool
+Organization of the Tool
+------------------------
 
-Tabby2 has as its major components an Introduction, Scenarios, Outcomes, 
-Downloads, and Further Description. 
+<!-- ![](img/figure1.png =250x){width="1.8284722222222223in"
+height="4.097222222222222in"} --> 
 
-## Scenarios
 
-Scenarios include three types:
-- Targeted LTBI Testing and Treatment
-- Pre-built Scenarios
-- TLTBI Regimen Changes
+Users of Tabby2 progress through a sequence
+of pages that provide a brief introduction to the tool, allow them to
+specify scenarios and choose outcomes of interest, and ultimately to
+view and download graphs of their chosen outcomes. The tool's sidebar
+(Figure 1) serves as the primary navigational aid for the user.
 
-In the Targeted LTBI Testing and Treatment scenario we allow users
-to simulate scenarios where the amount of LTBI treatment is increased
-by screening specific populations.
+<table>
+<tr>
+<td>
+<ul>
+  <li>   Introduction </li>
+  <li>   Scenarios </li>
+      <ul>
+      <li>   Predefined Scenarios </li>
+      <li>   Custom Scenarios </li>
+          <ul>
+          <li>   Targeted Testing and Treatment </li>
+          <li>   Program Changes </li>
+          <li>   Combination Scenarios </li>
+          </ul>
+      </ul>
+  <li>   Outcomes </li>
+      <ul> 
+      <li>   Estimates </li>
+      <li>   Time Trends </li>
+      <li>   Age Groups </li>
+      <li>   Comparison to Recent Data </li>
+      </ul>
+  <li>   Further Description </li>
+  <li>   Feedback </li>
+</ul>
+  
+</td>
+<td width='33%'>
 
-Predefined scenarios modify the base case in the following specified ways:
+<figure>
+  <img src='img/figure1.png' alt="Figure 1: Sidebar Showing the Sections of the Tabby2 Application" width="175px"/>
+  <figcaption>Figure 1: Sidebar Showing the Sections of the Tabby2 Application</figcaption>
+</figure>
+</td>
+</tr>
+</table>
 
-**Modeled Scenarios**
 
--   **TLTBI for New Immigrants:** Provision of LTBI testing and treatment
-    for all new legal immigrants entering the United States.
--   **Improved TLTBI in the United States:** Intensification of the
+### Introduction
+
+On the introduction page of Tabby2 (Figure 2), the user is shown the
+*About Tabby2* text and is prompted to select a location. After
+specifying a location, Tabby2 will load figures showing historical data
+and model estimates calibrated to that location.
+
+<center>
+<figure>
+  <img src='img/figure2.png' alt="Figure 2: The Introduction Page of the Tabby2 Web Application" height="275px"/>
+  <figcaption>
+    Figure 2: The Introduction Page of the Tabby2 Web Application
+  </figcaption>
+</figure>
+</center>
+<!--![](img/figure3.png){width="6.026842738407699in"
+height="4.070539151356081in"}
+
+Figure 2: The Introduction Page of the Tabby2 Web Application
+-->
+
+### Scenarios
+
+#### Predefined Scenarios
+
+Tabby2 provides estimates of future TB outcomes for a small number of
+predefined scenarios, in addition to a base case scenario that assumes
+continuation of current TB policy and services. The tool's predefined
+scenarios include 5 hypothetical scenarios that reflect a range of
+changes to active and latent TB testing and treatment, described below.
+
+-   **TLTBI for New Immigrants**: Provision of LTBI testing and
+    treatment for all new legal immigrants entering the US.
+
+-   **Improved TLTBI in the United States**: Intensification of the
     current LTBI targeted testing and treatment policy for high-risk
     populations, doubling treatment uptake within each risk group
     compared to current levels, and increasing the fraction cured among
     individuals initiating LTBI treatment, via a 3-month
     Isoniazid-Rifapentine drug regimen.
--   **Better Case Detection:** Improved detection of active TB cases, such
-    that the duration of untreated active disease (time from TB
+
+-   **Better Case Detection**: Improved detection of active TB cases,
+    such that the duration of untreated active disease (time from TB
     incidence to the initiation of treatment) is reduced by 50%.
--   **Better TB Treatment:** Improved treatment quality for active TB,
+
+-   **Better TB Treatment**: Improved treatment quality for active TB,
     such that treatment default, failure rates, and the fraction of
     individuals receiving an incorrect drug regimen are reduced by 50%
     from current levels.
--   **All Improvements:** The combination of all intervention scenarios
+
+-   **All Improvements**: The combination of all intervention scenarios
     described above.
 
-## Outcomes
+Each of these scenarios is automatically available when the user chooses
+scenarios to plot.
 
-Outcomes are presented as three interactive pages with visualizations:
-Estimates, Time Trends, Age Groups.
+After the user reviews the descriptions of the predefined scenarios,
+they can either proceed to one of the *Outcomes* pages to view the
+results corresponding to these predefined scenarios, or choose to define
+a new scenario by navigating to the *Custom Scenarios* page.
 
-The *Estimates* page visualizes predicted TB outcomes at five major time
-points: 2016, 2025, 2050, 2075, and 2100.
+#### Custom Scenarios
 
-The *Time Trends* page depicts predicted TB outcomes for each individual
-year from 2016 to 2100.
+Custom Model Scenarios allow users to generate a new scenario by
+selecting different options for Targeted Testing and Treatment of LTBI
+("Targeted Testing and Treatment"), or features of active TB and latent
+infection treatment ("Program Changes"). Users can also create scenarios
+as a combination of changes in both of these areas, specified on the
+"Combination Scenarios" page.
 
-The *Age Groups* page visualizes predicted TB outcomes for a specified
-year subdivided into 11 age groups.
+After specifying a Targeted Testing and Treatment scenario, Program
+Change scenario, or Combination scenario, the user clicks the "Run
+Model" button to simulate the scenario they have specified. Upon
+navigating to one of the *Outcomes* pages, their scenario will appear as
+an option for visualization or download in the *Estimates, Time Trends,*
+and *Age Groups* pages of the application.
 
-#### Estimates page
+#### Custom Scenarios – Targeted Testing and Treatment
+
+<!--![](media/image3.png){width="4.64in" height="2.75in"}-->
+<center>
+<figure>
+  <img src='img/figure3.png' alt="Figure 3: User Interface for Building Targeted Testing and Treatment Interventions" height="275px"/>
+  <figcaption>
+    Figure 3: User Interface for Building Targeted Testing and Treatment
+    Interventions
+  </figcaption>
+</figure>
+</center>
+
+The *Targeted Testing and Treatment* (TTT) input page (Figure 3) is used
+to create scenarios that simulate additional screening of specific risk
+groups over a specified number of years. Within the TTT scenario
+builder, a user can either select from a list of high-risk groups (such
+as people living with HIV), or choose to define a custom risk group. To
+do so, the user must define the new group in terms of their rate ratios
+of LTBI prevalence, progression, and mortality, as compared to the
+general population in the same age and nativity group. Additionally, a
+user must provide an age range, nativity group, and total targeted
+population size.
+
+#### Custom Scenarios – Program Changes 
+
+<!--![](media/image4.png){width="4.66in" height="2.75in"}
+
+Figure 4: User Interface for Building Program Change Scenarios -->
+
+<center>
+<figure>
+  <img src='img/figure4.png' alt="Figure 4: User Interface for Building Program Change Scenarios" height="275px"/>
+  <figcaption>
+    Figure 4: User Interface for Building Program Change Scenarios
+  </figcaption>
+</figure>
+</center>
+
+The *Program Changes* page (Figure 4) allows users to change assumptions
+related to the LTBI treatment and active TB treatment care cascades.
+These changes do not change any historical projections the model has
+made and will only be active in the years following the user-inputted
+start year.
+
+
+#### Custom Scenarios – Combination Scenarios
+
+The <i>Combination Scenarios</i> page (Figure 5) allows users to simulate
+combinations of targeted testing and treatment for LTBI, and program
+changes.
+
+<table>
+<tr>
+<td>
+<center>
+<figure>
+  <img src='img/figure5.png' alt="Figure 5: User Interface for Building Combination Scenarios" height="200px"/>
+  <figcaption>
+    Figure 5: User Interface for Building Combination Scenarios 
+  </figcaption>
+</figure>
+</center>
+</td>
+</tr>
+</table>
+
+### Outcomes
+
+<center>
+<figure>
+  <img src='img/figure6.png' alt="Figure 6: The Time Trends page of Tabby2 Depicting the Incident M. tb Infections Outcome for the 5 Predefined Scenarios" height="300px"/>
+  <figcaption>
+    Figure 6: The Time Trends page of Tabby2 Depicting the Incident M. tb
+    Infections Outcome for the 5 Predefined Scenarios
+  </figcaption>
+</figure>
+</center>
+
+<!--![](media/image8.png){width="4.39in" height="2.75in"}
+Figure 6: The Time Trends page of Tabby2 Depicting the Incident M. tb
+Infections Outcome for the 5 Predefined Scenarios -->
+
+Model outcomes are presented as four interactive pages with
+visualizations: *Estimates*, *Time Trends*, *Age Groups*, and
+*Comparison to Recent Data*.
+
+The *Estimates* page provides graphs of modelled results at five major
+time points: 2018, 2020, 2025, 2035, and 2050.
+
+The *Time Trends* page (Figure 6) provides graphs of modelled results
+for each individual year from 2018 to 2050.
+
+The *Age Groups* page provides graphs of modelled results for a specific
+year chosen by the user, subdivided into 11 age groups.
+
+The *Comparison to Recent Data* page shows model results compared to
+recent empirical data and estimates.
+
+A detailed description of each of these pages is provided below.
+
+#### Outcomes – Estimates 
 
 User options are shown in a column on the left. The user specifies:
 
 *Comparison:* results can be shown as absolute values for each outcome
 in each year, as a percentage of the base case scenario in the same
-year, or as a percentage of the base case scenario in 2016.
+year, or as a percentage of the base case scenario in 2018.
 
 *Subgroup:* results can be shown for the total population, or for a
 subgroup described by nativity (U.S.-born, non-U.S.-born), and broad age
@@ -65,36 +242,35 @@ groups (0-24 years, 25-64 years, 65+ years).
 *Outcome:* results can be shown for five different outcomes:
 
 -   **Incident TB Infections** representing the annual number of
-    incident *M. tb (Mycobacterium tuberculosis)* infections per million
-    due to transmission within the United States (includes reinfection of
-    individuals with LTBI, excludes migrants entering the United States with
-    established LTBI);
+    incident *M. tb (Mycobacterium tuberculosis)* infections per 100,000
+    due to transmission within the United States (includes reinfection
+    of individuals with LTBI, excludes migrants entering the United
+    States with established LTBI);
+
 -   **LTBI Prevalence** representing the percentage of individuals with
     latent TB infection in a given year;
--   **Active TB Incidence** representing the annual number of notified TB
-    cases per million, including TB cases identified after death;
--   **MDR-TB in Incident TB Cases** representing the percentage of all
-    incident TB cases with multidrug-resistant TB (MDR-TB); and
+
+-   **Active TB Incidence** representing the annual number of notified
+    TB cases per 100,000, including TB cases identified after death;
+
 -   **TB-Related Deaths** representing annual TB-attributable mortality
-    per million.
+    per 100,000.
 
 *Scenarios:* results can be shown for up to five scenarios selected by
 the user, describing hypothetical changes to current TB prevention and
-control activities (‘Modeled Scenarios'). Descriptions for
-each scenario are provided below.
+control activities ("Modeled Scenarios").
 
 *Download:* clicking on a button initiates download of the visualization
 itself (.png, .pdf, .pptx) or the estimates underlying the visualization
 (.csv, .xlsx).
 
-
-#### Time Trends page
+#### Outcomes – Time Trends 
 
 User options are shown in a column on the left. The user specifies:
 
 *Comparison:* results can be shown as absolute values for each outcome
 in each year, as a percentage of the base case scenario in the same
-year, or as a percentage of the base case scenario in 2016.
+year, or as a percentage of the base case scenario in 2018.
 
 *Subgroup:* results can be shown for the total population, or for a
 subgroup described by nativity (U.S.-born, non-U.S.-born), and broad age
@@ -103,29 +279,29 @@ groups (0-24 years, 25-64 years, 65+ years).
 *Outcome:* results can be shown for five different outcomes:
 
 -   **Incident TB infections** representing the annual number of
-    incident *M. tb (Mycobacterium tuberculosis)* infections per million
-    due to transmission within the United States (includes reinfection of
-    individuals with prior infection, excludes migrants entering the
+    incident *M. tb (Mycobacterium tuberculosis)* infections per 100,000
+    due to transmission within the United States (includes reinfection
+    of individuals with prior infection, excludes migrants entering the
     United States with established LTBI);
+
 -   **LTBI Prevalence** representing the percentage of individuals with
     latent TB infection in a given year;
--   **Active TB Incidence** representing the annual number of notified TB
-    cases per million, including TB cases identified after death;
--   **MDR-TB in incident TB cases** representing the percentage of all
-    incident TB cases with MDR-TB; and
+
+-   **Active TB Incidence** representing the annual number of notified
+    TB cases per 100,000, including TB cases identified after death;
+
 -   **TB-Related Deaths** representing annual TB-attributable mortality
-    per million.
+    per 100,000.
 
 *Scenarios:* results can be shown for up to five scenarios selected by
 the user, describing different assumptions about future TB prevention
-and control policy (‘Modeled Scenarios'). Descriptions for
-each scenario are provided below.
+and control policy ("Modeled Scenarios").
 
 *Download:* clicking on a button initiates download of the visualization
 itself (.png, .pdf, .pptx) or the estimates underlying the visualization
 (.csv, .xlsx).
 
-#### Age Groups page
+#### Outcomes – Age Groups 
 
 This page matches the format of the first two pages with the following
 exceptions:
@@ -141,77 +317,109 @@ prevalence, TB incidence, and TB-related deaths), either as a prevalence
 or incidence rate with each age group (first three selections), or in
 absolute numbers (last three selections).
 
-The following are descriptions of the intervention scenarios and
-outcomes available for visualization in Tabby.
+#### Outcomes – Comparison to Recent Data 
+
+<!--![](media/image9.png){width="4.87in" height="2.75in"}
+Figure 7: The selected plot depicts model outcomes compared to the
+reported Total Population in 2016 in the US by Age and Nativity. -->
+
+The Comparison to Recent Data Page
+
+<center>
+<figure>
+  <img src='img/figure7.png' alt="Figure 7: The selected plot depicts model outcomes compared to the
+reported Total Population in 2016 in the US by Age and Nativity." height="300px"/>
+  <figcaption>
+    Figure 7: The selected plot depicts model outcomes compared to the
+    reported Total Population in 2016 in the US by Age and Nativity.
+  </figcaption>
+</figure>
+</center>
+
+In the *Comparison to Recent Data* page (Figure 7), users can compare
+the model's output to reported data on the demography and TB
+epidemiology for their selected geography.
+
+### Further Description 
+
+In this Further Description page of the Tabby2 web application,
+documentation detailing the *Organization of the tool, Definitions and
+Abbreviations,* *Frequently Asked Questions,* and a notice about the
+*508 Accessibility of This Product* are provided.
+
+### Feedback
+
+The Feedback page in the Tabby2 web application prompts users of the
+application with feedback to either email <ppml@hsph.harvard.edu> with
+their questions, comments, or feedback, or to submit it directly to us
+through the web application.
 
 
-# Definitions and Abbreviations
+Definitions and Abbreviations
+-----------------------------
 
-#### **Base Case**
+**Base Case**
 
 The base case is the default scenario, assuming no change in current TB
 prevention and control activities. This scenario is automatically
 included in all visualizations, and other scenarios are defined and
 analyzed with reference to this scenario.
 
-#### **Uncertainty Intervals**
-
-Uncertainty intervals are used to express the degree of uncertainty
-associated with a statistic. Where the intervals are wider, this means
-that there is greater uncertainty about the true value of the statistic.
-For the uncertainty intervals shown in the visualizations, there is a
-2.5% probability (a one-in-forty chance) that the true value is above
-the upper end of the interval, and a 2.5% probability that the true
-value is below the lower end of the interval.
-
-#### **Dynamic Transmission Model**
+**Dynamic Transmission Model**
 
 Dynamic transmission models are systems of mathematical equations
 designed to reproduce the epidemiology of communicable diseases. These
 analyses assume that improvements in disease control (such as more rapid
-                                                      diagnosis and treatment of infectious individuals) will reduce the risk
+diagnosis and treatment of infectious individuals) will reduce the risk
 that uninfected individuals will be exposed to infection. In this
 manner, individuals not directly reached by an intervention may still
 benefit by experiencing a lower risk of infection.
 
-#### **Incident Cases**
+**IGRA – Interferon-Gamma Release Assays**
+
+IGRAs are blood tests that can aid in the diagnosis of tuberculosis
+infection.
+
+**Incident Cases**
 
 Incident cases are new disease cases. Incidence refers to the number of
 new cases that develop in a particular population in a given period of
 time.
 
-#### **Isoniazid (INH)**
+**Isoniazid (INH)**
 
 A medicine used to prevent TB disease in people who have latent TB
 infection. INH is also one of the four medicines often used to treat TB
 disease.
 
-#### **LTBI – Latent tuberculosis infection**
+**LTBI – Latent tuberculosis infection**
 
-A condition in which TB bacteria are alive, but inactive in the body.
-People with latent TB infection have no symptoms, don’t feel sick, can’t
-spread TB to others, and usually have a positive TB skin test or
-positive TB blood test reaction. However, they may develop TB disease if
-they do not receive treatment for latent TB infection.
+A condition in which individuals are infected with TB bacteria, but this
+infection is controlled by the individual's immune system. People with
+latent TB infection have no symptoms, don't feel sick, and can't spread
+TB to others. Individuals with LTBI usually have a positive TB skin test
+or positive TB blood test reaction. Individuals with LTBI may develop TB
+disease in the future if they do not receive treatment.
 
-#### **MDR-TB – Multidrug-resistant tuberculosis**
-
-Multidrug-resistant tuberculosis includes strains of TB that are
-resistant to isoniazid and rifampin, two common and potent TB drugs.
-
-#### **Prevalence**
+**Prevalence**
 
 The number of cases of a disease present in a population at a given
 time.
 
-#### **Rifapentine (RPT)**
+**Rifapentine (RPT)**
 
 A medication used to treat latent TB infection.
 
-#### **TLTBI**
+**TLTBI**
+
 Treatment and testing for latent tuberculosis infection
 
-#### **TB – Tuberculosis**
+**TST – Tuberculin Skin Test**
+
+TSTs determine if someone has developed an immune response to the
+bacterium that causes tuberculosis, Mycobacterium tuberculosis.
+
+**TB – Tuberculosis**
 
 A disease caused by bacteria that are spread from person to person
 through the air. TB usually affects the lungs, but it can also affect
@@ -219,46 +427,40 @@ other parts of the body, such as the brain, the kidneys, or the spine.
 In most cases, TB is treatable and curable; however, people with TB can
 die if they do not get proper treatment.
 
-# Frequently Asked Questions (FAQ)
+Frequently Asked Questions 
+---------------------------
 
-#### **How do I export data from Tabby?**
+**How do I export data from Tabby2?**
 
-Tabby users are able to download the data visualizations that they
-have created using the “Estimates,” “Time trends,” or “Age groups”
-tabs and the underlying estimates that were used to generate their
+Tabby2 users are able to download the data visualizations that they have
+created using the "Estimates", "Time Trends", or "Age Groups" tabs and
+the underlying estimates that were used to generate their
 visualizations.
 
 To download a data visualization:
 
-1.  Navigate to the last heading on the “Estimates,” “Time trends,” or
-    “Age groups” tab, which reads “Download” (this can be found on the
+1.  Navigate to the last heading on the "Estimates," "Time Trends," or
+    "Age Groups" tab, which reads "Download" (this can be found on the
     bottom left-hand corner of a typical web browser)
 
-2.  Select PNG or PDF or PPTX depending on desired format\*
+2.  Select PNG or PDF or PPTX depending on desired format
 
 To download underlying data estimates:
 
-1.  Navigate to the last heading on the “Estimates,” “Time trends,” or
-    “Age groups” tab, which reads “Download” (this can be found on the
+1.  Navigate to the last heading on the "Estimates," "Time Trends," or
+    "Age Groups" tab, which reads "Download" (this can be found on the
     bottom left-hand corner of a typical web browser)
 
-2.  Select CSV or XLSX depending on desired format\*
+2.  Select CSV or XLSX depending on desired format
 
-3.  The data will include mean values and 95% coincidence intervals
-    (labeled ci\_high and ci\_low)
-
-\*Downloads should begin immediately after selection. If not, contact
+Downloads should begin immediately after selection. If not, contact
 <ppml@hsph.harvard.edu> for assistance.
 
-# **Where can I find more information about TB / TB modelling?**
+#### **Where can I find more information about TB / TB modelling?**
 
 General information and resources on tuberculosis can be found on the
-Centers for Disease Control’s Tuberculosis webpage:
+Centers for Disease Control's Tuberculosis webpage:
 <https://www.cdc.gov/tb/default.htm>
-
-For detailed information on the dynamic transmission model used to
-generate Tabby estimates, see PAPER CITATION and link
-
 
 ### 508 Accessibility of This Product
 
