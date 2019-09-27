@@ -230,7 +230,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         plot.title = element_blank(),
         plot.subtitle = element_blank()
       )
-  })
+  }, res=85)
 
 
   # trends server ----
@@ -413,7 +413,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         plot.title = element_blank(),
         plot.subtitle = element_blank()
       )
-  })
+  }, res=85)
 
 
   # ages server ----
@@ -575,14 +575,14 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       theme(
         plot.title = element_blank()
       )
-  })
+  }, res=85)
 
   # downloads ----
   # __estimates png ----
   output[[estimates$IDs$downloads$png]] <- downloadHandler(
     filename = "tabby-estimates-plot.png",
     content = function(file) {
-      png(file, res = 72, width = 13, height = 9, units = "in")
+      png(file, res = 85, width = 13, height = 9, units = "in")
       print(estimatesPlot())
       dev.off()
     }
@@ -671,7 +671,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   output[[trends$IDs$downloads$png]] <- downloadHandler(
     filename = "tabby-trends-plot.png",
     content = function(file) {
-      png(file, res = 72, width = 13, height = 9, units = "in")
+      png(file, res = 85, width = 13, height = 9, units = "in")
       print(trendsPlot())
       dev.off()
     }
@@ -697,7 +697,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
       this <- try(trendsPlot(), silent = TRUE)
 
-      jpeg(tmp, res = 72, width = 13, height = 9, units = "in")
+      jpeg(tmp, res = 85, width = 13, height = 9, units = "in")
 
       if (is.ggplot(this)) {
         print(this)
@@ -759,7 +759,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   output[[agegroups$IDs$downloads$png]] <- downloadHandler(
     filename = "tabby-agegroups-plot.png",
     content = function(file) {
-      png(file, res = 72, width = 13, height = 9, units = "in")
+      png(file, res = 85, width = 13, height = 9, units = "in")
       print(agegroupsPlot())
       dev.off()
     }
