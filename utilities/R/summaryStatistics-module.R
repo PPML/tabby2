@@ -87,7 +87,7 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
   ageNativityIncidenceForTTT <- function(n) { 
 		reactive({
       value <- get(paste0('ageNativityIncidence', n))()
-			paste0("Incidence per hundred thousand: ", round(value, 2))
+			paste0("Incidence per 100,000: ", round(value, 2))
 		 })
 	 }
 
@@ -118,15 +118,15 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
   ## Age-Nat Outputs: 
 
   # 1
-  output$ttt1AgeNativityIncidence <- renderText({ paste0("Incidence per hundred thousand: ", round(ageNativityIncidence1(), 2)) })
+  output$ttt1AgeNativityIncidence <- renderText({ paste0("Incidence per 100,000: ", round(ageNativityIncidence1(), 2)) })
   output$ttt1AgeNativityPrevalence <- renderText({ paste0("LTBI Prevalence: ", round(ageNativityPrevalence1(), 2), "%") })
 
   # 2
-  output$ttt2AgeNativityIncidence <- renderText({ paste0("Incidence per hundred thousand: ", round(ageNativityIncidence2(), 2)) })
+  output$ttt2AgeNativityIncidence <- renderText({ paste0("Incidence per 100,000: ", round(ageNativityIncidence2(), 2)) })
   output$ttt2AgeNativityPrevalence <- renderText({ paste0("LTBI Prevalence: ", round(ageNativityPrevalence2(), 2), "%") })
 
   # 3
-  output$ttt3AgeNativityIncidence <- renderText({ paste0("Incidence per hundred thousand: ", round(ageNativityIncidence3(), 2)) })
+  output$ttt3AgeNativityIncidence <- renderText({ paste0("Incidence per 100,000: ", round(ageNativityIncidence3(), 2)) })
   output$ttt3AgeNativityPrevalence <- renderText({ paste0("LTBI Prevalence: ", round(ageNativityPrevalence3(), 2), "%") })
 
   ## TTT Outputs:

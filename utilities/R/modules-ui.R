@@ -62,7 +62,7 @@ standardInterventionsUI <- function() {
            ),
            shiny::actionButton(
              inputId = 'toBuildScenarios',
-             label = 'Build Additional Scenarios',
+             label = 'Build Custom Scenarios',
              class = 'btn-primary',
              style = 'color: white;'
            ),
