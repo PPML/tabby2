@@ -19,6 +19,6 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
     plots()[[plt_idx, 'plot']]
   })
 
-  output$calib_data_target_plot <- renderPlot({ calib_data_target_plot() })
+  output$calib_data_target_plot <- renderPlot({ calib_data_target_plot() }, res = 100)
 
 }
