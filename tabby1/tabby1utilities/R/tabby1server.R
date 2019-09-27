@@ -341,7 +341,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       ) +
       scale_linetype_manual(
         name = "Scenario",
-        values = plots$linetypes,
+        values = 1:length(plots$linetypes),
         labels = plots$labels
       ) +
       scale_x_continuous(
