@@ -96,16 +96,16 @@ outcomes:
   formatted:
     tb_infection_per_100k: |-
       Incident M. tb Infections
-      (per hundred thousand)
+      (per 100,000)
     pct_ltbi: |-
       LTBI Prevalence
       (percentage)
     tb_incidence_per_100k: |-
       Active TB Incidence
-      (per hundred thousand)
+      (per 100,000)
     tb_deaths_per_100k: |-
       TB-Related Deaths
-      (per hundred thousand)
+      (per 100,000)
   descriptions:
     tb_infection_per_100k: Incident M. TB infections each year due to transmission
       within the US (includes reinfection of individuals with prior infection, excludes
