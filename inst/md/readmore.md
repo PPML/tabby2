@@ -197,17 +197,13 @@ changes.
 
 <center>
 <figure>
-  <img src='img/figure6.png' alt="Figure 6: The Time Trends page of Tabby2 Depicting the Incident M. tb Infections Outcome for the 5 Predefined Scenarios" height="300px"/>
+  <img src='img/figure6.png' alt="Figure 6: The Time Trends page of Tabby2 Depicting the Incident M. tuberculosis Infections Outcome for the 5 Predefined Scenarios" height="300px"/>
   <figcaption>
-    Figure 6: The Time Trends page of Tabby2 Depicting the Incident M. tb
+    Figure 6: The Time Trends page of Tabby2 Depicting the Incident M. tuberculosis
     Infections Outcome for the 5 Predefined Scenarios
   </figcaption>
 </figure>
 </center>
-
-<!--![](media/image8.png){width="4.39in" height="2.75in"}
-Figure 6: The Time Trends page of Tabby2 Depicting the Incident M. tb
-Infections Outcome for the 5 Predefined Scenarios -->
 
 Model outcomes are presented as four interactive pages with
 visualizations: *Estimates*, *Time Trends*, *Age Groups*, and
@@ -241,10 +237,10 @@ groups (0-24 years, 25-64 years, 65+ years).
 
 *Outcome:* results can be shown for five different outcomes:
 
--   **Incident TB Infections** representing the annual number of
-    incident *M. tb (Mycobacterium tuberculosis)* infections per 100,000
+-   **Incident TB infections** representing the annual number of
+    incident *M. tuberculosis (Mycobacterium tuberculosis)* infections per 100,000
     due to transmission within the United States (includes reinfection
-    of individuals with LTBI, excludes migrants entering the United
+    of individuals with prior LTBI, excludes migrants entering the United
     States with established LTBI);
 
 -   **LTBI Prevalence** representing the percentage of individuals with
@@ -279,9 +275,9 @@ groups (0-24 years, 25-64 years, 65+ years).
 *Outcome:* results can be shown for five different outcomes:
 
 -   **Incident TB infections** representing the annual number of
-    incident *M. tb (Mycobacterium tuberculosis)* infections per 100,000
+    incident *M. tuberculosis (Mycobacterium tuberculosis)* infections per 100,000
     due to transmission within the United States (includes reinfection
-    of individuals with prior infection, excludes migrants entering the
+    of individuals with prior LTBI, excludes migrants entering the
     United States with established LTBI);
 
 -   **LTBI Prevalence** representing the percentage of individuals with
