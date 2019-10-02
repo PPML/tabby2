@@ -48,3 +48,13 @@ load_risk_group_data <- function() {
   
   return(df)
 }
+
+load_risk_group_data2 <- function() {
+  # load data
+  df <- readxl::read_xlsx(system.file("Risk Group Rate Ratios for Tabby2.xlsx", package = 'utilities'), col_names=)
+
+  colnames(df)[1:4] <- c('population', 'rr_prog', 'rr_mort', 'rr_ltbi')
+  
+  df <- df[,c(1,2,4,3,5,6)] # re-order to match prog, ltbi, mort ordering
+  return(df)
+}

@@ -91,7 +91,7 @@ invert_geographies <- setNames(nm = unname(geographies), object = names(geograph
 # Load risk group rate ratios for use in the targeted testing and treatment
 # intervention builder
 
-risk_group_rate_ratios <- load_risk_group_data()
+risk_group_rate_ratios <- load_risk_group_data2()
 
 
 ##############

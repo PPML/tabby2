@@ -1,30 +1,40 @@
-risk_groups <- c(
-  "All Individuals",
-  "Non-US Born Individuals from High Burden Countries",
-  "Homeless or Incarcerated Individuals",
-  "HIV Positive",
-  "Diabetics",
-  "End Stage Renal Disease",
-  "Smokers"
-) # TODO add custom risk groups.
+# risk_groups <- c(
+#   "All Individuals",
+#   "Non-US Born Individuals from High Burden Countries",
+#   "Homeless or Incarcerated Individuals",
+#   "HIV Positive",
+#   "Diabetics",
+#   "End Stage Renal Disease",
+#   "Smokers"
+# ) # TODO add custom risk groups.
 
-formatted_risk_group <- list(
-  "All Individuals",
-  "Define a Custom Risk Group",
-  `Elevated LTBI Prevalence` = c(
-    "Non-US Born Individuals from High Burden Countries",
-    "Homeless Individuals"
-  ),
-  `Elevated Progression Risk` = c(
-    "HIV Positive",
-    "Diabetics",
-    "End Stage Renal Disease",
-    "Smokers")
-)
 
 
 intervention_content <- function(n=1) {
+
   tttn <- paste0("ttt", n)
+
+  formatted_risk_group <- list(
+    "All Individuals",
+    "Define a Custom Risk Group",
+    `Elevated LTBI Prevalence` = c(
+      risk_group_rate_ratios$population[[3]],
+      # "Non-US Born Individuals from High Burden Countries",
+      risk_group_rate_ratios$population[[4]]
+      # "Homeless Individuals"
+    ),
+    `Elevated Progression Risk` = c(
+      risk_group_rate_ratios$population[[1]],
+      # "HIV Positive",
+      risk_group_rate_ratios$population[[2]],
+      # "Diabetics",
+      risk_group_rate_ratios$population[[5]],
+      # "End Stage Renal Disease",
+      risk_group_rate_ratios$population[[6]]
+      # "Smokers"
+      )
+  )
+
   return(
     fluidRow(
       # col1: choose intervention risk, age, nativity ----
