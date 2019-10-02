@@ -10,7 +10,7 @@
 
 
 
-intervention_content <- function(n=1) {
+intervention_content <- function(n=1, risk_group_rate_ratios = load_risk_group_data2()) {
 
   tttn <- paste0("ttt", n)
 
