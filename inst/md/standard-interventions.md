@@ -18,9 +18,9 @@ changes to active and latent TB testing and treatment, described below.
     individuals initiating LTBI treatment, via a 3-month
     Isoniazid-Rifapentine drug regimen.
 
--   **Better Case Detection**: Improved detection of active TB cases,
-    such that the duration of untreated active disease (time from TB
-    incidence to the initiation of treatment) is reduced by 50%.
+-   **Better Case Detection**: Improved detection of active TB cases, such that
+    the duration of untreated active disease (time from when person became
+    infectious to the initiation of treatment) is reduced by 50%.
 
 -   **Better TB Treatment**: Improved treatment quality for active TB,
     such that treatment default, failure rates, and the fraction of

@@ -119,7 +119,7 @@ body <- dashboardBody(
 # Run the Application ----
 
 shinyUI(dashboardPage(
-    dashboardHeader(title = "Tabby2 Alpha",
+    dashboardHeader(title = "Tabby2",
 			dropdownMenu(type = 'notifications', icon = icon('link'), # badgeStatus = F,
 				notificationItem(
 				  text = "Go to the PPML Website", 
