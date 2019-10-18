@@ -148,7 +148,7 @@ programChanges <- function() {
   tagList(
     br(),
     p("Program Changes allow users to change model parameters related to the 
-LTBI treatment and active TB treatment care cascades."),
+LTBI and TB testing and treatment care cascades."),
   tabsetPanel(id = "currentlySelectedProgramChange",
     tabPanel(title = "Program Change 1", value = '1', {
 			uiOutput('programChange1')
