@@ -91,7 +91,7 @@ outcomes:
   labels:
     tb_infection_per_100k: Incident M. tb Infections
     pct_ltbi: LTBI Prevalence
-    tb_incidence_per_100k: Active TB Incidence
+    tb_incidence_per_100k: TB Incidence
     tb_deaths_per_100k: TB-Related Deaths
   formatted:
     tb_infection_per_100k: |-
@@ -101,7 +101,7 @@ outcomes:
       LTBI Prevalence
       (percentage)
     tb_incidence_per_100k: |-
-      Active TB Incidence
+      TB Incidence
       (per 100,000)
     tb_deaths_per_100k: |-
       TB-Related Deaths
@@ -145,10 +145,10 @@ interventions:
       treatment policy for high-risk populations, doubling treatment uptake within
       each risk group compared to current levels, and increasing the fraction cured among
       individuals initiating LTBI treatment, via a 3-month Isoniazid-Rifapentine drug regimen
-    intervention_3: Improved detection of active TB cases, such that the duration
-      of untreated active disease (time from TB incidence to the initiation of
+    intervention_3: Improved detection of TB cases, such that the duration
+      of untreated disease (time from TB incidence to the initiation of
       treatment) is reduced by 50%
-    intervention_4: Improved treatment quality for active TB, such that treatment default, failure
+    intervention_4: Improved treatment quality for TB, such that treatment default, failure
       rates, and the fraction of individuals receiving an incorrect drug regimen are
       reduced by 50% from current levels
     intervention_5: The combination of all intervention scenarios described above

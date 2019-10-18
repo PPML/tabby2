@@ -134,9 +134,9 @@ interventions:
       high-risk populations, doubling treatment uptake within each risk group compared
       to current levels, and increasing the fraction cured among individuals initiating
       LTBI treatment, via a 3-month Isoniazid-Rifapentine drug regimen
-    intervention_3: Improved detection of active TB cases, such that the duration of untreated active
+    intervention_3: Improved detection of TB cases, such that the duration of untreated
       disease (time from TB incidence to the initiation of treatment) is reduced by 50%
-    intervention_4: Improved treatment quality for active TB, such that treatment default, failure
+    intervention_4: Improved treatment quality for TB, such that treatment default, failure
       rates, and the fraction of individuals receiving an incorrect drug regimen are
       reduced by 50% from current levels
     intervention_5: The combination of all intervention scenarios described above

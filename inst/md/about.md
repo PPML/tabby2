@@ -3,13 +3,13 @@
 Tabby2 is a web application that provides predictions of future tuberculosis
 (TB) epidemiology in the United States under a range of policy scenarios that
 can be chosen by the user. The application includes several predefined
-scenarios, which explore changes in the care cascades for active TB disease and
-latent TB infection. The application also allows users to define new scenarios,
+scenarios, which explore changes in the care cascades for TB disease and latent
+TB infection (LTBI). The application also allows users to define new scenarios,
 which can project the impact of greater targeted testing and treatment of
 high-risk populations, or changes to the performance of current TB control
 programs. After specifying scenarios, users can select a health outcome and
 subpopulation of interest, and then view results of one or more of the
-scenarios they have specified.  Results are displayed graphically, and these
+scenarios they have specified. Results are displayed graphically, and these
 graphs can be adjusted based on user input to include additional results or
 focus on particular population subgroups. Visualizations can be downloaded in
 various formats, and the estimates underlying the graphs can also be downloaded
