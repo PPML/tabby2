@@ -1,3 +1,76 @@
+Definitions and Abbreviations
+-----------------------------
+
+**Base Case**
+
+The base case is the default scenario, assuming no change in current TB
+prevention and control activities. This scenario is automatically
+included in all visualizations, and other scenarios are defined and
+analyzed with reference to this scenario.
+
+**Dynamic Transmission Model**
+
+Dynamic transmission models are systems of mathematical equations
+designed to reproduce the epidemiology of communicable diseases. These
+analyses assume that improvements in disease control (such as more rapid
+diagnosis and treatment of infectious individuals) will reduce the risk
+that uninfected individuals will be exposed to infection. In this
+manner, individuals not directly reached by an intervention may still
+benefit by experiencing a lower risk of infection.
+
+**IGRA – Interferon-Gamma Release Assays**
+
+IGRAs are blood tests that can aid in the diagnosis of tuberculosis
+infection.
+
+**Incident Cases**
+
+Incident cases are new disease cases. Incidence refers to the number of
+new cases that develop in a particular population in a given period of
+time.
+
+**Isoniazid (INH)**
+
+A medicine used to prevent TB disease in people who have latent TB
+infection. INH is also one of the four medicines often used to treat TB
+disease.
+
+**LTBI – Latent tuberculosis infection**
+
+A condition in which individuals are infected with TB bacteria, but this
+infection is controlled by the individual's immune system. People with
+latent TB infection have no symptoms, don't feel sick, and can't spread
+TB to others. Individuals with LTBI usually have a positive TB skin test
+or positive TB blood test reaction. Individuals with LTBI may develop TB
+disease in the future if they do not receive treatment.
+
+**Prevalence**
+
+The number of cases of a disease present in a population at a given
+time.
+
+**Rifapentine (RPT)**
+
+A medication used to treat latent TB infection.
+
+**TLTBI**
+
+Treatment and testing for latent tuberculosis infection
+
+**TST – Tuberculin Skin Test**
+
+TSTs determine if someone has developed an immune response to the
+bacterium that causes tuberculosis, Mycobacterium tuberculosis.
+
+**TB – Tuberculosis**
+
+A disease caused by bacteria that are spread from person to person
+through the air. TB usually affects the lungs, but it can also affect
+other parts of the body, such as the brain, the kidneys, or the spine.
+In most cases, TB is treatable and curable; however, people with TB can
+die if they do not get proper treatment.
+
+
 Organization of the Tool
 ------------------------
 
@@ -349,79 +422,6 @@ The Feedback page in the Tabby2 web application prompts users of the
 application with feedback to either email <ppml@hsph.harvard.edu> with
 their questions, comments, or feedback, or to submit it directly to us
 through the web application.
-
-
-Definitions and Abbreviations
------------------------------
-
-**Base Case**
-
-The base case is the default scenario, assuming no change in current TB
-prevention and control activities. This scenario is automatically
-included in all visualizations, and other scenarios are defined and
-analyzed with reference to this scenario.
-
-**Dynamic Transmission Model**
-
-Dynamic transmission models are systems of mathematical equations
-designed to reproduce the epidemiology of communicable diseases. These
-analyses assume that improvements in disease control (such as more rapid
-diagnosis and treatment of infectious individuals) will reduce the risk
-that uninfected individuals will be exposed to infection. In this
-manner, individuals not directly reached by an intervention may still
-benefit by experiencing a lower risk of infection.
-
-**IGRA – Interferon-Gamma Release Assays**
-
-IGRAs are blood tests that can aid in the diagnosis of tuberculosis
-infection.
-
-**Incident Cases**
-
-Incident cases are new disease cases. Incidence refers to the number of
-new cases that develop in a particular population in a given period of
-time.
-
-**Isoniazid (INH)**
-
-A medicine used to prevent TB disease in people who have latent TB
-infection. INH is also one of the four medicines often used to treat TB
-disease.
-
-**LTBI – Latent tuberculosis infection**
-
-A condition in which individuals are infected with TB bacteria, but this
-infection is controlled by the individual's immune system. People with
-latent TB infection have no symptoms, don't feel sick, and can't spread
-TB to others. Individuals with LTBI usually have a positive TB skin test
-or positive TB blood test reaction. Individuals with LTBI may develop TB
-disease in the future if they do not receive treatment.
-
-**Prevalence**
-
-The number of cases of a disease present in a population at a given
-time.
-
-**Rifapentine (RPT)**
-
-A medication used to treat latent TB infection.
-
-**TLTBI**
-
-Treatment and testing for latent tuberculosis infection
-
-**TST – Tuberculin Skin Test**
-
-TSTs determine if someone has developed an immune response to the
-bacterium that causes tuberculosis, Mycobacterium tuberculosis.
-
-**TB – Tuberculosis**
-
-A disease caused by bacteria that are spread from person to person
-through the air. TB usually affects the lungs, but it can also affect
-other parts of the body, such as the brain, the kidneys, or the spine.
-In most cases, TB is treatable and curable; however, people with TB can
-die if they do not get proper treatment.
 
 Frequently Asked Questions 
 ---------------------------
