@@ -78,7 +78,7 @@ Tabby2 provides estimates of future TB outcomes for a small number of
 predefined scenarios, in addition to a base case scenario that assumes
 continuation of current TB policy and services. The tool's predefined
 scenarios include 5 hypothetical scenarios that reflect a range of
-changes to active and latent TB testing and treatment, described below.
+changes to latent TB and TB disease testing and treatment, described below.
 
 -   **TLTBI for New Immigrants**: Provision of LTBI testing and
     treatment for all new legal immigrants entering the US.
@@ -90,11 +90,11 @@ changes to active and latent TB testing and treatment, described below.
     individuals initiating LTBI treatment, via a 3-month
     Isoniazid-Rifapentine drug regimen.
 
--   **Better Case Detection**: Improved detection of active TB cases,
-    such that the duration of untreated active disease (time from TB
+-   **Enhanced Case Detection**: Improved detection of TB cases,
+    such that the duration of untreated disease (time from TB
     incidence to the initiation of treatment) is reduced by 50%.
 
--   **Better TB Treatment**: Improved treatment quality for active TB,
+-   **Enhanced TB Treatment**: Improved treatment quality for TB disease,
     such that treatment default, failure rates, and the fraction of
     individuals receiving an incorrect drug regimen are reduced by 50%
     from current levels.
@@ -114,7 +114,7 @@ a new scenario by navigating to the *Custom Scenarios* page.
 
 Custom Model Scenarios allow users to generate a new scenario by
 selecting different options for Targeted Testing and Treatment of LTBI
-("Targeted Testing and Treatment"), or features of active TB and latent
+("Targeted Testing and Treatment"), or features of TB disease and latent
 infection treatment ("Program Changes"). Users can also create scenarios
 as a combination of changes in both of these areas, specified on the
 "Combination Scenarios" page.
@@ -166,7 +166,7 @@ Figure 4: User Interface for Building Program Change Scenarios -->
 </center>
 
 The *Program Changes* page (Figure 4) allows users to change assumptions
-related to the LTBI treatment and active TB treatment care cascades.
+related to the LTBI treatment and TB treatment care cascades.
 These changes do not change any historical projections the model has
 made and will only be active in the years following the user-inputted
 start year.

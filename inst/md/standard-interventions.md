@@ -1,12 +1,8 @@
 Tabby2 provides estimates of future TB outcomes for a small number of
 predefined scenarios, in addition to a base case scenario that assumes
-continuation of current TB policy and services. The toolâ
-
-Tabby2 provides estimates of future TB outcomes for a small number of
-predefined scenarios, in addition to a base case scenario that assumes
-continuation of current TB policy and services. The toolâ predefined
+continuation of current TB policy and services. The tool's predefined
 scenarios include 5 hypothetical scenarios that reflect a range of
-changes to active and latent TB testing and treatment, described below.
+changes to latent TB and TB disease testing and treatment, described below.
 
 -   **TLTBI for New Immigrants**: Provision of LTBI testing and
     treatment for all new legal immigrants entering the US.
@@ -18,11 +14,11 @@ changes to active and latent TB testing and treatment, described below.
     individuals initiating LTBI treatment, via a 3-month
     Isoniazid-Rifapentine drug regimen.
 
--   **Better Case Detection**: Improved detection of active TB cases, such that
-    the duration of untreated active disease (time from when person became
+-   **Enhanced Case Detection**: Improved detection of TB cases, such that
+    the duration of untreated disease (time from when person became
     infectious to the initiation of treatment) is reduced by 50%.
 
--   **Better TB Treatment**: Improved treatment quality for active TB,
+-   **Enhanced TB Treatment**: Improved treatment quality for TB disease,
     such that treatment default, failure rates, and the fraction of
     individuals receiving an incorrect drug regimen are reduced by 50%
     from current levels.
