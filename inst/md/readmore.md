@@ -319,7 +319,7 @@ groups (0-24 years, 25-64 years, 65+ years).
 -   **LTBI Prevalence** representing the percentage of individuals with
     latent TB infection in a given year;
 
--   **Active TB Incidence** representing the annual number of notified
+-   **TB Incidence** representing the annual number of notified
     TB cases per 100,000, including TB cases identified after death;
 
 -   **TB-Related Deaths** representing annual TB-attributable mortality
@@ -356,7 +356,7 @@ groups (0-24 years, 25-64 years, 65+ years).
 -   **LTBI Prevalence** representing the percentage of individuals with
     latent TB infection in a given year;
 
--   **Active TB Incidence** representing the annual number of notified
+-   **TB Incidence** representing the annual number of notified
     TB cases per 100,000, including TB cases identified after death;
 
 -   **TB-Related Deaths** representing annual TB-attributable mortality
