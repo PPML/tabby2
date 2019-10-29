@@ -215,7 +215,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         panel.background = element_blank(),
         panel.grid = element_blank(),
         panel.border = element_blank(),
-        panel.ontop = TRUE
+        panel.ontop = TRUE,
+        plot.margin=unit(c(1,1,1.5,1.2),"cm")
       ) +
       expand_limits(y=0) 
   })
@@ -343,7 +344,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       ) +
       scale_x_continuous(
         name = "Year",
-        breaks = if (geo_short_code() == 'US') c(2018, 2025, 2050, 2075, 2100) else c(2018, 2020, 2025, 2035, 2050)
+        breaks = c(2018, 2025, 2035, 2050) 
       ) +
       scale_y_continuous(
         name = trends$outcomes$formatted[[input[[trends$IDs$controls$outcomes]]]]
@@ -381,7 +382,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         legend.key.size = unit(2, "lines"), #unit(0.75, "cm"),
         panel.grid.minor = element_blank(),
         panel.grid.major.x = element_blank(),
-        panel.grid.major.y = element_line(size = 0.15, color = "#989898")
+        panel.grid.major.y = element_line(size = 0.15, color = "#989898"),
+        plot.margin=unit(c(1,1,1.5,1.2),"cm")
       ) +
       expand_limits(y=0) 
 
@@ -556,7 +558,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_blank(), # element_line(size = 0.15, color = "#989898"),
         strip.background = element_blank(),
-        strip.text = element_blank()
+        strip.text = element_blank(),
+        plot.margin=unit(c(1,1,1.5,1.2),"cm")
+
       ) +
       expand_limits(y=0) 
   })
