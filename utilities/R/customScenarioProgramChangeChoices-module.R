@@ -21,7 +21,7 @@ customScenarioProgramChangeChoices <- function(input, output, session, sim_data)
 
       radioButtons(
         inputId = paste0('combination', n, "SelectedProgramChange"),
-        label = "Select a Program Change",
+        label = "Select a Care Cascade Change Scenario",
         choices = revList(options))
     })
   }
