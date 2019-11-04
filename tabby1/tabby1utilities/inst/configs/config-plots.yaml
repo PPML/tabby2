@@ -40,10 +40,10 @@ linetypes:
   - '12345678'
 labels:
   base_case: Base case
-  intervention_1: TLTBI for new immigrants
-  intervention_2: Improved TLTBI in the US
-  intervention_3: Better case detection
-  intervention_4: Better TB treatment
+  intervention_1: LTBI treatment for new migrants
+  intervention_2: Improved LTBI treatment in the US
+  intervention_3: Enhanced case detection
+  intervention_4: Enhanced TB treatment
   intervention_5: All improvements
   scenario_1: |-
     No transmission within

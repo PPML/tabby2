@@ -122,7 +122,7 @@ scenariosUI <- function() {
         tabPanel(title = "Targeted Testing and Treatment Interventions", value = 'ttt', {
           customInterventionsUI()
           }),
-        tabPanel(title = "Program Changes", value = 'programchanges', {
+        tabPanel(title = "Care Cascade Changes", value = 'programchanges', {
           programChanges()
           }),
         tabPanel(title = "Combination Scenarios", value = 'customscenarios', {
@@ -131,7 +131,7 @@ scenariosUI <- function() {
 						# h4("Inactive - Not Linked to Outcomes"),
             # br(),
             p("Combination Scenarios allow users to simulate combinations of Targeted Testing 
-and Treatment interventions and Program Changes."),
+and Treatment interventions and Care Cascade Changes."),
           tabsetPanel(id = 'combinationScenarios',
             customScenarioPanel(1),
             customScenarioPanel(2),
@@ -147,16 +147,16 @@ and Treatment interventions and Program Changes."),
 programChanges <- function() {
   tagList(
     br(),
-    p("Program Changes allow users to change model parameters related to the 
+    p("Care Cascade Changes allow users to change model parameters related to the 
 LTBI and TB testing and treatment care cascades."),
   tabsetPanel(id = "currentlySelectedProgramChange",
-    tabPanel(title = "Program Change 1", value = '1', {
+    tabPanel(title = "Care Cascade Change 1", value = '1', {
 			uiOutput('programChange1')
     }),
-    tabPanel(title = "Program Change 2", value = '2', {
+    tabPanel(title = "Care Cascade Change 2", value = '2', {
 			uiOutput('programChange2')
     }),
-    tabPanel(title = "Program Change 3", value = '3', {
+    tabPanel(title = "Care Cascade Change 3", value = '3', {
 			uiOutput('programChange3')
     })
   )
@@ -171,10 +171,11 @@ programChangePanel <- function(n, prg_chng) {
       fluidRow(
 				column(6, 
 
-			 tags$h4("Define a Program Change"),
+			 tags$h4("Define a Care Cascade Change Scenario"),
         textInput(inputId = paste0(id, "Name"),
-                  label = "Program Change Name",
-                  placeholder = paste0("Program Change ", n))
+                  label = "Care Cascade Change Name",
+                  placeholder = paste0("Care Cascade Change ", n))
+                # Change ", n))
 			)),
       fluidRow(
       column(6, {
@@ -225,7 +226,7 @@ programChangePanel <- function(n, prg_chng) {
 			if (n < 3) { 
 				actionButton(
 					inputId = paste0('toPC', n+1),
-					label = 'Define Another Program Change Scenario',
+					label = 'Define Another Care Cascade Change Scenario',
 					class = 'btn-primary',
 					style = 'color: white;'
 				)

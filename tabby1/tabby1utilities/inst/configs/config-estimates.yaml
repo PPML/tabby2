@@ -133,11 +133,11 @@ interventions:
   - intervention_4
   - intervention_5
   labels:
-    intervention_1: TLTBI for New Immigrants
-    intervention_2: Improved TLTBI in the US
-    intervention_3: Better Case Detection
-    intervention_4: Better TB Treatment
-    intervention_5: All Improvements
+    intervention_1: LTBI treatment for new migrants
+    intervention_2: Improved LTBI treatment in the US
+    intervention_3: Enhanced case detection
+    intervention_4: Enhanced TB treatment
+    intervention_5: All improvements
   descriptions:
     intervention_1: Provision of LTBI testing and treatment for all new legal
       immigrants entering the US

@@ -53,10 +53,6 @@ time.
 
 A medication used to treat latent TB infection.
 
-**TLTBI**
-
-Treatment and testing for latent tuberculosis infection
-
 **TST – Tuberculin Skin Test**
 
 TSTs determine if someone has developed an immune response to the
@@ -95,7 +91,7 @@ view and download graphs of their chosen outcomes. The tool's sidebar
       <li>   Custom Scenarios </li>
           <ul>
           <li>   Targeted Testing and Treatment </li>
-          <li>   Program Changes </li>
+          <li>   Care Cascade Changes </li>
           <li>   Combination Scenarios </li>
           </ul>
       </ul>
@@ -148,31 +144,31 @@ Figure 2: The Introduction Page of the Tabby2 Web Application
 #### Predefined Scenarios
 
 Tabby2 provides estimates of future TB outcomes for a small number of
-predefined scenarios, in addition to a base case scenario that assumes
-continuation of current TB policy and services. The tool's predefined
-scenarios include 5 hypothetical scenarios that reflect a range of
+predefined scenarios, in addition to a base case scenario that assumes no
+change in current TB prevention and control activities. The tool's predefined
+scenarios include five hypothetical scenarios that reflect a range of
 changes to latent TB and TB disease testing and treatment, described below.
 
--   **TLTBI for New Immigrants**: Provision of LTBI testing and
-    treatment for all new legal immigrants entering the US.
+-   **LTBI treatment for new migrants**: Provision of LTBI testing and
+    treatment for all new legal migrants entering the US.
 
--   **Improved TLTBI in the United States**: Intensification of the
-    current LTBI targeted testing and treatment policy for high-risk
+-   **Improved LTBI treatment in the United States**: Intensification of the
+    current LTBI targeted testing and treatment efforts for high-risk
     populations, doubling treatment uptake within each risk group
-    compared to current levels, and increasing the fraction cured among
+    compared to current levels, and increasing the percentage cured among
     individuals initiating LTBI treatment, via a 3-month
     Isoniazid-Rifapentine drug regimen.
 
--   **Enhanced Case Detection**: Improved detection of TB cases,
+-   **Enhanced case detection**: Improved detection of TB disease cases,
     such that the duration of untreated disease (time from TB
     incidence to the initiation of treatment) is reduced by 50%.
 
--   **Enhanced TB Treatment**: Improved treatment quality for TB disease,
-    such that treatment default, failure rates, and the fraction of
+-   **Enhanced TB treatment**: Improved treatment quality for TB disease,
+    such that treatment default, failure rates, and the percentage of
     individuals receiving an incorrect drug regimen are reduced by 50%
     from current levels.
 
--   **All Improvements**: The combination of all intervention scenarios
+-   **All improvements**: The combination of all intervention scenarios
     described above.
 
 Each of these scenarios is automatically available when the user chooses
@@ -185,12 +181,8 @@ a new scenario by navigating to the *Custom Scenarios* page.
 
 #### Custom Scenarios
 
-Custom Model Scenarios allow users to generate a new scenario by
-selecting different options for Targeted Testing and Treatment of LTBI
-("Targeted Testing and Treatment"), or features of TB disease and latent
-infection treatment ("Program Changes"). Users can also create scenarios
-as a combination of changes in both of these areas, specified on the
-"Combination Scenarios" page.
+Custom Model Scenarios allow users to generate a new scenario by selecting different options for Targeted Testing and Treatment of LTBI ("Targeted Testing and Treatment") or TB disease and latent infection treatment ("Care Cascade Changes"). Users can also create scenarios as a combination of changes in both of these areas, specified on the "Combination Scenarios" page.
+
 
 After specifying a Targeted Testing and Treatment scenario, Program
 Change scenario, or Combination scenario, the user clicks the "Run
@@ -223,22 +215,22 @@ general population in the same age and nativity group. Additionally, a
 user must provide an age range, nativity group, and total targeted
 population size.
 
-#### Custom Scenarios – Program Changes 
+#### Custom Scenarios – Care Cascade Changes
 
 <!--![](media/image4.png){width="4.66in" height="2.75in"}
 
-Figure 4: User Interface for Building Program Change Scenarios -->
+Figure 4: User Interface for Building Care Cascade Changes -->
 
 <center>
 <figure>
   <img src='img/figure4.png' alt="Figure 4: User Interface for Building Program Change Scenarios" height="275px"/>
   <figcaption>
-    Figure 4: User Interface for Building Program Change Scenarios
+    Figure 4: User Interface for Building Care Cascade Change Scenarios
   </figcaption>
 </figure>
 </center>
 
-The *Program Changes* page (Figure 4) allows users to change assumptions
+The *Care Cascade Changes* page (Figure 4) allows users to change assumptions
 related to the LTBI treatment and TB treatment care cascades.
 These changes do not change any historical projections the model has
 made and will only be active in the years following the user-inputted
@@ -248,8 +240,8 @@ start year.
 #### Custom Scenarios – Combination Scenarios
 
 The <i>Combination Scenarios</i> page (Figure 5) allows users to simulate
-combinations of targeted testing and treatment for LTBI, and program
-changes.
+combinations of targeted testing and treatment for LTBI, and changes to the 
+care cascade.
 
 <table>
 <tr>
@@ -363,8 +355,8 @@ groups (0-24 years, 25-64 years, 65+ years).
     per 100,000.
 
 *Scenarios:* results can be shown for up to five scenarios selected by
-the user, describing different assumptions about future TB prevention
-and control policy ("Modeled Scenarios").
+the user, describing hypothetical changes to current TB prevention and 
+control activities ("Modeled Scenarios").
 
 *Download:* clicking on a button initiates download of the visualization
 itself (.png, .pdf, .pptx) or the estimates underlying the visualization
