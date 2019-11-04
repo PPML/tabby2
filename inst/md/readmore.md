@@ -95,7 +95,7 @@ view and download graphs of their chosen outcomes. The tool's sidebar
           <li>   Combination Scenarios </li>
           </ul>
       </ul>
-  <li>   Outcomes </li>
+  <li>   Modelled Outcomes </li>
       <ul> 
       <li>   Estimates </li>
       <li>   Time Trends </li>
@@ -175,19 +175,23 @@ Each of these scenarios is automatically available when the user chooses
 scenarios to plot.
 
 After the user reviews the descriptions of the predefined scenarios,
-they can either proceed to one of the *Outcomes* pages to view the
+they can either proceed to one of the *Modelled Outcomes* pages to view the
 results corresponding to these predefined scenarios, or choose to define
 a new scenario by navigating to the *Custom Scenarios* page.
 
 #### Custom Scenarios
 
-Custom Model Scenarios allow users to generate a new scenario by selecting different options for Targeted Testing and Treatment of LTBI ("Targeted Testing and Treatment") or TB disease and latent infection treatment ("Care Cascade Changes"). Users can also create scenarios as a combination of changes in both of these areas, specified on the "Combination Scenarios" page.
+Custom Model Scenarios allow users to generate a new scenario by selecting
+different options for Targeted Testing and Treatment of LTBI ("Targeted Testing
+and Treatment") or TB disease and latent infection treatment ("Care Cascade
+Changes"). Users can also create scenarios as a combination of changes in both
+of these areas, specified on the "Combination Scenarios" page.
 
 
 After specifying a Targeted Testing and Treatment scenario, Program
 Change scenario, or Combination scenario, the user clicks the "Run
 Model" button to simulate the scenario they have specified. Upon
-navigating to one of the *Outcomes* pages, their scenario will appear as
+navigating to one of the *Modelled Outcomes* pages, their scenario will appear as
 an option for visualization or download in the *Estimates, Time Trends,*
 and *Age Groups* pages of the application.
 
@@ -258,7 +262,7 @@ care cascade.
 </tr>
 </table>
 
-### Outcomes
+### Modelled Outcomes
 
 <center>
 <figure>
@@ -288,7 +292,7 @@ recent empirical data and estimates.
 
 A detailed description of each of these pages is provided below.
 
-#### Outcomes – Estimates 
+#### Modelled Outcomes – Estimates 
 
 User options are shown in a column on the left. The user specifies:
 
@@ -325,7 +329,7 @@ control activities ("Modeled Scenarios").
 itself (.png, .pdf, .pptx) or the estimates underlying the visualization
 (.csv, .xlsx).
 
-#### Outcomes – Time Trends 
+#### Modelled Outcomes – Time Trends 
 
 User options are shown in a column on the left. The user specifies:
 
@@ -362,7 +366,7 @@ control activities ("Modeled Scenarios").
 itself (.png, .pdf, .pptx) or the estimates underlying the visualization
 (.csv, .xlsx).
 
-#### Outcomes – Age Groups 
+#### Modelled Outcomes – Age Groups 
 
 This page matches the format of the first two pages with the following
 exceptions:
@@ -378,7 +382,7 @@ prevalence, TB incidence, and TB-related deaths), either as a prevalence
 or incidence rate with each age group (first three selections), or in
 absolute numbers (last three selections).
 
-#### Outcomes – Comparison to Recent Data 
+#### Modelled Outcomes – Comparison to Recent Data 
 
 <!--![](media/image9.png){width="4.87in" height="2.75in"}
 Figure 7: The selected plot depicts model outcomes compared to the

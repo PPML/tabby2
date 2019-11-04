@@ -49,7 +49,7 @@ sidebar <- dashboardSidebar(
       menuItem(tabnames[[4]], tabName = names(tabnames)[[4]]) # custom scenarios
     ),
     menuItem(
-      "Outcomes", startExpanded = T,
+      "Modelled Outcomes", startExpanded = T,
       menuItem(tabnames[[5]], tabName = names(tabnames)[[5]]), # tabby1 estimates
       menuItem(tabnames[[6]], tabName = names(tabnames)[[6]]), # tabby1 time trends
       menuItem(tabnames[[7]], tabName = names(tabnames)[[7]]),  # tabby1 age groups
