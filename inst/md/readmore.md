@@ -451,7 +451,7 @@ Downloads should begin immediately after selection. If not, contact
 #### **Where can I find more information about TB / TB modelling?**
 
 General information and resources on tuberculosis can be found on the
-Centers for Disease Control's Tuberculosis webpage:
+Centers for Disease Control and Prevention's Tuberculosis webpage:
 <https://www.cdc.gov/tb/default.htm>
 
 ### 508 Accessibility of This Product
