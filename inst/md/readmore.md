@@ -168,8 +168,8 @@ changes to latent TB and TB disease testing and treatment, described below.
     individuals receiving an incorrect drug regimen are reduced by 50%
     from current levels.
 
--   **All improvements**: The combination of all intervention scenarios
-    described above.
+-   **All improvements**: The combination of all changes described in other
+    predefined scenarios.
 
 Each of these scenarios is automatically available when the user chooses
 scenarios to plot.
