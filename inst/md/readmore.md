@@ -316,7 +316,7 @@ groups (0-24 years, 25-64 years, 65+ years).
     latent TB infection in a given year;
 
 -   **TB Incidence** representing the annual number of notified
-    TB cases per 100,000, including TB cases identified after death;
+    TB disease cases per 100,000, including those after death;
 
 -   **TB-Related Deaths** representing annual TB-attributable mortality
     per 100,000.
@@ -353,7 +353,7 @@ groups (0-24 years, 25-64 years, 65+ years).
     latent TB infection in a given year;
 
 -   **TB Incidence** representing the annual number of notified
-    TB cases per 100,000, including TB cases identified after death;
+    TB disease cases per 100,000, including those after death;
 
 -   **TB-Related Deaths** representing annual TB-attributable mortality
     per 100,000.
