@@ -172,7 +172,7 @@ intervention_content <- function(n=1, risk_group_rate_ratios = load_risk_group_d
 				),
 				actionButton(
 					inputId = paste0('toEstimates', n),
-					label = 'View Outcomes',
+					label = 'View Modelled Outcomes',
 					class = 'btn-primary',
 					style = 'color: white;'
 				)

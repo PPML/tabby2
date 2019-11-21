@@ -68,7 +68,7 @@ standardInterventionsUI <- function() {
            ),
            shiny::actionButton(
              inputId = 'toEstimates',
-             label = 'View Outcomes',
+             label = 'View Modelled Outcomes',
              class = 'btn-primary',
              style = 'color: white;'
            )
@@ -239,7 +239,7 @@ programChangePanel <- function(n, prg_chng) {
 			),
 			actionButton(
 				inputId = paste0('toEstimates', 3+n),
-				label = 'View Outcomes',
+				label = 'View Modelled Outcomes',
 				class = 'btn-primary',
 				style = 'color: white;'
 			)
@@ -283,7 +283,7 @@ customScenarioPanel <- function(n) {
 				} else NULL,
 				actionButton(
 					inputId = paste0('toEstimates', 6+n),
-					label = 'Go to Outcomes',
+					label = 'View Modelled Outcomes',
 					class = 'btn-primary',
 					style = 'color: white;'
 				)
