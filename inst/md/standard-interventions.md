@@ -5,7 +5,7 @@ scenarios include 5 hypothetical scenarios that reflect a range of
 changes to latent TB and TB disease testing and treatment, described below.
 
 -   **LTBI treatment for new migrants**: Provision of LTBI testing and
-    treatment for all new legal migrants entering the US.
+    treatment for all new legal migrants entering the United States.
 
 -   **Improved LTBI treatment in the United States**: Intensification of the
     current LTBI targeted testing and treatment efforts for high-risk
@@ -15,8 +15,8 @@ changes to latent TB and TB disease testing and treatment, described below.
     Isoniazid-Rifapentine drug regimen.
 
 -   **Enhanced case detection**: Improved detection of TB disease cases,
-    such that the duration of untreated disease (time from TB
-    incidence to the initiation of treatment) is reduced by 50%.
+    such that the duration of untreated disease (time from TB incidence to the
+    initiation of treatment) is reduced by 50% from current levels.
 
 -   **Enhanced TB treatment**: Improved treatment quality for TB disease,
     such that treatment default, failure rates, and the percentage of
@@ -24,12 +24,12 @@ changes to latent TB and TB disease testing and treatment, described below.
     from current levels.
 
 -   **All improvements**: The combination of all changes described in other
-    predefined scenarios.
+    scenarios described in the four scenarios shown above.
 
 Each of these scenarios is automatically available when the user chooses
-scenarios to plot.
+scenarios to plot in each of the *Modelled Outcomes* pages. 
 
-After the user reviews the descriptions of the predefined scenarios,
-they can either proceed to one of the *Modelled Outcomes* pages to view the
-results corresponding to these predefined scenarios, or choose to define
-a new scenario by navigating to the *Custom Scenarios* page.
+After the user reviews the descriptions of the predefined scenarios, they can
+proceed to define new scenarios by navigating to the *Build Custom Scenarios*
+page, or they can proceed to one of the *Modelled Outcomes* pages to view the
+results corresponding to these predefined scenarios.

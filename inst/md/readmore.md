@@ -60,11 +60,11 @@ bacterium that causes tuberculosis, Mycobacterium tuberculosis.
 
 **TB – Tuberculosis**
 
-A disease caused by bacteria that are spread from person to person
-through the air. TB usually affects the lungs, but it can also affect
-other parts of the body, such as the brain, the kidneys, or the spine.
-In most cases, TB is treatable and curable; however, people with TB can
-die if they do not get proper treatment.
+A disease caused by bacteria that are spread from person to person through the
+air. TB usually affects the lungs, but it can also affect other parts of the
+body, such as the brain, the kidneys, or the spine. In most cases, TB is
+treatable and curable; however, people with TB disease can die if they do not
+get proper treatment.
 
 
 Organization of the Tool
@@ -76,7 +76,7 @@ height="4.097222222222222in"} -->
 
 Users of Tabby2 progress through a sequence
 of pages that provide a brief introduction to the tool, allow them to
-specify scenarios and choose outcomes of interest, and ultimately to
+specify scenarios and choose outcomes of interest, and to
 view and download graphs of their chosen outcomes. The tool's sidebar
 (Figure 1) serves as the primary navigational aid for the user.
 
@@ -88,7 +88,7 @@ view and download graphs of their chosen outcomes. The tool's sidebar
   <li>   Scenarios </li>
       <ul>
       <li>   Predefined Scenarios </li>
-      <li>   Custom Scenarios </li>
+      <li>   Build Custom Scenarios </li>
           <ul>
           <li>   Targeted Testing and Treatment </li>
           <li>   Care Cascade Changes </li>
@@ -150,7 +150,7 @@ scenarios include five hypothetical scenarios that reflect a range of
 changes to latent TB and TB disease testing and treatment, described below.
 
 -   **LTBI treatment for new migrants**: Provision of LTBI testing and
-    treatment for all new legal migrants entering the US.
+    treatment for all new legal migrants entering the United States.
 
 -   **Improved LTBI treatment in the United States**: Intensification of the
     current LTBI targeted testing and treatment efforts for high-risk
@@ -160,8 +160,8 @@ changes to latent TB and TB disease testing and treatment, described below.
     Isoniazid-Rifapentine drug regimen.
 
 -   **Enhanced case detection**: Improved detection of TB disease cases,
-    such that the duration of untreated disease (time from TB
-    incidence to the initiation of treatment) is reduced by 50%.
+    such that the duration of untreated disease (time from TB incidence to the
+    initiation of treatment) is reduced by 50% from current levels.
 
 -   **Enhanced TB treatment**: Improved treatment quality for TB disease,
     such that treatment default, failure rates, and the percentage of
@@ -169,33 +169,33 @@ changes to latent TB and TB disease testing and treatment, described below.
     from current levels.
 
 -   **All improvements**: The combination of all changes described in other
-    predefined scenarios.
+    scenarios described in the four scenarios shown above.
 
 Each of these scenarios is automatically available when the user chooses
-scenarios to plot.
+scenarios to plot in each of the *Modelled Outcomes* pages. 
 
-After the user reviews the descriptions of the predefined scenarios,
-they can either proceed to one of the *Modelled Outcomes* pages to view the
-results corresponding to these predefined scenarios, or choose to define
-a new scenario by navigating to the *Custom Scenarios* page.
+After the user reviews the descriptions of the predefined scenarios, they can
+proceed to define new scenarios by navigating to the *Build Custom Scenarios*
+page, or they can proceed to one of the *Modelled Outcomes* pages to view the
+results corresponding to these predefined scenarios.
+
 
 #### Custom Scenarios
 
 Custom Model Scenarios allow users to generate a new scenario by selecting
-different options for Targeted Testing and Treatment of LTBI ("Targeted Testing
-and Treatment") or TB disease and latent infection treatment ("Care Cascade
-Changes"). Users can also create scenarios as a combination of changes in both
-of these areas, specified on the "Combination Scenarios" page.
+different options for Targeted Testing and Treatment of LTBI (“Targeted Testing
+and Treatment Interventions”) or TB disease and latent infection treatment
+(“Care Cascade Changes”). Users can also create scenarios as a combination of
+changes in both of these areas, specified on the “Combination Scenarios” page.
 
+After specifying a Targeted Testing and Treatment scenario, Care Cascade Change
+scenario, or Combination scenario, the user clicks the “Run Model” button to
+simulate the scenario they have specified. Upon navigating to one of the
+*Modelled Outcomes* pages, their scenario will appear as an option for
+visualization or download in the *Estimates*, *Time Trends*, and *Age Groups* pages
+of the application. 
 
-After specifying a Targeted Testing and Treatment scenario, Program
-Change scenario, or Combination scenario, the user clicks the "Run
-Model" button to simulate the scenario they have specified. Upon
-navigating to one of the *Modelled Outcomes* pages, their scenario will appear as
-an option for visualization or download in the *Estimates, Time Trends,*
-and *Age Groups* pages of the application.
-
-#### Custom Scenarios – Targeted Testing and Treatment
+#### Custom Scenarios – Targeted Testing and Treatment Interventions
 
 <!--![](media/image3.png){width="4.64in" height="2.75in"}-->
 <center>
@@ -208,16 +208,15 @@ and *Age Groups* pages of the application.
 </figure>
 </center>
 
-The *Targeted Testing and Treatment* (TTT) input page (Figure 3) is used
-to create scenarios that simulate additional screening of specific risk
-groups over a specified number of years. Within the TTT scenario
-builder, a user can either select from a list of high-risk groups (such
-as people living with HIV), or choose to define a custom risk group. To
-do so, the user must define the new group in terms of their rate ratios
-of LTBI prevalence, progression, and mortality, as compared to the
-general population in the same age and nativity group. Additionally, a
-user must provide an age range, nativity group, and total targeted
-population size.
+The *Targeted Testing and Treatment* (TTT) *Interventions* input page (Figure
+3) is used to create scenarios that simulate additional screening of specific
+risk groups over a specified number of years. Within the TTT scenario builder,
+a user can either select from a list of high-risk groups (such as people living
+with HIV) or choose to define a custom risk group. To do so, the user must
+define the new group in terms of their rate ratios of LTBI prevalence,
+progression, and mortality, as compared to the general population in the same
+age and nativity group. Additionally, a user must provide an age range,
+nativity group, and total targeted population size. 
 
 #### Custom Scenarios – Care Cascade Changes
 
@@ -235,10 +234,9 @@ Figure 4: User Interface for Building Care Cascade Changes -->
 </center>
 
 The *Care Cascade Changes* page (Figure 4) allows users to change assumptions
-related to the LTBI treatment and TB treatment care cascades.
-These changes do not change any historical projections the model has
-made and will only be active in the years following the user-inputted
-start year.
+related to the LTBI treatment and TB treatment care cascades. These changes do
+not change any historical projections the model has made and will only be
+active in the years following the user-inputted start year. 
 
 
 #### Custom Scenarios – Combination Scenarios
@@ -323,7 +321,7 @@ groups (0-24 years, 25-64 years, 65+ years).
 
 *Scenarios:* results can be shown for up to five scenarios selected by
 the user, describing hypothetical changes to current TB prevention and
-control activities ("Modeled Scenarios").
+control activities ("Modelled Scenarios").
 
 *Download:* clicking on a button initiates download of the visualization
 itself (.png, .pdf, .pptx) or the estimates underlying the visualization
@@ -360,7 +358,7 @@ groups (0-24 years, 25-64 years, 65+ years).
 
 *Scenarios:* results can be shown for up to five scenarios selected by
 the user, describing hypothetical changes to current TB prevention and 
-control activities ("Modeled Scenarios").
+control activities ("Modelled Scenarios").
 
 *Download:* clicking on a button initiates download of the visualization
 itself (.png, .pdf, .pptx) or the estimates underlying the visualization
@@ -415,9 +413,9 @@ Abbreviations,* *Frequently Asked Questions,* and a notice about the
 ### Feedback
 
 The Feedback page in the Tabby2 web application prompts users of the
-application with feedback to either email <ppml@hsph.harvard.edu> with
-their questions, comments, or feedback, or to submit it directly to us
-through the web application.
+application with feedback to either email <ppml@hsph.harvard.edu> with their
+questions, comments, or feedback, or to submit it directly through the web
+application.
 
 Frequently Asked Questions 
 ---------------------------

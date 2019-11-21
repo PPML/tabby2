@@ -68,7 +68,7 @@ standardInterventionsUI <- function() {
            ),
            shiny::actionButton(
              inputId = 'toEstimates',
-             label = 'View Outcomes',
+             label = 'View Modelled Outcomes',
              class = 'btn-primary',
              style = 'color: white;'
            )
@@ -125,7 +125,7 @@ scenariosUI <- function() {
         tabPanel(title = "Care Cascade Changes", value = 'programchanges', {
           programChanges()
           }),
-        tabPanel(title = "Combination Scenarios", value = 'customscenarios', {
+        tabPanel(title = "Combination Scenarios", value = 'combinationscenarios', {
           tagList(
 						br(),
 						# h4("Inactive - Not Linked to Outcomes"),
@@ -232,14 +232,14 @@ programChangePanel <- function(n, prg_chng) {
 				)
 			} else NULL,
 			actionButton(
-				inputId = paste0('toCustomScenarios', n),
-				label = 'Build Custom Scenarios',
+				inputId = paste0('toCombinationScenarios', n),
+				label = 'Build Combination Scenarios',
 				class = 'btn-primary',
 				style = 'color: white;'
 			),
 			actionButton(
 				inputId = paste0('toEstimates', 3+n),
-				label = 'View Outcomes',
+				label = 'View Modelled Outcomes',
 				class = 'btn-primary',
 				style = 'color: white;'
 			)
@@ -283,7 +283,7 @@ customScenarioPanel <- function(n) {
 				} else NULL,
 				actionButton(
 					inputId = paste0('toEstimates', 6+n),
-					label = 'Go to Outcomes',
+					label = 'View Modelled Outcomes',
 					class = 'btn-primary',
 					style = 'color: white;'
 				)
