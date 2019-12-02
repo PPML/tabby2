@@ -10,5 +10,9 @@ LazyData: true
 Imports:
   dplyr,
   ggplot2,
-	readxl
+	readxl,
+  shinydashboard,
+  shinycssloaders,
+  shinyjs,
+  Cairo
 RoxygenNote: 6.0.1
