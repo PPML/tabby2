@@ -41,6 +41,30 @@ outcomes of.
     # in R: 
     devtools::install("./", dependencies=TRUE)
 
+We also need the package MITUSCalibPlots, which handles the generation of 
+calibration plots from stored data in the MITUS package. 
+
+    # in terminal 
+    cd .. # clone MITUS_Calib_Plots next to tabby2, or any other directory works fine too
+    git clone git@github.com:PPML/MITUS_Calib_Plots.git
+    cd MITUS_Calib_Plots/
+    R
+
+    # in R: 
+    devtools::install("./", dependencies=TRUE)
+
+We also need the `tabus` package, the package which does fast reshaping of outcomes from MITUS 
+for plotting with ggplot2. 
+
+    # in terminal 
+    cd .. # clone reshape_mitus_results_for_tabby2 next to tabby2, or any other directory works fine too
+    git clone git@github.com:ppml/reshape_mitus_results_for_tabby.git
+    cd reshape_mitus_results_for_tabby/
+    R
+
+    # in R: 
+    devtools::install("./", dependencies=TRUE)
+
 Now we can run Tabby2
 
     # in terminal 
