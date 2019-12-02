@@ -22,6 +22,7 @@ Now we can go ahead and install the R package dependencies:
 
     # move into our project on terminal:
     cd tabby2/
+    git checkout beta/
     R
 
     # in R:
