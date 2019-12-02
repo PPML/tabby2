@@ -575,7 +575,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # downloads ----
   # __estimates png ----
   output[[estimates$IDs$downloads$png]] <- downloadHandler(
-    filename = "tabby-estimates-plot.png",
+    filename = paste0("tabby2-estimates-plot-", geo_short_code(), ".png"),
     content = function(file) {
       png(file, res = 85, width = 13, height = 9, units = "in")
       print(estimatesPlot())
@@ -585,7 +585,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __estimates pdf ----
   output[[estimates$IDs$downloads$pdf]] <- downloadHandler(
-    filename = "tabby-estimates-plot.pdf",
+    filename = paste0("tabby2-estimates-plot-", geo_short_code(), ".pdf"),
     content = function(file) {
       this <- estimatesPlot()
 
@@ -597,7 +597,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __estimates pptx ----
   output[[estimates$IDs$downloads$pptx]] <- downloadHandler(
-    filename = "tabby-estimates-plot.pptx",
+    filename = paste0("tabby2-estimates-plot-", geo_short_code(), ".pptx"),
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
@@ -622,7 +622,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __estimates xlsx ----
   output[[estimates$IDs$downloads$xlsx]] <- downloadHandler(
-    filename = "tabby-estimates-data.xlsx",
+    filename = paste0("tabby2-estimates-data-", geo_short_code(), ".xlsx"),
     content = function(file) {
       estimatesData() %>%
         mutate(
@@ -643,7 +643,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __estimates csv ----
   output[[estimates$IDs$downloads$csv]] <- downloadHandler(
-    filename = "tabby-estimates-data.csv",
+    filename = paste0("tabby2-estimates-data-", geo_short_code(), ".csv"),
     content = function(file) {
       estimatesData() %>%
         mutate(
@@ -664,7 +664,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __trends png ----
   output[[trends$IDs$downloads$png]] <- downloadHandler(
-    filename = "tabby-trends-plot.png",
+    filename = paste0("tabby2-trends-plot-", geo_short_code(), ".png"),
     content = function(file) {
       png(file, res = 85, width = 13, height = 9, units = "in")
       print(trendsPlot())
@@ -674,7 +674,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __trends pdf ----
   output[[trends$IDs$downloads$pdf]] <- downloadHandler(
-    filename = "tabby-trends-plot.pdf",
+    filename = paste0("tabby2-trends-plot-", geo_short_code(), ".pdf"),
     content = function(file) {
       this <- trendsPlot()
       pdf(file, width = 11, height = 8, title = this$plot$title)
@@ -685,7 +685,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __trends pptx ----
   output[[trends$IDs$downloads$pptx]] <- downloadHandler(
-    filename = "tabby-trends-plot.pptx",
+    filename = paste0("tabby2-trends-plot-", geo_short_code(), ".pptx"),
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
@@ -710,7 +710,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __trends xlsx ----
   output[[trends$IDs$downloads$xlsx]] <- downloadHandler(
-    filename = "tabby-trends-data.xlsx",
+    filename = paste0("tabby2-trends-data-", geo_short_code(), ".xlsx"),
     content = function(file) {
       trendsData() %>%
         mutate(
@@ -731,7 +731,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __trends csv ----
   output[[trends$IDs$downloads$csv]] <- downloadHandler(
-    filename = "tabby-trends-data.csv",
+    filename = paste0("tabby2-trends-data-", geo_short_code(), ".csv"),
     content = function(file) {
       trendsData() %>%
         mutate(
@@ -752,7 +752,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __agegroups png ----
   output[[agegroups$IDs$downloads$png]] <- downloadHandler(
-    filename = "tabby-agegroups-plot.png",
+    filename = paste0("tabby2-agegroups-plot-", geo_short_code(), ".png"),
     content = function(file) {
       png(file, res = 85, width = 13, height = 9, units = "in")
       print(agegroupsPlot())
@@ -762,7 +762,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __agegroups pdf ----
   output[[agegroups$IDs$downloads$pdf]] <- downloadHandler(
-    filename = "tabby-agegroups-plot.pdf",
+    filename = paste0("tabby2-agegroups-plot-", geo_short_code(), ".pdf"),
     content = function(file) {
       this <- agegroupsPlot()
       pdf(file, width = 11, height = 8, title = this$plot$title)
@@ -773,7 +773,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __agegroups pptx ----
   output[[agegroups$IDs$downloads$pptx]] <- downloadHandler(
-    filename = "tabby-agegroups-plot.pptx",
+    filename = paste0("tabby2-agegroups-plot-", geo_short_code(), ".pptx"),
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
@@ -798,7 +798,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __agegroups xlsx ----
   output[[agegroups$IDs$downloads$xlsx]] <- downloadHandler(
-    filename = "tabby-agegroups-data.xlsx",
+    filename = paste0("tabby2-agegroups-data-", geo_short_code(), ".xlsx"),
     content = function(file) {
       agegroupsData() %>%
         mutate(
@@ -823,7 +823,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # __agegroups csv ----
   output[[agegroups$IDs$downloads$csv]] <- downloadHandler(
-    filename = "tabby-agegroups-data.csv",
+    filename = paste0("tabby2-agegroups-data-", geo_short_code(), ".csv"),
     content = function(file) {
       agegroupsData() %>%
         mutate(
