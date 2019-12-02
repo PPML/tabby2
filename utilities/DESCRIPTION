@@ -11,5 +11,9 @@ Imports:
   dplyr,
 	reshape2,
   ggplot2,
-	readxl
+	readxl,
+  shinydashboard,
+  shinycssloaders,
+  shinyjs,
+  Cairo
 RoxygenNote: 6.0.1
