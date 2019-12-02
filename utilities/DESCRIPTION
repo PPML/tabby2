@@ -8,12 +8,13 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Imports:
-  dplyr,
-	reshape2,
-  ggplot2,
 	readxl,
-  shinydashboard,
+	reshape2,
+  Cairo,
+  dplyr,
+  ggplot2,
+  shinyFeedback,
   shinycssloaders,
-  shinyjs,
-  Cairo
+  shinydashboard,
+  shinyjs
 RoxygenNote: 6.0.1
