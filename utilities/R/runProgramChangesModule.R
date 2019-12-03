@@ -63,7 +63,7 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
   presimulated_results <- get(presimulated_results_name)
 
 	# simulate program changes scenario
-	custom_scenario_output <- new_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng)
+  custom_scenario_output <- OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng, ttt_list = def_ttt())
   custom_scenario_output <- list(presimulated_results[1:2,,], custom_scenario_output)
 
 	# reformat into small/big restabs (two lists of (ResTab, ResTabus, ResTabfb) for small/big)

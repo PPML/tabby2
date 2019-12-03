@@ -65,10 +65,8 @@ runTTT <- function(input, output, session, n, geo_short_code) {
     package="MITUS"))
   presimulated_results <- get(presimulated_results_name)
 
-  # presimulated_results <- new2_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng, ttt_list = def_ttt())
-
 	# simulate program changes scenario
-	custom_scenario_output <- new2_OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng, ttt_list = ttt_list)
+	custom_scenario_output <- OutputsInt(loc = geo_short_code(), ParMatrix = Par[1:2,], prg_chng = prg_chng, ttt_list = ttt_list)
   custom_scenario_output <- list(presimulated_results[1:2,,], custom_scenario_output)
 
 	# reformat into small/big restabs (two lists of (ResTab, ResTabus, ResTabfb) for small/big)
