@@ -111,9 +111,9 @@ outcomes:
       after death)
     tb_deaths_per_100k: Number of deaths attributable to TB each year
   selected:
+  - no 
+  - no
   - yes
-  - no
-  - no
   - no
 interventions:
   heading: Modeled Scenarios

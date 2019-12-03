@@ -115,9 +115,9 @@ outcomes:
       after death)
     tb_deaths_per_100k: Number of deaths attributable to TB each year
   selected:
-  - yes
+  - no 
   - no
-  - no
+  - yes 
   - no
   abbreviations:
     tb_infection_per_100k: new-tb
