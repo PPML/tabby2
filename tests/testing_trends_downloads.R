@@ -1,5 +1,5 @@
 app <- ShinyDriver$new("../")
-app$snapshotInit("testing trends downloads")
+app$snapshotInit("testing_trends_downloads")
 
 
 geographies <- c("United States", "California", "Florida", "Georgia",
@@ -35,6 +35,6 @@ filenames <- sapply(1:length(filenames), function(iter) {
     )
   })
 
-current_files <- list.files("testing trends downloads-current/", full.names=T)
+current_files <- list.files("testing_trends_downloads-current/", full.names=T)
 
 file.rename(current_files, filenames)
