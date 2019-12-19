@@ -355,8 +355,11 @@ readmoreUI <- function() {
 	# 						 "-----",
 	# 						 tabPanel("Component 5")
 	# )
+  readmore <- "inst/md/readmore.Rmd"
+  readmore <- knitr::knit(readmore, output='inst/md/readmore2.md')
   fluidRow(
-    column(8, includeMarkdown("inst/md/readmore.md"))
+    column(8, 
+           includeMarkdown("inst/md/readmore2.md"))
   )
 }
 

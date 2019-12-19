@@ -1,5 +1,9 @@
+---
+---
+
 Definitions and Abbreviations
 -----------------------------
+
 
 **Base Case**
 
@@ -453,6 +457,19 @@ Centers for Disease Control and Prevention's Tuberculosis webpage:
 <https://www.cdc.gov/tb/default.htm>
 
 ### Changelog
+
+```{r echo=FALSE}
+suppressMessages({
+s <- sessionInfo()
+})
+```
+
+This is Tabby2 version `r s[['otherPkgs']][['utilities']][['Version']]`. 
+
+```{r child='changelog.md'}
+```
+
+
 
 ### 508 Accessibility of This Product
 
