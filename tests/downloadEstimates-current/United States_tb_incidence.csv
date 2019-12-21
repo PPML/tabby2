@@ -1,0 +1,31 @@
+"outcome","scenario","age_group","year","mean","ci_high","ci_low"
+"TB Incidence","Base Case","all_ages",2016,100,100,100
+"TB Incidence","Base Case","all_ages",2025,94.5768554493646,94.5768554493646,94.5768554493646
+"TB Incidence","Base Case","all_ages",2050,83.294537115374,83.294537115374,83.294537115374
+"TB Incidence","Base Case","all_ages",2075,65.4800782639223,65.4800782639223,65.4800782639223
+"TB Incidence","Base Case","all_ages",2100,47.5073167742658,47.5073167742658,47.5073167742658
+"TB Incidence","LTBI treatment for new migrants","all_ages",2016,99.9339042708482,99.9339042708482,99.9339042708482
+"TB Incidence","LTBI treatment for new migrants","all_ages",2025,91.4235513619225,91.4235513619225,91.4235513619225
+"TB Incidence","LTBI treatment for new migrants","all_ages",2050,68.3795469725249,68.3795469725249,68.3795469725249
+"TB Incidence","LTBI treatment for new migrants","all_ages",2075,48.1908238093647,48.1908238093647,48.1908238093647
+"TB Incidence","LTBI treatment for new migrants","all_ages",2100,31.6424923113629,31.6424923113629,31.6424923113629
+"TB Incidence","Improved LTBI treatment in the US","all_ages",2016,99.9967830033126,99.9967830033126,99.9967830033126
+"TB Incidence","Improved LTBI treatment in the US","all_ages",2025,94.2494971920551,94.2494971920551,94.2494971920551
+"TB Incidence","Improved LTBI treatment in the US","all_ages",2050,78.1866592704673,78.1866592704673,78.1866592704673
+"TB Incidence","Improved LTBI treatment in the US","all_ages",2075,56.8110374391114,56.8110374391114,56.8110374391114
+"TB Incidence","Improved LTBI treatment in the US","all_ages",2100,39.2824463983729,39.2824463983729,39.2824463983729
+"TB Incidence","Enhanced case detection","all_ages",2016,100.524161834459,100.524161834459,100.524161834459
+"TB Incidence","Enhanced case detection","all_ages",2025,100.388393556707,100.388393556707,100.388393556707
+"TB Incidence","Enhanced case detection","all_ages",2050,78.2440365911346,78.2440365911346,78.2440365911346
+"TB Incidence","Enhanced case detection","all_ages",2075,61.1099079241247,61.1099079241247,61.1099079241247
+"TB Incidence","Enhanced case detection","all_ages",2100,44.1511094891453,44.1511094891453,44.1511094891453
+"TB Incidence","Enhanced TB treatment","all_ages",2016,99.9588091551359,99.9588091551359,99.9588091551359
+"TB Incidence","Enhanced TB treatment","all_ages",2025,92.8741846453716,92.8741846453716,92.8741846453716
+"TB Incidence","Enhanced TB treatment","all_ages",2050,78.8862117604823,78.8862117604823,78.8862117604823
+"TB Incidence","Enhanced TB treatment","all_ages",2075,61.9817422130611,61.9817422130611,61.9817422130611
+"TB Incidence","Enhanced TB treatment","all_ages",2100,44.9599603547444,44.9599603547444,44.9599603547444
+"TB Incidence","All improvements","all_ages",2016,100.412670906252,100.412670906252,100.412670906252
+"TB Incidence","All improvements","all_ages",2025,94.3857874068182,94.3857874068182,94.3857874068182
+"TB Incidence","All improvements","all_ages",2050,56.3929311689912,56.3929311689912,56.3929311689912
+"TB Incidence","All improvements","all_ages",2075,36.056625812755,36.056625812755,36.056625812755
+"TB Incidence","All improvements","all_ages",2100,22.4905715844754,22.4905715844754,22.4905715844754
