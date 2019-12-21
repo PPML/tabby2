@@ -1,3 +1,14 @@
+
+
+# When this shiny test is run: 
+# 
+# - a headless browser launches running shiny 
+# - selects each geography
+# - downloads estimates data for all interventions measured as percent basecase 2018
+# - each of the downloads are renamed to reflect what data they contain
+
+library(shinytest)
+
 app <- ShinyDriver$new("../")
 app$snapshotInit("downloadEstimates")
 
