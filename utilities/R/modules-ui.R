@@ -345,16 +345,6 @@ configuration that yielded those outcomes for reproducible results.",
 
 
 readmoreUI <- function() {
-	# navlistPanel(
-	# 						 "Header A",
-	# 						 tabPanel("Component 1", "text goes here"),
-	# 						 tabPanel("Component 2", "more text goes here"),
-	# 						 "Header B",
-	# 						 tabPanel("Component 3"),
-	# 						 tabPanel("Component 4"),
-	# 						 "-----",
-	# 						 tabPanel("Component 5")
-	# )
   readmore <- "inst/md/readmore.Rmd"
   readmore <- knitr::knit(readmore, output='inst/md/readmore2.md')
   fluidRow(
@@ -363,6 +353,13 @@ readmoreUI <- function() {
   )
 }
 
+
+changelogUI <- function() {
+  fluidRow(
+    column(8, 
+           includeMarkdown("inst/md/changelog.md"))
+  )
+}
 
 
 tabby1Estimates <- function(id) {

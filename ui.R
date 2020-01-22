@@ -58,10 +58,11 @@ sidebar <- dashboardSidebar(
     ),
     # menuItem(tabnames[[9]], tabName = names(tabnames)[[9]]), # downloads
     menuItem(tabnames[[9]], tabName = names(tabnames)[[9]]),  # further description
-		menuItem(tabnames[[10]], tabName = names(tabnames)[[10]]),
+    menuItem(tabnames[[10]], tabName = names(tabnames)[[10]]),  # changelog
+		menuItem(tabnames[[11]], tabName = names(tabnames)[[11]]), # feedback
     if (
       exists('debug', envir = .GlobalEnv) && isTRUE(debug)
-      ) { menuItem(tabnames[[11]], tabName = names(tabnames)[[11]]) # debug printouts
+      ) { menuItem(tabnames[[12]], tabName = names(tabnames)[[12]]) # debug printouts
     } else { NULL },
 		# render location selected
     tags$li(uiOutput('location_selected'), style = 'position: absolute; bottom: 20px; left: 20px;')

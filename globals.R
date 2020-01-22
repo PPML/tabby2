@@ -17,6 +17,7 @@ tabnames <- c(
   agegroups = "Age Groups",
   calibration = "Comparison to Recent Data",
   readmore = "Further Description",
+  changelog = "Changelog",
 	feedback = "Feedback"
 )
 
@@ -30,6 +31,7 @@ tabcontents <- list(
   agegroups = tabby1AgeGroups('tabby1'),
   calibration = comparison_to_recent_data(),
   readmore = readmoreUI(),
+  changelog = changelogUI(),
 	feedback = feedbackForm()
 )
 
