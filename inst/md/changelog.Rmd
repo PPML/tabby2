@@ -7,7 +7,7 @@ s <- sessionInfo()
 })
 ```
 
-### This is Tabby2 version `r s[['otherPkgs']][['utilities']][['Version']]`. 
+<strong> This is Tabby2 version `r s[['otherPkgs']][['utilities']][['Version']]`.</strong>
 
-```{r child='changelog_entries.md'}
-```
+Version 2.0.0 represents the first version of Tabby2 which has 
+passed the CDC Scientific Web Tool Clearance process. 
