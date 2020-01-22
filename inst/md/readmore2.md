@@ -456,17 +456,6 @@ General information and resources on tuberculosis can be found on the
 Centers for Disease Control and Prevention's Tuberculosis webpage:
 <https://www.cdc.gov/tb/default.htm>
 
-### Changelog
-
-
-
-This is Tabby2 version 2.0.0. 
-
-
-Version 2.0.0 represents the first version of Tabby2 which has 
-passed the CDC Web Tool Clearance process. 
-
-
 
 ### 508 Accessibility of This Product
 

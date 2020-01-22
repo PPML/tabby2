@@ -355,6 +355,8 @@ readmoreUI <- function() {
 
 
 changelogUI <- function() {
+  changelog <- "inst/md/changelog.Rmd"
+  changelog <- knitr::knit(changelog, output='inst/md/changelog.md')
   fluidRow(
     column(8, 
            includeMarkdown("inst/md/changelog.md"))

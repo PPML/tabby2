@@ -1,0 +1,13 @@
+
+# Changelog
+
+```{r echo=FALSE}
+suppressMessages({
+s <- sessionInfo()
+})
+```
+
+### This is Tabby2 version `r s[['otherPkgs']][['utilities']][['Version']]`. 
+
+```{r child='changelog_entries.md'}
+```
