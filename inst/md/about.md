@@ -1,5 +1,3 @@
-**This product is currently under development.**
-
 Tabby2 is a web application that provides projections of future tuberculosis
 (TB) epidemiology in the United States under a range of TB and LTBI testing and
 treatment scenarios that can be chosen by the user. The application includes
