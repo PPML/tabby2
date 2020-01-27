@@ -345,21 +345,21 @@ configuration that yielded those outcomes for reproducible results.",
 
 
 readmoreUI <- function() {
-  readmore <- "inst/md/readmore.Rmd"
-  readmore <- knitr::knit(readmore, output='inst/md/readmore2.md')
+  readmore <- system.file("Rmd/readmore.Rmd", package='utilities')
+  readmore <- knitr::knit(readmore, output=file.path(system.file('Rmd', package='utilities'), 'readmore2.md'))
   fluidRow(
     column(8, 
-           includeMarkdown("inst/md/readmore2.md"))
+           includeMarkdown(system.file("Rmd/readmore2.md", package='utilities')))
   )
 }
 
 
 changelogUI <- function() {
-  changelog <- "inst/md/changelog.Rmd"
-  changelog <- knitr::knit(changelog, output='inst/md/changelog.md')
+  changelog <- system.file("Rmd/changelog.Rmd", package='utilities')
+  changelog <- knitr::knit(changelog, output=file.path(system.file('Rmd', package='utilities'), 'changelog.md'))
   fluidRow(
     column(8, 
-           includeMarkdown("inst/md/changelog.md"))
+           includeMarkdown(system.file("Rmd/changelog.md", package='utilities')))
   )
 }
 
