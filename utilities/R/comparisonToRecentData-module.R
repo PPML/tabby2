@@ -1,75 +1,37 @@
-#' Render Comparison to Recent Data Plots
-#' 
-#' Fetch plots depicting a comparison of model performance to the data
-#' available. First a reactive element computes the path to the RDS file
-#' containing the plot corresponding to the user's choice in which
-#' comparison to visualize, then the RDS file is read and the plot object
-#' is rendered as output with renderPlot.
 
-comparisonToRecentData <- function(input, output, session, geo_short_code) {
-  # comparisonDataChoices is a vector mapping the filenames (without .rds) or
-  # short-versions of the calibration data targets to their proper names as they
-  # appear in the titles of the calibration plots.
-  comparisonDataChoices <- c(
-    total_population = "Population: Total, US, and Non-US Born",
-    `total-deaths-by-age` = "Total TB Deaths by Age Group",
-    percent_of_cases_in_non_usb = "Percent of TB Cases in Non-US-Born 2000-2014",
-    `percent-of-non-usb-cases-in-recent-immigrants` = "Percent of Non-US Born Cases Arrived in Past 2 Years",
-    mortality_by_age = "Mortality by Age",
-    mortality = "Mortality: Total, US, and Non-US Born",
-    `ltbi-prev-by-age-usb` = "LTBI in US Born Population by Age",
-    `ltbi-prev-by-age-non-usb` = "LTBI in Non-US Born Population by Age",
-    diagnosed_cases_2006 = "Total TB Cases Identified, 2006-2016",
-    age_distribution_all_ages = "Total Population by Age Group 2014",
-    age_distribution = "Population by Age for Non-US Born and US Born",
-    treatment_outcomes = "Treatment Outcomes",
-    `age-distribution-of-cases` = "TB Cases By Age (2000-16)"
-  )
-  
-  # Reverse comparisonDataChoices so that we can look up short codes from the 
-  # users choice, given as the proper name (with spaces and title casing). 
-  # This is used in the comparison_to_recent_data_plot_path reactive below.
-  comparisonDataChoices_rev <- names(comparisonDataChoices)
-  names(comparisonDataChoices_rev) <- unlist(comparisonDataChoices)
-  
-  # Render the options for calibration data targets  (Comparison to Recent Data)
-  # depending on the geo_short_code (geography selected by the user). This is
-  # dynamic because the states and US differ in which data targets are available
-  # / calibrated to.
+comparisonToRecentData <- function(input, output, session, geo_short_code) { 
+
+  # read in the (hopefully single) source of authority on the required_plots
+  # that are tested to be ensured to be available from MITUSCalibPlots and
+  # MITUS
+  plots_subset <- readr::read_lines(system.file('required_plots.txt', package='MITUSCalibPlots'))
+
+  # This reacitve renders the comparison to recent data plots using calib_plots
+  # from the MITUSCalibPlots package.
+  calib_plots <- reactive({ 
+    MITUSCalibPlots::calib_plots(
+      loc = geo_short_code(), 
+      # filter the plots to only include these specified 6
+      plots_subset = plots_subset) 
+  }) 
+
+  # A future goal is to separate these out into Demographic and Epidemiological 
+  # targets, but I'm not sure how to split up one set of radio buttons into 
+  # multiple sections.
   output$comparison_to_recent_data_buttons <- renderUI({
-    req(input[['state']])
     radioButtons(
       inputId = "comparisonDataChoice",
       label = "Select an option below to compare the model's performance to observed data.",
-      choices = # unname(comparisonDataChoices)
-				as.character(comparisonDataChoices[
-        gsub(".rds",
-             "",
-             list.files(
-               # if (geo_short_code() == 'US') { system.file('calibration_plots/US/', package='utilities') } 
-							 # else 
-												system.file(paste0(geo_short_code(), "/calibplots/"), package='MITUS')
-             ))])
+      choices = setNames(nm = calib_plots()[['name']], object = calib_plots()[['shortname']])
     )
   })
-  
-  # Get the path to the comparison plot chosen by the user
-  comparison_to_recent_data_plot_path <- reactive({
-    req(input[['comparisonDataChoice']], input[['state']])
-    file <- comparisonDataChoices_rev[input$comparisonDataChoice]
-		# if (geo_short_code() == 'US') return(system.file(paste0('calibration_plots/US/', file, '.rds'), package = 'utilities'))
-    return(system.file(paste0(geo_short_code(), '/calibplots/', file, ".rds"), package = 'MITUS'))
-  })
-  
-  # Render the calibration data target from its RDS file
-  output$calib_data_target_plot <- renderPlot({
-		cat(comparison_to_recent_data_plot_path(), '\n')
-    replayPlot(readRDS(comparison_to_recent_data_plot_path()))
-		# replayPlot(readRDS(system.file('TX/calibplots/total_population.rds', package='MITUS')))
+
+  # Render the plot from the plots reactive containing the output from calib_plots()
+  calib_data_target_plot <- reactive({
+	  plt_idx <- which(calib_plots()[['shortname']] == input[['comparisonDataChoice']]) 
+    calib_plots()[[plt_idx, 'plot']]
   })
 
-	# Download server ----
-  output$downloadParameters <- downloadHandler(
-    filename = function() { "input_parameters.yaml" },
-    content = function(file) { cat(yaml::as.yaml(reactiveValuesToList(input)), file = file) })
+  # Render the plot from the plots reactive containing the output from calib_plots()
+  output$calib_data_target_plot <- renderPlot({ calib_data_target_plot() }, res = 100)
 }

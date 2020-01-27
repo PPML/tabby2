@@ -1,72 +1,20 @@
-tabby1Server <- function(input, output, session, ns, geo_short_code, geographies) {
+tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, geographies) {
+
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
-  # AGEGROUPS_DATA <- reactive({
-  #   readRDS(system.file(paste0("MITUS/", geo_short_code(), "_restab.rds"), package = "tabby1utilities", mustWork = TRUE))
-  # })
+	AGEGROUPS_DATA <- reactive({ sim_data()[['AGEGROUPS_DATA']] })
+	ESTIMATES_DATA <- reactive({ sim_data()[['ESTIMATES_DATA']] })
+	TRENDS_DATA <- reactive({ sim_data()[['TRENDS_DATA']] })
 
-	# Import and format Age Groups Data
-	AGEGROUPS_DATA <- reactive({
-		if (geo_short_code() == 'US') {
-			return(data_agegroups() %>% rename(type = statistic))
-		}
 
-		# Lookup sm_restab2 by geo_short_code, cast the data as.data.frame
-		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "sm_restab2.rds",
-		package="MITUS", mustWork = TRUE)))
+	# user_filtered_data <- reactiveValues()
 
-		# Temporary Fix for Trivial Confidence Intervals 
-		# If confidence intervals aren't present (because the statistic
-		# column hasn't been rendered yet, just duplicate (triplicate) the 
-		# data for mean/ci_high/ci_low.
-		if (! 'statistic' %in% colnames(restab2)) {
-			restab2 <- 
-				do.call(rbind.data.frame, list(
-				cbind.data.frame(restab2, type = 'mean'),
-				cbind.data.frame(restab2, type = 'ci_high'),
-				cbind.data.frame(restab2, type = 'ci_low')))
-		}
-
-		restab2 %>% mutate_if(is.factor, as.character) -> restab2
-		return(restab2)
-	})
-
-	# Import and format Age Groups Data
-	TRENDS_DATA <- reactive({
-
-		if (geo_short_code() == 'US') { return(data_trends()) }
-
-		# Lookup bg_restab2 by geo_short_code, cast the data as.data.frame
-		restab2 <- as.data.frame(readRDS(system.file(geo_short_code(), "bg_restab2.rds",
-		package="MITUS", mustWork = TRUE)))
-
-		# Temporary Fix for Trivial Confidence Intervals 
-		# If confidence intervals aren't present (because the statistic
-		# column hasn't been rendered yet, just duplicate (triplicate) the 
-		# data for mean/ci_high/ci_low.
-		# if (! 'statistic' %in% colnames(restab2)) {
-			restab2 <- 
-				do.call(rbind.data.frame, list(
-				cbind.data.frame(restab2, type = 'mean'),
-				cbind.data.frame(restab2, type = 'ci_high'),
-				cbind.data.frame(restab2, type = 'ci_low')))
-		# }
-
-    restab2 %>% mutate_if(is.factor, as.character) -> restab2
-		restab2$year <- as.numeric(restab2$year)
-		return(restab2)
-	})
-
-  ESTIMATES_DATA <- reactive({ 
-		filter(TRENDS_DATA(), year %in% c(2018, 2020, 2025, 2035, 2049))
-	})
-  
   # estimates server ----
   # __calculate data ----
   estimatesData <- reactive({
     req(
       input[[estimates$IDs$controls$comparators]], input[[estimates$IDs$controls$outcomes]],
-      c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case")
+      c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], 'base_case')
     )
 
     ESTIMATES_DATA() %>%
@@ -74,16 +22,22 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
         outcome == input[[estimates$IDs$controls$outcomes]],
-        scenario %in% c(input[[estimates$IDs$controls$interventions]], input[[estimates$IDs$controls$analyses]], "base_case"),
+				scenario %in% 
+				  c(input[[estimates$IDs$controls$interventions]],
+						input[[estimates$IDs$controls$analyses]], 
+						"base_case" 
+						),
         comparator == input[[estimates$IDs$controls$comparators]]
       ) %>%
       arrange(scenario) %>%
       mutate(
         year = recode(as.character(year), '2018'=2000, '2020'=2025, '2025'=2050, '2035'=2075, '2049'=2100),
         year_adj = year + position_year(scenario)
-      )
+      ) %>% 
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'))
+  })
 
- })
+	# user_filtered_data[['estimatesData()']] <- estimatesData()
 
   # __generate point labels ----
   estimatesLabels <- reactive({
@@ -161,7 +115,6 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
     title
   })
-  # output[[estimates$IDs$title]] <- renderText(estimatesTitle())
 
   # __set subtitle ----
   output[[estimates$IDs$subtitle]] <- reactive({
@@ -235,7 +188,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
         subtitle = estimates$comparators$formatted[[input[[estimates$IDs$controls$comparators]]]]
       ) +
       guides(
-        color = guide_legend(ncol = 4)
+        color = guide_legend(ncol = 2)
       ) +
       theme_bw() +
       theme(
@@ -262,13 +215,12 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
         panel.background = element_blank(),
         panel.grid = element_blank(),
         panel.border = element_blank(),
-        panel.ontop = TRUE
+        panel.ontop = TRUE,
+        plot.margin=unit(c(1,1,1.5,1.2),"cm")
       ) +
-      expand_limits(y=0) + 
-		  annotate("text", x = Inf, y = -Inf, label = "DRAFT",
-				hjust=1.1, vjust=-1.1, col="dimgrey", cex=28,
-				fontface = "bold", alpha = 0.8)
+      expand_limits(y=0) 
   })
+
 
   output[[estimates$IDs$plot]] <- renderPlot({
     estimatesPlot() +
@@ -276,7 +228,8 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
         plot.title = element_blank(),
         plot.subtitle = element_blank()
       )
-  })
+  }, res=85)
+
 
   # trends server ----
   # __calculate data ----
@@ -306,8 +259,11 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
       arrange(scenario) %>%
       mutate(
         year_adj = year + position_year(scenario)
-      )
+      ) %>% 
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'))
   })
+
+	# user_filtered_data[['trendsData()']] <- trendsData()
 
   # __set title ----
   trendsTitle <- reactive({
@@ -356,7 +312,8 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
     title <- trendsTitle()
     guide <- guide_legend(
       title = "Scenario",
-      nrow = min(n_distinct(data$scenario), 2)
+      ncol = 2
+      # nrow = min(n_distinct(data$scenario), 2)
     )
 
     p <- ggplot(data) +
@@ -382,12 +339,12 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
       ) +
       scale_linetype_manual(
         name = "Scenario",
-        values = plots$linetypes,
+        values = 1:length(plots$linetypes),
         labels = plots$labels
       ) +
       scale_x_continuous(
         name = "Year",
-        breaks = if (geo_short_code() == 'US') c(2018, 2025, 2050, 2075, 2100) else c(2018, 2020, 2025, 2035, 2050)
+        breaks = c(2018, 2025, 2035, 2050) 
       ) +
       scale_y_continuous(
         name = trends$outcomes$formatted[[input[[trends$IDs$controls$outcomes]]]]
@@ -397,7 +354,9 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
         subtitle = trends$comparators$formatted[[input[[trends$IDs$controls$comparators]]]]
       ) +
       guides(
-        color = guide
+        color = guide_legend(title = 'Scenario', ncol = 2),
+        fill = guide_legend(title = 'Scenario', ncol = 2),
+        linetype = guide_legend(title = 'Scenario', ncol = 2)
       ) +
       theme_bw() +
       theme(
@@ -423,25 +382,23 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
         legend.key.size = unit(2, "lines"), #unit(0.75, "cm"),
         panel.grid.minor = element_blank(),
         panel.grid.major.x = element_blank(),
-        panel.grid.major.y = element_line(size = 0.15, color = "#989898")
+        panel.grid.major.y = element_line(size = 0.15, color = "#989898"),
+        plot.margin=unit(c(1,1,1.5,1.2),"cm")
       ) +
-      expand_limits(y=0) + 
-		  annotate("text", x = Inf, y = -Inf, label = "DRAFT",
-				hjust=1.1, vjust=-1.1, col="dimgrey", cex=28,
-				fontface = "bold", alpha = 0.8)
+      expand_limits(y=0) 
 
-    if(input[['trendsUncertaintyInterval-1']]) {
-      p <- p +
-        geom_ribbon(
-          mapping = aes(
-            x = year,
-            ymin = ci_low,
-            ymax = ci_high,
-            fill = scenario
-          ),
-          alpha = 0.3
-        )
-    }
+    # if(input[['trendsUncertaintyInterval-1']]) {
+    #   p <- p +
+    #     geom_ribbon(
+    #       mapping = aes(
+    #         x = year,
+    #         ymin = ci_low,
+    #         ymax = ci_high,
+    #         fill = scenario
+    #       ),
+    #       alpha = 0.3
+    #     )
+    # }
 
     return(p)
   })
@@ -452,7 +409,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
         plot.title = element_blank(),
         plot.subtitle = element_blank()
       )
-  })
+  }, res=85)
 
 
   # ages server ----
@@ -482,8 +439,12 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
           "base_case"
         ),
         comparator == 'absolute_value'
-      )
+      ) %>% 
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'))
+
   })
+
+	# user_filtered_data[['agegroupsData()']] <- agegroupsData()
 
   # __set title ----
   agegroupsTitle <- reactive({
@@ -523,7 +484,10 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
     dodge <- position_dodge(0.85)
 
+    bands_data <- data.frame(xstart = seq(1,11,1)-.45, xend = seq(1,11,1)+.45, col = '#F5F5F5')
+
     ggplot(data, aes(x = age_group)) +
+      geom_rect(data = bands_data, mapping = aes(x = NULL, xmin = xstart, xmax = xend, ymin = -Inf, ymax = Inf), fill = '#F5F5F5') + 
       geom_pointrange(
         mapping = aes(
           y = mean,
@@ -565,7 +529,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
       guides(
         fill = guide_legend(
           title = "Scenario",
-          nrow = min(n_distinct(data$scenario), 2)
+          ncol = 2
         )
       ) +
       theme_bw() +
@@ -592,14 +556,13 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
         legend.key.size = unit(2, "lines"), #unit(0.75, "cm"),
         panel.grid.minor = element_blank(),
         panel.grid.major.x = element_blank(),
-        panel.grid.major.y = element_line(size = 0.15, color = "#989898"),
+        panel.grid.major.y = element_blank(), # element_line(size = 0.15, color = "#989898"),
         strip.background = element_blank(),
-        strip.text = element_blank()
+        strip.text = element_blank(),
+        plot.margin=unit(c(1,1,1.5,1.2),"cm")
+
       ) +
-      expand_limits(y=0) + 
-		  annotate("text", x = Inf, y = -Inf, label = "DRAFT",
-				hjust=1.1, vjust=-1.1, col="dimgrey", cex=28,
-				fontface = "bold", alpha = 0.8)
+      expand_limits(y=0) 
   })
 
   output[[agegroups$IDs$plot]] <- renderPlot({
@@ -607,14 +570,14 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
       theme(
         plot.title = element_blank()
       )
-  })
+  }, res=85)
 
   # downloads ----
   # __estimates png ----
   output[[estimates$IDs$downloads$png]] <- downloadHandler(
-    filename = "tabby-estimates-plot.png",
+    filename = reactive({ paste0("tabby2-estimates-plot-", geo_short_code(), ".png") }),
     content = function(file) {
-      png(file, res = 72, width = 13, height = 9, units = "in")
+      png(file, res = 85, width = 13, height = 9, units = "in")
       print(estimatesPlot())
       dev.off()
     }
@@ -622,7 +585,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __estimates pdf ----
   output[[estimates$IDs$downloads$pdf]] <- downloadHandler(
-    filename = "tabby-estimates-plot.pdf",
+    filename = reactive({ paste0("tabby2-estimates-plot-", geo_short_code(), ".pdf") }),
     content = function(file) {
       this <- estimatesPlot()
 
@@ -634,7 +597,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __estimates pptx ----
   output[[estimates$IDs$downloads$pptx]] <- downloadHandler(
-    filename = "tabby-estimates-plot.pptx",
+    filename = reactive({ paste0("tabby2-estimates-plot-", geo_short_code(), ".pptx") }),
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
@@ -659,14 +622,14 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __estimates xlsx ----
   output[[estimates$IDs$downloads$xlsx]] <- downloadHandler(
-    filename = "tabby-estimates-data.xlsx",
+    filename = reactive({ paste0("tabby2-estimates-data-", geo_short_code(), ".xlsx") }),
     content = function(file) {
       estimatesData() %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(estimates$interventions$labels, estimates$analyses$labels, c(base_case = "Base Case"))[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]])) %>%
         mutate(outcome = sapply(outcome, function(x) estimates$outcomes$labels[[x]])) %>%
         select(
           outcome, scenario, age_group, year, mean, ci_high, ci_low
@@ -680,14 +643,14 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __estimates csv ----
   output[[estimates$IDs$downloads$csv]] <- downloadHandler(
-    filename = "tabby-estimates-data.csv",
+    filename = reactive({ paste0("tabby2-estimates-data-", geo_short_code(), ".csv") }),
     content = function(file) {
       estimatesData() %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(estimates$interventions$labels, estimates$analyses$labels, c(base_case = "Base Case"))[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]])) %>%
         mutate(outcome = sapply(outcome, function(x) estimates$outcomes$labels[[x]])) %>%
         select(
           outcome, scenario, age_group, year, mean, ci_high, ci_low
@@ -701,9 +664,9 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __trends png ----
   output[[trends$IDs$downloads$png]] <- downloadHandler(
-    filename = "tabby-trends-plot.png",
+    filename = reactive({ paste0("tabby2-trends-plot-", geo_short_code(), ".png") }),
     content = function(file) {
-      png(file, res = 72, width = 13, height = 9, units = "in")
+      png(file, res = 85, width = 13, height = 9, units = "in")
       print(trendsPlot())
       dev.off()
     }
@@ -711,7 +674,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __trends pdf ----
   output[[trends$IDs$downloads$pdf]] <- downloadHandler(
-    filename = "tabby-trends-plot.pdf",
+    filename = reactive({ paste0("tabby2-trends-plot-", geo_short_code(), ".pdf") }),
     content = function(file) {
       this <- trendsPlot()
       pdf(file, width = 11, height = 8, title = this$plot$title)
@@ -722,14 +685,14 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __trends pptx ----
   output[[trends$IDs$downloads$pptx]] <- downloadHandler(
-    filename = "tabby-trends-plot.pptx",
+    filename = reactive({ paste0("tabby2-trends-plot-", geo_short_code(), ".pptx") }),
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
 
       this <- try(trendsPlot(), silent = TRUE)
 
-      jpeg(tmp, res = 72, width = 13, height = 9, units = "in")
+      jpeg(tmp, res = 85, width = 13, height = 9, units = "in")
 
       if (is.ggplot(this)) {
         print(this)
@@ -747,14 +710,14 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __trends xlsx ----
   output[[trends$IDs$downloads$xlsx]] <- downloadHandler(
-    filename = "tabby-trends-data.xlsx",
+    filename = paste0("tabby2-trends-data-", geo_short_code(), ".xlsx"),
     content = function(file) {
       trendsData() %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(trends$interventions$labels, trends$analyses$labels, c(base_case = "Base Case"))[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", trends$interventions$labels, trends$analyses$labels)[[x]])) %>%
         mutate(outcome = sapply(outcome, function(x) trends$outcomes$labels[[x]])) %>%
         select(
           outcome, scenario, age_group, year, mean, ci_high, ci_low
@@ -768,14 +731,14 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __trends csv ----
   output[[trends$IDs$downloads$csv]] <- downloadHandler(
-    filename = "tabby-trends-data.csv",
+    filename = reactive({ paste0("tabby2-trends-data-", geo_short_code(), ".csv") }),
     content = function(file) {
       trendsData() %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(trends$interventions$labels, trends$analyses$labels, c(base_case = "Base Case"))[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", trends$interventions$labels, trends$analyses$labels)[[x]])) %>%
         mutate(outcome = sapply(outcome, function(x) trends$outcomes$labels[[x]])) %>%
         select(
           outcome, scenario, age_group, year, mean, ci_high, ci_low
@@ -789,9 +752,9 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __agegroups png ----
   output[[agegroups$IDs$downloads$png]] <- downloadHandler(
-    filename = "tabby-agegroups-plot.png",
+    filename = reactive({ paste0("tabby2-agegroups-plot-", geo_short_code(), ".png") }),
     content = function(file) {
-      png(file, res = 72, width = 13, height = 9, units = "in")
+      png(file, res = 85, width = 13, height = 9, units = "in")
       print(agegroupsPlot())
       dev.off()
     }
@@ -799,7 +762,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __agegroups pdf ----
   output[[agegroups$IDs$downloads$pdf]] <- downloadHandler(
-    filename = "tabby-agegroups-plot.pdf",
+    filename = reactive({ paste0("tabby2-agegroups-plot-", geo_short_code(), ".pdf") }),
     content = function(file) {
       this <- agegroupsPlot()
       pdf(file, width = 11, height = 8, title = this$plot$title)
@@ -810,7 +773,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __agegroups pptx ----
   output[[agegroups$IDs$downloads$pptx]] <- downloadHandler(
-    filename = "tabby-agegroups-plot.pptx",
+    filename = reactive({ paste0("tabby2-agegroups-plot-", geo_short_code(), ".pptx") }),
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
@@ -835,7 +798,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __agegroups xlsx ----
   output[[agegroups$IDs$downloads$xlsx]] <- downloadHandler(
-    filename = "tabby-agegroups-data.xlsx",
+    filename = reactive({ paste0("tabby2-agegroups-data-", geo_short_code(), ".xlsx") }),
     content = function(file) {
       agegroupsData() %>%
         mutate(
@@ -845,7 +808,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
           agegroup_start = as.numeric(sapply(strsplit(age_group, split="[-+]"), `[[`, 1))
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(agegroups$interventions$labels, agegroups$analyses$labels, c(base_case = "Base Case"))[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", agegroups$interventions$labels, agegroups$analyses$labels)[[x]])) %>%
         mutate(outcome = sapply(outcome, function(x) agegroups$outcomes$labels[[x]])) %>%
         arrange(agegroup_start) %>%
         select(
@@ -860,7 +823,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
 
   # __agegroups csv ----
   output[[agegroups$IDs$downloads$csv]] <- downloadHandler(
-    filename = "tabby-agegroups-data.csv",
+    filename = reactive({ paste0("tabby2-agegroups-data-", geo_short_code(), ".csv") }),
     content = function(file) {
       agegroupsData() %>%
         mutate(
@@ -870,7 +833,7 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
           agegroup_start = as.numeric(sapply(strsplit(age_group, split="[-+]"), `[[`, 1))
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(agegroups$interventions$labels, agegroups$analyses$labels, c(base_case = "Base Case"))[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", agegroups$interventions$labels, agegroups$analyses$labels)[[x]])) %>%
         mutate(outcome = sapply(outcome, function(x) agegroups$outcomes$labels[[x]])) %>%
         arrange(agegroup_start) %>%
         select(
@@ -883,4 +846,6 @@ tabby1Server <- function(input, output, session, ns, geo_short_code, geographies
     }
   )
 
+  filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData)
+  return(filtered_data)
 }

@@ -1,0 +1,31 @@
+"outcome","scenario","age_group","year","mean","ci_high","ci_low"
+"TB-Related Deaths","Base Case","all_ages",2016,100,100,100
+"TB-Related Deaths","Base Case","all_ages",2025,95.0412849871634,95.0412849871634,95.0412849871634
+"TB-Related Deaths","Base Case","all_ages",2050,85.6786738364998,85.6786738364998,85.6786738364998
+"TB-Related Deaths","Base Case","all_ages",2075,69.9343485286488,69.9343485286488,69.9343485286488
+"TB-Related Deaths","Base Case","all_ages",2100,52.1627502782188,52.1627502782188,52.1627502782188
+"TB-Related Deaths","LTBI treatment for new migrants","all_ages",2016,99.9837673244607,99.9837673244607,99.9837673244607
+"TB-Related Deaths","LTBI treatment for new migrants","all_ages",2025,94.053976727914,94.053976727914,94.053976727914
+"TB-Related Deaths","LTBI treatment for new migrants","all_ages",2050,77.6068259967137,77.6068259967137,77.6068259967137
+"TB-Related Deaths","LTBI treatment for new migrants","all_ages",2075,57.9359726996554,57.9359726996554,57.9359726996554
+"TB-Related Deaths","LTBI treatment for new migrants","all_ages",2100,39.2190485416608,39.2190485416608,39.2190485416608
+"TB-Related Deaths","Improved LTBI treatment in the US","all_ages",2016,99.9982026523547,99.9982026523547,99.9982026523547
+"TB-Related Deaths","Improved LTBI treatment in the US","all_ages",2025,94.8071759691126,94.8071759691126,94.8071759691126
+"TB-Related Deaths","Improved LTBI treatment in the US","all_ages",2050,80.3124286100824,80.3124286100824,80.3124286100824
+"TB-Related Deaths","Improved LTBI treatment in the US","all_ages",2075,59.2867122702586,59.2867122702586,59.2867122702586
+"TB-Related Deaths","Improved LTBI treatment in the US","all_ages",2100,41.3526174695602,41.3526174695602,41.3526174695602
+"TB-Related Deaths","Enhanced case detection","all_ages",2016,99.710703853741,99.710703853741,99.710703853741
+"TB-Related Deaths","Enhanced case detection","all_ages",2025,84.5786760829018,84.5786760829018,84.5786760829018
+"TB-Related Deaths","Enhanced case detection","all_ages",2050,63.7503550505081,63.7503550505081,63.7503550505081
+"TB-Related Deaths","Enhanced case detection","all_ages",2075,51.6994013824645,51.6994013824645,51.6994013824645
+"TB-Related Deaths","Enhanced case detection","all_ages",2100,38.362595751235,38.362595751235,38.362595751235
+"TB-Related Deaths","Enhanced TB treatment","all_ages",2016,99.8803898999369,99.8803898999369,99.8803898999369
+"TB-Related Deaths","Enhanced TB treatment","all_ages",2025,90.7192868835145,90.7192868835145,90.7192868835145
+"TB-Related Deaths","Enhanced TB treatment","all_ages",2050,76.4864612558722,76.4864612558722,76.4864612558722
+"TB-Related Deaths","Enhanced TB treatment","all_ages",2075,62.4492195889472,62.4492195889472,62.4492195889472
+"TB-Related Deaths","Enhanced TB treatment","all_ages",2100,46.5929282917621,46.5929282917621,46.5929282917621
+"TB-Related Deaths","All improvements","all_ages",2016,99.5728888280546,99.5728888280546,99.5728888280546
+"TB-Related Deaths","All improvements","all_ages",2025,79.042969095505,79.042969095505,79.042969095505
+"TB-Related Deaths","All improvements","all_ages",2050,46.7537954188871,46.7537954188871,46.7537954188871
+"TB-Related Deaths","All improvements","all_ages",2075,31.067894124127,31.067894124127,31.067894124127
+"TB-Related Deaths","All improvements","all_ages",2100,19.4426746249062,19.4426746249062,19.4426746249062

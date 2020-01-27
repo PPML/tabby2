@@ -23,7 +23,7 @@ load_risk_group_data <- function() {
   # Rename Populations
   df$population <- 
     c("Non-US Born Individuals from High Burden Countries",
-      "Homeless or Incarcerated Individuals",
+      "Homeless Individuals",
       "HIV Positive",
       "Diabetics",
       "End Stage Renal Disease",
@@ -46,5 +46,15 @@ load_risk_group_data <- function() {
   df[empty_values[5,1], empty_values[5,2]] <- 4.21 # end stage renal disease mortality 
   df[empty_values[6,1], empty_values[6,2]] <- 1.3 # smokers mortality 
   
+  return(df)
+}
+
+load_risk_group_data2 <- function() {
+  # load data
+  df <- readxl::read_xlsx(system.file("Risk Group Rate Ratios for Tabby2.xlsx", package = 'utilities'), col_names=)
+
+  colnames(df)[1:4] <- c('population', 'rr_prog', 'rr_mort', 'rr_ltbi')
+  
+  df <- df[,c(1,2,4,3,5,6)] # re-order to match prog, ltbi, mort ordering
   return(df)
 }

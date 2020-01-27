@@ -1,30 +1,40 @@
-risk_groups <- c(
-  "All Individuals",
-  "Non-US Born Individuals from High Burden Countries",
-  "Homeless or Incarcerated Individuals",
-  "HIV Positive",
-  "Diabetics",
-  "End Stage Renal Disease",
-  "Smokers"
-) # TODO add custom risk groups.
-
-formatted_risk_group <- list(
-  "All Individuals",
-  "Define a Custom Risk Group",
-  `Elevated LTBI Prevalence` = c(
-    "Non-US Born Individuals from High Burden Countries",
-    "Homeless or Incarcerated Individuals"
-  ),
-  `Elevated Progression Risk` = c(
-    "HIV Positive",
-    "Diabetics",
-    "End Stage Renal Disease",
-    "Smokers")
-)
+# risk_groups <- c(
+#   "All Individuals",
+#   "Non-US Born Individuals from High Burden Countries",
+#   "Homeless or Incarcerated Individuals",
+#   "HIV Positive",
+#   "Diabetics",
+#   "End Stage Renal Disease",
+#   "Smokers"
+# ) # TODO add custom risk groups.
 
 
-intervention_content <- function(n=1) {
+
+intervention_content <- function(n=1, risk_group_rate_ratios = load_risk_group_data2()) {
+
   tttn <- paste0("ttt", n)
+
+  formatted_risk_group <- list(
+    "All Individuals",
+    "Define a Custom Risk Group",
+    `Elevated LTBI Prevalence` = c(
+      risk_group_rate_ratios$population[[3]],
+      # "Non-US Born Individuals from High Burden Countries",
+      risk_group_rate_ratios$population[[4]]
+      # "Homeless Individuals"
+    ),
+    `Elevated Progression Risk` = c(
+      risk_group_rate_ratios$population[[1]],
+      # "HIV Positive",
+      risk_group_rate_ratios$population[[2]],
+      # "Diabetics",
+      risk_group_rate_ratios$population[[5]],
+      # "End Stage Renal Disease",
+      risk_group_rate_ratios$population[[6]]
+      # "Smokers"
+      )
+  )
+
   return(
     fluidRow(
       # col1: choose intervention risk, age, nativity ----
@@ -46,13 +56,13 @@ intervention_content <- function(n=1) {
             radioButtons(
               inputId = paste0(tttn, "nativity"),
               label = "Targeted Nativity Groups",
-              choices = c("All Nativity Groups", "U.S. Born", "Non-U.S. Born")
+              choices = c(`All Nativity Groups` = 'all_populations',  `U.S. Born` = 'usb_population', `Non-U.S. Born` = 'fb_population')
             ),
             # __subcol1: choose age group ----
             radioButtons(
               inputId = paste0(tttn, "agegroups"),
               label = "Targeted Age Groups",
-              choices = c("All Ages", "0 to 24", "25 to 64", "65+")
+              choices = c(`All Ages` = "all_ages", `0 to 24` = "age_0_24", `25 to 64` = "age_25_64", `65+` = "age_65p")
             )
           ),
           column(
@@ -60,7 +70,7 @@ intervention_content <- function(n=1) {
             # __subcol2: choose number targeted ----
             numericInput(
               inputId = paste0(tttn, "numberTargeted"),
-              label = "Number of Individuals in the Risk Group in 2018",
+              label = "Number of Individuals in the Risk Group in 2018 in thousands",
               min = 0,
               value = 0
             ),
@@ -80,9 +90,9 @@ intervention_content <- function(n=1) {
                 numericInput(
                   inputId = paste0(tttn, 'startyear'),
                   label = "Start Year",
-                  min = 2018,
+                  min = 2020,
                   max = 2050,
-                  value = 2018,
+                  value = 2020,
                   step = 1
                 )
               ),
@@ -96,6 +106,13 @@ intervention_content <- function(n=1) {
                   value = 2050,
                   step = 1
                 )
+              )
+            ),
+            fluidRow(
+              column(6, 
+                actionButton(paste0(tttn, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
+                # actionButton(paste0(tttn, 'RestoreDefaults'), label = 'Restore Defaults'),
+                disabled(actionButton(paste0(tttn, 'ChangeSettings'), label = 'Change Settings'))
               )
             )
           )
@@ -114,9 +131,9 @@ intervention_content <- function(n=1) {
               tags$br(),
               tags$b("Targeted Group"),
               tags$br(),
-              tags$br(),
-              tags$p("Incidence: 0%\n"),
-              tags$p("LTBI Prevalence: 0%"),
+              tags$p(), # add an extra empty paragraph to match the one that erroneously/magically appears in the Age-Nativity box
+              tags$p("Incidence per 100,000: ", textOutput(paste0(tttn, "TargetedIncidence"), inline=T), ""),
+              tags$p("LTBI Prevalence: ", textOutput(paste0(tttn, "TargetedLTBIPrevalence"), inline=T), "%"),
               tags$p("Population: ", textOutput(paste0(tttn, "numberTargeted"), inline = T))
               
             ),
@@ -125,10 +142,9 @@ intervention_content <- function(n=1) {
               tags$br(),
               tags$b("Age-Nativity Group"),
               tags$br(),
-              tags$br(),
-              tags$p("Incidence: 0%\n"),
-              tags$p("LTBI Prevalence: 0%"),
-              tags$p("Population Size: 0")
+							tags$p(textOutput(paste0(tttn, 'AgeNativityIncidence'))),
+							tags$p(textOutput(paste0(tttn, 'AgeNativityPrevalence'))),
+              tags$p("Population Size: ", textOutput(paste0(tttn, "ageNatPopsize"), inline=T))
             )
           )
         ),
@@ -156,7 +172,7 @@ intervention_content <- function(n=1) {
 				),
 				actionButton(
 					inputId = paste0('toEstimates', n),
-					label = 'View Outcomes',
+					label = 'View Modelled Outcomes',
 					class = 'btn-primary',
 					style = 'color: white;'
 				)

@@ -1,4 +1,4 @@
-aboutUI <- function() {
+aboutUI <- function(available_geographies) {
   fluidRow(
     column(12, h1("About Tabby2")),
     column(6, includeMarkdown("inst/md/about.md")),
@@ -9,8 +9,8 @@ aboutUI <- function() {
       ), 
       selectInput(inputId = "state",
                   label = "Select a Location",
-                  choices = c('United States', 'Massachusetts'),
-                  selected = 'United States'),
+                  choices = unname(available_geographies),
+                  selected = 'US'),
       shiny::actionButton(
         inputId = 'toPredefinedScenarios',
         label = 'Next Page',
@@ -35,7 +35,7 @@ updateAboutUI <- function(input, output, session, available_geographies) {
       selectInput(inputId = "state",
                   label = "Select a Location",
                   choices = unname(available_geographies),
-                  selected = 'United States'),
+                  selected = 'US'),
       shiny::actionButton(
         inputId = 'toPredefinedScenarios',
         label = 'Next Page',
@@ -52,7 +52,7 @@ updateAboutUI <- function(input, output, session, available_geographies) {
 standardInterventionsUI <- function() {
   fluidRow(
     column(12,
-           tags$h1("Prebuilt Scenarios")
+           tags$h1("Predefined Scenarios")
     ),
     column(8, 
            includeMarkdown("inst/md/standard-interventions.md"),
@@ -62,13 +62,13 @@ standardInterventionsUI <- function() {
            ),
            shiny::actionButton(
              inputId = 'toBuildScenarios',
-             label = 'Build Additional Scenarios',
+             label = 'Build Custom Scenarios',
              class = 'btn-primary',
              style = 'color: white;'
            ),
            shiny::actionButton(
              inputId = 'toEstimates',
-             label = 'View Outcomes',
+             label = 'View Modelled Outcomes',
              class = 'btn-primary',
              style = 'color: white;'
            )
@@ -79,9 +79,11 @@ standardInterventionsUI <- function() {
 
 customInterventionsUI <- function() {
   tagList(
-    br(),
+		br(),
+		# h4("Inactive - Not Linked to Outcomes"),
+    # br(),
            p(
-             "Use the custom Targeted Testing and Treatment to create scenarios that simulate
+             "Use the Targeted Testing and Treatment input to create scenarios that simulate
              additional screening of specific risk groups over a period of specified years. Targeted groups
              can be specified by their risk, age, and nativity status. Custom risk groups can be defined by specifying
              rate ratios of LTBI prevalence, progression, and mortality."
@@ -115,19 +117,21 @@ scenariosUI <- function() {
     column(
       12,
       tags$h1("Build Custom Model Scenarios"),
-			tags$h4("Beta - Not Linked to Outcomes"),
+			br(),
       tabsetPanel(id = 'CustomScenariosBuilder',
         tabPanel(title = "Targeted Testing and Treatment Interventions", value = 'ttt', {
           customInterventionsUI()
           }),
-        tabPanel(title = "Program Changes", value = 'programchanges', {
+        tabPanel(title = "Care Cascade Changes", value = 'programchanges', {
           programChanges()
           }),
-        tabPanel(title = "Custom Scenarios", value = 'customscenarios', {
+        tabPanel(title = "Combination Scenarios", value = 'combinationscenarios', {
           tagList(
-            br(),
-            p("Custom Scenarios allow users to simulate combinations of Targeted Testing 
-and Treatment interventions and Program Changes."),
+						br(),
+						# h4("Inactive - Not Linked to Outcomes"),
+            # br(),
+            p("Combination Scenarios allow users to simulate combinations of Targeted Testing 
+and Treatment interventions and Care Cascade Changes."),
           tabsetPanel(id = 'combinationScenarios',
             customScenarioPanel(1),
             customScenarioPanel(2),
@@ -143,50 +147,57 @@ and Treatment interventions and Program Changes."),
 programChanges <- function() {
   tagList(
     br(),
-    p("Program Changes allow users to change model parameters related to the 
-LTBI treatment and active TB treatment care cascades."),
+    p("Care Cascade Changes allow users to change model parameters related to the 
+LTBI and TB testing and treatment care cascades."),
   tabsetPanel(id = "currentlySelectedProgramChange",
-    tabPanel(title = "Program Change 1", value = '1', {
-      programChangePanel(1)
+    tabPanel(title = "Care Cascade Change 1", value = '1', {
+			uiOutput('programChange1')
     }),
-    tabPanel(title = "Program Change 2", value = '2', {
-      programChangePanel(2)
+    tabPanel(title = "Care Cascade Change 2", value = '2', {
+			uiOutput('programChange2')
     }),
-    tabPanel(title = "Program Change 3", value = '3', {
-      programChangePanel(3)
+    tabPanel(title = "Care Cascade Change 3", value = '3', {
+			uiOutput('programChange3')
     })
   )
   )
 }
 
-programChangePanel <- function(n) {
+programChangePanel <- function(n, prg_chng) {
   id <- paste0("programChange", n)
   return(
 	tagList(
     wellPanel(
       fluidRow(
-        column(6, 
-               tags$h4("Define a Program Change"),
+				column(6, 
+
+			 tags$h4("Define a Care Cascade Change Scenario"),
         textInput(inputId = paste0(id, "Name"),
-                  label = "Program Change Name",
-                  placeholder = paste0("Program Change ", n))
-        )),
+                  label = "Care Cascade Change Name",
+                  placeholder = paste0("Care Cascade Change ", n))
+                # Change ", n))
+			)),
       fluidRow(
       column(6, {
         tagList(
         tags$h4("LTBI Treatment Cascade:"),
+				numericInput(label = 'Start Year', inputId = paste0(id, "StartYear"),
+				             value = 2020, min = 2020, max = 2050),
         numericInput(inputId = paste0(id, "CoverageRate"),
                     label = "Screening Coverage Rate as a Multiple of the Current Rate",
-                    value = 1, min = 1, max = 5),
+                    value = round(prg_chng['scrn_cov'], 2), min = 1, max = 5),
         numericInput(inputId = paste0(id, "IGRACoverage"),
-                     label = "Fraction of Individuals Receiving IGRA (%)",
-                     value = 0, min = 0, max = 100),
+                     label = "Percentage of Individuals Receiving IGRA (%)",
+                     value = round(prg_chng['IGRA_frc']*100, 2), min = 0, max = 100),
         numericInput(inputId = paste0(id, "AcceptingTreatmentFraction"),
-                     label = "Fraction of Individuals Testing Positive who Accept Treatment (%)",
-                     value = 1, min = 0, max = 100),
+                     label = "Percentage of Individuals Testing Positive who Accept Treatment (%)",
+                     value = round(prg_chng['ltbi_init_frc']*100, 2), min = 0, max = 100),
         numericInput(inputId = paste0(id, "CompletionRate"),
-                     label = "Fraction of Individuals Initiating Treatment Who Complete Treatment (%)",
-                     value = 1, min = 0, max = 100)
+                     label = "Percentage of Individuals Initiating Treatment Who Complete Treatment (%)",
+                     value = round(prg_chng['ltbi_comp_frc']*100, 2), min = 0, max = 100),
+				numericInput(inputId = paste0(id, "TreatmentEffectiveness"),
+										 label = "Percentage of LTBI Treatment Effectiveness (%)",
+				             value = round(prg_chng['ltbi_eff_frc']*100, 2), min = 0, max = 100)
         )
       }),
       column(6, {
@@ -194,13 +205,17 @@ programChangePanel <- function(n) {
       tags$h4("TB Treatment Cascade:"),
       numericInput(inputId = paste0(id, "AverageTimeToTreatment"),
                    label = "Duration of Infectiousness (0-100% of current value)",
-                   value = 1, min = 0, max = 100),
+                   value = round(prg_chng['tb_tim2tx_frc'], 2), min = 0, max = 100),
       numericInput(inputId = paste0(id, "DefaultRate"),
-                   label = "Fraction Discontinuing/Defaulting from Treatment (%)",
-                   value = 0, min = 0, max = 100)
+                   label = "Percentage Discontinuing/Defaulting from Treatment (%)",
+                   value = round(prg_chng['tb_txdef_frc']*100, 2), min = 0, max = 100),
+			tags$br(),
+			actionButton(paste0(id, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
+			actionButton(paste0(id, 'RestoreDefaults'), label = 'Restore Defaults'),
+			disabled(actionButton(paste0(id, 'ChangeSettings'), label = 'Change Settings'))
+
         )
       })
-                  
     )
     ),
 		column(12,
@@ -211,20 +226,20 @@ programChangePanel <- function(n) {
 			if (n < 3) { 
 				actionButton(
 					inputId = paste0('toPC', n+1),
-					label = 'Define Another Program Change Scenario',
+					label = 'Define Another Care Cascade Change Scenario',
 					class = 'btn-primary',
 					style = 'color: white;'
 				)
 			} else NULL,
 			actionButton(
-				inputId = paste0('toCustomScenarios', n),
-				label = 'Build Custom Scenarios',
+				inputId = paste0('toCombinationScenarios', n),
+				label = 'Build Combination Scenarios',
 				class = 'btn-primary',
 				style = 'color: white;'
 			),
 			actionButton(
 				inputId = paste0('toEstimates', 3+n),
-				label = 'View Outcomes',
+				label = 'View Modelled Outcomes',
 				class = 'btn-primary',
 				style = 'color: white;'
 			)
@@ -235,19 +250,22 @@ programChangePanel <- function(n) {
 }
 
 customScenarioPanel <- function(n) {
-  scenarion <- paste0("scenario", n)
+  combinationn <- paste0("combination", n)
   return(
     tabPanel(
-      title = paste0("Custom Scenario ", n),
+      title = paste0("Combination Scenario ", n),
 			value = as.character(n),
       wellPanel(
-        tags$h4("Define a Custom Scenario"),
+        tags$h4("Define a Combination Scenario"),
         textInput(
           label = "Scenario Name",
-          inputId = paste0(scenarion, "Name"),
-          placeholder = paste0("Custom Scenario ", n)),
-        uiOutput(paste0('custom', n, 'TTTRadios')),
-        uiOutput(paste0('custom', n, 'ProgramChangeRadios'))
+          inputId = paste0(combinationn, "Name"),
+          placeholder = paste0("Combination Scenario ", n)),
+        uiOutput(paste0('combination', n, 'TTTRadios')),
+        uiOutput(paste0('combination', n, 'ProgramChangeRadios')),
+
+        actionButton(paste0('combination', n, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
+        disabled(actionButton(paste0('combination', n, 'ChangeSettings'), label = 'Change Settings'))
       ),
 
 			column(12,
@@ -265,7 +283,7 @@ customScenarioPanel <- function(n) {
 				} else NULL,
 				actionButton(
 					inputId = paste0('toEstimates', 6+n),
-					label = 'Go to Outcomes',
+					label = 'View Modelled Outcomes',
 					class = 'btn-primary',
 					style = 'color: white;'
 				)
@@ -327,21 +345,23 @@ configuration that yielded those outcomes for reproducible results.",
 
 
 readmoreUI <- function() {
-	# navlistPanel(
-	# 						 "Header A",
-	# 						 tabPanel("Component 1", "text goes here"),
-	# 						 tabPanel("Component 2", "more text goes here"),
-	# 						 "Header B",
-	# 						 tabPanel("Component 3"),
-	# 						 tabPanel("Component 4"),
-	# 						 "-----",
-	# 						 tabPanel("Component 5")
-	# )
+  readmore <- system.file("Rmd/readmore.Rmd", package='utilities')
+  readmore <- knitr::knit(readmore, output=file.path(system.file('Rmd', package='utilities'), 'readmore2.md'))
   fluidRow(
-    column(8, includeMarkdown("inst/md/readmore.md"))
+    column(8, 
+           includeMarkdown(system.file("Rmd/readmore2.md", package='utilities')))
   )
 }
 
+
+changelogUI <- function() {
+  changelog <- system.file("Rmd/changelog.Rmd", package='utilities')
+  changelog <- knitr::knit(changelog, output=file.path(system.file('Rmd', package='utilities'), 'changelog.md'))
+  fluidRow(
+    column(8, 
+           includeMarkdown(system.file("Rmd/changelog.md", package='utilities')))
+  )
+}
 
 
 tabby1Estimates <- function(id) {

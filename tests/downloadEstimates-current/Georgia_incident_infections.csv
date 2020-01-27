@@ -1,0 +1,31 @@
+"outcome","scenario","age_group","year","mean","ci_high","ci_low"
+"LTBI Prevalence","Base Case","all_ages",2016,100,100,100
+"LTBI Prevalence","Base Case","all_ages",2025,91.4734976747545,91.4734976747545,91.4734976747545
+"LTBI Prevalence","Base Case","all_ages",2050,73.6970861002072,73.6970861002072,73.6970861002072
+"LTBI Prevalence","Base Case","all_ages",2075,49.2205457943128,49.2205457943128,49.2205457943128
+"LTBI Prevalence","Base Case","all_ages",2100,29.6688686711227,29.6688686711227,29.6688686711227
+"LTBI Prevalence","LTBI treatment for new migrants","all_ages",2016,99.9968693583755,99.9968693583755,99.9968693583755
+"LTBI Prevalence","LTBI treatment for new migrants","all_ages",2025,91.2855822185154,91.2855822185154,91.2855822185154
+"LTBI Prevalence","LTBI treatment for new migrants","all_ages",2050,71.4977610007469,71.4977610007469,71.4977610007469
+"LTBI Prevalence","LTBI treatment for new migrants","all_ages",2075,44.9874644258353,44.9874644258353,44.9874644258353
+"LTBI Prevalence","LTBI treatment for new migrants","all_ages",2100,25.0451752718982,25.0451752718982,25.0451752718982
+"LTBI Prevalence","Improved LTBI treatment in the US","all_ages",2016,99.9916704162464,99.9916704162464,99.9916704162464
+"LTBI Prevalence","Improved LTBI treatment in the US","all_ages",2025,90.9808771588616,90.9808771588616,90.9808771588616
+"LTBI Prevalence","Improved LTBI treatment in the US","all_ages",2050,68.6054387778627,68.6054387778627,68.6054387778627
+"LTBI Prevalence","Improved LTBI treatment in the US","all_ages",2075,41.5629800035168,41.5629800035168,41.5629800035168
+"LTBI Prevalence","Improved LTBI treatment in the US","all_ages",2100,23.6420426108842,23.6420426108842,23.6420426108842
+"LTBI Prevalence","Enhanced case detection","all_ages",2016,99.999389352602,99.999389352602,99.999389352602
+"LTBI Prevalence","Enhanced case detection","all_ages",2025,91.4245259788234,91.4245259788234,91.4245259788234
+"LTBI Prevalence","Enhanced case detection","all_ages",2050,73.1457199694504,73.1457199694504,73.1457199694504
+"LTBI Prevalence","Enhanced case detection","all_ages",2075,48.1658590144452,48.1658590144452,48.1658590144452
+"LTBI Prevalence","Enhanced case detection","all_ages",2100,28.5666752958546,28.5666752958546,28.5666752958546
+"LTBI Prevalence","Enhanced TB treatment","all_ages",2016,99.9999829974196,99.9999829974196,99.9999829974196
+"LTBI Prevalence","Enhanced TB treatment","all_ages",2025,91.4717582682687,91.4717582682687,91.4717582682687
+"LTBI Prevalence","Enhanced TB treatment","all_ages",2050,73.6598804571014,73.6598804571014,73.6598804571014
+"LTBI Prevalence","Enhanced TB treatment","all_ages",2075,49.1393023214195,49.1393023214195,49.1393023214195
+"LTBI Prevalence","Enhanced TB treatment","all_ages",2100,29.5807407588975,29.5807407588975,29.5807407588975
+"LTBI Prevalence","All improvements","all_ages",2016,99.9879124722563,99.9879124722563,99.9879124722563
+"LTBI Prevalence","All improvements","all_ages",2025,90.7437279833086,90.7437279833086,90.7437279833086
+"LTBI Prevalence","All improvements","all_ages",2050,66.0122946329628,66.0122946329628,66.0122946329628
+"LTBI Prevalence","All improvements","all_ages",2075,37.0326762868935,37.0326762868935,37.0326762868935
+"LTBI Prevalence","All improvements","all_ages",2100,19.1568715705533,19.1568715705533,19.1568715705533
