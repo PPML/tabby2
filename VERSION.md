@@ -16,10 +16,11 @@ one single source of authority.
 
 ### Changelog
 
-The changelog providing brief descriptions of each version increment is 
-stored in `utilities/inst/Rmd/changelog.Rmd`.
+The changelog rendered within Tabby2 provides brief descriptions of each version increment.
 
-The changelog within Tabby2 should provide one-line descriptions of the release
+This changelog is rendered from the `utilities/inst/Rmd/changelog.Rmd` file.
+
+Each entry in the changelog should provide one-line descriptions of the release
 and a link to more extensive release notes. 
 
 ### Version Format
@@ -27,11 +28,9 @@ and a link to more extensive release notes.
 The format of the Tabby2 version is given by three numbers separated by two
 periods, e.g. "Tabby2 Version 2.0.0"
 
-These version numbers are ordered in decreasing significance. 
-
 Changes to the first of these version numbers should indicate a major change in
 the scope of the project, such as changes in the funding source or
-methodological approach.
+project concept.
 
 Changes to the middle of these version numbers should indicate a significant
 release, indicating the successful completion of another round of Scientific
