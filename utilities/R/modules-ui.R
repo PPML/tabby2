@@ -344,15 +344,26 @@ configuration that yielded those outcomes for reproducible results.",
 }
 
 
+#' Render the Further Documentation Page in Tabby2
+#' 
+#' This function renders the markdown file in md/readmore.md.
+#' 
 readmoreUI <- function() {
-  # readmore <- system.file("Rmd/readmore.Rmd", package='utilities')
-  # readmore <- knitr::knit(readmore, output=file.path(system.file('Rmd', package='utilities'), 'readmore2.md'))
   fluidRow(
     column(8, 
-           includeMarkdown(system.file("Rmd/readmore2.md", package='utilities')))
+           includeMarkdown(system.file("md/readmore.md", package='utilities')))
   )
 }
 
+
+#' Render the Changelog page of Tabby2
+#' 
+#' This function uses the sessionInfo to retrieve the 
+#' current version number of the utilities package, 
+#' which is taken to be the version number of Tabby2, 
+#' and displays it to the user. 
+#' 
+#' Below this, the changelog markdown file is rendered & displayed.
 
 changelogUI <- function() {
 
@@ -362,7 +373,7 @@ changelogUI <- function() {
   # print an 8-column markdown changelog
   # Changelog
   # This is Tabby2 version x.x.x (get this using sessionInfo)
-  # 
+   
   fluidRow(
     column(8, 
     tags$h1("Changelog"),
@@ -373,7 +384,7 @@ changelogUI <- function() {
       ".")),
     tags$br(),
     tags$br(),
-    includeMarkdown(system.file("Rmd/changelog.md", package='utilities')))
+    includeMarkdown(system.file("md/changelog.md", package='utilities')))
   )
 }
 
