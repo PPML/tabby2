@@ -344,22 +344,47 @@ configuration that yielded those outcomes for reproducible results.",
 }
 
 
+#' Render the Further Documentation Page in Tabby2
+#' 
+#' This function renders the markdown file in md/readmore.md.
+#' 
 readmoreUI <- function() {
-  readmore <- system.file("Rmd/readmore.Rmd", package='utilities')
-  readmore <- knitr::knit(readmore, output=file.path(system.file('Rmd', package='utilities'), 'readmore2.md'))
   fluidRow(
     column(8, 
-           includeMarkdown(system.file("Rmd/readmore2.md", package='utilities')))
+           includeMarkdown(system.file("md/readmore.md", package='utilities')))
   )
 }
 
 
+#' Render the Changelog page of Tabby2
+#' 
+#' This function uses the sessionInfo to retrieve the 
+#' current version number of the utilities package, 
+#' which is taken to be the version number of Tabby2, 
+#' and displays it to the user. 
+#' 
+#' Below this, the changelog markdown file is rendered & displayed.
+
 changelogUI <- function() {
-  changelog <- system.file("Rmd/changelog.Rmd", package='utilities')
-  changelog <- knitr::knit(changelog, output=file.path(system.file('Rmd', package='utilities'), 'changelog.md'))
+
+  # define the sessionInfo so we can get the package version number
+  s <- sessionInfo()
+
+  # print an 8-column markdown changelog
+  # Changelog
+  # This is Tabby2 version x.x.x (get this using sessionInfo)
+   
   fluidRow(
     column(8, 
-           includeMarkdown(system.file("Rmd/changelog.md", package='utilities')))
+    tags$h1("Changelog"),
+    tags$br(),
+    tags$strong(paste0("This is Tabby2 version ", 
+      # use sessionInfo to get utilities package version number
+      s[['otherPkgs']][['utilities']][['Version']],
+      ".")),
+    tags$br(),
+    tags$br(),
+    includeMarkdown(system.file("md/changelog.md", package='utilities')))
   )
 }
 
