@@ -39,10 +39,18 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       ) %>%
       arrange(scenario) %>%
       mutate(
-        year = recode(as.character(year), '2018'=2000, '2020'=2025, '2025'=2050, '2035'=2075, '2049'=2100),
-        year_adj = year + position_year(scenario)
+        value = round(value, 2)
       ) %>% 
       mutate(scenario = relevel(as.factor(scenario), 'base_case'))
+
+  })
+
+  estimatesDataTransformed <- reactive({
+    estimatesData() %>% 
+      mutate(
+        year = recode(as.character(year), '2018'=2000, '2020'=2025, '2025'=2050, '2035'=2075, '2049'=2100),
+        year_adj = year + position_year(scenario)
+      )
   })
 
 	# user_filtered_data[['estimatesData()']] <- estimatesData()
@@ -51,7 +59,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   estimatesLabels <- reactive({
     padding_x <- 5
 
-    label_df <- estimatesData() %>%
+    label_df <- estimatesDataTransformed() %>%
       group_by(year) %>%
       mutate(
         nudge_x = ifelse(
@@ -139,7 +147,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __generate plot ----
   estimatesPlot <- reactive({
 
-    data <- spread(estimatesData(), type, value)
+    data <- spread(estimatesDataTransformed(), type, value)
 
     title <- estimatesTitle()
 
@@ -268,7 +276,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       mutate(
         year_adj = year + position_year(scenario)
       ) %>% 
-      mutate(scenario = relevel(as.factor(scenario), 'base_case'))
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'),
+      value = round(value, 2))
   })
 
 	# user_filtered_data[['trendsData()']] <- trendsData()
@@ -448,7 +457,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         ),
         comparator == 'absolute_value'
       ) %>% 
-      mutate(scenario = relevel(as.factor(scenario), 'base_case'))
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'),
+        value = round(value, 2)) 
 
   })
 
