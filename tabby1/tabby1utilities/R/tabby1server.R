@@ -13,6 +13,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # format the version number to be included in filenames to use underscores.
   version_number <- gsub("\\.", "_", session_info[['otherPkgs']][['utilities']][['Version']])
 
+  # We will also include the sys_date in all download names
+  sys_date <- Sys.Date()
+
 
   # estimates server ----
   # __calculate data ----
@@ -582,7 +585,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   output[[estimates$IDs$downloads$png]] <- downloadHandler(
     filename = reactive({ paste0("tabby", 
       version_number, 
-      "-estimates-plot-", geo_short_code(), ".png") }),
+      "-estimates-plot-", geo_short_code(), "_", sys_date, ".png") }),
     content = function(file) {
       png(file, res = 85, width = 13, height = 9, units = "in")
       print(estimatesPlot())
@@ -594,7 +597,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   output[[estimates$IDs$downloads$pdf]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
       version_number,
-      "-estimates-plot-", geo_short_code(), ".pdf") }),
+      "-estimates-plot-", geo_short_code(), "_", sys_date, ".pdf") }),
     content = function(file) {
       this <- estimatesPlot()
 
@@ -608,7 +611,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   output[[estimates$IDs$downloads$pptx]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
       version_number,
-      "-estimates-plot-", geo_short_code(), ".pptx") }),
+      "-estimates-plot-", geo_short_code(), "_", sys_date, ".pptx") }),
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
@@ -635,7 +638,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   output[[estimates$IDs$downloads$xlsx]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
       version_number, 
-      "-estimates-data-", geo_short_code(), ".xlsx") }),
+      "-estimates-data-", geo_short_code(), "_", sys_date, ".xlsx") }),
     content = function(file) {
       estimatesData() %>%
         mutate(
@@ -658,7 +661,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   output[[estimates$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
       version_number, 
-      "-estimates-data-", geo_short_code(), ".csv") }),
+      "-estimates-data-", geo_short_code(), "_", sys_date, ".csv") }),
     content = function(file) {
       estimatesData() %>%
         mutate(
@@ -681,7 +684,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   output[[trends$IDs$downloads$png]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
       version_number,
-      "-trends-plot-", geo_short_code(), ".png") }),
+      "-trends-plot-", geo_short_code(), "_", sys_date, ".png") }),
     content = function(file) {
       png(file, res = 85, width = 13, height = 9, units = "in")
       print(trendsPlot())
@@ -692,7 +695,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __trends pdf ----
   output[[trends$IDs$downloads$pdf]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-      version_number, "-trends-plot-", geo_short_code(), ".pdf") }),
+      version_number, "-trends-plot-", geo_short_code(), "_", sys_date, ".pdf") }),
     content = function(file) {
       this <- trendsPlot()
       pdf(file, width = 11, height = 8, title = this$plot$title)
@@ -704,7 +707,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __trends pptx ----
   output[[trends$IDs$downloads$pptx]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-      version_number, "-trends-plot-", geo_short_code(), ".pptx") }),
+      version_number, "-trends-plot-", geo_short_code(), "_", sys_date, ".pptx") }),
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
@@ -730,7 +733,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __trends xlsx ----
   output[[trends$IDs$downloads$xlsx]] <- downloadHandler(
     filename = paste0("tabby",
-      version_number, "-trends-data-", geo_short_code(), ".xlsx"),
+      version_number, "-trends-data-", geo_short_code(), "_", sys_date, ".xlsx"),
     content = function(file) {
       trendsData() %>%
         mutate(
@@ -752,7 +755,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __trends csv ----
   output[[trends$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-      version_number, "-trends-data-", geo_short_code(), ".csv") }),
+      version_number, "-trends-data-", geo_short_code(), "_", sys_date, ".csv") }),
     content = function(file) {
       trendsData() %>%
         mutate(
@@ -774,7 +777,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __agegroups png ----
   output[[agegroups$IDs$downloads$png]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-      version_number, "-agegroups-plot-", geo_short_code(), ".png") }),
+      version_number, "-agegroups-plot-", geo_short_code(), "_", sys_date, ".png") }),
     content = function(file) {
       png(file, res = 85, width = 13, height = 9, units = "in")
       print(agegroupsPlot())
@@ -785,7 +788,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __agegroups pdf ----
   output[[agegroups$IDs$downloads$pdf]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-      version_number, "-agegroups-plot-", geo_short_code(), ".pdf") }),
+      version_number, "-agegroups-plot-", geo_short_code(), "_", sys_date, ".pdf") }),
     content = function(file) {
       this <- agegroupsPlot()
       pdf(file, width = 11, height = 8, title = this$plot$title)
@@ -797,7 +800,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __agegroups pptx ----
   output[[agegroups$IDs$downloads$pptx]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-      version_number, "-agegroups-plot-", geo_short_code(), ".pptx") }),
+      version_number, "-agegroups-plot-", geo_short_code(), "_", sys_date, ".pptx") }),
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
@@ -823,7 +826,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __agegroups xlsx ----
   output[[agegroups$IDs$downloads$xlsx]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-      version_number, "-agegroups-data-", geo_short_code(), ".xlsx") }),
+      version_number, "-agegroups-data-", geo_short_code(), "_", sys_date, ".xlsx") }),
     content = function(file) {
       agegroupsData() %>%
         mutate(
@@ -849,7 +852,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __agegroups csv ----
   output[[agegroups$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-      version_number, "-agegroups-data-", geo_short_code(), ".csv") }),
+      version_number, "-agegroups-data-", geo_short_code(), "_", sys_date, ".csv") }),
     content = function(file) {
       agegroupsData() %>%
         mutate(
