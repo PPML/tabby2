@@ -345,8 +345,8 @@ configuration that yielded those outcomes for reproducible results.",
 
 
 readmoreUI <- function() {
-  readmore <- system.file("Rmd/readmore.Rmd", package='utilities')
-  readmore <- knitr::knit(readmore, output=file.path(system.file('Rmd', package='utilities'), 'readmore2.md'))
+  # readmore <- system.file("Rmd/readmore.Rmd", package='utilities')
+  # readmore <- knitr::knit(readmore, output=file.path(system.file('Rmd', package='utilities'), 'readmore2.md'))
   fluidRow(
     column(8, 
            includeMarkdown(system.file("Rmd/readmore2.md", package='utilities')))
@@ -355,11 +355,25 @@ readmoreUI <- function() {
 
 
 changelogUI <- function() {
-  changelog <- system.file("Rmd/changelog.Rmd", package='utilities')
-  changelog <- knitr::knit(changelog, output=file.path(system.file('Rmd', package='utilities'), 'changelog.md'))
+
+  # define the sessionInfo so we can get the package version number
+  s <- sessionInfo()
+
+  # print an 8-column markdown changelog
+  # Changelog
+  # This is Tabby2 version x.x.x (get this using sessionInfo)
+  # 
   fluidRow(
     column(8, 
-           includeMarkdown(system.file("Rmd/changelog.md", package='utilities')))
+    tags$h1("Changelog"),
+    tags$br(),
+    tags$strong(paste0("This is Tabby2 version ", 
+      # use sessionInfo to get utilities package version number
+      s[['otherPkgs']][['utilities']][['Version']],
+      ".")),
+    tags$br(),
+    tags$br(),
+    includeMarkdown(system.file("Rmd/changelog.md", package='utilities')))
   )
 }
 
