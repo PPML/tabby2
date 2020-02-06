@@ -39,7 +39,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       ) %>%
       arrange(scenario) %>%
       mutate(
-        value = round(value, 2)
+        value = signif(value, 3)
       ) %>% 
       mutate(scenario = relevel(as.factor(scenario), 'base_case'))
 
@@ -277,7 +277,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         year_adj = year + position_year(scenario)
       ) %>% 
       mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-      value = round(value, 2))
+      value = signif(value, 3))
   })
 
 	# user_filtered_data[['trendsData()']] <- trendsData()
@@ -458,7 +458,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         comparator == 'absolute_value'
       ) %>% 
       mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-        value = round(value, 2)) 
+        value = signif(value, 3)) 
 
   })
 
