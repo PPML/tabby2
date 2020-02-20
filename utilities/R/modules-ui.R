@@ -442,17 +442,83 @@ debugPrintouts <- function() {
 
 
 comparison_to_recent_data <- function() {
+
+  downloadButtonBarImages <- function(ids, heading, labels) {
+    descriptions <- paste(
+      "This link acts like a button. Click this link or press the enter key to download",
+      c(
+        "the visualization as a PNG file.",
+        "the visualization as a PDF file.",
+        "the visualization as a Power Point file."
+      )
+    )
+
+    tags$div(
+      tags$label(
+        class = "control-label",
+        heading
+      ),
+      tags$div(
+        tags$div(
+          class = "btn-group",
+          role = "group",
+          Map(
+            id = ids,
+            label = labels,
+            desc = descriptions,
+            d_id = paste0(ids, "Description"),
+            function(id, label, desc, d_id) {
+              tags$a(
+                id = id,
+                class = "btn btn-default shiny-download-link",
+                href = "",
+                target = "_blank",
+                download = NA,
+                `aria-describedby` = d_id,
+                tabindex = 0,
+                label,
+                tags$span(
+                  class = "sr-only",
+                  id = d_id,
+                  `aria-hidden` = TRUE,
+                  desc
+                )
+              )
+            }
+          )
+        )
+      )
+    )
+  }
+
+  download_handlers <- paste0('comparison_to_recent_data_download_', c('png', 'pdf', 'pptx'))
+
   tagList(fluidRow(
     column(
       width = 4,
       class = "tab-content",
       h2("Comparison to Recent Data"),
-      uiOutput('comparison_to_recent_data_buttons')
+      uiOutput('comparison_to_recent_data_buttons'),
+      downloadButtonBarImages(ids = download_handlers, heading = "Download", 
+                              labels = c('PNG', 'PDF', 'PPTX'))
     ),
     column(
       width = 8,
       class = "tab-content",
-      plotOutput('calib_data_target_plot', height = '500px')
+      tabsetPanel(
+        tabPanel(
+          title = "Plot",
+            plotOutput('calib_data_target_plot', height = '500px')
+          ),
+        tabPanel(
+          title = "Target Data",
+          DT::dataTableOutput('comparison_to_recent_data_target_data')
+        ),
+        tabPanel(
+          title = "Model Estimates",
+          DT::dataTableOutput('comparison_to_recent_data_model_estimates')
+        )
+      )
     )
   ))
 }
