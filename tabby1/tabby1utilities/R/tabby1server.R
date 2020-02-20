@@ -48,7 +48,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   estimatesDataTransformed <- reactive({
     estimatesData() %>% 
       mutate(
-        year = recode(as.character(year), '2018'=2000, '2020'=2025, '2025'=2050, '2035'=2075, '2049'=2100),
+        year = recode(as.character(year), '2020'=2000, '2022'=2025, '2025'=2050, '2035'=2075, '2050'=2100),
         year_adj = year + position_year(scenario)
       )
   })
@@ -192,7 +192,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       scale_x_continuous(
         name = "Year",
         breaks = plots$region$year,
-        labels = c("2018", "2020", "2025", "2035", "2050"),
+        labels = c("2020", "2022", "2025", "2035", "2050"),
         limits = range(plots$region$right_bound, plots$region$left_bound),
         expand = c(0, 0)
       ) +
@@ -361,7 +361,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       ) +
       scale_x_continuous(
         name = "Year",
-        breaks = c(2018, 2025, 2035, 2050) 
+        breaks = c(2020, 2030, 2040, 2050) 
       ) +
       scale_y_continuous(
         name = trends$outcomes$formatted[[input[[trends$IDs$controls$outcomes]]]]

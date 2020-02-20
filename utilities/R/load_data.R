@@ -51,7 +51,7 @@ load_data <- function(geo_short_code) {
 	data[['TRENDS_DATA']] <- restab2
 	
 	data[['ESTIMATES_DATA']] <-  
-		filter(data[['TRENDS_DATA']], year %in% c(2018, 2020, 2025, 2035, 2049))
+		filter(data[['TRENDS_DATA']], year %in% c(2020, 2022, 2025, 2035, 2050))
 	
 	return(data)
 }
