@@ -48,14 +48,14 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
   # get the calibration target data according to the shortname chosen 
   comparison_to_recent_data_target_data <- reactive({
 	  plt_idx <- which(calib_plots()[['shortname']] == input[['comparisonDataChoice']]) 
-    calib_plots()[[plt_idx, 'target_data']] %>% mutate_if(is.numeric, signif, 3)
+    calib_plots()[[plt_idx, 5]] %>% as.data.frame %>% mutate_if(is.numeric, signif, 5)
   })
   output$comparison_to_recent_data_target_data <- DT::renderDataTable(comparison_to_recent_data_target_data())
 
   # get the model estimates used for calibration according to the shortname chosen 
   comparison_to_recent_data_model_estimates<- reactive({
 	  plt_idx <- which(calib_plots()[['shortname']] == input[['comparisonDataChoice']]) 
-    calib_plots()[[plt_idx, 'model_estimate']] %>% mutate_if(is.numeric, signif, 3)
+    calib_plots()[[plt_idx, 6]] %>% as.data.frame %>% mutate_if(is.numeric, signif, 5)
   })
   output$comparison_to_recent_data_model_estimates  <- DT::renderDataTable(comparison_to_recent_data_model_estimates()) 
 
