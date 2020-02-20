@@ -281,10 +281,10 @@ visualizations: *Estimates*, *Time Trends*, *Age Groups*, and
 *Comparison to Recent Data*.
 
 The *Estimates* page provides graphs of modelled results at five major
-time points: 2018, 2020, 2025, 2035, and 2050.
+time points: 2020, 2022, 2025, 2035, and 2050.
 
 The *Time Trends* page (Figure 6) provides graphs of modelled results
-for each individual year from 2018 to 2050.
+for each individual year from 2020 to 2050.
 
 The *Age Groups* page provides graphs of modelled results for a specific
 year chosen by the user, subdivided into 11 age groups.
@@ -300,7 +300,7 @@ User options are shown in a column on the left. The user specifies:
 
 *Comparison:* results can be shown as absolute values for each outcome
 in each year, as a percentage of the base case scenario in the same
-year, or as a percentage of the base case scenario in 2018.
+year, or as a percentage of the base case scenario in 2020.
 
 *Subgroup:* results can be shown for the total population, or for a
 subgroup described by nativity (U.S.-born, non-U.S.-born), and broad age
@@ -337,7 +337,7 @@ User options are shown in a column on the left. The user specifies:
 
 *Comparison:* results can be shown as absolute values for each outcome
 in each year, as a percentage of the base case scenario in the same
-year, or as a percentage of the base case scenario in 2018.
+year, or as a percentage of the base case scenario in 2020.
 
 *Subgroup:* results can be shown for the total population, or for a
 subgroup described by nativity (U.S.-born, non-U.S.-born), and broad age
