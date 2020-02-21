@@ -45,7 +45,7 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
                      population == input[[tttnativity]],
                      outcome == 'tb_incidence_per_100k',
                      scenario == 'base_case',
-                     year == 2018,
+                     year == 2020,
                      comparator == 'absolute_value',
                      type == 'mean'
                      ) %>% `[[`('value') 
@@ -63,7 +63,7 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
                      population == input[[tttnativity]],
                      outcome == 'pct_ltbi',
                      scenario == 'base_case',
-                     year == 2018,
+                     year == 2020,
                      comparator == 'absolute_value',
                      type == 'mean'
                      ) %>% `[[`('value') 
@@ -164,7 +164,7 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
                      "fb_population"=rep(11,length(ag))
       )
 
-      pop<-sum(out[1,69,ag+na])
+      pop<-sum(out[1,71,ag+na])
       return(pop)
     })
   }
