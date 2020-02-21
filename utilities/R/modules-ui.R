@@ -452,20 +452,7 @@ comparison_to_recent_data <- function() {
     column(
       width = 8,
       class = "tab-content",
-      tabsetPanel(
-        tabPanel(
-          title = "Plot",
-          plotOutput('calib_data_target_plot', height = '500px')
-        ),
-        tabPanel(
-          title = "Target Data",
-          DT::dataTableOutput('comparison_to_recent_data_target_data')
-        ),
-        tabPanel(
-          title = "Model Estimates",
-          DT::dataTableOutput('comparison_to_recent_data_model_estimates')
-        )
-      )
+      plotOutput('calib_data_target_plot', height = '500px')
     )
   ))
 }
