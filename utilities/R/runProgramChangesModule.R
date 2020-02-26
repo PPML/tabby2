@@ -118,7 +118,7 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 	new_data[['TRENDS_DATA']] <- restab_big
 
 	new_data[['ESTIMATES_DATA']] <- 
-		dplyr::filter(restab_big, year %in% c(2018, 2020, 2025, 2035, 2049))
+		dplyr::filter(restab_big, year %in% c(2020, 2022, 2025, 2035, 2049))
 
    # cat('new data has: ', as.character(nrow(filter(new_data[['TRENDS_DATA']], scenario == scenario_name))),
    #     'new_data rows\n')

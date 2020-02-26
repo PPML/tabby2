@@ -70,7 +70,7 @@ intervention_content <- function(n=1, risk_group_rate_ratios = load_risk_group_d
             # __subcol2: choose number targeted ----
             numericInput(
               inputId = paste0(tttn, "numberTargeted"),
-              label = "Number of Individuals in the Risk Group in 2018 in thousands",
+              label = "Number of Individuals in the Risk Group in 2020 in thousands",
               min = 0,
               value = 0
             ),
@@ -101,7 +101,7 @@ intervention_content <- function(n=1, risk_group_rate_ratios = load_risk_group_d
                 numericInput(
                   inputId = paste0(tttn, 'stopyear'),
                   label = 'Stop Year',
-                  min = 2018,
+                  min = 2020,
                   max = 2050,
                   value = 2050,
                   step = 1
@@ -124,7 +124,7 @@ intervention_content <- function(n=1, risk_group_rate_ratios = load_risk_group_d
         6,
         # __summary statistics ----
         wellPanel(
-          tags$h4("Population Summary Statistics in 2018"),
+          tags$h4("Population Summary Statistics in 2020"),
           fluidRow(
             column(
               6,
