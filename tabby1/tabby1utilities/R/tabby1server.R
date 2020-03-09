@@ -655,10 +655,14 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           year = ifelse(year == 2000, 2016, year)
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) {
+          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+          } else as.character(x)
+        })) %>%
         mutate(outcome = sapply(outcome, function(x) estimates$outcomes$labels[[x]])) %>%
         select(
-          outcome, scenario, age_group, year, mean, ci_high, ci_low
+          outcome, scenario, age_group, year, mean # , ci_high, ci_low
         ) %>%
         openxlsx::write.xlsx(
           file = file,
@@ -678,10 +682,14 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           year = ifelse(year == 2000, 2016, year)
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) {
+          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+          } else as.character(x)
+        })) %>%
         mutate(outcome = sapply(outcome, function(x) estimates$outcomes$labels[[x]])) %>%
         select(
-          outcome, scenario, age_group, year, mean, ci_high, ci_low
+          outcome, scenario, age_group, year, mean # , ci_high, ci_low
         ) %>%
         write.csv(
           file = file,
@@ -750,10 +758,14 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           year = ifelse(year == 2000, 2016, year)
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", trends$interventions$labels, trends$analyses$labels)[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) {
+          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+          } else as.character(x)
+        })) %>%
         mutate(outcome = sapply(outcome, function(x) trends$outcomes$labels[[x]])) %>%
         select(
-          outcome, scenario, age_group, year, mean, ci_high, ci_low
+          outcome, scenario, age_group, year, mean # , ci_high, ci_low
         ) %>%
         openxlsx::write.xlsx(
           file = file,
@@ -772,10 +784,14 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           year = ifelse(year == 2000, 2016, year)
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", trends$interventions$labels, trends$analyses$labels)[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) {
+          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+          } else as.character(x)
+        })) %>%
         mutate(outcome = sapply(outcome, function(x) trends$outcomes$labels[[x]])) %>%
         select(
-          outcome, scenario, age_group, year, mean, ci_high, ci_low
+          outcome, scenario, age_group, year, mean # , ci_high, ci_low
         ) %>%
         write.csv(
           file = file,
@@ -846,11 +862,15 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           agegroup_start = as.numeric(sapply(strsplit(age_group, split="[-+]"), `[[`, 1))
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", agegroups$interventions$labels, agegroups$analyses$labels)[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) {
+          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+          } else as.character(x)
+        })) %>%
         mutate(outcome = sapply(outcome, function(x) agegroups$outcomes$labels[[x]])) %>%
         arrange(agegroup_start) %>%
         select(
-          outcome, scenario, age_group, year, mean, ci_high, ci_low
+          outcome, scenario, age_group, year, mean #, ci_high, ci_low
         ) %>%
         openxlsx::write.xlsx(
           file = file,
@@ -872,11 +892,15 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
           agegroup_start = as.numeric(sapply(strsplit(age_group, split="[-+]"), `[[`, 1))
         ) %>%
         spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) c(base_case = "Base Case", agegroups$interventions$labels, agegroups$analyses$labels)[[x]])) %>%
+        mutate(scenario = sapply(scenario, function(x) {
+          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+          } else as.character(x)
+        })) %>%
         mutate(outcome = sapply(outcome, function(x) agegroups$outcomes$labels[[x]])) %>%
         arrange(agegroup_start) %>%
         select(
-          outcome, scenario, age_group, year, mean, ci_high, ci_low
+          outcome, scenario, age_group, year, mean #, ci_high, ci_low
         ) %>%
         write.csv(
           file = file,
