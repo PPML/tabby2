@@ -198,13 +198,13 @@ labels:
   values:
   - none
   - means
-  - intervals
-  - all
+  - #intervals
+  - #all
   labels:
     None: none
-    Mean values: means
-    Confidence intervals: intervals
-    All: all
+    Values: means
+    #Confidence intervals: intervals
+    #    All: all
 downloads:
   heading: Download
   labels:
