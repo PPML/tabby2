@@ -63,16 +63,20 @@ years:
 outcomes:
   heading: Outcomes
   values:
+  - tb_infection_per_100k
   - pct_ltbi
   - tb_incidence_per_100k
   - tb_mortality_per_100k
+  - tb_infection_000s
   - ltbi_000s
   - tb_incidence_000s
   - tb_mortality_000s
   labels:
+    tb_infection_per_100k: Incident M. tb Infections (per 100,000)
     pct_ltbi: LTBI Prevalence (percentage)
     tb_incidence_per_100k: TB Incidence (per 100,000)
     tb_mortality_per_100k: TB-Related Deaths (per 100,000)
+    tb_infection_000s: Incident M. tb Infections (per 100,000)
     ltbi_000s: LTBI Prevalence (in thousands)
     tb_incidence_000s: TB Incidence (in thousands)
     tb_mortality_000s: TB-Related Deaths (in thousands)
