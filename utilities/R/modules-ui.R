@@ -187,7 +187,7 @@ programChangePanel <- function(n, prg_chng) {
                     label = "Screening Coverage Rate as a Multiple of the Current Rate",
                     value = round(prg_chng['scrn_cov'], 2), min = 1, max = 5),
         numericInput(inputId = paste0(id, "IGRACoverage"),
-                     label = "Percentage of Individuals Receiving IGRA (%)",
+                     label = "Percentage of Individuals Tested Receiving IGRA (%)",
                      value = round(prg_chng['IGRA_frc']*100, 2), min = 0, max = 100),
         numericInput(inputId = paste0(id, "AcceptingTreatmentFraction"),
                      label = "Percentage of Individuals Testing Positive who Accept Treatment (%)",
