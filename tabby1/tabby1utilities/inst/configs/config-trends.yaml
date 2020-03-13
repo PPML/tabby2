@@ -83,25 +83,45 @@ outcomes:
   - tb_infection_per_100k
   - pct_ltbi
   - tb_incidence_per_100k
-  - tb_deaths_per_100k
+  - tb_mortality_per_100k
+  - tb_infection_000s
+  - ltbi_000s
+  - tb_incidence_000s
+  - tb_mortality_000s
   labels:
-    tb_infection_per_100k: Incident M. tb Infections
-    pct_ltbi: LTBI Prevalence
-    tb_incidence_per_100k: TB Incidence
-    tb_deaths_per_100k: TB-Related Deaths
+    tb_infection_per_100k: Incident M. tb Infections (per 100,000)
+    pct_ltbi: LTBI Prevalence (percentage)
+    tb_incidence_per_100k: TB Incidence (per 100,000)
+    tb_mortality_per_100k: TB-Related Deaths (per 100,000)
+    tb_infection_000s: Incident M. tb Infections (in thousands)
+    ltbi_000s: LTBI Prevalence (in thousands)
+    tb_incidence_000s: TB Incidence (in thousands)
+    tb_mortality_000s: TB-Related Deaths (in thousands)
   formatted:
     tb_infection_per_100k: |-
       Incident M. tb Infections
       (per 100,000)
+    tb_infection_000s: |-
+      Incident M. tb Infections
+      (in thousands)
     pct_ltbi: |-
       LTBI Prevalence
       (percentage)
+    ltbi_000s: |-
+      LTBI Prevalence
+      (in thousands)
     tb_incidence_per_100k: |-
       TB Incidence
       (per 100,000)
-    tb_deaths_per_100k: |-
+    tb_incidence_000s: |-
+      TB Incidence
+      (in thousands)
+    tb_mortality_per_100k: |-
       TB-Related Deaths
       (per 100,000)
+    tb_mortality_000s: |-
+      TB-Related Deaths
+      (in thousands)
   descriptions:
     tb_infection_per_100k: Incident M. TB infections each year due to transmission
       within the US (includes reinfection of individuals with prior infection, excludes
@@ -109,9 +129,9 @@ outcomes:
     pct_ltbi: Prevalence of latent M. TB infections at mid-point of year
     tb_incidence_per_100k: TB cases identified each year (includes TB cases identified
       after death)
-    tb_deaths_per_100k: Number of deaths attributable to TB each year
+    tb_mortality_per_100k: Number of deaths attributable to TB each year
   selected:
-  - no 
+  - no
   - no
   - yes
   - no
