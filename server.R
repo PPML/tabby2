@@ -12,6 +12,7 @@
 #     - Reactive Values to store custom scenarios' definitions
 #     - Render custom scenarios' input settings UI
 #     - Use the Tabby1 Output Server for plot generation
+#     - Render Data Tables for the Outputs in Tabby2
 #     - Custom Scenarios Choice in Output Plots
 #     - Plots for Comparison to Recent Data
 #     - Debug Print Server (Optional) 
@@ -216,6 +217,9 @@ shinyServer(function(input, output, session) {
 
     ### Set Up Reactives to Run Simulations ### 
 
+    # It's very critical to understand that compute_program_change_1 and similar reactives 
+    # are called as if they are functions when the "Run Model!" buttons are called. 
+
     # Construct Reactive Objects Which Return Program Change scenarios when called 
 		compute_program_change_1 <- callModule(runProgramChanges, NULL, n = 1, values, geo_short_code, sim_data, default_prg_chng)
 		compute_program_change_2 <- callModule(runProgramChanges, NULL, n = 2, values, geo_short_code, sim_data, default_prg_chng)
@@ -233,6 +237,11 @@ shinyServer(function(input, output, session) {
 
 
     ### Run and Simulations and Append to Presimulated Data ### 
+    
+    # After a user clicks "Run Model!", one of the compute_* reactives is run in the following modules,
+    # and the output data is inserted into the sim_data reactives before sim_data is passed off 
+    # to the tabby1server for providing filtering / visualization / download functionality in the 
+    # user interface.
 
 		# Run & Append Program Changes Scenarios to Sim Data When RunSimulations Button is Pressed
 		observeEvent(input[['programChange1RunSimulations']], {
@@ -391,9 +400,6 @@ shinyServer(function(input, output, session) {
     callModule(summaryStatistics, NULL, values, sim_data = sim_data,
       geo_short_code = geo_short_code)
 
-		# Tabby1 Server
-		# outcomes_filtered_data <- 
-		#   callModule(filterOutcomes, NULL, sim_data_w_program_changes)
 
 		# Tabby1 Visualization Server
 		filtered_data <- 
@@ -404,6 +410,46 @@ shinyServer(function(input, output, session) {
 					sim_data = combined_data,
 					geo_short_code = geo_short_code, 
 					geographies = geographies) 
+
+    ### Add Data Tables to the Outcomes ###
+    # 
+    # Note that the filter(type == 'mean') %>% select(-type) works to remove 
+    # the confidence intervals that would be depicted if we had a full posterior 
+    # sample to work with instead of just the posterior mode / optimum. 
+    # 
+    # Note that for any developer who is working on adding confidence intervals 
+    # to Tabby2: This code only removes the ci_high / ci_low values and the type 
+    # column for the data table shown *in* Tabby2. For the data downloads (CSV, 
+    # XLSX), make sure to edit the tabby1/tabby1utilities/R/tabby1server.R file, 
+    # where the CSV and XLSX downloads also have this type column removed.
+
+    # Add Data Table for Estimates
+
+		output[['estimatesData']] <- 
+			DT::renderDataTable( filtered_data[['estimatesData']]() %>% 
+                          filter(type == 'mean') %>% 
+                          select(-type), 
+				options = list(pageLength = 25, scrollX = TRUE), 
+				rownames=FALSE )  
+
+    # Add Data Table for Time Trends
+
+		output[['trendsData']] <- 
+			DT::renderDataTable( filtered_data[['trendsData']]() %>% 
+                          filter(type == 'mean') %>% 
+                          select(-c(type, year_adj)), 
+				options = list(pageLength = 25, scrollX = TRUE), 
+				rownames=FALSE )  
+
+    # Add Data Table for Age Groups
+
+		output[['agegroupsData']] <- 
+			DT::renderDataTable( filtered_data[['agegroupsData']]() %>% 
+                          filter(type == 'mean') %>% 
+                          select(-type), 
+				options = list(pageLength = 25, scrollX = TRUE), 
+				rownames=FALSE )  
+
 			
 		# Custom Scenarios Choice in Output
 		callModule(outputIncludeCustomScenarioOptions, NULL, sim_data)
@@ -417,26 +463,21 @@ shinyServer(function(input, output, session) {
 		# Debug Printout Server 
 		callModule(debugPrintoutsModule, NULL, values = values)
 
-		output[['estimatesData']] <- 
-			DT::renderDataTable( filtered_data[['estimatesData']](), 
-				options = list(pageLength = 25, scrollX = TRUE), 
-				rownames=FALSE )  
+    # The extraDebugOutputs is a tab of the application only visible when 
+    # the Tabby2 application is run with debug <- TRUE in the global environment. 
+    # 
+    # i.e. run debug <- TRUE, then shiny::runApp() and the debugPrintouts tab will 
+    # appear. 
+    # 
+    # Unless something is rendered there, it will appear empty. It's set up as a 
+    # uiOutput, so you can render any HTML to it from the server side that you would like 
+    # to as a developer. This can be useful for checking what data looks like at 
+    # stages in between its most "raw" format and before its ready to be presented to the 
+    # user. 
 
-		output[['trendsData']] <- 
-			DT::renderDataTable( filtered_data[['trendsData']](), 
-				options = list(pageLength = 25, scrollX = TRUE), 
-				rownames=FALSE )  
+		# output[['extraDebugOutputs']] <- 
+		# 	renderText({
+		# 		paste0(apply(combined_data()[['ESTIMATES_DATA']], 2, unique), collapse = "\n")
+		# 	})
 
-		output[['agegroupsData']] <- 
-			DT::renderDataTable( filtered_data[['agegroupsData']](), 
-				options = list(pageLength = 25, scrollX = TRUE), 
-				rownames=FALSE )  
-
-		output[['extraDebugOutputs']] <- 
-			renderText({
-				paste0(apply(combined_data()[['ESTIMATES_DATA']], 2, unique), collapse = "\n")
-			})
-
-	# } # end of if USER$Logged == TRUE
-	# }) # end of observer on USER$Logged
 })
