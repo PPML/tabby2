@@ -135,6 +135,10 @@ outcomes:
   - no
   - yes
   - no
+  - no
+  - no
+  - no
+  - no
 interventions:
   heading: Modeled Scenarios
   values:

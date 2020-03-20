@@ -112,7 +112,9 @@ outcomes:
     tb_mortality_000s: Number of deaths attributable to TB each year
   selected:
   - no
+  - no
   - yes
+  - no
   - no
   - no
   - no
