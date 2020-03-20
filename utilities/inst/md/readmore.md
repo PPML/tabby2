@@ -158,7 +158,7 @@ changes to latent TB and TB disease testing and treatment, described below.
 
 -   **Improved LTBI treatment in the United States**: Intensification of the
     current LTBI targeted testing and treatment efforts for high-risk
-    populations, doubling treatment uptake within each risk group
+    populations, doubling LTBI testing volume  within each risk group
     compared to current levels, and increasing the percentage cured among
     individuals initiating LTBI treatment, via a 3-month
     Isoniazid-Rifapentine drug regimen.
