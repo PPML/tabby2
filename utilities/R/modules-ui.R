@@ -76,7 +76,6 @@ standardInterventionsUI <- function() {
   )
 }
 
-
 customInterventionsUI <- function() {
   tagList(
 		br(),
@@ -148,7 +147,8 @@ programChanges <- function() {
   tagList(
     br(),
     p("Care Cascade Changes allow users to change model parameters related to the 
-LTBI and TB testing and treatment care cascades."),
+LTBI and TB testing and treatment care cascades. Any change to the parameters below will be modeled as an intervention, 
+not an adjustment to the basecase scenario."),
   tabsetPanel(id = "currentlySelectedProgramChange",
     tabPanel(title = "Care Cascade Change 1", value = '1', {
 			uiOutput('programChange1')
@@ -176,9 +176,10 @@ programChangePanel <- function(n, prg_chng) {
                   label = "Care Cascade Change Name",
                   placeholder = paste0("Care Cascade Change ", n))
                 # Change ", n))
-			)),
+			) #end of column
+			), #end of fluid row
       fluidRow(
-      column(6, {
+      column(4, {
         tagList(
         tags$h4("LTBI Treatment Cascade:"),
 				numericInput(label = 'Start Year', inputId = paste0(id, "StartYear"),
@@ -192,32 +193,78 @@ programChangePanel <- function(n, prg_chng) {
         numericInput(inputId = paste0(id, "AcceptingTreatmentFraction"),
                      label = "Percentage of Individuals Testing Positive who Accept Treatment (%)",
                      value = round(prg_chng['ltbi_init_frc']*100, 2), min = 0, max = 100),
-        numericInput(inputId = paste0(id, "CompletionRate"),
-                     label = "Percentage of Individuals Initiating Treatment Who Complete Treatment (%)",
-                     value = round(prg_chng['ltbi_comp_frc']*100, 2), min = 0, max = 100),
-				numericInput(inputId = paste0(id, "TreatmentEffectiveness"),
-										 label = "Percentage of LTBI Treatment Effectiveness (%)",
-				             value = round(prg_chng['ltbi_eff_frc']*100, 2), min = 0, max = 100)
+        # numericInput(inputId = paste0(id, "CompletionRate"),
+        #              label = "Percentage of Individuals Initiating Treatment Who Complete Treatment (%)",
+        #              value = round(prg_chng['ltbi_comp_frc']*100, 2), min = 0, max = 100)
         )
       }),
-      column(6, {
+      column(4, {
         tagList(
-      tags$h4("TB Treatment Cascade:"),
-      numericInput(inputId = paste0(id, "AverageTimeToTreatment"),
-                   label = "Duration of Infectiousness (0-100% of current value)",
-                   value = round(prg_chng['tb_tim2tx_frc'], 2), min = 0, max = 100),
-      numericInput(inputId = paste0(id, "DefaultRate"),
-                   label = "Percentage Discontinuing/Defaulting from Treatment (%)",
-                   value = round(prg_chng['tb_txdef_frc']*100, 2), min = 0, max = 100),
-			tags$br(),
-			actionButton(paste0(id, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
-			actionButton(paste0(id, 'RestoreDefaults'), label = 'Restore Defaults'),
-			disabled(actionButton(paste0(id, 'ChangeSettings'), label = 'Change Settings'))
+          tags$h4("LTBI Regimens (Fractions must sum to 1.)"),
+          # tags$h5("The sum of the following three values must equal 100%."),
 
+                   tagList(
+                    tags$h5("Isoniazid and Rifapentine (3HP)"),
+                    fluidRow(
+                      column(6,
+                      
+                   numericInput(inputId = paste0(id, "Fraction3HP"),
+                                label = "Percentage of Individuals Receiving this Treatment ",
+                                value = round(prg_chng['frc_3hp']*100, 2), min = 0, max = 100) ), 
+                   column(6,
+                          
+                   numericInput(inputId = paste0(id, "Completion3HP"),
+                                label = "Percentage of Individuals Who Complete this Treatment",
+                                value = round(prg_chng['comp_3hp']*100, 2), min = 0, max = 100)
+                    )), #close fluid row
+                   tags$h5("Rifampin (4R)"),
+                   fluidRow(
+                     column(6,
+                            
+                            numericInput(inputId = paste0(id, "Fraction4R"),
+                                         label = "Percentage of Individuals Receiving this Treatment ",
+                                         value = round(prg_chng['frc_4r']*100, 2), min = 0, max = 100)), 
+                     column(6,
+                            
+                            numericInput(inputId = paste0(id, "Completion4R"),
+                                         label = "Percentage of Individuals Who Complete this Treatment",
+                                         value = round(prg_chng['comp_4r']*100, 2), min = 0, max = 100)
+                     )), #close fluid row
+
+                     tags$h5("Isoniazid and Rifampin (3HR)"),
+                     fluidRow(
+                       column(6,
+                              
+                              numericInput(inputId = paste0(id, "Fraction3HR"),
+                                           label = "Percentage of Individuals Receiving this Treatment ",
+                                           value = round(prg_chng['frc_3hr']*100, 2), min = 0, max = 100)), 
+                       column(6,
+                              
+                              numericInput(inputId = paste0(id, "Completion3HR"),
+                                           label = "Percentage of Individuals Who Complete this Treatment",
+                                           value = round(prg_chng['comp_3hr']*100, 2), min = 0, max = 100)
+                       )) #close fluid row
+            ) )
+
+        # )
+      }),
+		  column(4, {
+			  tagList(
+          tags$h4("TB Treatment Cascade:"),
+          numericInput(inputId = paste0(id, "AverageTimeToTreatment"),
+                       label = "Duration of Infectiousness (0-100% of current value)",
+                       value = round(prg_chng['tb_tim2tx_frc'], 2), min = 0, max = 100),
+          numericInput(inputId = paste0(id, "DefaultRate"),
+                       label = "Percentage Discontinuing/Defaulting from Treatment (%)",
+                       value = round(prg_chng['tb_txdef_frc']*100, 2), min = 0, max = 100),
+    			tags$br(),
+    			actionButton(paste0(id, 'RunSimulations'), label = 'Run Model!', class = 'btn-primary', style = 'color: white;'),
+    			actionButton(paste0(id, 'RestoreDefaults'), label = 'Restore Defaults'),
+    			disabled(actionButton(paste0(id, 'ChangeSettings'), label = 'Change Settings'))
         )
-      })
-    )
-    ),
+      }) #end of column 
+      ) #end of fluid row 
+    ), #end of well panel
 		column(12,
 			actionButton(
 				inputId = paste0('toPredefinedScenarios', 3+n),
@@ -242,10 +289,10 @@ programChangePanel <- function(n, prg_chng) {
 				label = 'View Modelled Outcomes',
 				class = 'btn-primary',
 				style = 'color: white;'
-			)
-		)
-  )
-	)
+			) #end of action button
+		) #end column
+  ) #end taglist
+	) #end return
   
 }
 
@@ -292,7 +339,6 @@ customScenarioPanel <- function(n) {
   )
 }
 
-
 outcomesUI <- function() {
   sidebarLayout(
     sidebarPanel(
@@ -321,7 +367,6 @@ outcomesUI <- function() {
   )
 }
 
-
 downloadsAndSettingsUI <- function() {
   fluidRow(
     column(
@@ -343,7 +388,6 @@ configuration that yielded those outcomes for reproducible results.",
   )
 }
 
-
 #' Render the Further Documentation Page in Tabby2
 #' 
 #' This function renders the markdown file in md/readmore.md.
@@ -354,7 +398,6 @@ readmoreUI <- function() {
            includeMarkdown(system.file("md/readmore.md", package='utilities')))
   )
 }
-
 
 #' Render the Changelog page of Tabby2
 #' 
@@ -388,7 +431,6 @@ changelogUI <- function() {
   )
 }
 
-
 tabby1Estimates <- function(id) {
   ns <- NS(id)
   tagList(fluidRow(
@@ -404,7 +446,6 @@ tabby1Estimates <- function(id) {
     )
   ))
 }
-
 
 tabby1TimeTrends <- function(id) {
   ns <- NS(id)
@@ -436,10 +477,25 @@ tabby1AgeGroups <- function(id) {
   ))
 }
 
+addOutputs <- function(id) {
+  ns <- NS(id)
+  tagList(fluidRow(
+    column(
+      width = 4,
+      class = "tab-content",
+      addoutputsControlPanel(ns)
+    ), 
+    column(
+      width = 8,
+      class = "tab-content",
+      addoutputsVisualizationPanel(ns)
+    )
+  ))
+}
+
 debugPrintouts <- function() {
   uiOutput('debugPrintouts')
 }
-
 
 comparison_to_recent_data <- function() {
 

@@ -5,6 +5,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 	AGEGROUPS_DATA <- reactive({ sim_data()[['AGEGROUPS_DATA']] })
 	ESTIMATES_DATA <- reactive({ sim_data()[['ESTIMATES_DATA']] })
 	TRENDS_DATA <- reactive({ sim_data()[['TRENDS_DATA']] })
+  ADDOUTPUTS_DATA <-  reactive({ sim_data()[['ADDOUTPUTS_DATA']] })
+	
 
   # The session info is used to title the downloads with the tabby2 version
   # number. 
@@ -15,7 +17,6 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 
   # We will also include the sys_date in all download names
   sys_date <- Sys.Date()
-
 
   # estimates server ----
   # __calculate data ----
@@ -29,7 +30,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       filter(
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
-        outcome == input[[estimates$IDs$controls$outcomes]],
+        outcome  == input[[estimates$IDs$controls$outcomes]],
 				scenario %in% 
 				  c(input[[estimates$IDs$controls$interventions]],
 						input[[estimates$IDs$controls$analyses]], 
@@ -427,6 +428,187 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         plot.subtitle = element_blank()
       )
   }, res=85)
+  
+  # addoutputs server ----
+  # __calculate data ----
+  addoutputsData <- reactive({
+    req(
+      input[[addoutputs$IDs$controls$comparators]],
+      input[[addoutputs$IDs$controls$outcomes]],
+      c(
+        input[[addoutputs$IDs$controls$interventions]],
+        input[[addoutputs$IDs$controls$analyses]],
+        "base_case"
+      )
+    )
+    
+    ADDOUTPUTS_DATA() %>%
+      dplyr::filter(
+        population == input[[addoutputs$IDs$controls$populations]],
+        age_group == input[[addoutputs$IDs$controls$ages]],
+        outcome == input[[addoutputs$IDs$controls$outcomes]],
+        scenario %in% c(
+          input[[addoutputs$IDs$controls$interventions]],
+          input[[addoutputs$IDs$controls$analyses]],
+          "base_case"
+        ),
+        comparator == input[[addoutputs$IDs$controls$comparators]]
+      ) %>%
+      arrange(scenario) %>%
+      mutate(
+        year_adj = year + position_year(scenario)
+      ) %>% 
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'),
+             value = signif(value, 3))
+  })
+  
+  # user_filtered_data[['addoutputsData()']] <- addoutputsData()
+  
+  # __set title ----
+  addoutputsTitle <- reactive({
+    req(
+      input[[addoutputs$IDs$controls$outcomes]],
+      input[[addoutputs$IDs$controls$populations]],
+      input[[addoutputs$IDs$controls$ages]]
+    )
+    
+    sprintf(
+      "Projected %s in the %s, %s in %s",
+      addoutputs$outcomes$labels[[input[[addoutputs$IDs$controls$outcomes]]]],
+      addoutputs$populations$formatted[[input[[addoutputs$IDs$controls$populations]]]],
+      addoutputs$ages$formatted[[input[[addoutputs$IDs$controls$ages]]]],
+      if (geo_short_code() == 'US') 'the US' else unname(geographies[geo_short_code()])
+    )
+  })
+  
+  output[[addoutputs$IDs$title]] <- reactive({
+    title <- addoutputsTitle()
+    
+    session$sendCustomMessage("tabby:altupdate", list(
+      selector = paste0("#", addoutputs$IDs$plot),
+      alt = title
+    ))
+    
+    title
+  })
+  
+  # __set subtitle ----
+  output[[addoutputs$IDs$subtitle]] <- reactive({
+    req(
+      input[[addoutputs$IDs$controls$outcomes]],
+      input[[addoutputs$IDs$controls$populations]],
+      input[[addoutputs$IDs$controls$ages]]
+    )
+    
+    addoutputs$comparators$formatted[[input[[addoutputs$IDs$controls$comparators]]]]
+  })
+  
+  # __generate plot ----
+  addoutputsPlot <- reactive({
+    
+    data <- spread(addoutputsData(), type, value)
+    
+    title <- addoutputsTitle()
+    guide <- guide_legend(
+      title = "Scenario",
+      ncol = 2
+      # nrow = min(n_distinct(data$scenario), 2)
+    )
+    
+    p <- ggplot(data) +
+      geom_line(
+        mapping = aes(
+          x = year,
+          y = mean,
+          color = scenario,
+          linetype = scenario
+        ),
+        size = 1.05,
+        linejoin = "round"
+      ) +
+      scale_fill_manual(
+        name = "Scenario",
+        values = plots$colors,
+        labels = plots$labels
+      ) +
+      scale_color_manual(
+        name = "Scenario",
+        values = plots$colors,
+        labels = plots$labels
+      ) +
+      scale_linetype_manual(
+        name = "Scenario",
+        values = 1:length(plots$linetypes),
+        labels = plots$labels
+      ) +
+      scale_x_continuous(
+        name = "Year",
+        breaks = c(2020, 2030, 2040, 2050) 
+      ) +
+      scale_y_continuous(
+        name = addoutputs$outcomes$formatted[[input[[addoutputs$IDs$controls$outcomes]]]]
+      ) +
+      labs(
+        title = title,
+        subtitle = addoutputs$comparators$formatted[[input[[addoutputs$IDs$controls$comparators]]]]
+      ) +
+      guides(
+        color = guide_legend(title = 'Scenario', ncol = 2),
+        fill = guide_legend(title = 'Scenario', ncol = 2),
+        linetype = guide_legend(title = 'Scenario', ncol = 2)
+      ) +
+      theme_bw() +
+      theme(
+        text = element_text(size = 14),
+        plot.title = element_text(
+          size = rel(1.5),
+          margin = margin(0, 0, 10 , 0)
+        ),
+        plot.subtitle = element_text(
+          size = rel(1.25),
+          margin = margin(0, 0, 10, 0)
+        ),
+        axis.title = element_text(size = rel(1.15)),
+        axis.title.x = element_text(margin = margin(t = 20)),
+        axis.title.y = element_text(margin = margin(r = 20)),
+        axis.text = element_text(size = rel(1)),
+        legend.position = "bottom",
+        legend.direction = "horizontal",
+        legend.justification = c(0, 0),
+        legend.text = element_text(size = rel(0.85)),
+        legend.title = element_text(size = rel(1.15)),
+        legend.key = element_rect(size = 2),
+        legend.key.size = unit(2, "lines"), #unit(0.75, "cm"),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(size = 0.15, color = "#989898"),
+        plot.margin=unit(c(1,1,1.5,1.2),"cm")
+      ) +
+      expand_limits(y=0) 
+    
+    # if(input[['addoutputsUncertaintyInterval-1']]) {
+    #   p <- p +
+    #     geom_ribbon(
+    #       mapping = aes(
+    #         x = year,
+    #         ymin = ci_low,
+    #         ymax = ci_high,
+    #         fill = scenario
+    #       ),
+    #       alpha = 0.3
+    #     )
+    # }
+    
+    return(p)
+  })
+  
+  output[[addoutputs$IDs$plot]] <- renderPlot({
+    addoutputsPlot() +
+      theme(
+        plot.title = element_blank(),
+        plot.subtitle = element_blank()
+      )
+  }, res=85)
 
 
   # ages server ----
@@ -650,7 +832,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       version_number, 
       "-estimates-data-", geo_short_code(), "_", sys_date, ".xlsx") }),
     content = function(file) {
-      estimatesData() %>%
+      estimatesData() %>% filter(outcome!="total_additional_ltbi_tests") %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
@@ -677,7 +859,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
       version_number, 
       "-estimates-data-", geo_short_code(), "_", sys_date, ".csv") }),
     content = function(file) {
-      estimatesData() %>%
+      estimatesData() %>% filter(outcome!="total_additional_ltbi_tests") %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
@@ -753,7 +935,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
     filename = paste0("tabby",
       version_number, "-trends-data-", geo_short_code(), "_", sys_date, ".xlsx"),
     content = function(file) {
-      trendsData() %>%
+      trendsData() %>% filter(outcome!="total_additional_ltbi_tests") %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
@@ -779,7 +961,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
     filename = reactive({ paste0("tabby",
       version_number, "-trends-data-", geo_short_code(), "_", sys_date, ".csv") }),
     content = function(file) {
-      trendsData() %>%
+      trendsData() %>% filter(outcome!="total_additional_ltbi_tests") %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
@@ -854,7 +1036,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
     filename = reactive({ paste0("tabby",
       version_number, "-agegroups-data-", geo_short_code(), "_", sys_date, ".xlsx") }),
     content = function(file) {
-      agegroupsData() %>%
+      agegroupsData() %>% filter(outcome!="total_additional_ltbi_tests") %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
@@ -884,7 +1066,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
     filename = reactive({ paste0("tabby",
       version_number, "-agegroups-data-", geo_short_code(), "_", sys_date, ".csv") }),
     content = function(file) {
-      agegroupsData() %>%
+      agegroupsData() %>% filter(outcome!="total_additional_ltbi_tests") %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
@@ -908,7 +1090,109 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         )
     }
   )
+  
+  # __addoutputs png ----
+  output[[addoutputs$IDs$downloads$png]] <- downloadHandler(
+    filename = reactive({ paste0("tabby",
+                                 version_number,
+                                 "-addoutputs-plot-", geo_short_code(), "_", sys_date, ".png") }),
+    content = function(file) {
+      png(file, res = 85, width = 13, height = 9, units = "in")
+      print(addoutputsPlot())
+      dev.off()
+    }
+  )
+  
+  # __addoutputs pdf ----
+  output[[addoutputs$IDs$downloads$pdf]] <- downloadHandler(
+    filename = reactive({ paste0("tabby",
+                                 version_number, "-addoutputs-plot-", geo_short_code(), "_", sys_date, ".pdf") }),
+    content = function(file) {
+      this <- addoutputsPlot()
+      pdf(file, width = 11, height = 8, title = this$plot$title)
+      print(this)
+      dev.off()
+    }
+  )
+  
+  # __addoutputs pptx ----
+  output[[addoutputs$IDs$downloads$pptx]] <- downloadHandler(
+    filename = reactive({ paste0("tabby",
+                                 version_number, "-addoutputs-plot-", geo_short_code(), "_", sys_date, ".pptx") }),
+    content = function(file) {
+      tmp <- tempfile(fileext = "jpg")
+      on.exit(unlink(tmp))
+      
+      this <- try(addoutputsPlot(), silent = TRUE)
+      
+      jpeg(tmp, res = 85, width = 13, height = 9, units = "in")
+      
+      if (is.ggplot(this)) {
+        print(this)
+      }
+      
+      dev.off()
+      
+      read_pptx() %>%
+        add_slide(layout = "Title and Content", master = "Office Theme") %>%
+        ph_with_text(type = "title", str = "") %>%
+        ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        print(target = file)
+    }
+  )
+  
+  # __addoutputs xlsx ----
+  output[[addoutputs$IDs$downloads$xlsx]] <- downloadHandler(
+    filename = paste0("tabby",
+                      version_number, "-addoutputs-data-", geo_short_code(), "_", sys_date, ".xlsx"),
+    content = function(file) {
+      addoutputsData() %>% 
+        mutate(
+          year = ifelse(year == 2000, 2016, year)
+        ) %>%
+        spread(type, value) %>%
+        mutate(scenario = sapply(scenario, function(x) {
+          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+          } else as.character(x)
+        })) %>%
+        mutate(outcome = sapply(outcome, function(x) addoutputs$outcomes$labels[[x]])) %>%
+        select(
+          outcome, scenario, age_group, year, mean # , ci_high, ci_low
+        ) %>%
+        openxlsx::write.xlsx(
+          file = file,
+          colNames = TRUE
+        )
+    }
+  )
+  
+  # __addoutputs csv ----
+  output[[addoutputs$IDs$downloads$csv]] <- downloadHandler(
+    filename = reactive({ paste0("tabby",
+                                 version_number, "-addoutputs-data-", geo_short_code(), "_", sys_date, ".csv") }),
+    content = function(file) {
+      addoutputsData() %>%
+        mutate(
+          year = ifelse(year == 2000, 2016, year)
+        ) %>%
+        spread(type, value) %>%
+        mutate(scenario = sapply(scenario, function(x) {
+          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+          } else as.character(x)
+        })) %>%
+        mutate(outcome = sapply(outcome, function(x) addoutputs$outcomes$labels[[x]])) %>%
+        select(
+          outcome, scenario, age_group, year, mean # , ci_high, ci_low
+        ) %>%
+        write.csv(
+          file = file,
+          row.names = FALSE
+        )
+    }
+  )
 
-  filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData)
+  filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData, addoutputsData=addoutputsData)
   return(filtered_data)
 }

@@ -12,13 +12,18 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 	# prg_chng<-c(2020,2,.90,.95,.85,.90,.8,.25)
 	# names(prg_chng)<-
 	# 	c("start_yr", #year in which the program change starts (discontinuous step up to the values below at this year)
-	# 		"scrn_cov", #Screening Coverage Rate as a Multiple of the Current Rate
-	# 		"IGRA_frc", #Fraction of Individuals Receiving IGRA
-	# 		"ltbi_init_frc", #Fraction of Individuals Testing Positive who Accept Treatment
-	# 		"ltbi_comp_frc", #Fraction of Individuals Initiating Treatment Who Complete Treatment
-	# 		"ltbi_eff_frc", # LTBI Treatment Efficacy
-	# 		"tb_tim2tx_frc", #Duration of Infectiousness 
-	# 		"tb_txdef_frc") #Fraction Discontinuing/Defaulting from Treatment
+  #   "scrn_cov", #Screening Coverage Rate as a Multiple of the Current Rate
+  #   "IGRA_frc", #Fraction of Individuals Receiving IGRA
+  #   "ltbi_init_frc", #Fraction of Individuals Testing Positive who Accept Treatment
+  #   "frc_3hp",  #fraction of Individuals on 3HP
+  #   "comp_3hp", #Probability of Completion of Treatment among Individuals on 3HP
+  #   "frc_3hr",  #fraction of Individuals on 3HR
+  #   "comp_3hr", #Probability of Completion of Treatment among Individuals on 3HR
+  #   "frc_4r",   #fraction of Individuals on 4R
+  #   "comp_4r",  #Probability of Completion of Treatment among Individuals on 4R
+  #   "tb_tim2tx_frc", #Duration of Infectiousness
+  #   "tb_txdef_frc" #Fraction Discontinuing/Defaulting from Treatment
+  # 	)
 
 	if (input[[prefix('Name')]] == '') { 
 		scenario_name <- prefix('')
@@ -37,13 +42,12 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
   prg_chng[['ltbi_init_frc']] <- 
     input[[prefix('AcceptingTreatmentFraction')]] / 100
 
-  prg_chng[['ltbi_comp_frc']] <- 
+  prg_chng[['ltbi_comp_frc']] <-
     input[[prefix('CompletionRate')]] / 100
 
-  prg_chng[['ltbi_eff_frc']] <- 
+  prg_chng[['ltbi_eff_frc']] <-
     input[[prefix('TreatmentEffectiveness')]] / 100
-
-
+  
   prg_chng[['tb_tim2tx_frc']] <- 
     input[[prefix('AverageTimeToTreatment')]] 
 
@@ -110,16 +114,23 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 		cbind.data.frame(restab_big, type = 'ci_high'),
 		cbind.data.frame(restab_big, type = 'ci_low')))
 
+	#make a vector of outputs to include in add outputs 
+	add_outputs_vec<-c(    "ltbi_tests_000s", 
+	                       "ltbi_txinits_000s", 
+	                       "ltbi_txcomps_000s", 
+	                       "tb_txinits_000s", 
+	                       "tb_txcomps_000s")
 	new_data <- list()
-
-	new_data[['AGEGROUPS_DATA']] <-  restab_small
-
+	
+	new_data[['AGEGROUPS_DATA']] <-  restab_small %>% dplyr::filter( !(outcome %in% add_outputs_vec))
+	
 	restab_big$year <- as.integer(as.character(restab_big$year))
-	new_data[['TRENDS_DATA']] <- restab_big
-
+	new_data[['TRENDS_DATA']] <- restab_big  %>% dplyr::filter( !(outcome %in% add_outputs_vec))
+	new_data[['ADDOUTPUTS_DATA']] <- restab_big  %>% dplyr::filter(outcome %in% add_outputs_vec)
+	
+	
 	new_data[['ESTIMATES_DATA']] <- 
-		dplyr::filter(restab_big, year %in% c(2020, 2022, 2025, 2035, 2049))
-
+	  dplyr::filter(restab_big, year %in% c(2020, 2022, 2025, 2035, 2049),!(outcome %in% add_outputs_vec) )
    # cat('new data has: ', as.character(nrow(filter(new_data[['TRENDS_DATA']], scenario == scenario_name))),
    #     'new_data rows\n')
 

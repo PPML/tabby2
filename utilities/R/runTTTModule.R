@@ -106,22 +106,30 @@ runTTT <- function(input, output, session, n, geo_short_code) {
 		cbind.data.frame(restab_small, type = 'mean'),
 		cbind.data.frame(restab_small, type = 'ci_high'),
 		cbind.data.frame(restab_small, type = 'ci_low')))
-
+	
 	restab_big <- 
-		do.call(rbind.data.frame, list(
-		cbind.data.frame(restab_big, type = 'mean'),
-		cbind.data.frame(restab_big, type = 'ci_high'),
-		cbind.data.frame(restab_big, type = 'ci_low')))
+	  do.call(rbind.data.frame, list(
+	    cbind.data.frame(restab_big, type = 'mean'),
+	    cbind.data.frame(restab_big, type = 'ci_high'),
+	    cbind.data.frame(restab_big, type = 'ci_low')))
 
+	#make a vector of outputs to include in add outputs 
+	add_outputs_vec<-c(    "ltbi_tests_000s", 
+	                       "ltbi_txinits_000s", 
+	                       "ltbi_txcomps_000s", 
+	                       "tb_txinits_000s", 
+	                       "tb_txcomps_000s")
 	new_data <- list()
-
-	new_data[['AGEGROUPS_DATA']] <-  restab_small
-
+	
+	new_data[['AGEGROUPS_DATA']] <-  restab_small %>% dplyr::filter( !(outcome %in% add_outputs_vec))
+	
 	restab_big$year <- as.integer(as.character(restab_big$year))
-	new_data[['TRENDS_DATA']] <- restab_big
-
+	new_data[['TRENDS_DATA']] <- restab_big  %>% dplyr::filter( !(outcome %in% add_outputs_vec))
+	new_data[['ADDOUTPUTS_DATA']] <- restab_big  %>% dplyr::filter(outcome %in% add_outputs_vec)
+	
+	
 	new_data[['ESTIMATES_DATA']] <- 
-		dplyr::filter(restab_big, year %in% c(2020, 2022, 2025, 2035, 2050))
+	  dplyr::filter(restab_big, year %in% c(2020, 2022, 2025, 2035, 2049),!(outcome %in% add_outputs_vec) )
 
    # cat('new data has: ', as.character(nrow(filter(new_data[['TRENDS_DATA']], scenario == scenario_name))),
    #     'new_data rows\n')

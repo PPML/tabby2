@@ -139,6 +139,53 @@ agegroupsControlPanel <- function(ns) {
   )
 }
 
+addoutputsControlPanel <- function(ns) {
+  controlPanel(
+    class = "addoutputs-tab",
+    comparators = radioButtons2(
+      id = ns(addoutputs$IDs$controls$comparators),
+      heading = addoutputs$comparators$heading,
+      labels = addoutputs$comparators$labels,
+      values = addoutputs$comparators$values,
+      selected = addoutputs$comparators$selected
+    ),
+    populations = radioButtons2(
+      id = ns(addoutputs$IDs$controls$populations),
+      heading = addoutputs$populations$heading,
+      labels = addoutputs$populations$labels,
+      values = addoutputs$populations$values,
+      selected = addoutputs$populations$selected
+    ),
+    ages = radioButtons2(
+      id = ns(addoutputs$IDs$controls$ages),
+      heading = addoutputs$ages$heading,
+      labels = addoutputs$ages$labels,
+      values = addoutputs$ages$values,
+      selected = addoutputs$ages$selected
+    ),
+    outcomes = radioButtons2(
+      id = ns(addoutputs$IDs$controls$outcomes),
+      heading = addoutputs$outcomes$heading,
+      labels = addoutputs$outcomes$labels,
+      values = addoutputs$outcomes$values,
+      selected = addoutputs$outcomes$selected,
+      descriptions = addoutputs$outcomes$descriptions
+    ),
+    interventions = uiOutput('addoutputsInterventions'),
+    analyses = checkboxGroup2(
+      id = ns(addoutputs$IDs$controls$analyses),
+      heading = addoutputs$analyses$heading,
+      labels = addoutputs$analyses$labels,
+      values = addoutputs$analyses$values,
+    ),
+    downloads = downloadButtonBar(
+      ids = ns(addoutputs$IDs$downloads),
+      heading = addoutputs$downloads$heading,
+      labels = addoutputs$downloads$labels
+    )
+  )
+}
+
 controlPanel <- function(class, active = TRUE, comparators = NULL,
                          populations = NULL, ages = NULL, years = NULL,
                          outcomes = NULL, interventions = NULL,

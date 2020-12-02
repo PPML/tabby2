@@ -392,6 +392,19 @@ shinyServer(function(input, output, session) {
 				sim_data[['combination1']][['TRENDS_DATA']],
 				sim_data[['combination2']][['TRENDS_DATA']],
 				sim_data[['combination3']][['TRENDS_DATA']]
+			), 
+			
+			ADDOUTPUTS_DATA = rbind.data.frame(
+			  sim_data[['presimulated']][['ADDOUTPUTS_DATA']],
+			  sim_data[['programChanges1']][['ADDOUTPUTS_DATA']],
+			  sim_data[['programChanges2']][['ADDOUTPUTS_DATA']],
+			  sim_data[['programChanges3']][['ADDOUTPUTS_DATA']],
+			  sim_data[['ttt1']][['ADDOUTPUTS_DATA']],
+			  sim_data[['ttt2']][['ADDOUTPUTS_DATA']],
+			  sim_data[['ttt3']][['ADDOUTPUTS_DATA']],
+			  sim_data[['combination1']][['ADDOUTPUTS_DATA']],
+			  sim_data[['combination2']][['ADDOUTPUTS_DATA']],
+			  sim_data[['combination3']][['ADDOUTPUTS_DATA']]
 			)
 			)
 		})
@@ -449,6 +462,15 @@ shinyServer(function(input, output, session) {
                           select(-type), 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
+		
+		# Add Data Table for ADDITIONAL OUTCOMES
+		
+		output[['addoutputsData']] <- 
+		  DT::renderDataTable( filtered_data[['addoutputsData']]() %>% 
+		                         filter(type == 'mean') %>% 
+		                         select(-c(type, year_adj)), 
+		                       options = list(pageLength = 25, scrollX = TRUE), 
+		                       rownames=FALSE )  
 
 			
 		# Custom Scenarios Choice in Output
@@ -456,6 +478,9 @@ shinyServer(function(input, output, session) {
 		
 		# Plots for Comparison to Recent Data
 		callModule(comparisonToRecentData, NULL, geo_short_code)
+		
+		# Call Module for Saving additional outputs
+		# callModule(addOutputsModule, NULL, geo_short_code, filtered_data)
 
 		# Call Module for Saving Feedback Form Input
 		callModule(feedbackFormModule, NULL)

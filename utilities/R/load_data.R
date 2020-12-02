@@ -24,7 +24,14 @@ load_data <- function(geo_short_code) {
 
 	restab2 %>% mutate_if(is.factor, as.character) -> restab2
 			
-	data[['AGEGROUPS_DATA']] <- restab2
+	#make a vector of outputs to include in add outputs 
+	add_outputs_vec<-c(    "ltbi_tests_000s", 
+	                       "ltbi_txinits_000s", 
+	                       "ltbi_txcomps_000s", 
+	                       "tb_txinits_000s", 
+	                       "tb_txcomps_000s")
+	data[['AGEGROUPS_DATA']] <- restab2  %>% dplyr::filter(! (outcome %in% add_outputs_vec))
+
 
 	# Lookup bg_restab2 by geo_short_code, cast the data as.data.frame
 	restab2 <- as.data.frame(readRDS(system.file(geo_short_code, "bg_restab2.rds",
@@ -48,7 +55,8 @@ load_data <- function(geo_short_code) {
 
 	restab2 %>% mutate_if(is.factor, as.character) -> restab2
 	restab2$year <- as.numeric(restab2$year)
-	data[['TRENDS_DATA']] <- restab2
+	data[['TRENDS_DATA']] <- restab2 # %>% dplyr::filter(! (outcome %in% add_outputs_vec))
+	data[['ADDOUTPUTS_DATA']] <- restab2  %>% dplyr::filter(outcome %in% add_outputs_vec)
 	
 	data[['ESTIMATES_DATA']] <-  
 		filter(data[['TRENDS_DATA']], year %in% c(2020, 2022, 2025, 2035, 2050))

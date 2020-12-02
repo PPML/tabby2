@@ -28,7 +28,7 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
 
   # Render the plot from the plots reactive containing the output from calib_plots()
   calib_data_target_plot <- reactive({
-	  plt_idx <- which(calib_plots()[['shortname']] == input[['comparisonDataChoice']]) 
+	  plt_idx <- which(calib_plots()[['shortname']] == input[['comparisonDataChoice']])
     calib_plots()[[plt_idx, 'plot']]
   })
 

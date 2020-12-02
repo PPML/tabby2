@@ -57,6 +57,12 @@ results_agegroups <- function() {
 
 #' @rdname model-results
 #' @export
+results_addoutputs <- function() {
+  readRDS(system.file("res-tab-time-trend.rds", package = "tabby1utilities", mustWork = TRUE))
+}
+
+#' @rdname model-results
+#' @export
 data_estimates <- function() {
   results_estimates() %>%
     filter(
@@ -103,4 +109,15 @@ data_agegroups <- function() {
       outcome = recode(outcome, tb_incidence_per_mil = "tb_incidence_per_100k", 
         tb_mortality_per_mil = "tb_mortality_per_100k"))
 
+}
+
+#' @rdname model-results
+#' @export
+data_addoutputs <- function() {
+  results_addoutputs() %>%
+    gather(type, value, mean, ci_high, ci_low) %>%
+    mutate_if(is.factor, as.character) %>% 
+    mutate(comparator = recode(comparator, pct_basecase_2016 = "pct_basecase_2018"),
+           outcome = recode(outcome, tb_incidence_per_mil = "tb_incidence_per_100k", 
+                            tb_mortality_per_mil = "tb_mortality_per_100k"))
 }

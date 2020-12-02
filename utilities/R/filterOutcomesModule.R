@@ -85,6 +85,37 @@ filterOutcomes <- function(input, output, session, sim_data) {
 						comparator == 'absolute_value'
 					)
 		})
+	
+	sim_data[['ADDOUTPUTS_DATA']] <-
+	  reactive({
+	    req(
+	      input[[addoutputs$IDs$controls$comparators]],
+	      input[[addoutputs$IDs$controls$outcomes]],
+	      c(
+	        input[[addoutputs$IDs$controls$interventions]],
+	        input[[addoutputs$IDs$controls$analyses]],
+	        "base_case"
+	      )
+	    )
+
+	    sim_data[['ADDOUTPUTS_DATA']] %>%
+	      filter(
+	        population == input[[addoutputs$IDs$controls$populations]],
+	        age_group == input[[addoutputs$IDs$controls$ages]],
+	        outcome == input[[addoutputs$IDs$controls$outcomes]],
+	        scenario %in% c(
+	          input[[addoutputs$IDs$controls$interventions]],
+	          input[[addoutputs$IDs$controls$analyses]],
+	          "base_case",
+	          "programChange1"
+	        ),
+	        comparator == input[[addoutputs$IDs$controls$comparators]]
+	      ) %>%
+	      arrange(scenario) %>%
+	      mutate(
+	        year_adj = year + position_year(scenario)
+	      )
+	  })
 
 	return(sim_data)
 

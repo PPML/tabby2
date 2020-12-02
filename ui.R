@@ -53,6 +53,7 @@ sidebar <- dashboardSidebar(
       menuItem(tabnames[[5]], tabName = names(tabnames)[[5]]), # tabby1 estimates
       menuItem(tabnames[[6]], tabName = names(tabnames)[[6]]), # tabby1 time trends
       menuItem(tabnames[[7]], tabName = names(tabnames)[[7]]),  # tabby1 age groups
+      menuItem(tabnames[[12]], tabName = names(tabnames)[[12]]),  # counts of services
       menuItem(tabnames[[8]], tabName = names(tabnames)[[8]])  # comparison to recent data
       
     ),
@@ -62,7 +63,7 @@ sidebar <- dashboardSidebar(
 		menuItem(tabnames[[11]], tabName = names(tabnames)[[11]]), # feedback
     if (
       exists('debug', envir = .GlobalEnv) && isTRUE(debug)
-      ) { menuItem(tabnames[[12]], tabName = names(tabnames)[[12]]) # debug printouts
+      ) { menuItem(tabnames[[13]], tabName = names(tabnames)[[13]]) # debug printouts
     } else { NULL },
 		# render location selected
     tags$li(uiOutput('location_selected'), style = 'position: absolute; bottom: 20px; left: 20px;')

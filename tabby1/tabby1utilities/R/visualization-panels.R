@@ -47,6 +47,20 @@ agegroupsVisualizationPanel <- function(ns) {
   )
 }
 
+addoutputsVisualizationPanel <- function(ns) {
+  tagAppendAttributes(
+    visualizationPanel(
+      id = ns(addoutputs$IDs$panels$visualization),
+      title = ns(addoutputs$IDs$title),
+      subtitle = ns(addoutputs$IDs$subtitle),
+      plot = ns(addoutputs$IDs$plot),
+      alt = "Counts of LTBI Tests (in Thousands), in the total US population, all age groups",
+      data = 'addoutputsData'
+    ),
+    class = "addoutputs-tab"
+  )
+}
+
 visualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NULL,
                                click = NULL, dblclick = NULL, active = TRUE, data) {
   class <- paste0(id, "-tab")

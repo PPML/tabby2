@@ -29,3 +29,9 @@ config_trends <- function() {
 config_agegroups <- function() {
   yaml::read_yaml(system.file("configs", "config-agegroups.yaml", package = "tabby1utilities", mustWork = TRUE))
 }
+
+#' @rdname configs
+#' @export
+config_addoutputs <- function() {
+  yaml::read_yaml(system.file("configs", "config-addoutputs.yaml", package = "tabby1utilities", mustWork = TRUE))
+}

@@ -18,7 +18,8 @@ tabnames <- c(
   calibration = "Comparison to Recent Data",
   readmore = "Further Description",
   changelog = "Changelog",
-	feedback = "Feedback"
+	feedback = "Feedback", 
+  addOutputs = "Counts of Services"
 )
 
 tabcontents <- list(
@@ -32,7 +33,8 @@ tabcontents <- list(
   calibration = comparison_to_recent_data(),
   readmore = readmoreUI(),
   changelog = changelogUI(),
-	feedback = feedbackForm()
+	feedback = feedbackForm(), 
+  addOutputs = addOutputs('tabby1')
 )
 
 if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {
