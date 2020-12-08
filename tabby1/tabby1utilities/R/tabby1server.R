@@ -6,8 +6,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 	ESTIMATES_DATA <- reactive({ sim_data()[['ESTIMATES_DATA']] })
 	TRENDS_DATA <- reactive({ sim_data()[['TRENDS_DATA']] })
   ADDOUTPUTS_DATA <-  reactive({ sim_data()[['ADDOUTPUTS_DATA']] })
-	
-
+  COSTCOMPARISON_DATA <-  reactive({ sim_data()[['COSTCOMPARISON_DATA']] })
+  
   # The session info is used to title the downloads with the tabby2 version
   # number. 
   session_info <- sessionInfo()
@@ -609,6 +609,187 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         plot.subtitle = element_blank()
       )
   }, res=85)
+  
+  # addoutputs server ----
+  # __calculate data ----
+  costcomparisonData <- reactive({
+    req(
+      # input[[costcomparison$IDs$controls$comparators]],
+      input[[costcomparison$IDs$controls$costs]],
+      c(
+        input[[costcomparison$IDs$controls$interventions]],
+        input[[costcomparison$IDs$controls$analyses]],
+        "base_case"
+      )
+    )
+    
+    COSTCOMPARISON_DATA() %>%
+      dplyr::filter(
+        population == "all_populations",
+        age_group == "all_ages",
+        outcome == input[[costcomparison$IDs$controls$costs]],
+        scenario %in% c(
+          input[[costcomparison$IDs$controls$interventions]],
+          input[[costcomparison$IDs$controls$analyses]],
+          "base_case"
+        ),
+        comparator == "absolute_value"
+      ) %>%
+      arrange(scenario) %>%
+      mutate(
+        year_adj = year + position_year(scenario)
+      ) %>% 
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'),
+             value = signif(value, 3)*2) 
+  })
+  
+  # user_filtered_data[['costcomparisonData()']] <- costcomparisonData()
+  
+  # __set title ----
+  costcomparisonTitle <- reactive({
+    req(
+      input[[costcomparison$IDs$controls$costs]]#,
+      # input[[costcomparison$IDs$controls$populations]],
+      # input[[costcomparison$IDs$controls$ages]]
+    )
+    
+    sprintf(
+      "Projected %s in %s",
+      costcomparison$costs$labels[[input[[costcomparison$IDs$controls$costs]]]],
+      # costcomparison$populations$formatted[[input[[costcomparison$IDs$controls$populations]]]],
+      # costcomparison$ages$formatted[[input[[costcomparison$IDs$controls$ages]]]],
+      if (geo_short_code() == 'US') 'the US' else unname(geographies[geo_short_code()])
+    )
+  })
+  
+  output[[costcomparison$IDs$title]] <- reactive({
+    title <- costcomparisonTitle()
+    
+    session$sendCustomMessage("tabby:altupdate", list(
+      selector = paste0("#", costcomparison$IDs$plot),
+      alt = title
+    ))
+    
+    title
+  })
+  
+  # __set subtitle ----
+  output[[costcomparison$IDs$subtitle]] <- reactive({
+    req(
+      input[[costcomparison$IDs$controls$costs]]#,
+      # input[[costcomparison$IDs$controls$populations]],
+      # input[[costcomparison$IDs$controls$ages]]
+    )
+    
+    # costcomparison$comparators$formatted[[input[[costcomparison$IDs$controls$comparators]]]]
+  })
+  
+  # __generate plot ----
+  costcomparisonPlot <- reactive({
+    
+    data <- spread(costcomparisonData(), type, value)
+    
+    title <- costcomparisonTitle()
+    guide <- guide_legend(
+      title = "Scenario",
+      ncol = 2
+      # nrow = min(n_distinct(data$scenario), 2)
+    )
+    
+    p <- ggplot(data) +
+      geom_line(
+        mapping = aes(
+          x = year,
+          y = mean,
+          color = scenario,
+          linetype = scenario
+        ),
+        size = 1.05,
+        linejoin = "round"
+      ) +
+      scale_fill_manual(
+        name = "Scenario",
+        values = plots$colors,
+        labels = plots$labels
+      ) +
+      scale_color_manual(
+        name = "Scenario",
+        values = plots$colors,
+        labels = plots$labels
+      ) +
+      scale_linetype_manual(
+        name = "Scenario",
+        values = 1:length(plots$linetypes),
+        labels = plots$labels
+      ) +
+      scale_x_continuous(
+        name = "Year",
+        breaks = c(2020, 2030, 2040, 2050) 
+      ) +
+      scale_y_continuous(
+        name = costcomparison$costs$formatted[[input[[costcomparison$IDs$controls$costs]]]]
+      ) +
+      labs(
+        title = title,
+        subtitle = "" #costcomparison$comparators$formatted[[input[[costcomparison$IDs$controls$comparators]]]]
+      ) +
+      guides(
+        color = guide_legend(title = 'Scenario', ncol = 2),
+        fill = guide_legend(title = 'Scenario', ncol = 2),
+        linetype = guide_legend(title = 'Scenario', ncol = 2)
+      ) +
+      theme_bw() +
+      theme(
+        text = element_text(size = 14),
+        plot.title = element_text(
+          size = rel(1.5),
+          margin = margin(0, 0, 10 , 0)
+        ),
+        plot.subtitle = element_text(
+          size = rel(1.25),
+          margin = margin(0, 0, 10, 0)
+        ),
+        axis.title = element_text(size = rel(1.15)),
+        axis.title.x = element_text(margin = margin(t = 20)),
+        axis.title.y = element_text(margin = margin(r = 20)),
+        axis.text = element_text(size = rel(1)),
+        legend.position = "bottom",
+        legend.direction = "horizontal",
+        legend.justification = c(0, 0),
+        legend.text = element_text(size = rel(0.85)),
+        legend.title = element_text(size = rel(1.15)),
+        legend.key = element_rect(size = 2),
+        legend.key.size = unit(2, "lines"), #unit(0.75, "cm"),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(size = 0.15, color = "#989898"),
+        plot.margin=unit(c(1,1,1.5,1.2),"cm")
+      ) +
+      expand_limits(y=0) 
+    
+    # if(input[['costcomparisonUncertaintyInterval-1']]) {
+    #   p <- p +
+    #     geom_ribbon(
+    #       mapping = aes(
+    #         x = year,
+    #         ymin = ci_low,
+    #         ymax = ci_high,
+    #         fill = scenario
+    #       ),
+    #       alpha = 0.3
+    #     )
+    # }
+    
+    return(p)
+  })
+  
+  output[[costcomparison$IDs$plot]] <- renderPlot({
+    costcomparisonPlot() +
+      theme(
+        plot.title = element_blank(),
+        plot.subtitle = element_blank()
+      )
+  }, res=85)
 
 
   # ages server ----
@@ -1060,7 +1241,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         )
     }
   )
-
+  
   # __agegroups csv ----
   output[[agegroups$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1193,6 +1374,109 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
     }
   )
 
-  filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData, addoutputsData=addoutputsData)
+  
+  # __costcomparison png ----
+  output[[costcomparison$IDs$downloads$png]] <- downloadHandler(
+    filename = reactive({ paste0("tabby",
+                                 version_number,
+                                 "-costcomparison-plot-", geo_short_code(), "_", sys_date, ".png") }),
+    content = function(file) {
+      png(file, res = 85, width = 13, height = 9, units = "in")
+      print(costcomparisonPlot())
+      dev.off()
+    }
+  )
+  
+  # __costcomparison pdf ----
+  output[[costcomparison$IDs$downloads$pdf]] <- downloadHandler(
+    filename = reactive({ paste0("tabby",
+                                 version_number, "-costcomparison-plot-", geo_short_code(), "_", sys_date, ".pdf") }),
+    content = function(file) {
+      this <- costcomparisonPlot()
+      pdf(file, width = 11, height = 8, title = this$plot$title)
+      print(this)
+      dev.off()
+    }
+  )
+  
+  # __costcomparison pptx ----
+  output[[costcomparison$IDs$downloads$pptx]] <- downloadHandler(
+    filename = reactive({ paste0("tabby",
+                                 version_number, "-costcomparison-plot-", geo_short_code(), "_", sys_date, ".pptx") }),
+    content = function(file) {
+      tmp <- tempfile(fileext = "jpg")
+      on.exit(unlink(tmp))
+      
+      this <- try(costcomparisonPlot(), silent = TRUE)
+      
+      jpeg(tmp, res = 85, width = 13, height = 9, units = "in")
+      
+      if (is.ggplot(this)) {
+        print(this)
+      }
+      
+      dev.off()
+      
+      read_pptx() %>%
+        add_slide(layout = "Title and Content", master = "Office Theme") %>%
+        ph_with_text(type = "title", str = "") %>%
+        ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        print(target = file)
+    }
+  )
+  
+  # __costcomparison xlsx ----
+  output[[costcomparison$IDs$downloads$xlsx]] <- downloadHandler(
+    filename = paste0("tabby",
+                      version_number, "-costcomparison-data-", geo_short_code(), "_", sys_date, ".xlsx"),
+    content = function(file) {
+      costcomparisonData() %>% 
+        mutate(
+          year = ifelse(year == 2000, 2016, year)
+        ) %>%
+        spread(type, value) %>%
+        mutate(scenario = sapply(scenario, function(x) {
+          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+          } else as.character(x)
+        })) %>%
+        mutate(outcome = sapply(outcome, function(x) costcomparison$outcomes$labels[[x]])) %>%
+        select(
+          outcome, scenario, age_group, year, mean # , ci_high, ci_low
+        ) %>%
+        openxlsx::write.xlsx(
+          file = file,
+          colNames = TRUE
+        )
+    }
+  )
+  
+  # __costcomparison csv ----
+  output[[costcomparison$IDs$downloads$csv]] <- downloadHandler(
+    filename = reactive({ paste0("tabby",
+                                 version_number, "-costcomparison-data-", geo_short_code(), "_", sys_date, ".csv") }),
+    content = function(file) {
+      costcomparisonData() %>%
+        mutate(
+          year = ifelse(year == 2000, 2016, year)
+        ) %>%
+        spread(type, value) %>%
+        mutate(scenario = sapply(scenario, function(x) {
+          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+          } else as.character(x)
+        })) %>%
+        mutate(outcome = sapply(outcome, function(x) costcomparison$outcomes$labels[[x]])) %>%
+        select(
+          outcome, scenario, age_group, year, mean # , ci_high, ci_low
+        ) %>%
+        write.csv(
+          file = file,
+          row.names = FALSE
+        )
+    }
+  )
+  filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData,
+                        addoutputsData=addoutputsData, costcomparisonData=costcomparisonData)
   return(filtered_data)
 }

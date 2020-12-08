@@ -42,12 +42,30 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
   prg_chng[['ltbi_init_frc']] <- 
     input[[prefix('AcceptingTreatmentFraction')]] / 100
 
-  prg_chng[['ltbi_comp_frc']] <-
-    input[[prefix('CompletionRate')]] / 100
-
-  prg_chng[['ltbi_eff_frc']] <-
-    input[[prefix('TreatmentEffectiveness')]] / 100
+  # prg_chng[['ltbi_comp_frc']] <- 
+  #   input[[prefix('CompletionRate')]] / 100
+  # 
+  # prg_chng[['ltbi_eff_frc']] <- 
+  #   input[[prefix('TreatmentEffectiveness')]] / 100
   
+  prg_chng[['frc_3hp']]<-
+    input[[prefix('Fraction3HP')]]/100
+  
+  prg_chng[['comp_3hp']]<-
+    input[[prefix('Completion3HP')]]/100
+  
+  prg_chng[['frc_4r']]<-
+    input[[prefix('Fraction4R')]]/100
+  
+  prg_chng[['comp_4r']]<-
+    input[[prefix('Completion4R')]]/100
+  
+  prg_chng[['frc_3hr']]<-
+    input[[prefix('Fraction3HR')]]/100
+  
+  prg_chng[['comp_3hr']]<-
+    input[[prefix('Completion3HR')]]/100
+
   prg_chng[['tb_tim2tx_frc']] <- 
     input[[prefix('AverageTimeToTreatment')]] 
 
@@ -127,6 +145,7 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
 	restab_big$year <- as.integer(as.character(restab_big$year))
 	new_data[['TRENDS_DATA']] <- restab_big  %>% dplyr::filter( !(outcome %in% add_outputs_vec))
 	new_data[['ADDOUTPUTS_DATA']] <- restab_big  %>% dplyr::filter(outcome %in% add_outputs_vec)
+	new_data[['COSTCOMPARISON_DATA']] <- restab_big  %>% dplyr::filter(outcome %in% add_outputs_vec)
 	
 	
 	new_data[['ESTIMATES_DATA']] <- 

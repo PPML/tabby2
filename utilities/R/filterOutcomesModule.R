@@ -116,6 +116,37 @@ filterOutcomes <- function(input, output, session, sim_data) {
 	        year_adj = year + position_year(scenario)
 	      )
 	  })
+	
+	sim_data[['COSTCOMPARISON_DATA']] <- 
+	  reactive({
+	    req(
+	      input[[costcomparison$IDs$controls$comparators]],
+	      input[[costcomparison$IDs$controls$outcomes]],
+	      c(
+	        input[[costcomparison$IDs$controls$interventions]],
+	        input[[costcomparison$IDs$controls$analyses]],
+	        "base_case"
+	      )
+	    )
+	    
+	    sim_data[['COSTCOMPARISON_DATA']] %>%
+	      filter(
+	        population == input[[costcomparison$IDs$controls$populations]],
+	        age_group == input[[costcomparison$IDs$controls$ages]],
+	        outcome == input[[costcomparison$IDs$controls$outcomes]],
+	        scenario %in% c(
+	          input[[costcomparison$IDs$controls$interventions]],
+	          input[[costcomparison$IDs$controls$analyses]],
+	          "base_case",
+	          "programChange1"
+	        ),
+	        comparator == input[[costcomparison$IDs$controls$comparators]]
+	      ) %>%
+	      arrange(scenario) %>%
+	      mutate(
+	        year_adj = year + position_year(scenario)
+	      )
+	  })
 
 	return(sim_data)
 

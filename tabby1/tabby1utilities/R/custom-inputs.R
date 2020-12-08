@@ -117,6 +117,62 @@ checkboxGroup2 <- function(id, heading, labels, values, selected = FALSE, descri
   )
 }
 
+# checkboxCosts <- function(id, heading, labels, values, selected = FALSE, descriptions = NULL) {
+#   if (is.null(descriptions)) {
+#     descriptions <- rep.int("", length(labels))
+#   }
+#   tags$section(
+#     id = id,
+#     class = "shiny-options-group shiny-input-checkboxgroup shiny-input-container",
+#     `aria-label` = heading,
+#     tags$label(
+#       class = "control-label",
+#       `for` = id,
+#       tabindex = 0,
+#       heading,
+#       tags$span(
+#         class = "sr-only",
+#         paste0("Select the ", heading, " by tabbing through the checkboxes below and using enter to make your selection.")
+#       )
+#     ),
+#     tags$div(
+#       Map(
+#         label = labels,
+#         value = values,
+#         select = selected,
+#         this = paste0(id, "-", seq_along(labels)),
+#         desc = descriptions,
+#         d_id = paste0(id, "Description-", seq_along(descriptions)),
+#         function(label, value, select, this, desc, d_id) {
+#           result <- tags$div(
+#             class = "checkbox",
+#             role = "checkboxgroup",
+#             tabindex='0',
+#             tags$label(
+#               `for` = this,
+#               tags$input(
+#                 type = "checkbox",
+#                 tabindex='-1',
+#                 `aria-checked` = tolower(as.character(select)),
+#                 value = value,
+#                 name = id,
+#                 id = this,
+#                 `aria-describedby` = paste(this, "label", sep="-"),
+#                 tags$span(
+#                   class = paste(this, "label", sep="-"),
+#                   label)
+#               )
+#             )
+#           )
+#           if (select) result$children[[length(result$children)]]$children[[1]] <- shiny::tagAppendAttributes(result$children[[length(result$children)]]$children[[1]] , checked = "checked")
+#           return(result)
+#         }
+#       )
+#     )
+#   )
+# }
+
+
 downloadButtonBar <- function(ids, heading, labels) {
   descriptions <- paste(
     "This link acts like a button. Click this link or press the enter key to download",

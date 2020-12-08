@@ -31,8 +31,9 @@ programChangesChangeSettingsButton <- function(input, output, session, n) {
 	# Enable Input
 	sapply(paste0(pc_n, c('Name', 'StartYear', 'CoverageRate', 'IGRACoverage',
 	'IGRA_frc', 'AcceptingTreatmentFraction', 
-  'CompletionRate', 'TreatmentEffectiveness',
-  'DefaultRate', 'RunSimulations', 'RestoreDefaults')), enable)
+#	'CompletionRate', 'TreatmentEffectiveness', 
+  'Fraction3HP', 'Completion3HP', 'Fraction4R', 'Completion4R', 'Fraction3HR', 'Completion3HR',
+	'AverageTimeToTreatment', 'DefaultRate', 'RunSimulations', 'RestoreDefaults')), enable)
 
 	# Disable Change Settings and View Outcomes buttons
 	sapply(paste0(pc_n, c('ChangeSettings', 'ViewOutcomes')), disable)

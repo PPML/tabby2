@@ -19,7 +19,9 @@ tabnames <- c(
   readmore = "Further Description",
   changelog = "Changelog",
 	feedback = "Feedback", 
-  addOutputs = "Counts of Services"
+  addOutputs = "Counts of Services",
+  entercosts = "Input Costs",
+      costcomparison = "Cost Comparison"
 )
 
 tabcontents <- list(
@@ -34,7 +36,9 @@ tabcontents <- list(
   readmore = readmoreUI(),
   changelog = changelogUI(),
 	feedback = feedbackForm(), 
-  addOutputs = addOutputs('tabby1')
+  addOutputs = addOutputs('tabby1'),
+  entercosts = NULL, #inputCostsUI(),
+    costcomparison = costComparisonUI('tabby1')
 )
 
 if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {

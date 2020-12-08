@@ -94,7 +94,6 @@ invert_geographies <- setNames(nm = unname(geographies), object = names(geograph
 
 risk_group_rate_ratios <- load_risk_group_data2()
 
-
 ##############
 ### Server ###
 ##############
@@ -405,6 +404,18 @@ shinyServer(function(input, output, session) {
 			  sim_data[['combination1']][['ADDOUTPUTS_DATA']],
 			  sim_data[['combination2']][['ADDOUTPUTS_DATA']],
 			  sim_data[['combination3']][['ADDOUTPUTS_DATA']]
+			), 
+			COSTCOMPARISON_DATA = rbind.data.frame(
+			  sim_data[['presimulated']][['COSTCOMPARISON_DATA']],
+			  sim_data[['programChanges1']][['COSTCOMPARISON_DATA']],
+			  sim_data[['programChanges2']][['COSTCOMPARISON_DATA']],
+			  sim_data[['programChanges3']][['COSTCOMPARISON_DATA']],
+			  sim_data[['ttt1']][['COSTCOMPARISON_DATA']],
+			  sim_data[['ttt2']][['COSTCOMPARISON_DATA']],
+			  sim_data[['ttt3']][['COSTCOMPARISON_DATA']],
+			  sim_data[['combination1']][['COSTCOMPARISON_DATA']],
+			  sim_data[['combination2']][['COSTCOMPARISON_DATA']],
+			  sim_data[['combination3']][['COSTCOMPARISON_DATA']]
 			)
 			)
 		})
@@ -471,6 +482,24 @@ shinyServer(function(input, output, session) {
 		                         select(-c(type, year_adj)), 
 		                       options = list(pageLength = 25, scrollX = TRUE), 
 		                       rownames=FALSE )  
+		
+		# Add Data Table for COST OUTCOMES
+		
+		output[['costcomparisonData']] <- 
+		  DT::renderDataTable( data.frame("Scenario"= c("BaseCase","Scenario 1", "Scenario 2", "Scenario 3", "Scenario 4"),
+		                                     "Total Cost"=c(0,526,840,230,672),
+		                                     "TLTBI Cost"=c(0,26,40,30,72),
+		                                     "TB Disease Treatment Cost"=c(0,100,200,125,300),
+		                                     "Productivity Loss Due to Treatment"=c(0,100,250,75,50),
+		                                     "Productivity Loss Due to TB Death"=c(0,200,150,0,150),
+		                                  check.names = FALSE)
+		    # filtered_data[['costcomparisonData']]() %>% 
+		    #                      # filter(comparator == 'absolute_value') %>%
+		    #                      filter(type == 'mean') %>% 
+		    #                      select(-c(type, year_adj, comparator)), 
+		    #                    options = list(pageLength = 25, scrollX = TRUE), 
+		    #                    rownames=FALSE 
+		    )  
 
 			
 		# Custom Scenarios Choice in Output

@@ -61,6 +61,20 @@ addoutputsVisualizationPanel <- function(ns) {
   )
 }
 
+costComparisonVisualizationPanel <- function(ns) {
+  tagAppendAttributes(
+    visualizationPanel(
+      id = ns(costcomparison$IDs$panels$visualization),
+      title = ns(costcomparison$IDs$title),
+      subtitle = ns(costcomparison$IDs$subtitle),
+      plot = ns(costcomparison$IDs$plot),
+      alt = "Cost of Intervention",
+      data = 'costcomparisonData'
+    ),
+    class = "costcomparison-tab"
+  )
+}
+
 visualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NULL,
                                click = NULL, dblclick = NULL, active = TRUE, data) {
   class <- paste0(id, "-tab")

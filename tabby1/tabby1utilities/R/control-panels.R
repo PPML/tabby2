@@ -186,6 +186,33 @@ addoutputsControlPanel <- function(ns) {
   )
 }
 
+costComparisonControlPanel <- function(ns) {
+  controlPanel(
+    class = "costcomparison-tab",
+    outcome = checkboxGroup2(
+      id = ns(costcomparison$IDs$controls$costs),
+      heading = costcomparison$costs$heading,
+      labels = costcomparison$costs$labels,
+      values = costcomparison$costs$values,
+      selected = costcomparison$costs$selected,
+      descriptions = costcomparison$costs$descriptions
+    ),
+    interventions = uiOutput('costcomparisonInterventions'),
+    analyses = checkboxGroup2(
+      id = ns(costcomparison$IDs$controls$analyses),
+      heading = costcomparison$analyses$heading,
+      labels = costcomparison$analyses$labels,
+      values = costcomparison$analyses$values,
+    ),
+    downloads = downloadButtonBar(
+      ids = ns(costcomparison$IDs$downloads),
+      heading = costcomparison$downloads$heading,
+      labels = costcomparison$downloads$labels
+    )
+  )
+}
+
+
 controlPanel <- function(class, active = TRUE, comparators = NULL,
                          populations = NULL, ages = NULL, years = NULL,
                          outcomes = NULL, interventions = NULL,

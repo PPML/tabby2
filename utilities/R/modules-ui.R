@@ -47,8 +47,6 @@ updateAboutUI <- function(input, output, session, available_geographies) {
 	})
 }
 
-
-
 standardInterventionsUI <- function() {
   fluidRow(
     column(12,
@@ -365,6 +363,157 @@ outcomesUI <- function() {
       plotOutput('outcome_plot')
     )
   )
+}
+
+##page inputting costs 
+inputCostsUI <- function() {
+  tagList(
+    tags$h1("Input Unit Costs"),
+    #LTBI testing costs
+    wellPanel(
+      fluidRow(
+        column(12,
+               tags$h3("Enter the average cost for each clinical service (in US dollars)."),
+               br()
+        ),
+        column(4, {
+          tagList(
+            # tags$h5("Enter intervention associated costs."),
+            tags$h4("LTBI Testing Costs:"),
+            numericInput(inputId = "LTBIIdCost",
+                         label = "Cost of identifiying an individual for LTBI testing",
+                         value = 100, min = 50, max = 500),
+            numericInput(inputId =" TSTCost",
+                         label = "Cost of a Mantoux tuberculin skin test (TST)",
+                         value = 8.65, min = 0, max = 15),
+            numericInput(inputId ="IGRACost",
+                         label = "Cost of an IGRA",
+                         value = 68.87, min = 0, max = 120),
+            numericInput(inputId ="NoTBCost",
+                         label = "Cost of ruling out TB disease before LTBI treatment",
+                         value = 60, min = 0, max = 100)
+          )
+        }),
+        #LTBI treatment costs
+        column(4, {
+          tagList(
+            tags$h4("LTBI Treatment Costs:"),
+            numericInput(inputId = "Cost3HP",
+                         label = "Cost of treatment with 3HP",
+                         value = 804, min = 0, max = 1000),
+            
+            numericInput(inputId = "Cost4R",
+                         label = "Cost of treatment with 4R",
+                         value = 488, min = 400, max = 600),
+            
+            numericInput(inputId = "Cost3HR",
+                         label = "Cost of treatment with 3HR",
+                         value = 457, min = 0, max = 600)
+          ) #end of tag list
+        }),#end of column
+        #active TB costs
+        column(4, {
+          tagList(
+            tags$h4("Active TB Identification and Treatment Costs:"),
+            # numericInput(inputId = "TBIdCost",
+            #              label = "cost of identifiying an individual for TB testing",
+            #              value = 100, min = 50, max = 500),
+            numericInput(inputId ="TBTestCost",
+                         label = "Cost of a TB disease diagnosis",
+                         value = 8.65, min = 0, max = 15),
+            numericInput(inputId ="TBTreatCost",
+                         label = "Cost of a TB disease treatment",
+                         value = 68.87, min = 0, max = 120)
+          ) #end of tag list
+        }), #end of column
+        br(),
+      # ),  #end of fluid row 1
+        column(12, {
+        tagList(
+          # tags$h5("Enter intervention associated costs."),
+          tags$h4("Other Inputs:"),
+          numericInput(inputId = "DiscountRate",
+                       label = "Discount Rate",
+                       value = 1, min = 0, max = 1, step=.01),
+          fluidRow(
+            column(
+              6,
+              numericInput(
+                inputId = "CostStartYr",
+                label = "Start Year",
+                min = 2020,
+                max = 2050,
+                value = 2020,
+                step = 1
+              )
+            ),
+            column(
+              6,
+              numericInput(
+                inputId = "CostEndYr",
+                label = 'Stop Year',
+                min = 2020,
+                max = 2050,
+                value = 2050,
+                step = 1
+              )
+            )
+          ) #end of fluid row
+        )
+      })
+      )  #end of fluid row 1
+      
+    ), #end of well panel 1
+    #          wellPanel(
+    #            fluidRow(
+    #               column(12,
+    #                      tags$h3("Enter benefit from averted outcomes."),
+    #                      br()
+    #               ),  #end of column
+    #           fluidRow(
+    #           column(6,{
+    #               tagList(
+    #                 tags$h4("example"),
+    #               numericInput(inputId = "TBCaseAvertCost",
+    #                            label = "Average economic benefit from one averted TB case:",
+    #                            value = 100, min = 50, max = 500)
+    #               ) #end of tagList
+    #          }), #end of column
+    #           column(6,{
+    #             tagList(
+    #               tags$h4("example"),
+    #               numericInput(inputId ="TBDeathAvertCost",
+    #                            label = "Average economic benefit from one averted TB death:",
+    #                            value = 8.65, min = 0, max = 15)
+    #           ) #end of taglist
+    #             }) #end of column
+    #          ) #end of fluid row 4
+    # ) #end of fluid row 3
+    # ), #end of well panel 2
+    actionButton(
+      inputId = paste0('toCostOutputs'),
+      label = 'Calculate Costs',
+      class = 'btn-primary',
+      style = 'color: white;'
+    )
+  ) #end of tagList
+}
+
+##page for displaying costs 
+costComparisonUI <- function(id){
+  ns <- NS(id)
+  tagList(fluidRow(
+    column(
+      width = 4,
+      class = "tab-content",
+      costComparisonControlPanel(ns)
+    ),
+    column(
+      width = 8,
+      class = "tab-content",
+      costComparisonVisualizationPanel(ns)
+    )
+  ))
 }
 
 downloadsAndSettingsUI <- function() {
