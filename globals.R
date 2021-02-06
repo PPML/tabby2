@@ -21,7 +21,7 @@ tabnames <- c(
 	feedback = "Feedback", 
   addOutputs = "Counts of Services",
   entercosts = "Input Costs",
-      costcomparison = "Cost Comparison"
+  costcomparison = "Cost Comparison"
 )
 
 tabcontents <- list(
@@ -37,8 +37,8 @@ tabcontents <- list(
   changelog = changelogUI(),
 	feedback = feedbackForm(), 
   addOutputs = addOutputs('tabby1'),
-  entercosts = NULL, #inputCostsUI(),
-    costcomparison = costComparisonUI('tabby1')
+  entercosts = inputCostsUI(),
+  costcomparison = costComparisonUI('tabby1')
 )
 
 if (exists('debug', envir = .GlobalEnv) && isTRUE(debug)) {

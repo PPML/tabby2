@@ -1,6 +1,8 @@
 IDs:
   controls:
     costs: costcomparisonCosts
+    perspectives: costcomparisonPerspectives
+    discount: costcomparisonDiscount
     interventions: costcomparisonInterventions
     analyses: costcomparisonAnalyses
     colorblind: costcomparisonColorblind
@@ -17,47 +19,74 @@ IDs:
   subtitle: costcomparisonSubtitle
   plot: costcomparisonPlot
 costs:
-  heading: Costs
+  heading: Effectiveness Measure
   values:
     - ltbi_tests_000s
     - ltbi_txinits_000s
     - ltbi_txcomps_000s
     - tb_txinits_000s 
-    - tb_txcomps_000s
   labels:
-    ltbi_tests_000s: Total Cost
-    ltbi_txtests_000s: LTBI Treatment Cost
-    ltbi_txcomps_000s: TB Disease Treatment Cost
-    tb_txinits_000s: Productivty Loss due to TB Treatment
-    tb_txcomps_000s: Productivty Loss due to TB Death
+    ltbi_tests_000s: TB cases averted
+    ltbi_txtests_000s: TB deaths averted
+    ltbi_txcomps_000s: QALYs saved
+    tb_txinits_000s: Life years saved
   formatted:
     ltbi_tests_000s: |-
-      Total Cost
-      (in US Dollars)
+      TB cases averted
     ltbi_txtests_000s: |-
-     LTBI Treatment Cost 
-     (in US Dollars)
+      TB deaths averted
     ltbi_txcomps_000s: |-
-      TB Disease Treatment Cost 
-      (in US Dollars)
+      QALYs saved
     tb_txinits_000s: |-
-       Productivty Loss due to TB Disease treatment
-       (in US Dollars)
-    tb_txcomps_000s: |-
-       Productivty Loss due to TB Disease death
-       (in US Dollars)
+       Life years saved
   descriptions:
-       ltbi_tests_000s: Total Cost over selected time interval
-       ltbi_txtests_000s: Total Cost of LTBI treatment over the selected time interval
-       ltbi_txcomps_000s: Total Cost of TB Disease treatment over the selected time interval
-       tb_txinits_000s: Productivty Loss due to TB Disease treatment over the selected time interval
-       tb_txcomps_000s: Productivty Loss due to TB Disease death over the selected time interval
+       ltbi_tests_000s: TB cases averted
+       ltbi_txtests_000s: TB deaths averted
+       ltbi_txcomps_000s: QALYS saved
+       tb_txinits_000s: Life years saved
   selected:
+  - no
   - yes
   - no
   - no
+perspectives:
+  heading: Costing Perspective
+  values:
+    - ltbi_tests_000s
+    - ltbi_txinits_000s
+  labels:
+    ltbi_tests_000s: Health services costs only
+    ltbi_txtests_000s: Health services and patient productivity costs
+  formatted:
+    ltbi_tests_000s: |-
+      Health System Costs Only
+    ltbi_txtests_000s: |-
+      Health System and Patient Productivity Costs
+  descriptions:
+       ltbi_tests_000s: Health System Costs Only
+       ltbi_txtests_000s: Health System and Patient Productivity Costs
+  selected:
   - no
+  - yes
+discount:
+  heading: Discount health and economic outcomes??
+  values:
+    - ltbi_tests_000s
+    - ltbi_txinits_000s
+  labels:
+    ltbi_tests_000s: Include
+    ltbi_txtests_000s: Do not include
+  formatted:
+    ltbi_tests_000s: |-
+      Include
+    ltbi_txtests_000s: |-
+      Do not include
+  descriptions:
+       ltbi_tests_000s: Include discount rate
+       ltbi_txtests_000s: Do not include discount rate
+  selected:
   - no
+  - yes
 interventions:
   heading: Modeled Scenarios
   values:

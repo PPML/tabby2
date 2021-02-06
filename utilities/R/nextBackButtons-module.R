@@ -19,6 +19,8 @@ nextBackButtons <- function(input, output, session) {
   observeEvent(input$toEstimates8, updateTabItems(session = session, inputId = 'sidebar', selected = "estimates"))
   observeEvent(input$toEstimates9, updateTabItems(session = session, inputId = 'sidebar', selected = "estimates"))
   observeEvent(input$toBuildScenarios, updateTabItems(session = session, inputId = 'sidebar', selected = "customscenarios"))
+  observeEvent(input$toCostOutputs, updateTabItems(session = session, inputId = 'sidebar', selected = "costcomparison"))
+  
 
   # next/back buttons within custom scenario builder
   observeEvent(input$toProgramChanges1, updateTabsetPanel(session = session, inputId = 'CustomScenariosBuilder', selected = "programchanges"))

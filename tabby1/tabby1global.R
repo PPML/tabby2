@@ -20,7 +20,7 @@ ESTIMATES_DATA <- data_estimates()
 TRENDS_DATA <- data_trends()
 AGEGROUPS_DATA <- data_agegroups()
 ADDOUTPUTS_DATA <- data_addoutputs()
-COSTCOMPARISON_DATA <-data_addoutputs()
+COSTCOMPARISON_DATA <-data_costcomparison() 
 
 plots <- config_plots()
 # bit of a hacky work around

@@ -189,13 +189,29 @@ addoutputsControlPanel <- function(ns) {
 costComparisonControlPanel <- function(ns) {
   controlPanel(
     class = "costcomparison-tab",
-    outcome = checkboxGroup2(
+    outcome = radioButtons2(
       id = ns(costcomparison$IDs$controls$costs),
       heading = costcomparison$costs$heading,
       labels = costcomparison$costs$labels,
       values = costcomparison$costs$values,
       selected = costcomparison$costs$selected,
       descriptions = costcomparison$costs$descriptions
+    ),
+    populations = radioButtons2(
+      id = ns(costcomparison$IDs$controls$perspectives),
+      heading = costcomparison$perspectives$heading,
+      labels = costcomparison$perspectives$labels,
+      values = costcomparison$perspectives$values,
+      selected = costcomparison$perspectives$selected,
+      descriptions = costcomparison$perspectives$descriptions
+    ),
+    ages = radioButtons2(
+      id = ns(costcomparison$IDs$controls$discount),
+      heading = costcomparison$discount$heading,
+      labels = costcomparison$discount$labels,
+      values = costcomparison$discount$values,
+      selected = costcomparison$discount$selected,
+      descriptions = costcomparison$discount$descriptions
     ),
     interventions = uiOutput('costcomparisonInterventions'),
     analyses = checkboxGroup2(

@@ -131,7 +131,7 @@ data_addoutputs <- function() {
 #' @rdname model-results
 #' @export
 data_costcomparison <- function() {
-  results_costcomparison() %>%
+  results_costcomparison() %>% dplyr::filter(comparator=="absolute_value") %>%
     gather(type, value, mean, ci_high, ci_low) %>%
     mutate_if(is.factor, as.character) %>% 
     mutate(comparator = recode(comparator, pct_basecase_2016 = "pct_basecase_2018"),

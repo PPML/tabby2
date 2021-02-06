@@ -392,7 +392,6 @@ shinyServer(function(input, output, session) {
 				sim_data[['combination2']][['TRENDS_DATA']],
 				sim_data[['combination3']][['TRENDS_DATA']]
 			), 
-			
 			ADDOUTPUTS_DATA = rbind.data.frame(
 			  sim_data[['presimulated']][['ADDOUTPUTS_DATA']],
 			  sim_data[['programChanges1']][['ADDOUTPUTS_DATA']],
@@ -475,32 +474,78 @@ shinyServer(function(input, output, session) {
 				rownames=FALSE )  
 		
 		# Add Data Table for ADDITIONAL OUTCOMES
-		
 		output[['addoutputsData']] <- 
 		  DT::renderDataTable( filtered_data[['addoutputsData']]() %>% 
 		                         filter(type == 'mean') %>% 
 		                         select(-c(type, year_adj)), 
 		                       options = list(pageLength = 25, scrollX = TRUE), 
 		                       rownames=FALSE )  
+##call the costs module	
+		# Construct Reactive Objects which return cost scenario simulations when called
+		compute_costs<-callModule(runCostComparisonModule, NULL, sim_data=combined_data)
 		
-		# Add Data Table for COST OUTCOMES
+		# Restore Defaults for Costing Scenarios
+		# observeEvent(input[['RestoreDefaultsC']], {
+		#   output$entercosts <- renderUI({ inputCostsUI() })
+		# })
+		# 
+		#allows for the values to be changed when user selects change settings
+		observeEvent({ 
+		  input$state
+		  input[['ChangeSettingsC']] }, {
+		    # sim_data[['programChanges3']] <- NULL
+		    callModule(costChangeSettingsButton, NULL)
+		  })
+		#stores the costs
+		cost_data<-reactiveValues(costs=NULL,
+		                          costeffective=NULL)
+		observeEvent(input[['CalculateCosts']], {
+		  cost_list<-callModule(costRunButton, NULL, compute_costs)
+		cost_data[['costs']]<-cost_list[[1]]
+		cost_data[['costeffective']]<-cost_list[[2]]
 		
-		output[['costcomparisonData']] <- 
-		  DT::renderDataTable( data.frame("Scenario"= c("BaseCase","Scenario 1", "Scenario 2", "Scenario 3", "Scenario 4"),
-		                                     "Total Cost"=c(0,526,840,230,672),
-		                                     "TLTBI Cost"=c(0,26,40,30,72),
-		                                     "TB Disease Treatment Cost"=c(0,100,200,125,300),
-		                                     "Productivity Loss Due to Treatment"=c(0,100,250,75,50),
-		                                     "Productivity Loss Due to TB Death"=c(0,200,150,0,150),
-		                                  check.names = FALSE)
-		    # filtered_data[['costcomparisonData']]() %>% 
-		    #                      # filter(comparator == 'absolute_value') %>%
-		    #                      filter(type == 'mean') %>% 
-		    #                      select(-c(type, year_adj, comparator)), 
-		    #                    options = list(pageLength = 25, scrollX = TRUE), 
-		    #                    rownames=FALSE 
-		    )  
+		})
 
+		# cost_data <- reactive({list(costs=costs})
+		
+		# View(cost_data$costs)
+		# View(cost_data)
+		# Add Data Table for COST OUTCOMES
+# 		output[['costcomparisonData']] <- 
+# 		  DT::renderDataTable(data.frame("Scenario"= c("BaseCase","Scenario 1", "Scenario 2", "Scenario 3", "Scenario 4"),
+# 		                                     "Productivity Cost Due to TLTBI"=rep(0,5),
+# 		                                     "Health System Cost Due to TLTBI"=rep(1,5),
+# 		                                 
+# 		                                     "Productivity Cost Due to TB Disease"=rep(2,5),
+#     		                                 "Health System Cost Due to TB Disease"=rep(3,5),
+# 		                                 
+# 		                                     "Total Health System Cost"=c(0,526,840,230,672),
+# 		                                     "Total Cost"=c(0,526,840,230,672),
+# 		                                      check.names = FALSE), rownames=FALSE , 
+# 		                                      options = list(pageLength = 25, scrollX = TRUE,dom = 't'))
+# 		  
+# 		
+    # output[['costcomparisonData2']] <- 
+    #   DT::renderDataTable(data.frame("Scenario"= c("BaseCase","Scenario 1", "Scenario 2", "Scenario 3", "Scenario 4"),
+    #                                  "Cost"=c(0,26,40,30,72),
+    #                                  "Incremental Cost"=c(0,26,40,30,72),
+    #                                  "Effectiveness"=c(0,100,200,125,300),
+    #                                  "Incremental Effectiveness"=c(0,100,250,75,50),
+    #                                  "ICER"=c(0,200,150,0,150),
+    #                                   check.names = FALSE), rownames=FALSE , 
+    #                                   options = list(pageLength = 25, scrollX = TRUE,dom = 't')
+    #   )
+                          
+    output[['costcomparisonData']] <-
+      DT::renderDataTable(cost_data[['costs']],
+                             options = list(pageLength = 100, scrollX = TRUE,dom = 't'),
+                             rownames=FALSE )
+    
+    output[['costcomparisonData2']] <- 
+      DT::renderDataTable(cost_data[['costeffective']], rownames=FALSE , 
+                          options = list(pageLength = 25, scrollX = TRUE,dom = 't')
+      )
+    
 			
 		# Custom Scenarios Choice in Output
 		callModule(outputIncludeCustomScenarioOptions, NULL, sim_data)

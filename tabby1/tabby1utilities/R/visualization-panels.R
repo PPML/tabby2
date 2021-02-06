@@ -61,20 +61,6 @@ addoutputsVisualizationPanel <- function(ns) {
   )
 }
 
-costComparisonVisualizationPanel <- function(ns) {
-  tagAppendAttributes(
-    visualizationPanel(
-      id = ns(costcomparison$IDs$panels$visualization),
-      title = ns(costcomparison$IDs$title),
-      subtitle = ns(costcomparison$IDs$subtitle),
-      plot = ns(costcomparison$IDs$plot),
-      alt = "Cost of Intervention",
-      data = 'costcomparisonData'
-    ),
-    class = "costcomparison-tab"
-  )
-}
-
 visualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NULL,
                                click = NULL, dblclick = NULL, active = TRUE, data) {
   class <- paste0(id, "-tab")
@@ -109,8 +95,69 @@ visualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NU
 				)
 			)
 		}),
-		tabPanel(title = 'Data Table', 
+		tabPanel(title = 'Results Table', 
 			DT::dataTableOutput(outputId = data)
 		)
 	)
+}
+
+costVisualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NULL,
+                               click = NULL, dblclick = NULL, active = TRUE, data, data2) {
+  class <- paste0(id, "-tab")
+  tabsetPanel(
+    tabPanel(title = 'Results Tables',{ 
+      fluidRow(
+      h3("Costs Table"),
+       DT::dataTableOutput(outputId = data),
+       br(), 
+       br(), 
+       h3("Cost Effectiveness Table"),
+       DT::dataTableOutput(outputId = data2)
+      )
+      }),
+    tabPanel(title = 'Cost Effectiveness Plane', {
+      tags$div(
+        class = paste(c(class, "tab-pane", if (active) " active"), collapse = " "),
+        if (!is.null(title)) {
+          tags$h3(
+            textOutput(title)
+          )
+        },
+        if (!is.null(subtitle)) {
+          tags$h4(
+            textOutput(subtitle)
+          )
+        },
+        do.call(
+          tagAppendAttributes,
+          c(
+            list(
+              tag = withSpinner(tags$div(
+                id = plot,
+                class = "shiny-plot-output",
+                style = "width: 90%; height: 600px;",
+                `data-alt` = alt,
+                tags$img(alt = alt)
+              ))
+            )
+          )
+        )
+      )
+    })
+  )
+}
+
+costComparisonVisualizationPanel <- function(ns) {
+  tagAppendAttributes(
+    costVisualizationPanel(
+      id = ns(costcomparison$IDs$panels$visualization),
+      title = ns(costcomparison$IDs$title),
+      subtitle = ns(costcomparison$IDs$subtitle),
+      plot = ns(costcomparison$IDs$plot),
+      alt = "Cost of Intervention",
+      data = 'costcomparisonData', 
+      data2 ='costcomparisonData2'
+    ),
+      class = "costcomparison-tab"
+  )
 }

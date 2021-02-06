@@ -99,3 +99,30 @@ combinationChangeSettingsButton <- function(input, output, session, n) {
 		# sapply(paste0(combinationn, c('ChangeSettings', 'ViewOutcomes')), disable)
 		sapply(paste0(combinationn, c('ChangeSettings')), disable)
 }
+
+### ### ### Costing 
+
+costRunButton <- function(input, output, session, compute_cost_reactive) { 
+
+  # Disable Input for the programChange Scenario
+  sapply(c('LTBIIdCost','TSTCost','IGRACost','NoTBCost','Cost3HP','Cost4R','Cost3HR','TBIdCost',
+           'TBTestCost', 'TBTreatCost', 'DiscountRate',
+           'CostStartYr', 'CostEndYr', 'CalculateCosts'), disable)
+  
+  # Enable the Change Settings and View Outcomes Button
+  sapply(c('ChangeSettingsC', 'ViewCosts'), enable)
+  
+  # Compute and Return Data to Fill Into sim_data reactiveList
+  compute_cost_reactive()
+}
+
+costChangeSettingsButton <- function(input, output, session) {
+
+  # Disable Input for the programChange Scenario
+  sapply(c('LTBIIdCost','TSTCost','IGRACost','NoTBCost',
+           'Cost3HP','Cost4R','Cost3HR','TBIdCost', 'TBTestCost', 'TBTreatCost', 'DiscountRate',
+           'CostStartYr', 'CostEndYr', 'CalculateCosts'), enable)
+  
+  # Enable the Change Settings and View Outcomes Button
+  sapply(c('ChangeSettingsC', 'ViewCosts'), disable)
+}
