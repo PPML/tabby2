@@ -3,6 +3,7 @@ IDs:
     costs: costcomparisonCosts
     perspectives: costcomparisonPerspectives
     discount: costcomparisonDiscount
+    comparator: costcomparisonComparator
     interventions: costcomparisonInterventions
     analyses: costcomparisonAnalyses
     colorblind: costcomparisonColorblind
@@ -21,69 +22,88 @@ IDs:
 costs:
   heading: Effectiveness Measure
   values:
-    - ltbi_tests_000s
-    - ltbi_txinits_000s
-    - ltbi_txcomps_000s
-    - tb_txinits_000s 
+    - avtcases
+    - avtdeaths
+    - savqalys
+    - savlys 
   labels:
-    ltbi_tests_000s: TB cases averted
-    ltbi_txtests_000s: TB deaths averted
-    ltbi_txcomps_000s: QALYs saved
-    tb_txinits_000s: Life years saved
+    avtcases: TB cases averted
+    avtdeaths: TB deaths averted
+    savqalys: QALYs saved
+    savlys: Life years saved
   formatted:
-    ltbi_tests_000s: |-
+    avtcases: |-
       TB cases averted
-    ltbi_txtests_000s: |-
+    avtdeaths: |-
       TB deaths averted
-    ltbi_txcomps_000s: |-
+    savqalys: |-
       QALYs saved
-    tb_txinits_000s: |-
+    savlys: |-
        Life years saved
   descriptions:
-       ltbi_tests_000s: TB cases averted
-       ltbi_txtests_000s: TB deaths averted
-       ltbi_txcomps_000s: QALYS saved
-       tb_txinits_000s: Life years saved
+       avtcases: TB cases averted
+       avtdeaths: TB deaths averted
+       savqalys: QALYS saved
+       savlys: Life years saved
   selected:
-  - no
   - yes
+  - no
   - no
   - no
 perspectives:
   heading: Costing Perspective
   values:
-    - ltbi_tests_000s
-    - ltbi_txinits_000s
+    - healthsys
+    - all
   labels:
-    ltbi_tests_000s: Health services costs only
-    ltbi_txtests_000s: Health services and patient productivity costs
+    healthsys: Health services costs only
+    all: Health services and patient productivity costs
   formatted:
-    ltbi_tests_000s: |-
+    healthsys: |-
       Health System Costs Only
-    ltbi_txtests_000s: |-
+    all: |-
       Health System and Patient Productivity Costs
   descriptions:
-       ltbi_tests_000s: Health System Costs Only
-       ltbi_txtests_000s: Health System and Patient Productivity Costs
+       healthsys: Health System Costs Only
+       all: Health System and Patient Productivity Costs
   selected:
   - no
   - yes
 discount:
-  heading: Discount health and economic outcomes??
+  heading: Discount health and economic outcomes at 3% annually?
   values:
-    - ltbi_tests_000s
-    - ltbi_txinits_000s
+    - 1
+    - 0
   labels:
-    ltbi_tests_000s: Include
-    ltbi_txtests_000s: Do not include
+    1: Include
+    0: Do not include
   formatted:
-    ltbi_tests_000s: |-
+    1: |-
       Include
-    ltbi_txtests_000s: |-
+    0: |-
       Do not include
   descriptions:
-       ltbi_tests_000s: Include discount rate
-       ltbi_txtests_000s: Do not include discount rate
+       1: Include discount rate
+       0: Do not include discount rate
+  selected:
+  - no
+  - yes
+comparator:
+  heading: ICER/ACER
+  values:
+    - ICER
+    - ACER
+  labels:
+    ICER: Compare incremental cost effectiveness of scenarios
+    ACER: Compare all scenarios to the basecase
+  formatted:
+    ICER: |-
+      Compare incremental cost effectiveness of scenarios
+    ACER: |-
+      Compare all scenarios to the basecase
+  descriptions:
+       ICER: Compare incremental cost effectiveness of scenarios
+       ACER: Compare all scenarios to the basecase
   selected:
   - no
   - yes

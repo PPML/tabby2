@@ -153,7 +153,11 @@ runProgramChanges <- function(input, output, session, n, values, geo_short_code,
    # cat('new data has: ', as.character(nrow(filter(new_data[['TRENDS_DATA']], scenario == scenario_name))),
    #     'new_data rows\n')
 
-  return(new_data)
+	prg_chng_list<-list()
+	prg_chng_list[["parameters"]]<-c(prg_chng[['IGRA_frc']], prg_chng[['frc_3hp']], prg_chng[['frc_4r']], prg_chng[['frc_3hr']])
+	prg_chng_list[["new_data"]]<-new_data
+	
+  return(prg_chng_list)
 	})
 
 }

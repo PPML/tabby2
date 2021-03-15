@@ -187,9 +187,9 @@ addoutputsControlPanel <- function(ns) {
 }
 
 costComparisonControlPanel <- function(ns) {
-  controlPanel(
+  costControlPanel(
     class = "costcomparison-tab",
-    outcome = radioButtons2(
+    costs = radioButtons2(
       id = ns(costcomparison$IDs$controls$costs),
       heading = costcomparison$costs$heading,
       labels = costcomparison$costs$labels,
@@ -197,7 +197,7 @@ costComparisonControlPanel <- function(ns) {
       selected = costcomparison$costs$selected,
       descriptions = costcomparison$costs$descriptions
     ),
-    populations = radioButtons2(
+    perspectives = radioButtons2(
       id = ns(costcomparison$IDs$controls$perspectives),
       heading = costcomparison$perspectives$heading,
       labels = costcomparison$perspectives$labels,
@@ -205,13 +205,21 @@ costComparisonControlPanel <- function(ns) {
       selected = costcomparison$perspectives$selected,
       descriptions = costcomparison$perspectives$descriptions
     ),
-    ages = radioButtons2(
+    discount = radioButtons2(
       id = ns(costcomparison$IDs$controls$discount),
       heading = costcomparison$discount$heading,
       labels = costcomparison$discount$labels,
       values = costcomparison$discount$values,
       selected = costcomparison$discount$selected,
       descriptions = costcomparison$discount$descriptions
+    ),
+    comparator = radioButtons2(
+      id = ns(costcomparison$IDs$controls$comparator),
+      heading = costcomparison$comparator$heading,
+      labels = costcomparison$comparator$labels,
+      values = costcomparison$comparator$values,
+      selected = costcomparison$comparator$selected,
+      descriptions = costcomparison$comparator$descriptions
     ),
     interventions = uiOutput('costcomparisonInterventions'),
     analyses = checkboxGroup2(
@@ -242,6 +250,35 @@ controlPanel <- function(class, active = TRUE, comparators = NULL,
     years,
     outcomes,
     interventions,
+    # if (class=="trends-tab") {
+    #   checkboxGroup2(
+    #     id = paste0("tabby1-", strsplit(class, "-")[[1]][[1]],
+    #                 "UncertaintyInterval"),
+    #     heading = "Uncertainty Intervals",
+    #     labels = "Add uncertainty intervals to plots",
+    #     values = "uncertainty_intervals",
+    #     selected = TRUE
+    #   )
+    # },
+    labels,
+    downloads
+  )
+}
+
+costControlPanel <- function(class, active = TRUE, costs = NULL,
+                             perspectives = NULL, discount = NULL, comparator=NULL,
+                             outcomes = NULL, interventions = NULL,
+                             analyses = NULL, labels = NULL, downloads = NULL) {
+  tags$div(
+    class = class,
+    class = paste(c(class, "tab-pane", if (active) "active"), collapse = " "),
+    outcomes,
+    interventions,
+    comparator,
+    costs,
+    perspectives,
+    discount,
+
     # if (class=="trends-tab") {
     #   checkboxGroup2(
     #     id = paste0("tabby1-", strsplit(class, "-")[[1]][[1]],

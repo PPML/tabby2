@@ -1,16 +1,18 @@
-runCostComparisonModule<-function(input, output, session, sim_data) {
+runCostComparisonModule<-function(input, output, session, sim_data, treat_dist) {
   reactive({
-
-    costs<-rep(0,13)
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####     
+### SET THE UNIT COSTS BASED ON USER INPUT 
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####     
+    costs<-rep(0,12)
     names(costs)<-c('LTBIIdCost','TSTCost','IGRACost','NoTBCost',
                     '3HPCost','4RCost','3HRCost','TBIdCost', 'TBtest', 
-                    'TBtx', 'Discount','StartYear', 'EndYear')
+                    'TBtx', 'Discount', 'EndYear')
     
     costs['LTBIIdCost']<-input[['LTBIIdCost']]
     costs['TSTCost']<-input[['TSTCost']]
     costs['IGRACost']<-input[['IGRACost']]
     costs['NoTBCost']<-input[['NoTBCost']]
-
+    
     costs['3HPCost']<-input[['Cost3HP']]
     costs['4RCost']<-input[['Cost4R']]
     costs['3HRCost']<-input[['Cost3HR']]
@@ -19,162 +21,433 @@ runCostComparisonModule<-function(input, output, session, sim_data) {
     costs['TBtest']<-input[['TBTestCost']]
     costs['TBtx']<-input[['TBTreatCost']]
     
-    costs['Discount']<-input[['DiscountRate']]
-    costs["StartYear"]<-input[['CostStartYr']]
+    costs['Discount']<-3
     costs["EndYear"]<-input[['CostEndYr']]
     
-    # return(costs)
-  #use the values in the costing equations below
-  COSTCOMPARISON_DATA <-  reactive({ sim_data()[['COSTCOMPARISON_DATA']] })
-  
-  data<-COSTCOMPARISON_DATA() %>%
-    dplyr::filter(
-      population == "all_populations",
-      age_group == "all_ages",
-      comparator == "absolute_value"
-    ) %>%
-    arrange(scenario) %>%
-    mutate(
-      year_adj = year + position_year(scenario)
-    ) %>% 
-    mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-           value = signif(value, 3)*2) 
-  
-  # View(data)
+    nyrs<-length(2020:costs['EndYear'])
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####     
+### SET THE LTBI TESTING AND TREATMENT PARAMETERS BASED ON USER INPUT ON CARE CASCADE PAGE
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+    IGRA_frc<-treat_dist[1]
+    tx_dist<-treat_dist[2:4]
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####     
+### REACTIVE SIMULATION DATA FOR THE CALCULATIONS OF COSTS BELOW 
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+    COSTCOMPARISON_DATA <-  reactive({ sim_data()[['ADDOUTPUTS_DATA']] })
+    TRENDS_DATA <-  reactive({ sim_data()[['TRENDS_DATA']] })
+    AGEGROUPS_DATA <- reactive({ sim_data()[['AGEGROUPS_DATA']] })
+### FILTER THESE DATA DOWN TO THEIR RELEVANT PARTS
+    cc_data<-COSTCOMPARISON_DATA() %>%
+      dplyr::filter(
+        population == "all_populations",
+        age_group == "all_ages",
+        comparator == "absolute_value", 
+        type== "mean", 
+        scenario !="base_case2") %>% 
+      arrange(scenario) %>%
+      mutate(
+        year_adj = year + position_year(scenario)
+      ) %>% 
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'),
+             value = signif(value, 3)*2) 
     
-  #filter the years from user input to for the time horizon of the savings 
-  cc_data<-data %>% dplyr::filter(year >=costs["StartYear"] & year <= costs["EndYear"])
-  
-  # View(cc_data)
-  # print(unique(cc_data$scenario))
+    ef_data<-TRENDS_DATA() %>%
+      dplyr::filter(
+        population == "all_populations",
+        age_group == "all_ages",
+        comparator == "absolute_value",
+        type=="mean", 
+        scenario !="base_case2"
+      ) %>%
+      arrange(scenario) %>%
+      mutate(
+        year_adj = year + position_year(scenario)
+      ) %>% 
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'),
+             value = signif(value, 3)*2)
+    
+    ag_data<-AGEGROUPS_DATA() %>% 
+      dplyr::filter(
+        population == "all_populations",
+        comparator == "absolute_value", 
+        type== "mean", 
+        scenario !="base_case2") %>%
+      arrange(scenario) %>%
+      mutate(scenario = relevel(as.factor(scenario), 'base_case'),
+             value = signif(value, 3)*2)
+###filter the years from user input to for the time horizon of the savings 
+    cc_data<-cc_data %>% dplyr::filter(year>=2020 & year <= costs["EndYear"])
+    ef_data<-ef_data %>% dplyr::filter(year>=2020 & year <= costs["EndYear"])
+    ag_data<-ag_data %>% dplyr::filter(year>=2020 & year <= costs["EndYear"])
+    
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+### DEFINE DISCOUNTING VECTORS
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    double_discount<-function(
+      r = costs['Discount'], # discount rate
+      t, # number of years delay (t=0 for 2020) vector (0:30)
+      t2=nyrs,  # duration of the stream of outcomes
+      V=1) # Value of outcome in year t
+      ####  TO DISCOUNT A STREAM OF ANNUAL VALUES STARTING TODAY
+    {
+      if(t==0){
+        PV = (1-(1+r)^(-t2))/(log(1+r))
+      }else{
+        ####  TO DISCOUNT A STREAM OF ANNUAL VALUES STARTING AT YEAR t  (DOUBLE DISCOUNTING)
+        PV = V * (1-(1+r)^(-t2))/log(1+r) * (1+r)^(-t)
+      }
+      return(PV)}
+    
+    #basic discounting is going to be equal to
+    disc_vec<-(1+(costs['Discount']/100))^-(0:nyrs)
+    
+    #double discounting is going to be
+    doub_disc_vec<-rep(0,nyrs)
+    for (i in 1:nyrs){
+      doub_disc_vec[i]<-double_discount(t=(i-1))
+    }    
+    
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####     
+### VECTORS OF LIFE EXPECTANCY BOTH DISCOUNTED AND NOT DISCOUNTED 
+### THESE COME FROM MORTALITY.ORG LIFE TABLES 
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    disc_life_exp<-rep(0,11*length(doub_disc_vec))
+    life_exp<-c(78.7,72.0,62.2,52.7,43.4,34.2,25.7,18.0,11.3,6.19,3.18)
+    for (i in 1:nyrs){
+      disc_life_exp[(11*(i-1)+1):(11*i)]<-life_exp*doub_disc_vec[i]
+    }
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+## define some constants used in calculations below 
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+## QALY CALCULATION VALUES  
+TLTBI_UW<-1 #utility weight with LTBI treatment with toxicity
+TLTBI_UW_tox<-.75 #utility weight with LTBI treatment with toxicity
+TB_UW<-.76 #utility weight with TB disease and treatment 
+P_TLTBI_tox<-.04 #probability of toxicity during LTBI treatment
+DUR_TLTBI_tox<-(2/52) #duration of reduced quality of life with toxicity (two weeks)
+DUR_TB<-.75
+## PRODUCTIVITY COST CALCULATION VALUES
+TLTBI_clinic<-(45.72+26.82) #initial and follow-up clinic visits
+TLTBI_ae<-3.55 #adverse event costs with 3HP or 3HR
+P_TB_hosp<-.49 #probability of hospitalization with TB
+DUR_TB_hosp<-(24/365) #average duration of hospitalization with TB (24 days)
+DUR_TB_outpatient<-(6.8/365) #duration of time loss from outpatient services (6.8 days)
 
-  #outcomes are as follows:
-    #ltbi_tests_000s
-    #ltbi_txinits_000s
-    #ltbi_txcomps_000s
-    #tb_txinits_000s
-    #tb_txcomps_000s
+## ANNUAL PRODUCTIVITY BY AGE 
+annual_prod<-c(0,0,20166,64686,87023,83354,67990,38504,16017,16017,16017)
+lifetime_prod<-c(1117558,1399870,1757978,1856808,1582474,1142626,675070,315914,150406,88059,30805)
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
 
-  #program change options:
-  # prg_chng[['IGRA_frc']]
-  # prg_chng[['frc_3hp']]
-  # prg_chng[['frc_4r']]
-  # prg_chng[['frc_3hr']]
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+## CALCULATE THE BASECASE TB CASES AND DEATHS 
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####      
 
-#   colnames.df<-c( "Scenario", "Productivity Cost Due to TLTBI", "Health services Cost Due to TLTBI",
-#                   "Productivity Cost Due to TB Disease",   "Health services Cost Due to TB Disease",
-#                   "Total Health services Cost", "Total Cost")
+bc_cases<-sum(ef_data %>% filter(outcome=="tb_incidence_000s", scenario=="base_case") %>% select(value))
+bc_cases_ag<-ag_data %>% filter(outcome=="tb_incidence_000s", scenario=="base_case") %>% select(value,age_group) %>%
+  group_by(age_group) %>% summarise(cases=round(sum(value))) %>% select(cases)
+bc_deaths<-sum(ef_data %>% filter(outcome=="tb_mortality_000s", scenario=="base_case") %>% select(value))
+bc_deaths_ag<-ag_data %>% filter(outcome=="tb_mortality_000s", scenario=="base_case") %>% select(value,age_group) %>%
+  group_by(age_group) %>% summarise(deaths=round(sum(value))) %>% select(deaths)
+
+bc_tltbi_inits<-sum(cc_data %>% dplyr::filter(scenario=='base_case') %>% dplyr::filter(outcome=="ltbi_txinits_000s")%>%select(value))
+
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+## ANNUAL RESULTS DATAFRAME
+# calculate the cost effectiveness dataframe from the larger dataframe above by year
+# we want the following columns
+# "Scenario", "Cost","TB Cases Averted", "TB Deaths Averted", "QALYs Saved", & "Life Years Saved", "Year"
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+all_cost_data<-data.frame(
+  "Scenario"=rep(unique(cc_data$scenario),length(unique(ef_data$year))*2),
+  "Cost"=rep(0,length(unique(ef_data$year))*2),
+  # "perspectives"=c(rep("healthsys",(length(unique(cc_data$scenario))*2)),rep("all",(length(unique(cc_data$scenario))*2))),
+  "Discount"= rep(c(0,1), each=length(unique(cc_data$scenario))*length(unique(ef_data$year))),
+  "Cases Averted (in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
+  "Deaths Averted (in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
+  "QALYs (in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
+  "Life Years (in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
+  "year"=rep(rep(unique(ef_data$year),each=length(unique(cc_data$scenario))),2),
+  check.names = FALSE
+)
+
+for(i in 1:nrow(all_cost_data)){
+  scen_no<-all_cost_data[i,1]
+  if(scen_no=="base_case"){
+    all_cost_data[i,4]<-all_cost_data[i,5]<-all_cost_data[i,6]<-all_cost_data[i,7]<-0
+  } else{
+  scen_cases_ag<-ag_data %>% filter(outcome=="tb_incidence_000s", scenario==all_cost_data[i,1],year==all_cost_data[i,8]) %>%group_by(age_group) %>%
+    summarise(cases = as.numeric(sum(value))) %>% select(cases)
+  scen_cases_ag<-as.numeric(unlist(scen_cases_ag))
   
-  ##create a new data frame with the following columns:
-  # "Scenario", "Productivity Cost Due to TLTBI","Health services Cost Due to TLTBI"
-  # "Productivity Cost Due to TB Disease","Health services Cost Due to TB Disease"
-  # "Total Health services Cost","Total Cost"
+  bc_cases_agyr<-ag_data %>% filter(outcome=="tb_incidence_000s", scenario=="base_case",year==all_cost_data[i,8]) %>%group_by(age_group) %>%
+    summarise(cases = as.numeric(sum(value))) %>% mutate(cases=as.numeric(cases)) %>% select(cases)
+  bc_cases_agyr<-as.numeric(unlist(bc_cases_agyr))
   
-  new_cost_data<-matrix(0,length(unique(cc_data$scenario)),7)
-  new_cost_data<-as.data.frame(new_cost_data)
-  colnames(new_cost_data)<-c("Scenario", "Productivity cost due to TLTBI", "Health services cost due to TLTBI",
-                    "Productivity cost due to TB disease", "Health services cost due to TB disease",
-                    "Total health services Cost", "Total cost")
+  scen_deaths_ag<- ag_data %>% filter(outcome=="tb_mortality_000s", scenario==all_cost_data[i,1],year==all_cost_data[i,8]) %>% group_by(age_group)  %>%
+                     summarise(deaths = as.numeric(sum(value))) %>% select(deaths)
+  scen_deaths_ag<-as.numeric(unlist(scen_deaths_ag))
   
-  #calculate basecase tbtx inits for the effectiveness measure --this will need to be expanded
-  tbtx_inits_bc<-sum(cc_data %>% dplyr::filter(outcome=="tb_txinits_000s", scenario=='base_case')%>%select(value))
+  bc_deaths_agyr<-ag_data %>% filter(outcome=="tb_mortality_000s", scenario=='base_case',year==all_cost_data[i,8]) %>% group_by(age_group) %>%
+    summarise(deaths = as.numeric(sum(value))) %>% select(deaths)
+  bc_deaths_agyr<-as.numeric(unlist(bc_cases_agyr))
   
-  for (i in 1:length(unique(cc_data$scenario))){
-  #set the scenario names
-  new_cost_data[i,1]<-unique(cc_data$scenario)[i]
-  #filter the data based on the scenario 
+  scen_tltbi_inits_ag<-cc_data %>% dplyr::filter(scenario==unique(cc_data$scenario)[i],year==all_cost_data[i,8]) %>% dplyr::filter(outcome=="ltbi_txinits_000s")%>%select(value)
+  scen_tltbi_inits_ag<-as.numeric(unlist(scen_tltbi_inits_ag))
+  
+  bc_tltbi_inits_agyr<-cc_data %>% dplyr::filter(scenario=='base_case',year==all_cost_data[i,8],outcome=="ltbi_txinits_000s")%>%select(value)
+  bc_tltbi_inits_agyr<-as.numeric(unlist(bc_tltbi_inits_agyr))
+  
+  
+  #calculate the indvidual qalys
+  index<-(all_cost_data[i,8]-2020)+1
+  TLTBI_qaly<-TLTBI_UW_tox*P_TLTBI_tox*sum(bc_tltbi_inits_agyr-scen_tltbi_inits_ag)
+  case_qaly <-sum(TB_UW*DUR_TB*(bc_cases_agyr-scen_cases_ag))
+  death_qaly <- sum((bc_deaths_agyr-scen_deaths_ag)*life_exp)
+  disc_death_qaly <- sum((bc_deaths_agyr-scen_deaths_ag)*disc_life_exp[(11*(index-1)+1):(11*index)])
+
+  #no discounting
+  if (all_cost_data[i,3]==0){
+    all_cost_data[i,4]<-round((ef_data%>%filter(scenario=="base_case", outcome=="tb_incidence_000s", year==all_cost_data[i,8])%>%select(value))-
+                              (ef_data%>%filter(scenario==all_cost_data[i,1], outcome=="tb_incidence_000s", year==all_cost_data[i,8])%>%select(value)),3)
+    all_cost_data[i,5]<-round((ef_data%>%filter(scenario=="base_case", outcome=="tb_mortality_000s", year==all_cost_data[i,8])%>%select(value))-
+                                (ef_data%>%filter(scenario==all_cost_data[i,1], outcome=="tb_mortality_000s", year==all_cost_data[i,8])%>%select(value)),3)
+    all_cost_data[i,6]<-round(((TLTBI_qaly+case_qaly)*disc_vec[index])+death_qaly,1)
+    
+    all_cost_data[i,7]<-round(death_qaly,1)
+  } else {
+    #yes discounting
+    all_cost_data[i,4]<-round((ef_data%>%filter(scenario=="base_case", outcome=="tb_incidence_000s", year==all_cost_data[i,8])%>%select(value))-
+                                (ef_data%>%filter(scenario==all_cost_data[i,1], outcome=="tb_incidence_000s", year==all_cost_data[i,8])%>%select(value))*disc_vec[index],3)
+    all_cost_data[i,5]<-round((ef_data%>%filter(scenario=="base_case", outcome=="tb_mortality_000s", year==all_cost_data[i,8])%>%select(value))-
+                                (ef_data%>%filter(scenario==all_cost_data[i,1], outcome=="tb_mortality_000s", year==all_cost_data[i,8])%>%select(value))*disc_vec[index],3)
+    all_cost_data[i,6]<-round(((TLTBI_qaly+case_qaly)*disc_vec[index])+disc_death_qaly,1)
+    all_cost_data[i,7]<-round(disc_death_qaly,1)
+  }
+  }
+}
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+## EFFECTIVENESS MEASURES DATAFRAME
+## create a new data frame of the effectiveness measures with the following columns:
+## "Scenario", "TB Cases Averted", "TB Deaths Averted", "QALYs Saved", "Life Years Saved" 
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####    
+new_effect_data<-matrix(0,length(unique(cc_data$scenario)),4)
+new_effect_data<-as.data.frame(new_effect_data)
+colnames(new_effect_data)<-c("TB Cases Averted (in 000s)", "TB Deaths Averted (in 000s)", "QALYs Saved (in 000s)", "Life Years Saved (in 000s)")
+for (i in 1:length(unique(cc_data$scenario))){
+  scen_no<-unique(cc_data$scenario)[i]
+
+  #filter the data based on the scenario
+  new_effect_data[i,1]<-round(bc_cases-(sum(ef_data%>%filter(scenario==scen_no, outcome=="tb_incidence_000s")%>%select(value))))
+  new_effect_data[i,2]<-round(bc_deaths-(sum(ef_data%>%filter(scenario==scen_no, outcome=="tb_mortality_000s")%>%select(value))))
+
+ # get the scenario specific age cases and deaths
+  scen_cases_ag<-ag_data %>% filter(outcome=="tb_incidence_000s", scenario==scen_no) %>% select(value,age_group) %>%
+    group_by(age_group) %>% summarise(cases=round(sum(value))) %>% select(cases)
+  scen_deaths_ag<-ag_data %>% filter(outcome=="tb_mortality_000s", scenario==scen_no) %>% select(value,age_group) %>%
+    group_by(age_group) %>% summarise(deaths=round(sum(value))) %>% select(deaths)
+
+  new_effect_data[i,3]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == scen_no) %>% select("QALYs (in 000s)"))),0)
+  new_effect_data[i,4]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == scen_no) %>% select("Life Years (in 000s)"))),0)
+}
+
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####    
+
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+## COSTS MEASURES DATAFRAME
+##create a new data frame of costs with the following columns:
+## "Scenario", "Productivity Cost Due to TLTBI","Health services Cost Due to TLTBI"
+## "Productivity Cost Due to TB Disease","Health services Cost Due to TB Disease"
+## "Total Health services Cost","Total Cost"
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+
+new_cost_data<-matrix(0,length(unique(cc_data$scenario)),7)
+new_cost_data<-as.data.frame(new_cost_data)
+colnames(new_cost_data)<-c("Productivity cost due to LTBI treatment", "Health services cost due to LTBI treatment",
+                           "Productivity cost due to TB disease", "Health services cost due to TB disease",
+                           "Total health services cost", "Total cost", "Discount")
+
+#calculate basecase tbtx inits for the effectiveness measure --this will need to be expanded
+tbtx_inits_bc<-sum(cc_data %>% dplyr::filter(outcome=="tb_txinits_000s", scenario=='base_case')%>%select(value))
+
+for (i in 1:length(unique(cc_data$scenario))){
+
+  scen_no<-unique(cc_data$scenario)[i]
+
+  #filter the data based on the scenario
   filter_cost_data<-cc_data %>% dplyr::filter(scenario==unique(cc_data$scenario)[i])
-  
+
   ltbi_tests<-sum(filter_cost_data %>% dplyr::filter(outcome=="ltbi_tests_000s")%>%select(value))
   tltbi_inits<-sum(filter_cost_data %>% dplyr::filter(outcome=="ltbi_txinits_000s")%>%select(value))
+
+  cases_ag<-ag_data %>% filter(outcome=="tb_incidence_000s", scenario==unique(cc_data$scenario)[i]) %>% select(value,age_group) %>%
+    group_by(age_group) %>% summarise(cases=round(sum(value))) %>% select(cases)
+  deaths_ag<-ag_data %>% filter(outcome=="tb_mortality_000s", scenario==unique(cc_data$scenario)[i]) %>% select(value,age_group) %>%
+    group_by(age_group) %>% summarise(deaths=round(sum(value))) %>% select(deaths)
+
   # tbtx_inits<-sum(filter_cost_data %>% dplyr::filter(outcome=="tb_txinits_000s")%>%select(value))
   if(i==1){
-    tbtx_inits<-tbtx_inits_bc
-  }else{
-  tbtx_inits<-tbtx_inits_bc-(tltbi_inits*.33*.78*.93)
+    tbtx_inits<-bc_cases
+  } else {
+    tbtx_inits<-round((sum(ef_data%>%filter(scenario==scen_no, outcome=="tb_incidence_000s")%>%select(value))),0)
   }
-#productivity costs due to LTBI is going to be equal to the number of tx initiations and
-  new_cost_data[i,2]<-round(tltbi_inits,0)
-  
-  # View(new_cost_data)
-# #Health servicess costs due to TLTBI is going to equal the number of tests times the cost
-# #of those tests + the cost of the regimen. Each of these costs will be calculated as a
-# #weighted average.
-#   # LTBI_test_cost<-cc_data$ltbi_tests_000s*(prg_chng[['IGRA_frc']]*costs[['IGRACost']])+((1-prg_chng[['IGRA_frc']])*costs[['TSTCost']])
-  LTBI_test_cost<-ltbi_tests*(.33*costs[['IGRACost']])+((1-.33)*costs[['TSTCost']])
-#   
-#     # TLTBI_cost<-filter_cost_data$ltbi_txinits_000s*(prg_chng[['frc_3hp']]*costs[['3HPCost']])+(prg_chng[['frc_4r']]*costs[['4RCost']])+(prg_chng[['frc_3hr']]*costs[['3HRCost']])
-  TLTBI_cost<-tltbi_inits*(.33*costs[['3HPCost']])+(.33*costs[['4RCost']])+(.33*costs[['3HRCost']])
-#   
-  new_cost_data[i,3]<- round(LTBI_test_cost + TLTBI_cost,0)
-#   #productivity costs due to TB is going to be equal to the number of tx initiations and TB deaths
-  new_cost_data[i,4]<-round(tbtx_inits,0)
-#   #Health servicess costs due to TB Disease is going to equal the number of tests times the cost
-#   #of those tests + the cost of the regimen. Each of these costs will be calculated as a
-#   #weighted average.
-  new_cost_data[i,5]<-round(tbtx_inits*(costs[['TBtest']]+costs[['TBtx']]),0)
-#   #Total Health services Cost is simply the sum of the two above Health servicess columns
-  new_cost_data[i,6]<-round(new_cost_data[i,3]+new_cost_data[i,5],0)
-#   #Total Cost is simply the sum of the other four costs
-  new_cost_data[i,7]<-round(new_cost_data[i,6]+new_cost_data[i,2]+new_cost_data[i,4],0)
-  }
-  
-  #calculate the cost effectiveness dataframe 
-  # we want the following columns
-  # "Scenario", "Cost", "Incremental Cost","Effectiveness","Incremental Effectiveness", "ICER"
-  
-  cost_eff_data<-matrix(0,length(unique(cc_data$scenario)),6)
-  cost_eff_data<-as.data.frame(cost_eff_data)
-  colnames(cost_eff_data)<-c("Scenario", "Cost", "Incremental cost",
-                             "Effectiveness","Incremental effectiveness", "ICER")
-  
+  # PRODUCTIVITY COSTS DUE TO TLTBI
+  # # number of tests times the cost of those tests * clinic visit cost * adverse event costs
+  new_cost_data[i,1]<-round((tltbi_inits*(TLTBI_clinic+TLTBI_ae))/1e3) #probability of toxicity and cost of adverse events
+  # HEALTH SERVICES COSTS DUE TO TLTBI
+  # number of tests times the cost of those tests * the cost of the regimen.
+  # Each of these costs will be calculated as a weighted average.
+  LTBI_test_cost<-ltbi_tests*(IGRA_frc*costs[['IGRACost']])+((1-IGRA_frc)*costs[['TSTCost']])
+  TLTBI_cost<- tltbi_inits*(tx_dist[1]*costs[['3HPCost']])+(tx_dist[2]*costs[['4RCost']])+(tx_dist[3]*costs[['3HRCost']])
 
-  for (i in 1:length(unique(cc_data$scenario))){
-    #set the scenario names
-    cost_eff_data[i,1]<-unique(cc_data$scenario)[i]
-    #filter the data based on the scenario 
-    filter_cost_data<-cc_data %>% dplyr::filter(scenario==unique(cc_data$scenario)[i])
-    
-    ltbi_tests<-sum(filter_cost_data %>% dplyr::filter(outcome=="ltbi_tests_000s")%>%select(value))
-    tltbi_inits<-sum(filter_cost_data %>% dplyr::filter(outcome=="ltbi_txinits_000s")%>%select(value))
-    # tbtx_inits<-sum(filter_cost_data %>% dplyr::filter(outcome=="tb_txinits_000s")%>%select(value))
-    
-    tbtx_inits<-tbtx_inits_bc-(tltbi_inits*.33*.78*.93)
-    
-    #total cost is going to be the same as above 
-    cost_eff_data[i,2]<-new_cost_data[i,7]
-    # }
-    # #sort by costs
-    # cost_eff_data<-reorder(cost_eff_data, cost_eff_data[,2])
-    # print(cost_eff_data)
-    # #total effectiveness is going to be set to TB cases averted for the time being
-    # for (i in 1:length(unique(cc_data$scenario))){
-    #   
-    #   filter_cost_data<-cc_data %>% dplyr::filter(scenario==unique(cc_data$scenario)[i])
-    #   
-    #   ltbi_tests<-sum(filter_cost_data %>% dplyr::filter(outcome=="ltbi_tests_000s")%>%select(value))
-    #   tltbi_inits<-sum(filter_cost_data %>% dplyr::filter(outcome=="ltbi_txinits_000s")%>%select(value))
-    #   # tbtx_inits<-sum(filter_cost_data %>% dplyr::filter(outcome=="tb_txinits_000s")%>%select(value))
-    #   
-    #   tbtx_inits<-tbtx_inits_bc-(tltbi_inits*.33*.78*.93)
-    if(i==1){
-      cost_eff_data[i,5]<-0
-      cost_eff_data[i,3]<-0
-      cost_eff_data[i,4]<-0
-    }else{
-    cost_eff_data[i,4]<-round(tbtx_inits_bc-tbtx_inits,0)
-    cost_eff_data[i,5]<-round(((tbtx_inits-tbtx_inits_bc)-cost_eff_data[i-1,4]),0)
-    cost_eff_data[i,3]<-round((new_cost_data[i,7]-new_cost_data[i-1,7]),0)
-    }
-    #calculate the ICER
-    cost_eff_data[i,6]<-round((cost_eff_data[i,3]/cost_eff_data[i,5]),2)
+  new_cost_data[i,2]<- round((LTBI_test_cost + TLTBI_cost)/1e3)
+
+  #PRODUCTIVITY COSTS DUE TO TB DISEASE
+  #age specific TB treatment initiations*((probability of TB hospitalization*duration of TB hospitalization)+
+  #duration of outpatient losses)*annual productivity estimates +
+  #age specific TB deaths*lifetime productivity estimates
+  new_cost_data[i,3]<-sum(round(((cases_ag*((P_TB_hosp*DUR_TB_hosp)+DUR_TB_outpatient)*annual_prod)+
+                                   (deaths_ag*lifetime_prod))/1e3))
+  # HEALTH SERVICES COSTS DUE TO TB DISEASE
+  # Number of tests * (cost of those tests + the cost of the regimen).
+  new_cost_data[i,4]<-round((tbtx_inits*(costs[['TBtest']]+costs[['TBtx']])/1e3))
+  #Total Health services Cost is simply the sum of the two above Health services columns
+  new_cost_data[i,5]<-new_cost_data[i,2]+new_cost_data[i,4]
+  #Total Cost is simply the sum of the other four costs
+  new_cost_data[i,6]<-new_cost_data[i,1]+new_cost_data[i,2]+ new_cost_data[i,3]+new_cost_data[i,4]
+}
+
+new_cost_data[i,7]<-0 #zero means no discount
+new_cost_data<-rbind(new_cost_data,round(new_cost_data,0))
+new_cost_data[(length(unique(cc_data$scenario))+1):nrow(new_cost_data),1]<-1:length(unique(cc_data$scenario))#restores scenarios to whole numbers
+new_cost_data[(length(unique(cc_data$scenario))+1):nrow(new_cost_data),7]<-1 #one means yes to discount
+new_cost_data<-data.frame("Scenario"=rep(unique(cc_data$scenario),2),
+                          new_cost_data, check.names = FALSE)
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####    
+
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+## COST EFFECTIVENESS DATAFRAME   
+## larger dataframe for filtering for calculations of CE table below
+## we need the following columns:
+## "Scenario", "Cost", "HealthSys/All", "Discount","AvtCases","AvtDeaths", "SavQALYs", "SavLYs"
+cost_eff_base<-data.frame(
+  "Scenario"=rep(unique(cc_data$scenario),4),
+  "Cost"=rep(0,(length(unique(cc_data$scenario))*4)),
+  "perspectives"=c(rep("healthsys",(length(unique(cc_data$scenario))*2)),rep("all",(length(unique(cc_data$scenario))*2))),
+  "discount"=rep(c(rep(1,length(unique(cc_data$scenario))),rep(0,length(unique(cc_data$scenario)))),2),
+  "avtcases"=rep(0,(length(unique(cc_data$scenario))*4)),
+  "avtdeaths"=rep(0,(length(unique(cc_data$scenario))*4)),
+  "savqalys"=rep(0,length(unique(cc_data$scenario))*4),
+  "savlys"=rep(0,length(unique(cc_data$scenario))*4),
+  check.names = FALSE
+)
+
+for (i in 1:nrow(cost_eff_base)){
+  #no discounting
+  if(cost_eff_base[i,3]=="all" & cost_eff_base[i,4]==0){
+    cost_eff_base[i,2]<-new_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==0) %>% select(`Total cost`)
+  } else if (cost_eff_base[i,3]=="healthsys" & cost_eff_base[i,4]==0) {
+    cost_eff_base[i,2]<-new_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==0) %>% select(`Total health services cost`)
+  #discounting
+  } else if (cost_eff_base[i,3]=="all" & cost_eff_base[i,4]==1) {
+    cost_eff_base[i,2]<-new_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==1) %>% select(`Total cost`)
+  } else if (cost_eff_base[i,3]=="healthsys" & cost_eff_base[i,4]==1) {
+    cost_eff_base[i,2]<-new_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==1) %>% select(`Total health services cost`)
   }
-  new_cost_data_list<-list()
-  #we need to sort the data based on the ICER 
-  new_cost_data_list[['new_cost_data']]<-new_cost_data
-  new_cost_data_list[['costeff_data']]<-cost_eff_data
   
-  return(new_cost_data_list)
+  #no discounting outcomes
+  if(cost_eff_base[i,4]==0){
+    cost_eff_base[i,5]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("Cases Averted (in 000s)"))),0)
+    cost_eff_base[i,6]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("Deaths Averted (in 000s)"))),0)
+    cost_eff_base[i,7]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("QALYs (in 000s)"))),0)
+    cost_eff_base[i,8]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("Life Years (in 000s)"))),0)
+  #discounting outcomes
+  } else if (cost_eff_base[i,4]==1){
+    cost_eff_base[i,5]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("Cases Averted (in 000s)"))),0)
+    cost_eff_base[i,6]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("Deaths Averted (in 000s)"))),0)
+    cost_eff_base[i,7]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("QALYs (in 000s)"))),0)
+    cost_eff_base[i,8]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("Life Years (in 000s)"))),0)
+  }
+}
+
+cost_eff_base<-reshape2::melt(cost_eff_base, id.vars=c("Scenario","Cost","perspectives","discount"))
+colnames(cost_eff_base)[5]<-"Effectiveness Measure"
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+#calculate the cost effectiveness dataframe from the larger dataframe above
+# we want the following columns
+# "Scenario", "Cost", "Incremental Cost","Effectiveness","Incremental Effectiveness", "ICER"
+# the effectiveness measure should update based on the radio button entry 
+# options are: TB Cases Averted, TB Deaths Averted, QALYs Saved, & Life Years Saved
+# The costs should also be pivoted between health services and health services & patient costs
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+cost_eff_ACER<-data.frame(
+  "Scenario"=rep(unique(cc_data$scenario),4),
+  "Cost"=rep(0,(length(unique(cc_data$scenario))*4)),
+  "Incremental Cost" = rep(0,(length(unique(cc_data$scenario))*4)),
+  "perspectives"=c(rep("healthsys",(length(unique(cc_data$scenario))*2)),rep("all",(length(unique(cc_data$scenario))*2))),
+  "discount"=rep(c(rep(1,length(unique(cc_data$scenario))),rep(0,length(unique(cc_data$scenario)))),2),
+  "avtcases"=rep(0,(length(unique(cc_data$scenario))*4)),
+  "avtdeaths"=rep(0,(length(unique(cc_data$scenario))*4)),
+  "savqalys"=rep(0,length(unique(cc_data$scenario))*4),
+  "savlys"=rep(0,length(unique(cc_data$scenario))*4),
+  check.names = FALSE
+)
+
+for (i in 1:nrow(cost_eff_ACER)){
+
+  cost_eff_ACER[i,2]<-cost_eff_base[i,2]
+  #calculate the incremental costs
+  #no discounting
+  if(cost_eff_ACER[i,4]=="all" & cost_eff_ACER[i,5]==0){
+  cost_eff_ACER[i,3]<-new_cost_data %>% filter(Scenario==cost_eff_ACER[i,1], Discount==0) %>% select(`Total cost`)-
+                     new_cost_data %>% filter(Scenario=="base_case", Discount==0) %>% select(`Total cost`)
+  } else if (cost_eff_ACER[i,4]=="healthsys" & cost_eff_ACER[i,5]==0) {
+
+    cost_eff_ACER[i,3]<-cost_eff_base[i,2] -
+                        new_cost_data %>% filter(Scenario=="base_case", Discount==0) %>% select(`Total health services cost`)
+  #discounting
+  } else if (cost_eff_ACER[i,4]=="all" & cost_eff_ACER[i,5]==1) {
+    cost_eff_ACER[i,3]<-cost_eff_base[i,2]-
+                        new_cost_data %>% filter(Scenario=="base_case", Discount==1) %>% select(`Total cost`)
+  } else if (cost_eff_ACER[i,4]=="healthsys" & cost_eff_ACER[i,5]==1) {
+    cost_eff_ACER[i,3]<-cost_eff_base[i,2] -
+                        new_cost_data %>% filter(Scenario=="base_case", Discount==1) %>% select(`Total health services cost`)
+  }
+
+  #calculate the effectiveness measures
+  #no discounting outcomes
+  if(cost_eff_ACER[i,5]==0){
+    cost_eff_ACER[i,6]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("Cases Averted (in 000s)")),0)
+    cost_eff_ACER[i,7]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("Deaths Averted (in 000s)")),0)
+    cost_eff_ACER[i,8]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("QALYs (in 000s)")),0)
+    cost_eff_ACER[i,9]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("Life Years (in 000s)")),0)
+    #discounting outcomes
+  } else if (cost_eff_ACER[i,5]==1){
+    cost_eff_ACER[i,6]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("Cases Averted (in 000s)")),0)
+    cost_eff_ACER[i,7]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("Deaths Averted (in 000s)" )),0)
+    cost_eff_ACER[i,8]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("QALYs (in 000s)")),0)
+    cost_eff_ACER[i,9]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("Life Years (in 000s)")),0)
+  }
+}
+
+cost_eff_ACER[,3]<- - cost_eff_ACER[,3]
+
+cost_eff_ACER<-reshape2::melt(cost_eff_ACER, id.vars=c("Scenario","Cost","Incremental Cost","perspectives","discount"))
+colnames(cost_eff_ACER)[6]<-"Effectiveness Measure"
+new_effect_data<-data.frame("Scenario"=unique(cc_data$scenario),
+                            new_effect_data, check.names = FALSE)
+
+    new_cost_data_list<-list()
+    
+    new_cost_data_list[['new_effect_data']]<-new_effect_data
+    new_cost_data_list[['new_cost_data']]<-new_cost_data 
+    new_cost_data_list[['ICER_data']]<-cost_eff_base
+    new_cost_data_list[['ACER_data']]<-cost_eff_ACER
+    new_cost_data_list[['annual']]<-all_cost_data
+        
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####     
+    return(new_cost_data_list)
   }) #end of reactive
   
   

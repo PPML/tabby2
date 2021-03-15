@@ -1,5 +1,5 @@
-tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, geographies) {
-
+tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_short_code, geographies) {
+#cost_data, 
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
 	AGEGROUPS_DATA <- reactive({ sim_data()[['AGEGROUPS_DATA']] })
@@ -7,6 +7,12 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
 	TRENDS_DATA <- reactive({ sim_data()[['TRENDS_DATA']] })
   ADDOUTPUTS_DATA <-  reactive({ sim_data()[['ADDOUTPUTS_DATA']] })
   COSTCOMPARISON_DATA <-  reactive({ sim_data()[['COSTCOMPARISON_DATA']] })
+  EFFECTS_DATA <-  reactive({ cost_data()[['EFFECTS_DATA']] })
+  COSTS_DATA <-  reactive({ cost_data()[['COSTS_DATA']] })
+  COSTEFF_ICER_DATA <-  reactive({ cost_data()[['COSTEFF_ICER_DATA']] })
+  COSTEFF_ACER_DATA <-  reactive({ cost_data()[['COSTEFF_ACER_DATA']] })
+  
+  
   
   # The session info is used to title the downloads with the tabby2 version
   # number. 
@@ -648,16 +654,11 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   # __set title ----
   costcomparisonTitle <- reactive({
     req(
-      input[[costcomparison$IDs$controls$costs]]#,
-      # input[[costcomparison$IDs$controls$populations]],
-      # input[[costcomparison$IDs$controls$ages]]
+      input[[costcomparison$IDs$controls$costs]]
     )
-    
     sprintf(
-      "Projected %s in %s",
+      "Cost Effectiveness as measured by %s in %s",
       costcomparison$costs$labels[[input[[costcomparison$IDs$controls$costs]]]],
-      # costcomparison$populations$formatted[[input[[costcomparison$IDs$controls$populations]]]],
-      # costcomparison$ages$formatted[[input[[costcomparison$IDs$controls$ages]]]],
       if (geo_short_code() == 'US') 'the US' else unname(geographies[geo_short_code()])
     )
   })
@@ -677,11 +678,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
   output[[costcomparison$IDs$subtitle]] <- reactive({
     req(
       input[[costcomparison$IDs$controls$costs]]#,
-      # input[[costcomparison$IDs$controls$populations]],
-      # input[[costcomparison$IDs$controls$ages]]
     )
-    
-    # costcomparison$comparators$formatted[[input[[costcomparison$IDs$controls$comparators]]]]
+    costcomparison$costs$formatted[[input[[costcomparison$IDs$controls$costs]]]]
   })
   
   # __generate plot ----
@@ -790,8 +788,134 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
         plot.subtitle = element_blank()
       )
   }, res=85)
+  
+  
+  #EFFECTS server ----
+  #___calculate data ----
+  effectsData <- reactive({
+    req(
+      c(
+        input[[costcomparison$IDs$controls$interventions]],
+        # input[[costcomparison$IDs$controls$analyses]],
+        "base_case"
+      )
+    )
+    
+    EFFECTS_DATA() %>%
+      dplyr::filter(
+        Scenario %in% c(
+          input[[costcomparison$IDs$controls$interventions]],
+          input[[costcomparison$IDs$controls$analyses]],
+          "base_case"
+        ))
+    # ) %>%
+    # arrange(scenario)
+  })
+  
+  #costs server ----
+  #___calculate data ----
+    costsData <- reactive({
+    req(
+      c(
+        input[[costcomparison$IDs$controls$interventions]],
+        # input[[costcomparison$IDs$controls$analyses]],
+        "base_case"
+      )
+    )
+    
+    COSTS_DATA() %>%
+      dplyr::filter(
+        Discount == 0,
+        Scenario %in% c(
+          input[[costcomparison$IDs$controls$interventions]],
+          input[[costcomparison$IDs$controls$analyses]],
+          "base_case"
+        )) %>%
+          dplyr::select(!Discount)
+        
+      # ) %>%
+      # arrange(scenario)
+  })
+  
+  #cost effectiveness server ----
+  #___calculate data ----
+  costeffData <- reactive({
+    req(
+      input[[costcomparison$IDs$controls$discount]],
+      input[[costcomparison$IDs$controls$perspectives]],
+      input[[costcomparison$IDs$controls$comparator]],
+      c(
+        input[[costcomparison$IDs$controls$interventions]],
+        # input[[costcomparison$IDs$controls$analyses]],
+        "base_case"
+      )
+    )
+    if(input[[costcomparison$IDs$controls$comparator]]=="ICER"){
+    COSTEFF_ICER_DATA() %>%
+      dplyr::filter(
+        discount == input[[costcomparison$IDs$controls$discount]],
+        perspectives == input[[costcomparison$IDs$controls$perspectives]],
+        `Effectiveness Measure` == input[[costcomparison$IDs$controls$costs]],
+        Scenario %in% c(
+          input[[costcomparison$IDs$controls$interventions]],
+          input[[costcomparison$IDs$controls$analyses]],
+          "base_case"
+        )) %>% arrange(`Effectiveness Measure`, desc(value)) %>%
+      mutate("Incremental Cost"=Cost-lag(Cost),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=value-lag(value))%>%
+      mutate("ICER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
+      # mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
+      select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>% 
+      mutate(ICER=case_when(ICER < 0 ~ "Dominated", TRUE ~ as.character(ICER)))
+      # mutate(ICER=ifelse(as.numeric(ICER) < 0, "Dominated", as.character(ICER)))
+    } else {
+      COSTEFF_ACER_DATA() %>%
+        dplyr::filter(
+          discount == input[[costcomparison$IDs$controls$discount]],
+          perspectives == input[[costcomparison$IDs$controls$perspectives]],
+          `Effectiveness Measure` == input[[costcomparison$IDs$controls$costs]],
+          Scenario %in% c(
+            input[[costcomparison$IDs$controls$interventions]],
+            input[[costcomparison$IDs$controls$analyses]],
+            "base_case"
+          )) %>% 
+        mutate("Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=value-first(value)) %>%
+        mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
+        select(!c(discount,perspectives,`Effectiveness Measure`,value))   %>%
+        mutate(ACER=case_when(ACER<0 ~ "Dominated", TRUE ~ as.character(ACER)))
 
+        
+      # %>% arrange(`Effectiveness Measure`, desc(value)) %>%
+      #   mutate("Incremental Cost"=Cost-lag(Cost),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=value-lag(value))%>%
+      #   mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
+      #   # mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
+      #   select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>% 
+      #   mutate(ACER=case_when(ACER<0 ~ "Dominated", TRUE ~ as.character(ACER)))
+      }
+  })
 
+#___reactive title for cost effectiveness table 
+  # costeffTitle <- reactive({
+  #   req(
+  #     input[[costcomparison$IDs$controls$costs]]
+  #   )
+  #   sprintf(
+  #     "Cost Effectiveness as measured by %s in %s",
+  #     costcomparison$costs$labels[[input[[costcomparison$IDs$controls$costs]]]],
+  #     if (geo_short_code() == 'US') 'the US' else unname(geographies[geo_short_code()])
+  #   )
+  # })
+  # 
+  # output[[costeff$IDs$title]] <- reactive({
+  #   title <-costeffTitle()
+  #   
+  #   session$sendCustomMessage("tabby:altupdate", list(
+  #     selector = paste0("#", costeff$IDs$plot),
+  #     alt = title
+  #   ))
+  #   
+  #   title
+  # })
+  # 
   # ages server ----
   # __calculate data ----
   agegroupsData <- reactive({
@@ -1477,6 +1601,6 @@ tabby1Server <- function(input, output, session, ns, sim_data, geo_short_code, g
     }
   )
   filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData,
-                        addoutputsData=addoutputsData, costcomparisonData=costcomparisonData)
+                        addoutputsData=addoutputsData, costcomparisonData=costcomparisonData, effectsData = effectsData, costsData = costsData, costeffData=costeffData) 
   return(filtered_data)
 }

@@ -106,8 +106,8 @@ costRunButton <- function(input, output, session, compute_cost_reactive) {
 
   # Disable Input for the programChange Scenario
   sapply(c('LTBIIdCost','TSTCost','IGRACost','NoTBCost','Cost3HP','Cost4R','Cost3HR','TBIdCost',
-           'TBTestCost', 'TBTreatCost', 'DiscountRate',
-           'CostStartYr', 'CostEndYr', 'CalculateCosts'), disable)
+           'TBTestCost', 'TBTreatCost',
+          'CostEndYr', 'CalculateCosts', 'RestoreDefaultsC'), disable)
   
   # Enable the Change Settings and View Outcomes Button
   sapply(c('ChangeSettingsC', 'ViewCosts'), enable)
@@ -120,8 +120,8 @@ costChangeSettingsButton <- function(input, output, session) {
 
   # Disable Input for the programChange Scenario
   sapply(c('LTBIIdCost','TSTCost','IGRACost','NoTBCost',
-           'Cost3HP','Cost4R','Cost3HR','TBIdCost', 'TBTestCost', 'TBTreatCost', 'DiscountRate',
-           'CostStartYr', 'CostEndYr', 'CalculateCosts'), enable)
+           'Cost3HP','Cost4R','Cost3HR','TBIdCost', 'TBTestCost', 'TBTreatCost',
+           'CostEndYr', 'CalculateCosts', 'RestoreDefaultsC'), enable)
   
   # Enable the Change Settings and View Outcomes Button
   sapply(c('ChangeSettingsC', 'ViewCosts'), disable)

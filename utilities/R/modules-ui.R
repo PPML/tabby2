@@ -365,10 +365,24 @@ outcomesUI <- function() {
   )
 }
 
-##page inputting costs 
 inputCostsUI <- function() {
   tagList(
     tags$h1("Input Unit Costs"),
+    br(),
+    p("For each scenario Tabby2 quantifies health services costs related to treatment of LTBI 
+      and TB disease. These are calculated from incremental differences in health service provision
+      estimated by the underlying transmission dynamic model cumulated over an analytic horizon 
+      and unit costs estimated for each of these services. Please enter unit costs for health services below 
+      in United States Dollars and chose the time horizon of interest."),
+      uiOutput('inputcosts')
+    )
+}
+
+##page inputting costs 
+inputCostsPanel <- function(cost_inputs) {
+  id <-"inputcosts"
+  return(
+  tagList(
     #LTBI testing costs
     wellPanel(
       fluidRow(
@@ -382,16 +396,16 @@ inputCostsUI <- function() {
             tags$h4("LTBI Testing Costs:"),
             numericInput(inputId = "LTBIIdCost",
                          label = "Cost of identifiying an individual for LTBI testing",
-                         value = 100, min = 50, max = 500),
+                         value = cost_inputs[[1]], min = 50, max = 500),
             numericInput(inputId ="TSTCost",
                          label = "Cost of a Mantoux tuberculin skin test (TST)",
-                         value = 8.65, min = 0, max = 15),
+                         value = cost_inputs[[2]], min = 0, max = 15),
             numericInput(inputId ="IGRACost",
                          label = "Cost of an IGRA",
-                         value = 68.87, min = 0, max = 120),
+                         value = cost_inputs[[3]], min = 0, max = 120),
             numericInput(inputId ="NoTBCost",
                          label = "Cost of ruling out TB disease before LTBI treatment",
-                         value = 60, min = 0, max = 100)
+                         value = cost_inputs[[4]], min = 0, max = 100)
           )
         }),
         #LTBI treatment costs
@@ -400,15 +414,15 @@ inputCostsUI <- function() {
             tags$h4("LTBI Treatment Costs:"),
             numericInput(inputId = "Cost3HP",
                          label = "Cost of treatment with 3HP",
-                         value = 804, min = 0, max = 1000),
+                         value = cost_inputs[[5]], min = 0, max = 1000),
             
             numericInput(inputId = "Cost4R",
                          label = "Cost of treatment with 4R",
-                         value = 488, min = 400, max = 600),
+                         value = cost_inputs[[6]], min = 400, max = 600),
             
             numericInput(inputId = "Cost3HR",
                          label = "Cost of treatment with 3HR",
-                         value = 457, min = 0, max = 600)
+                         value = cost_inputs[[7]], min = 0, max = 600)
           ) #end of tag list
         }),#end of column
         #active TB costs
@@ -417,13 +431,13 @@ inputCostsUI <- function() {
             tags$h4("Active TB Identification and Treatment Costs:"),
             numericInput(inputId = "TBIdCost",
                          label = "Cost of identifiying an individual for TB testing",
-                         value = 0, min = 0, max = 500),
+                         value = cost_inputs[[8]], min = 0, max = 500),
             numericInput(inputId ="TBTestCost",
                          label = "Cost of TB disease diagnosis",
-                         value = 8.65, min = 0, max = 15),
+                         value = cost_inputs[[9]], min = 0, max = 15),
             numericInput(inputId ="TBTreatCost",
                          label = "Cost of TB disease treatment",
-                         value = 68.87, min = 0, max = 120)
+                         value = cost_inputs[[10]], min = 0, max = 120)
           ) #end of tag list
         }), #end of column
         br(),
@@ -431,11 +445,11 @@ inputCostsUI <- function() {
         column(12, {
         tagList(
           # tags$h5("Enter intervention associated costs."),
-          tags$h4("Other Inputs:"),
-          numericInput(inputId = "DiscountRate",
-                       label = "Discount rate (%) used for cost-effectiveness analysis",
-                       value = 1, min = 0, max = 1, step=.01),
-          fluidRow(
+          tags$h4("Other Input:"),
+          # numericInput(inputId = "DiscountRate",
+          #              label = "Discount rate (%) used for cost-effectiveness analysis",
+          #              value = cost_inputs[[11]], min = 1, max = 100, step=1),
+          # fluidRow(
             column(
               6,
               numericInput(
@@ -443,11 +457,11 @@ inputCostsUI <- function() {
                 label = 'End year for economic analysis',
                 min = 2020,
                 max = 2050,
-                value = 2050,
+                value = cost_inputs[[12]],
                 step = 1
               )
             )
-          ) #end of fluid row
+          # ) #end of fluid row
         )
       })
       )  #end of fluid row 1
@@ -463,6 +477,7 @@ inputCostsUI <- function() {
       style = 'color: white;'
     )
   ) #end of tagList
+  )#end of return 
 }
 
 ##page for displaying costs 

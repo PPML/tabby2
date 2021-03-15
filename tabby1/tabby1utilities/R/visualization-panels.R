@@ -102,48 +102,59 @@ visualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NU
 }
 
 costVisualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NULL,
-                               click = NULL, dblclick = NULL, active = TRUE, data, data2) {
+                               click = NULL, dblclick = NULL, active = TRUE, data1, data2, data3, data4) {
   class <- paste0(id, "-tab")
   tabsetPanel(
     tabPanel(title = 'Results Tables',{ 
       fluidRow(
-      h3("Costs Table"),
-       DT::dataTableOutput(outputId = data),
+        h3("Effects Table"),
+        DT::dataTableOutput(outputId = data1),
+        br(), 
+        br(),
+      h3("Costs Table (in 000s)"),
+       DT::dataTableOutput(outputId = data2),
        br(), 
        br(), 
        h3("Cost Effectiveness Table"),
-       DT::dataTableOutput(outputId = data2)
+       DT::dataTableOutput(outputId = data3)
       )
       }),
-    tabPanel(title = 'Cost Effectiveness Plane', {
-      tags$div(
-        class = paste(c(class, "tab-pane", if (active) " active"), collapse = " "),
-        if (!is.null(title)) {
-          tags$h3(
-            textOutput(title)
-          )
-        },
-        if (!is.null(subtitle)) {
-          tags$h4(
-            textOutput(subtitle)
-          )
-        },
-        do.call(
-          tagAppendAttributes,
-          c(
-            list(
-              tag = withSpinner(tags$div(
-                id = plot,
-                class = "shiny-plot-output",
-                style = "width: 90%; height: 600px;",
-                `data-alt` = alt,
-                tags$img(alt = alt)
-              ))
-            )
-          )
-        )
+    # tabPanel(title = 'Cost Effectiveness Plane', {
+    #   tags$div(
+    #     class = paste(c(class, "tab-pane", if (active) " active"), collapse = " "),
+    #     if (!is.null(title)) {
+    #       tags$h3(
+    #         textOutput(title)
+    #       )
+    #     },
+    #     if (!is.null(subtitle)) {
+    #       tags$h4(
+    #         textOutput(subtitle)
+    #       )
+    #     },
+    #     do.call(
+    #       tagAppendAttributes,
+    #       c(
+    #         list(
+    #           tag = withSpinner(tags$div(
+    #             id = plot,
+    #             class = "shiny-plot-output",
+    #             style = "width: 90%; height: 600px;",
+    #             `data-alt` = alt,
+    #             tags$img(alt = alt)
+    #           ))
+    #         )
+    #       )
+    #     )
+    #   )
+    # }),
+    tabPanel(title = 'Annual Results Tables',{ 
+      fluidRow(
+        # h3("Effects Table"),
+        DT::dataTableOutput(outputId = data4)
       )
     })
+    
   )
 }
 
@@ -155,8 +166,10 @@ costComparisonVisualizationPanel <- function(ns) {
       subtitle = ns(costcomparison$IDs$subtitle),
       plot = ns(costcomparison$IDs$plot),
       alt = "Cost of Intervention",
-      data = 'costcomparisonData', 
-      data2 ='costcomparisonData2'
+      data1 = 'costcomparisonData1', 
+      data2 ='costcomparisonData2',
+      data3 ='costcomparisonData3', 
+      data4 ='costcomparisonData4'
     ),
       class = "costcomparison-tab"
   )

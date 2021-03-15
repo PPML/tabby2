@@ -174,9 +174,10 @@ shinyServer(function(input, output, session) {
 
 		#  Setup `values` to contain our reactiveValues
 		values <- callModule(constructReactiveValues, NULL)
-
+    #  Setup the default parameter values by call MITUS functions
     default_prg_chng <- callModule(compute_default_prg_chng, NULL, geo_short_code)
-
+    default_cost_inputs <- callModule(compute_default_cost_inputs, NULL, geo_short_code)
+    
 		# Watch for Updates to Custom Scenarios
 		values <- callModule(updateProgramChanges, NULL, values)
 
@@ -184,7 +185,9 @@ shinyServer(function(input, output, session) {
 		output$programChange1 <- renderUI({ programChangePanel(1, default_prg_chng()) })
 		output$programChange2 <- renderUI({ programChangePanel(2, default_prg_chng()) })
 		output$programChange3 <- renderUI({ programChangePanel(3, default_prg_chng()) })
-
+		
+		output$inputcosts <- renderUI({ inputCostsPanel(cost_inputs=default_cost_inputs()) })
+		
     # provide feedback for user input
     callModule(shinyFeedbackModule, NULL)
 		
@@ -242,15 +245,30 @@ shinyServer(function(input, output, session) {
     # to the tabby1server for providing filtering / visualization / download functionality in the 
     # user interface.
 
+    treatment_distribution<-reactiveValues(programchange1=c(1/3,1/3,1/3,1/3),
+                                           programchange2=c(1/3,1/3,1/3,1/3),
+                                           programchange3=c(1/3,1/3,1/3,1/3))
+    
 		# Run & Append Program Changes Scenarios to Sim Data When RunSimulations Button is Pressed
 		observeEvent(input[['programChange1RunSimulations']], {
-			sim_data[['programChanges1']] <- callModule(programChangesRunButton, NULL, n = 1, compute_program_change_1, sim_data)
-		})
+		  x<- callModule(programChangesRunButton, NULL, n = 1, compute_program_change_1, sim_data)
+			sim_data[['programChanges1']]<-x[['new_data']]
+			treatment_distribution[["programchange1"]]<-x[['parameters']]
+			})
+		
 		observeEvent(input[['programChange2RunSimulations']], {
-			sim_data[['programChanges2']] <- callModule(programChangesRunButton, NULL, n = 2, compute_program_change_2, sim_data)
+		  x<- callModule(programChangesRunButton, NULL, n = 1, compute_program_change_2, sim_data)
+		  sim_data[['programChanges2']]<-x[['new_data']]
+		  treatment_distribution[["programchange2"]]<-x[['parameters']]
+			# sim_data[['programChanges2']] <- callModule(programChangesRunButton, NULL, n = 2, compute_program_change_2, sim_data)[[1]]
+			# treatment_distribution[["programchange2"]]<-callModule(programChangesRunButton, NULL, n = 1, compute_program_change_2, sim_data)[[2]]
 		})
 		observeEvent(input[['programChange3RunSimulations']], {
-			sim_data[['programChanges3']] <- callModule(programChangesRunButton, NULL, n = 3, compute_program_change_3, sim_data)
+		  x<- callModule(programChangesRunButton, NULL, n = 1, compute_program_change_3, sim_data)
+		  sim_data[['programChanges3']]<-x[['new_data']]
+		  treatment_distribution[["programchange3"]]<-x[['parameters']]
+			# sim_data[['programChanges3']] <- callModule(programChangesRunButton, NULL, n = 3, compute_program_change_3, sim_data)[[1]]
+			# treatment_distribution[["programchange3"]]<-callModule(programChangesRunButton, NULL, n = 1, compute_program_change_3, sim_data)[[2]]
 		})
 
 		# Run & Append TTT Scenarios to Sim Data When RunSimulations Button is Pressed
@@ -350,7 +368,10 @@ shinyServer(function(input, output, session) {
       output$programChange1 <- renderUI({ programChangePanel(3, default_prg_chng() ) })
     })
 
-
+    # Restore Defaults for Costing Scenarios
+    observeEvent(input[['RestoreDefaultsC']], {
+      output$inputcosts<-renderUI({ inputCostsPanel(cost_inputs=default_cost_inputs()) })
+    })
     ### Aggregate All Simulation Data into a Reactive ###
 
     # This is the data which gets sent to the tabby1 server
@@ -423,7 +444,45 @@ shinyServer(function(input, output, session) {
     callModule(summaryStatistics, NULL, values, sim_data = sim_data,
       geo_short_code = geo_short_code)
 
-
+ ### costs calculations 
+    ##call the costs module	
+    # Construct Reactive Objects which return cost scenario simulations when called
+    compute_costs<-callModule(runCostComparisonModule, NULL, 
+                              sim_data=combined_data,treat_dist=treatment_distribution[['programchange1']])
+  
+    # 
+    #allows for the values to be changed when user selects change settings
+    observeEvent({ 
+      input$state
+      input[['ChangeSettingsC']] }, {
+        cost_data <- NULL
+        callModule(costChangeSettingsButton, NULL)
+      })
+    #stores the costs
+    cost_data<-reactiveValues(effects=NULL,
+                              costs=NULL,
+                              ICER=NULL,
+                              ACER=NULL, 
+                              annual=NULL)
+    
+    observeEvent(input[['CalculateCosts']], {
+      cost_list<-callModule(costRunButton, NULL, compute_costs)
+      cost_data[['effects']]<-cost_list[[1]]
+      cost_data[['costs']]<-cost_list[[2]]
+      cost_data[['ICER']]<-cost_list[[3]]
+      cost_data[['ACER']]<-cost_list[[4]]
+      cost_data[['annual']]<-cost_list[[5]]
+    })
+    
+    combined_costdata <- reactive({
+      list(
+      EFFECTS_DATA = cost_data[['effects']], 
+      COSTS_DATA = cost_data[['costs']], 
+      COSTEFF_ICER_DATA = cost_data[['ICER']],
+      COSTEFF_ACER_DATA = cost_data[['ACER']]
+      )
+      })
+      
 		# Tabby1 Visualization Server
 		filtered_data <- 
 			callModule(
@@ -431,6 +490,7 @@ shinyServer(function(input, output, session) {
 					id = "tabby1", 
 					ns = NS("tabby1"), 
 					sim_data = combined_data,
+					cost_data = combined_costdata,
 					geo_short_code = geo_short_code, 
 					geographies = geographies) 
 
@@ -449,7 +509,7 @@ shinyServer(function(input, output, session) {
     # Add Data Table for Estimates
 
 		output[['estimatesData']] <- 
-			DT::renderDataTable( filtered_data[['estimatesData']]() %>% 
+			DT::renderDataTable(filtered_data[['estimatesData']]() %>% 
                           filter(type == 'mean') %>% 
                           select(-type), 
 				options = list(pageLength = 25, scrollX = TRUE), 
@@ -480,72 +540,43 @@ shinyServer(function(input, output, session) {
 		                         select(-c(type, year_adj)), 
 		                       options = list(pageLength = 25, scrollX = TRUE), 
 		                       rownames=FALSE )  
-##call the costs module	
-		# Construct Reactive Objects which return cost scenario simulations when called
-		compute_costs<-callModule(runCostComparisonModule, NULL, sim_data=combined_data)
 		
-		# Restore Defaults for Costing Scenarios
-		# observeEvent(input[['RestoreDefaultsC']], {
-		#   output$entercosts <- renderUI({ inputCostsUI() })
-		# })
-		# 
-		#allows for the values to be changed when user selects change settings
-		observeEvent({ 
-		  input$state
-		  input[['ChangeSettingsC']] }, {
-		    # sim_data[['programChanges3']] <- NULL
-		    callModule(costChangeSettingsButton, NULL)
-		  })
-		#stores the costs
-		cost_data<-reactiveValues(costs=NULL,
-		                          costeffective=NULL)
-		observeEvent(input[['CalculateCosts']], {
-		  cost_list<-callModule(costRunButton, NULL, compute_costs)
-		cost_data[['costs']]<-cost_list[[1]]
-		cost_data[['costeffective']]<-cost_list[[2]]
-		
-		})
+		  output[['costcomparisonData1']] <-
+		  DT::renderDataTable(
+		    #filtered_data[['effectsData']](),
+		    datatable(filtered_data[['effectsData']]()) %>% formatCurrency(2:5, '', digits = 0), 
+		                      options = list(pageLength = 100, scrollX = TRUE,dom = 't'),
+		                      rownames=FALSE ) 
 
-		# cost_data <- reactive({list(costs=costs})
+		  output[['costcomparisonData2']] <-
+      DT::renderDataTable(
+        #filtered_data[['costsData']](),
+        datatable(filtered_data[['costsData']]()) %>% formatCurrency(2:7, '', digits = 0), 
+                          rownames=FALSE, options = list(pageLength = 100, scrollX = TRUE,dom = 't'))                              
 		
-		# View(cost_data$costs)
-		# View(cost_data)
-		# Add Data Table for COST OUTCOMES
-# 		output[['costcomparisonData']] <- 
-# 		  DT::renderDataTable(data.frame("Scenario"= c("BaseCase","Scenario 1", "Scenario 2", "Scenario 3", "Scenario 4"),
-# 		                                     "Productivity Cost Due to TLTBI"=rep(0,5),
-# 		                                     "Health System Cost Due to TLTBI"=rep(1,5),
-# 		                                 
-# 		                                     "Productivity Cost Due to TB Disease"=rep(2,5),
-#     		                                 "Health System Cost Due to TB Disease"=rep(3,5),
-# 		                                 
-# 		                                     "Total Health System Cost"=c(0,526,840,230,672),
-# 		                                     "Total Cost"=c(0,526,840,230,672),
-# 		                                      check.names = FALSE), rownames=FALSE , 
-# 		                                      options = list(pageLength = 25, scrollX = TRUE,dom = 't'))
-# 		  
-# 		
-    # output[['costcomparisonData2']] <- 
-    #   DT::renderDataTable(data.frame("Scenario"= c("BaseCase","Scenario 1", "Scenario 2", "Scenario 3", "Scenario 4"),
-    #                                  "Cost"=c(0,26,40,30,72),
-    #                                  "Incremental Cost"=c(0,26,40,30,72),
-    #                                  "Effectiveness"=c(0,100,200,125,300),
-    #                                  "Incremental Effectiveness"=c(0,100,250,75,50),
-    #                                  "ICER"=c(0,200,150,0,150),
-    #                                   check.names = FALSE), rownames=FALSE , 
-    #                                   options = list(pageLength = 25, scrollX = TRUE,dom = 't')
-    #   )
-                          
-    output[['costcomparisonData']] <-
-      DT::renderDataTable(cost_data[['costs']],
-                             options = list(pageLength = 100, scrollX = TRUE,dom = 't'),
-                             rownames=FALSE )
+      output[['costcomparisonData3']] <- 
+      DT::renderDataTable(
+        #filtered_data[['costeffData']](),
+        datatable(filtered_data[['costeffData']]()) %>% formatCurrency(2:5, '', digits = 0)%>%       
+          mutate(ICER=case_when(ICER < 0 ~ "Dominated", TRUE ~ as.character(ICER))), 
+        rownames=FALSE , options = list(pageLength = 25, scrollX = TRUE,dom = 't')
+        ) 
+      
+      output[['costcomparisonData4']] <- 
+        DT::renderDataTable(cost_data[['annual']], rownames=FALSE , 
+                            options = list(pageLength = 25,scrollX = TRUE))
     
-    output[['costcomparisonData2']] <- 
-      DT::renderDataTable(cost_data[['costeffective']], rownames=FALSE , 
-                          options = list(pageLength = 25, scrollX = TRUE,dom = 't')
-      )
-    
+      # DT::renderDataTable(
+      #   data.frame(A=c(1000000.51,5000.33, 2500, 251), B=c(0.565,0.794, .685, .456)) %>%
+      #     datatable(extensions = 'Buttons',
+      #               options = list(
+      #                 pageLength = 50,
+      #                 scrollX=TRUE,
+      #                 dom = 'T<"clear">lBfrtip'
+      #               )
+      #     ) %>%
+      #     formatCurrency(1:2, currency = "", interval = 3, mark = ",")
+      # ) # close renderDataTable
 			
 		# Custom Scenarios Choice in Output
 		callModule(outputIncludeCustomScenarioOptions, NULL, sim_data)
