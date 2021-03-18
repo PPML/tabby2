@@ -557,8 +557,8 @@ shinyServer(function(input, output, session) {
       output[['costcomparisonData3']] <- 
       DT::renderDataTable(
         #filtered_data[['costeffData']](),
-        datatable(filtered_data[['costeffData']]()) %>% formatCurrency(2:5, '', digits = 0)%>%       
-          mutate(ICER=case_when(ICER < 0 ~ "Dominated", TRUE ~ as.character(ICER))), 
+        datatable(filtered_data[['costeffData']]()) %>% formatCurrency(2:5, '', digits = 0),      
+          # mutate(ICER=case_when(ICER < 0 ~ "Dominated", TRUE ~ as.character(ICER))), 
         rownames=FALSE , options = list(pageLength = 25, scrollX = TRUE,dom = 't')
         ) 
       
