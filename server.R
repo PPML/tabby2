@@ -544,23 +544,23 @@ shinyServer(function(input, output, session) {
 		  output[['costcomparisonData1']] <-
 		  DT::renderDataTable(
 		    #filtered_data[['effectsData']](),
-		    datatable(filtered_data[['effectsData']]()) %>% formatCurrency(2:5, '', digits = 0), 
-		                      options = list(pageLength = 100, scrollX = TRUE,dom = 't'),
-		                      rownames=FALSE ) 
+		    datatable(filtered_data[['effectsData']](), 
+		               options = list(pageLength = 100, scrollX = TRUE,dom = 't'),
+		               rownames=FALSE) %>% formatCurrency(2:5, '', digits = 0))
 
 		  output[['costcomparisonData2']] <-
       DT::renderDataTable(
-        #filtered_data[['costsData']](),
-        datatable(filtered_data[['costsData']]()) %>% formatCurrency(2:7, '', digits = 0), 
-                          rownames=FALSE, options = list(pageLength = 100, scrollX = TRUE,dom = 't'))                              
+        datatable(filtered_data[['costsData']](), rownames=FALSE, 
+                  options = list(pageLength = 100, scrollX = TRUE,dom = 't')) %>% 
+                  formatCurrency(2:7, '', digits = 0)) 
+                                                      
 		
       output[['costcomparisonData3']] <- 
       DT::renderDataTable(
-        #filtered_data[['costeffData']](),
-        datatable(filtered_data[['costeffData']]()) %>% formatCurrency(2:5, '', digits = 0),      
-          # mutate(ICER=case_when(ICER < 0 ~ "Dominated", TRUE ~ as.character(ICER))), 
-        rownames=FALSE , options = list(pageLength = 25, scrollX = TRUE,dom = 't')
-        ) 
+        datatable(filtered_data[['costeffData']](),      
+                   rownames=FALSE , options = list(pageLength = 25, scrollX = TRUE,dom = 't')) %>% 
+           formatCurrency(2:5, '', digits = 0))
+        
       
       output[['costcomparisonData4']] <- 
         DT::renderDataTable(cost_data[['annual']], rownames=FALSE , 
