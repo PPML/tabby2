@@ -8,9 +8,6 @@ IDs:
     analyses: costcomparisonAnalyses
     colorblind: costcomparisonColorblind
   downloads:
-    png: costcomparisonPNG
-    pdf: costcomparisonPDF
-    pptx: costcomparisonPPTX
     csv: costcomparisonCSV
     xlsx: costcomparisonXLSX
   panels:
@@ -183,8 +180,5 @@ analyses:
 downloads:
   heading: Download
   labels:
-  - PNG
-  - PDF
-  - PPTX
   - CSV
   - XLSX

@@ -130,10 +130,10 @@ outputIncludeCustomScenarioOptions <- function(input, output, session, sim_data)
   })
   
   # These are the Model Scenarios available in the additional Outputs page
-  output$costcomparisonInterventions <- renderUI({
+  output$addoutputsInterventions <- renderUI({
     checkboxGroup2(
-      id = paste0('tabby1-', costcomparison$IDs$controls$interventions),
-      heading = costcomparison$interventions$heading,
+      id = paste0('tabby1-', addoutputs$IDs$controls$interventions),
+      heading = addoutputs$interventions$heading,
       labels = c(
         estimates$interventions$labels,
         if (! is.null(sim_data[['ttt1']])) handle_null_and_empty_str(input$ttt1name, 'ttt1') else NULL,
@@ -149,7 +149,7 @@ outputIncludeCustomScenarioOptions <- function(input, output, session, sim_data)
         if (! is.null(sim_data[['combination3']])) handle_null_and_empty_str(input$combination3Name, 'combination3') else NULL
       ),
       values = c(
-        costcomparison$interventions$values,
+        addoutputs$interventions$values,
         if (! is.null(sim_data[['ttt1']])) handle_null_and_empty_str(input$ttt1name, 'ttt1') else NULL,
         if (! is.null(sim_data[['ttt2']])) handle_null_and_empty_str(input$ttt2name, 'ttt2') else NULL,
         if (! is.null(sim_data[['ttt3']])) handle_null_and_empty_str(input$ttt3name, 'ttt3') else NULL,

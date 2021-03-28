@@ -222,3 +222,50 @@ downloadButtonBar <- function(ids, heading, labels) {
     )
   )
 }
+
+dataDownloadButtonBar <- function(ids, heading, labels) {
+  descriptions <- paste(
+    "This link acts like a button. Click this link or press the enter key to download",
+    c(
+      "the data used in the visualization as CSV file.",
+      "the data used in the visualization as an Excel file."
+    )
+  )
+  
+  tags$div(
+    tags$label(
+      class = "control-label",
+      heading
+    ),
+    tags$div(
+      tags$div(
+        class = "btn-group",
+        role = "group",
+        Map(
+          id = ids,
+          label = labels,
+          desc = descriptions,
+          d_id = paste0(ids, "Description"),
+          function(id, label, desc, d_id) {
+            tags$a(
+              id = id,
+              class = "btn btn-default shiny-download-link",
+              href = "",
+              target = "_blank",
+              download = NA,
+              `aria-describedby` = d_id,
+              tabindex = 0,
+              label,
+              tags$span(
+                class = "sr-only",
+                id = d_id,
+                `aria-hidden` = TRUE,
+                desc
+              )
+            )
+          }
+        )
+      )
+    )
+  )
+}

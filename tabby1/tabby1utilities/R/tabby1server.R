@@ -465,7 +465,12 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         year_adj = year + position_year(scenario)
       ) %>% 
       mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-             value = signif(value, 3))
+             value = signif(value, 3))  %>% 
+      mutate(scenario = sapply(scenario, function(x) {
+        if (x %in% c('base_case', names(addoutputs$interventions$labels), names(addoutputs$analyses$labels))) {
+          c(base_case = "Base Case", addoutputs$interventions$labels, addoutputs$analyses$labels)[[x]]
+        } else as.character(x)
+      })) 
   })
   
   # user_filtered_data[['addoutputsData()']] <- addoutputsData()
@@ -807,7 +812,11 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
           input[[costcomparison$IDs$controls$interventions]],
           input[[costcomparison$IDs$controls$analyses]],
           "base_case"
-        ))
+        )) %>% mutate(Scenario = sapply(Scenario, function(x) {
+      if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
+        c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
+      } else as.character(x)
+    }))
     # ) %>%
     # arrange(scenario)
   })
@@ -831,7 +840,11 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
           input[[costcomparison$IDs$controls$analyses]],
           "base_case"
         )) %>%
-          dplyr::select(!Discount)
+          dplyr::select(!Discount) %>% mutate(Scenario = sapply(Scenario, function(x) {
+            if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
+              c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
+            } else as.character(x)
+          }))
         
       # ) %>%
       # arrange(scenario)
@@ -865,7 +878,12 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       mutate("ICER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
       # mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
       select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>% 
-      mutate(ICER=case_when(ICER < 0 ~ "Dominated", TRUE ~ as.character(ICER)))
+      mutate(ICER=case_when(ICER < 0 ~ "Dominated", TRUE ~ as.character(ICER)))%>%
+        mutate(Scenario = sapply(Scenario, function(x) {
+        if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
+          c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
+        } else as.character(x)
+      }))
       # mutate(ICER=ifelse(as.numeric(ICER) < 0, "Dominated", as.character(ICER)))
     } else {
       COSTEFF_ACER_DATA() %>%
@@ -881,7 +899,12 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         mutate("Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=value-first(value)) %>%
         mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
         select(!c(discount,perspectives,`Effectiveness Measure`,value))   %>%
-        mutate(ACER=case_when(ACER<0 ~ "Dominated", TRUE ~ as.character(ACER)))
+        mutate(ACER=case_when(ACER<0 ~ "Dominated", TRUE ~ as.character(ACER)))%>% 
+        mutate(Scenario = sapply(Scenario, function(x) {
+          if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
+            c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
+          } else as.character(x)
+        }))
 
         
       # %>% arrange(`Effectiveness Measure`, desc(value)) %>%
@@ -1554,50 +1577,47 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
     filename = paste0("tabby",
                       version_number, "-costcomparison-data-", geo_short_code(), "_", sys_date, ".xlsx"),
     content = function(file) {
-      costcomparisonData() %>% 
-        mutate(
-          year = ifelse(year == 2000, 2016, year)
-        ) %>%
-        spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) {
-          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
-            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
-          } else as.character(x)
-        })) %>%
-        mutate(outcome = sapply(outcome, function(x) costcomparison$outcomes$labels[[x]])) %>%
-        select(
-          outcome, scenario, age_group, year, mean # , ci_high, ci_low
-        ) %>%
-        openxlsx::write.xlsx(
-          file = file,
-          colNames = TRUE
-        )
+      
+      #create a list of all costs data
+      cost_list<-list()
+      cost_list[["Effects Table"]]<-effectsData()
+      cost_list[["Costs Table"]]<-costsData()
+      cost_list[["Cost Effectiveness Table"]]<-costeffData()
+      openxlsx::write.xlsx(
+        cost_list,
+        file,
+        colNames = TRUE
+      )
     }
   )
   
   # __costcomparison csv ----
   output[[costcomparison$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-                                 version_number, "-costcomparison-data-", geo_short_code(), "_", sys_date, ".csv") }),
+                                 version_number, "-costcomparison-data-csv-", geo_short_code(), "_", sys_date, ".zip") }),
     content = function(file) {
-      costcomparisonData() %>%
-        mutate(
-          year = ifelse(year == 2000, 2016, year)
-        ) %>%
-        spread(type, value) %>%
-        mutate(scenario = sapply(scenario, function(x) {
-          if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
-            c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
-          } else as.character(x)
-        })) %>%
-        mutate(outcome = sapply(outcome, function(x) costcomparison$outcomes$labels[[x]])) %>%
-        select(
-          outcome, scenario, age_group, year, mean # , ci_high, ci_low
-        ) %>%
-        write.csv(
-          file = file,
-          row.names = FALSE
-        )
+      #go to a temp dir to avoid permission issues
+      owd <- setwd(tempdir())
+      on.exit(setwd(owd))
+      files <- NULL;
+      #create a list of all costs data
+      cost_list<-list()
+      cost_list[[1]]<-effectsData()
+      cost_list[[2]]<-costsData()
+      cost_list[[3]]<-costeffData()
+      # cost_list[[4]]<-costsData()
+      for (i in 1:3){
+        namestr<-ifelse(i==1,"Effects Table",ifelse(i==2,"Costs Table",ifelse(i==3,"Cost Effectiveness Table")))
+        fileName <- paste0(namestr,"_", geo_short_code(), "_", sys_date, ".csv")
+        # write.csv(
+        #   file = file,
+        #   row.names = FALSE
+        # )
+        write.table(cost_list[[i]],fileName,sep = ',', row.names = F, col.names = T)
+        files <- c(fileName,files)
+      } 
+    #create the zip file
+    zip(file,files)
     }
   )
   filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData,

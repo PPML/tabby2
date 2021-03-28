@@ -228,7 +228,7 @@ costComparisonControlPanel <- function(ns) {
       labels = costcomparison$analyses$labels,
       values = costcomparison$analyses$values,
     ),
-    downloads = downloadButtonBar(
+    downloads = dataDownloadButtonBar(
       ids = ns(costcomparison$IDs$downloads),
       heading = costcomparison$downloads$heading,
       labels = costcomparison$downloads$labels

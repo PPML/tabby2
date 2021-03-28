@@ -507,11 +507,15 @@ shinyServer(function(input, output, session) {
     # where the CSV and XLSX downloads also have this type column removed.
 
     # Add Data Table for Estimates
-
 		output[['estimatesData']] <- 
 			DT::renderDataTable(filtered_data[['estimatesData']]() %>% 
                           filter(type == 'mean') %>% 
-                          select(-type), 
+			                      mutate(scenario = sapply(scenario, function(x) {
+			                        if (x %in% c('base_case', names(estimates$interventions$labels), names(estimates$analyses$labels))) {
+			                          c(base_case = "Base Case", estimates$interventions$labels, estimates$analyses$labels)[[x]]
+			                        } else as.character(x)
+			                      })) %>%			                    
+			                      select(-type), 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
 
@@ -520,6 +524,11 @@ shinyServer(function(input, output, session) {
 		output[['trendsData']] <- 
 			DT::renderDataTable( filtered_data[['trendsData']]() %>% 
                           filter(type == 'mean') %>% 
+			                       mutate(scenario = sapply(scenario, function(x) {
+			                         if (x %in% c('base_case', names(trends$interventions$labels), names(trends$analyses$labels))) {
+			                           c(base_case = "Base Case", trends$interventions$labels, trends$analyses$labels)[[x]]
+			                         } else as.character(x)
+			                       })) %>%
                           select(-c(type, year_adj)), 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
@@ -529,6 +538,11 @@ shinyServer(function(input, output, session) {
 		output[['agegroupsData']] <- 
 			DT::renderDataTable( filtered_data[['agegroupsData']]() %>% 
                           filter(type == 'mean') %>% 
+			                       mutate(scenario = sapply(scenario, function(x) {
+			                         if (x %in% c('base_case', names(agegroups$interventions$labels), names(agegroups$analyses$labels))) {
+			                           c(base_case = "Base Case", agegroups$interventions$labels, agegroups$analyses$labels)[[x]]
+			                         } else as.character(x)
+			                       })) %>%
                           select(-type), 
 				options = list(pageLength = 25, scrollX = TRUE), 
 				rownames=FALSE )  
@@ -536,7 +550,7 @@ shinyServer(function(input, output, session) {
 		# Add Data Table for ADDITIONAL OUTCOMES
 		output[['addoutputsData']] <- 
 		  DT::renderDataTable( filtered_data[['addoutputsData']]() %>% 
-		                         filter(type == 'mean') %>% 
+		                         filter(type == 'mean') %>%
 		                         select(-c(type, year_adj)), 
 		                       options = list(pageLength = 25, scrollX = TRUE), 
 		                       rownames=FALSE )  
@@ -546,24 +560,46 @@ shinyServer(function(input, output, session) {
 		    #filtered_data[['effectsData']](),
 		    datatable(filtered_data[['effectsData']](), 
 		               options = list(pageLength = 100, scrollX = TRUE,dom = 't'),
-		               rownames=FALSE) %>% formatCurrency(2:5, '', digits = 0))
+		               rownames=FALSE) %>%          
+		      # mutate(scenario = sapply(scenario, function(x) {
+		      #            if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
+		      #              c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
+		      #            } else as.character(x)
+		      #          })) %>% 
+		      formatCurrency(2:5, '', digits = 0))
 
 		  output[['costcomparisonData2']] <-
       DT::renderDataTable(
         datatable(filtered_data[['costsData']](), rownames=FALSE, 
                   options = list(pageLength = 100, scrollX = TRUE,dom = 't')) %>% 
+          # mutate(scenario = sapply(scenario, function(x) {
+          #   if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
+          #     c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
+          #   } else as.character(x)
+          # })) %>%
                   formatCurrency(2:7, '', digits = 0)) 
                                                       
 		
       output[['costcomparisonData3']] <- 
       DT::renderDataTable(
         datatable(filtered_data[['costeffData']](),      
-                   rownames=FALSE , options = list(pageLength = 25, scrollX = TRUE,dom = 't')) %>% 
+                   rownames=FALSE , options = list(pageLength = 25, scrollX = TRUE,dom = 't')) %>%           
+                   #  mutate(scenario = sapply(scenario, function(x) {
+                   #   if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
+                   #     c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
+                   #   } else as.character(x)
+                   # })) %>%
            formatCurrency(2:5, '', digits = 0))
         
       
       output[['costcomparisonData4']] <- 
-        DT::renderDataTable(cost_data[['annual']], rownames=FALSE , 
+        DT::renderDataTable(cost_data[['annual']] %>%
+                              mutate(Scenario = sapply(Scenario, function(x) {
+                                if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
+                                  c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
+                                } else as.character(x)
+                              }))
+                            , rownames=FALSE , 
                             options = list(pageLength = 25,scrollX = TRUE))
     
       # DT::renderDataTable(

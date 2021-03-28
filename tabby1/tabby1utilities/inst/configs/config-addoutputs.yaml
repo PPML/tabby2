@@ -1,24 +1,24 @@
 IDs:
   controls:
-    comparators: addOutputsComparator
-    populations: addOutputsPopulations
-    ages: addOutputsAges
-    outcomes: addOutputsOutcomes
-    interventions: addOutputsInterventions
-    analyses: addOutputsAnalyses
-    colorblind: addOutputsColorblind
+    comparators: addoutputsComparator
+    populations: addoutputsPopulations
+    ages: addoutputsAges
+    outcomes: addoutputsOutcomes
+    interventions: addoutputsInterventions
+    analyses: addoutputsAnalyses
+    colorblind: addoutputsColorblind
   downloads:
-    png: addOutputsPNG
-    pdf: addOutputsPDF
-    pptx: addOutputsPPTX
-    csv: addOutputsCSV
-    xlsx: addOutputsXLSX
+    png: addoutputsPNG
+    pdf: addoutputsPDF
+    pptx: addoutputsPPTX
+    csv: addoutputsCSV
+    xlsx: addoutputsXLSX
   panels:
-    control: addOutputsControlPanel
-    visualization: addOutputsVisualizationPanel
-  title: addOutputsTitle
-  subtitle: addOutputsSubtitle
-  plot: addOutputsPlot
+    control: addoutputsControlPanel
+    visualization: addoutputsVisualizationPanel
+  title: addoutputsTitle
+  subtitle: addoutputsSubtitle
+  plot: addoutputsPlot
 comparators:
   heading: Comparison
   values:
@@ -195,5 +195,8 @@ analyses:
 downloads:
   heading: Download
   labels:
+  - PNG
+  - PDF
+  - PPTX
   - CSV
   - XLSX
