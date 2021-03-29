@@ -873,7 +873,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
           input[[costcomparison$IDs$controls$interventions]],
           input[[costcomparison$IDs$controls$analyses]],
           "base_case"
-        )) %>% arrange(`Effectiveness Measure`, desc(value)) %>%
+        )) %>% arrange(`Effectiveness Measure`, value) %>%
       mutate("Incremental Cost (in mil)"=`Cost (in mil)`-lag(`Cost (in mil)`),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=value-lag(value))%>%
       mutate("ICER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
       # mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
