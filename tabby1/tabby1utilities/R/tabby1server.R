@@ -874,8 +874,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
           input[[costcomparison$IDs$controls$analyses]],
           "base_case"
         )) %>% arrange(`Effectiveness Measure`, desc(value)) %>%
-      mutate("Incremental Cost"=Cost-lag(Cost),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=value-lag(value))%>%
-      mutate("ICER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
+      mutate("Incremental Cost (in mil)"=`Cost (in mil)`-lag(`Cost (in mil)`),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=value-lag(value))%>%
+      mutate("ICER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
       # mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
       select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>% 
       mutate(ICER=case_when(ICER < 0 ~ "Dominated", TRUE ~ as.character(ICER)))%>%
@@ -897,7 +897,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
             "base_case"
           )) %>% 
         mutate("Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=value-first(value)) %>%
-        mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
+        mutate("ACER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
         select(!c(discount,perspectives,`Effectiveness Measure`,value))   %>%
         mutate(ACER=case_when(ACER<0 ~ "Dominated", TRUE ~ as.character(ACER)))%>% 
         mutate(Scenario = sapply(Scenario, function(x) {

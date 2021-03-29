@@ -111,7 +111,7 @@ costVisualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush 
         DT::dataTableOutput(outputId = data1),
         br(), 
         br(),
-      h3("Costs Table (in 000s)"),
+      h3("Costs Table (in mil)"),
        DT::dataTableOutput(outputId = data2),
        br(), 
        br(), 
