@@ -174,7 +174,7 @@ runCombination <- function(input, output, session, n, geo_short_code) {
 	
 
 	new_data[['ESTIMATES_DATA']] <- 
-		dplyr::filter(restab_big, year %in% c(2020, 2022, 2025, 2035, 2049),!(outcome %in% add_outputs_vec) )
+		dplyr::filter(restab_big, year %in% c(2020, 2022, 2025, 2035, 2050),!(outcome %in% add_outputs_vec) )
 
   return(new_data)
 
