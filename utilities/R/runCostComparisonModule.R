@@ -419,7 +419,7 @@ cost_eff_ACER<-data.frame(
   "savlys"=rep(0,length(unique(cc_data$scenario))*4),
   check.names = FALSE
 )
-View(all_cost_data)
+
 for (i in 1:nrow(cost_eff_ACER)){
 
   cost_eff_ACER[i,2]<-cost_eff_base[i,2]
