@@ -163,17 +163,17 @@ bc_tltbi_inits<-sum(cc_data %>% dplyr::filter(scenario=='base_case') %>% dplyr::
 ## ANNUAL RESULTS DATAFRAME
 # calculate the cost effectiveness dataframe from the larger dataframe above by year
 # we want the following columns
-# "Scenario", "Cost","TB Cases Averted", "TB Deaths Averted", "QALYs Saved", & "Life Years Saved", "Year"
+# "Scenario", "Cost","TB Cases Averted", "TB Deaths", "QALYs Saved", & "Life Years Saved", "Year"
 ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 all_cost_data<-data.frame(
   "Scenario"=rep(unique(cc_data$scenario),length(unique(ef_data$year))*2),
   "Cost (in mil)"=rep(0,length(unique(ef_data$year))*2),
   "Health Service Cost (in mil)"=rep(0,length(unique(ef_data$year))*2),
   "Discount"= rep(c(0,1), each=length(unique(cc_data$scenario))*length(unique(ef_data$year))),
-  "Cases Averted (in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
-  "Deaths Averted (in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
-  "QALYs (in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
-  "Life Years (in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
+  "TB Cases (in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
+  "TB Deaths (in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
+  "QALYs Lost(in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
+  "Life Years Lost(in 000s)"=rep(0,length(unique(cc_data$scenario))*length(unique(ef_data$year))*2),
   "year"=rep(rep(unique(ef_data$year),each=length(unique(cc_data$scenario))),2),
   check.names = FALSE
 )
@@ -216,10 +216,10 @@ for(i in 1:nrow(all_cost_data)){
   
   #calculate the indvidual qalys
   index<-(all_cost_data[i,"year"]-2020)+1
-  TLTBI_qaly<-TLTBI_UW_tox*P_TLTBI_tox*sum(bc_tltbi_inits_agyr-scen_tltbi_inits_ag)
-  case_qaly <-sum(TB_UW*DUR_TB*(bc_cases_agyr-scen_cases_ag))
-  death_qaly <- sum((bc_deaths_agyr-scen_deaths_ag)*life_exp)
-  disc_death_qaly <- sum((bc_deaths_agyr-scen_deaths_ag)*disc_life_exp[(11*(index-1)+1):(11*index)])
+  TLTBI_qaly<-TLTBI_UW_tox*P_TLTBI_tox*sum(scen_tltbi_inits_ag)
+  case_qaly <-sum(TB_UW*DUR_TB*scen_cases_ag)
+  death_qaly <- sum(scen_deaths_ag*life_exp)
+  disc_death_qaly <- sum(scen_deaths_ag*disc_life_exp[(11*(index-1)+1):(11*index)])
 
   #calculate the individual costs 
   #set the discount factor 
@@ -254,54 +254,46 @@ for(i in 1:nrow(all_cost_data)){
   all_cost_data[i,"Health Service Cost (in mil)"]<- round(extra_cost_data[i,3]+extra_cost_data[i,5])
   #no discounting
   if (all_cost_data[i,"Discount"]==0){
-    all_cost_data[i,"Cases Averted (in 000s)"]<-
-      round((ef_data%>%filter(scenario=="base_case", outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value))-
-      ef_data%>%filter(scenario==all_cost_data[i,"Scenario"], outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value),3)
+    all_cost_data[i,"TB Cases (in 000s)"]<-
+      # round((ef_data%>%filter(scenario=="base_case", outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value))-
+      ef_data%>%filter(scenario==all_cost_data[i,"Scenario"], outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value)
     
-    all_cost_data[i,"Deaths Averted (in 000s)"]<-
-      round((ef_data%>%filter(scenario=="base_case", outcome=="tb_mortality_000s", year==all_cost_data[i,"year"])%>%select(value))-
-      ef_data%>%filter(scenario==all_cost_data[i,"Scenario"], outcome=="tb_mortality_000s", year==all_cost_data[i,"year"])%>%select(value),3)
-    all_cost_data[i,"QALYs (in 000s)"]<-round((TLTBI_qaly+case_qaly)+death_qaly,3)
-    all_cost_data[i,"Life Years (in 000s)"]<-round(death_qaly,3)
+    all_cost_data[i,"TB Deaths (in 000s)"]<-
+      # round((ef_data%>%filter(scenario=="base_case", outcome=="tb_mortality_000s", year==all_cost_data[i,"year"])%>%select(value))-
+      ef_data%>%filter(scenario==all_cost_data[i,"Scenario"], outcome=="tb_mortality_000s", year==all_cost_data[i,"year"])%>%select(value)
+    all_cost_data[i,"QALYs Lost (in 000s)"]<-round((TLTBI_qaly+case_qaly)+death_qaly,3)
+    all_cost_data[i,"Life Years Lost (in 000s)"]<-round(death_qaly,3)
   } else {
     #yes discounting
     # all_cost_data[i,"Cost (in mil)"]<- round(((tltbi_prod + tltbi_health + tb_prod + tb_health)*disc_vec[index])/1e3)
     # all_cost_data[i,"Health Service Cost (in mil)"]<- round(((tltbi_health + tb_health)*disc_vec[index])/1e3)
     
-    all_cost_data[i,"Cases Averted (in 000s)"]<-
-      round((ef_data%>%filter(scenario=="base_case", outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value))-
-      ef_data%>%filter(scenario==all_cost_data[i,"Scenario"], outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value)*disc_vec[index],3)
-    all_cost_data[i,"Deaths Averted (in 000s)"]<-
-      round((ef_data%>%filter(scenario=="base_case", outcome=="tb_mortality_000s", year==all_cost_data[i,"year"])%>%select(value))-
-      ef_data%>%filter(scenario==all_cost_data[i,"Scenario"], outcome=="tb_mortality_000s", year==all_cost_data[i,"year"])%>%select(value)*disc_vec[index],3)
-    all_cost_data[i,"QALYs (in 000s)"]<-round(((TLTBI_qaly+case_qaly)*disc_vec[index])+disc_death_qaly,3)
-    all_cost_data[i,"Life Years (in 000s)"]<-round(disc_death_qaly,3)
+    all_cost_data[i,"TB Cases (in 000s)"]<-
+      # round((ef_data%>%filter(scenario=="base_case", outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value))-
+      ef_data%>%filter(scenario==all_cost_data[i,"Scenario"], outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value)*disc_vec[index]
+    all_cost_data[i,"TB Deaths (in 000s)"]<-
+      # round((ef_data%>%filter(scenario=="base_case", outcome=="tb_mortality_000s", year==all_cost_data[i,"year"])%>%select(value))-
+      ef_data%>%filter(scenario==all_cost_data[i,"Scenario"], outcome=="tb_mortality_000s", year==all_cost_data[i,"year"])%>%select(value)*disc_vec[index]
+    all_cost_data[i,"QALYs Lost (in 000s)"]<-round(((TLTBI_qaly+case_qaly)*disc_vec[index])+disc_death_qaly,3)
+    all_cost_data[i,"Life Years Lost (in 000s)"]<-round(disc_death_qaly,3)
   }
 }
 
 ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
 ## EFFECTIVENESS MEASURES DATAFRAME
 ## create a new data frame of the effectiveness measures with the following columns:
-## "Scenario", "TB Cases Averted", "TB Deaths Averted", "QALYs Saved", "Life Years Saved" 
+## "Scenario", "TB Cases Averted", "TB Deaths", "QALYs Saved", "Life Years Saved" 
 ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####    
 new_effect_data<-matrix(0,length(unique(cc_data$scenario)),4)
 new_effect_data<-as.data.frame(new_effect_data)
-colnames(new_effect_data)<-c("TB Cases Averted (in 000s)", "TB Deaths Averted (in 000s)", "QALYs Saved (in 000s)", "Life Years Saved (in 000s)")
+colnames(new_effect_data)<-c("TB Cases (in 000s)", "TB Deaths (in 000s)", "QALYs Lost (in 000s)", "Life Years Lost (in 000s)")
 for (i in 1:length(unique(cc_data$scenario))){
   scen_no<-unique(cc_data$scenario)[i]
-
   #filter the data based on the scenario
-  new_effect_data[i,1]<-round(bc_cases-(sum(ef_data%>%filter(scenario==scen_no, outcome=="tb_incidence_000s")%>%select(value))),3)
-  new_effect_data[i,2]<-round(bc_deaths-(sum(ef_data%>%filter(scenario==scen_no, outcome=="tb_mortality_000s")%>%select(value))),3)
-
- # get the scenario specific age cases and deaths
-  scen_cases_ag<-ag_data %>% filter(outcome=="tb_incidence_000s", scenario==scen_no) %>% select(value,age_group) %>%
-    group_by(age_group) %>% summarise(cases=round(sum(value))) %>% select(cases)
-  scen_deaths_ag<-ag_data %>% filter(outcome=="tb_mortality_000s", scenario==scen_no) %>% select(value,age_group) %>%
-    group_by(age_group) %>% summarise(deaths=round(sum(value))) %>% select(deaths)
-
-  new_effect_data[i,3]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == scen_no) %>% select("QALYs (in 000s)"))),0)
-  new_effect_data[i,4]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == scen_no) %>% select("Life Years (in 000s)"))),0)
+  new_effect_data[i,1]<- sum(all_cost_data %>% filter(Scenario==scen_no, Discount==0) %>% select(`TB Cases (in 000s)`)) 
+  new_effect_data[i,2]<- sum(all_cost_data %>% filter(Scenario==scen_no, Discount==0) %>% select(`TB Deaths (in 000s)`))
+  new_effect_data[i,3]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == scen_no) %>% select(`QALYs Lost (in 000s)`))),0)
+  new_effect_data[i,4]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == scen_no) %>% select(`Life Years Lost (in 000s)`))),0)
 }
 
 ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####    
@@ -363,35 +355,31 @@ cost_eff_base<-data.frame(
 for (i in 1:nrow(cost_eff_base)){
   #no discounting
   if(cost_eff_base[i,3]=="all" & cost_eff_base[i,4]==0){
-    cost_eff_base[i,2]<-new_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==0) %>% select(`Total cost`)
     cost_eff_base[i,2]<-sum(all_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==0) %>% select(`Cost (in mil)`))
     
   } else if (cost_eff_base[i,3]=="healthsys" & cost_eff_base[i,4]==0) {
-    # cost_eff_base[i,2]<-new_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==0) %>% select(`Total health services cost`)
     cost_eff_base[i,2]<-sum(all_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==0) %>% select(`Health Service Cost (in mil)`))
     
   #discounting
   } else if (cost_eff_base[i,3]=="all" & cost_eff_base[i,4]==1) {
-    # cost_eff_base[i,2]<-new_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==1) %>% select(`Total cost`)
     cost_eff_base[i,2]<-sum(all_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==1) %>% select(`Cost (in mil)`))
     
   } else if (cost_eff_base[i,3]=="healthsys" & cost_eff_base[i,4]==1) {
-    # cost_eff_base[i,2]<-new_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==1) %>% select(`Total health services cost`)
     cost_eff_base[i,2]<-sum(all_cost_data %>% filter(Scenario==cost_eff_base[i,1], Discount==1) %>% select(`Health Service Cost (in mil)`))
   }
   
   #no discounting outcomes
   if(cost_eff_base[i,4]==0){
-    cost_eff_base[i,5]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("Cases Averted (in 000s)"))),3)
-    cost_eff_base[i,6]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("Deaths Averted (in 000s)"))),3)
-    cost_eff_base[i,7]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("QALYs (in 000s)"))),3)
-    cost_eff_base[i,8]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("Life Years (in 000s)"))),3)
+    cost_eff_base[i,5]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("TB Cases (in 000s)"))),3)
+    cost_eff_base[i,6]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("TB Deaths (in 000s)"))),3)
+    cost_eff_base[i,7]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("QALYs Lost (in 000s)"))),3)
+    cost_eff_base[i,8]<- round((sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_base[i,1]) %>% select("Life Years Lost(in 000s)"))),3)
   #discounting outcomes
   } else if (cost_eff_base[i,4]==1){
-    cost_eff_base[i,5]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("Cases Averted (in 000s)"))),3)
-    cost_eff_base[i,6]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("Deaths Averted (in 000s)"))),3)
-    cost_eff_base[i,7]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("QALYs (in 000s)"))),3)
-    cost_eff_base[i,8]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("Life Years (in 000s)"))),3)
+    cost_eff_base[i,5]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("TB Cases (in 000s)"))),3)
+    cost_eff_base[i,6]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("TB Deaths (in 000s)"))),3)
+    cost_eff_base[i,7]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("QALYs Lost (in 000s)"))),3)
+    cost_eff_base[i,8]<- round((sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_base[i,1]) %>% select("Life Years Lost (in 000s)"))),3)
   }
 }
 
@@ -404,7 +392,7 @@ colnames(cost_eff_base)[5]<-"Effectiveness Measure"
 # we want the following columns
 # "Scenario", "Cost", "Incremental Cost","Effectiveness","Incremental Effectiveness", "ICER"
 # the effectiveness measure should update based on the radio button entry 
-# options are: TB Cases Averted, TB Deaths Averted, QALYs Saved, & Life Years Saved
+# options are: TB Cases Averted, TB Deaths, QALYs Saved, & Life Years Saved
 # The costs should also be pivoted between health services and health services & patient costs
 ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
 cost_eff_ACER<-data.frame(
@@ -421,44 +409,39 @@ cost_eff_ACER<-data.frame(
 )
 
 for (i in 1:nrow(cost_eff_ACER)){
-
+##TOTAL COSTS ARE THE SAME AS THE DATAFRAME ABOVE 
   cost_eff_ACER[i,2]<-cost_eff_base[i,2]
-  #calculate the incremental costs
+##CALCULATE INCREMENTAL COSTS 
   #no discounting
   if(cost_eff_ACER[i,4]=="all" & cost_eff_ACER[i,5]==0){
     cost_eff_ACER[i,3]<-cost_eff_base[i,2] -
-                        new_cost_data %>% filter(Scenario=="base_case", Discount==0) %>% select(`Total cost`)
+                        sum(all_cost_data %>% filter(Scenario=="base_case", Discount==0) %>% select(`Cost (in mil)`))
   } else if (cost_eff_ACER[i,4]=="healthsys" & cost_eff_ACER[i,5]==0) {
-    
-    cost_eff_ACER[i,3]<-cost_eff_base[i,2] -
-      new_cost_data %>% filter(Scenario=="base_case", Discount==0) %>% select(`Total health services cost`)
+    cost_eff_ACER[i,3]<-cost_eff_ACER[i,2] -
+                        sum(all_cost_data %>% filter(Scenario=="base_case", Discount==0) %>% select(`Health Service Cost (in mil)`))
     #discounting
   } else if (cost_eff_ACER[i,4]=="all" & cost_eff_ACER[i,5]==1) {
-    cost_eff_ACER[i,3]<-cost_eff_base[i,2]-
-      new_cost_data %>% filter(Scenario=="base_case", Discount==1) %>% select(`Total cost`)
+    cost_eff_ACER[i,3]<-cost_eff_ACER[i,2]-
+                        sum(all_cost_data %>% filter(Scenario=="base_case", Discount==1) %>% select(`Cost (in mil)`))
   } else if (cost_eff_ACER[i,4]=="healthsys" & cost_eff_ACER[i,5]==1) {
-    cost_eff_ACER[i,3]<-cost_eff_base[i,2] -
-      new_cost_data %>% filter(Scenario=="base_case", Discount==1) %>% select(`Total health services cost`)
+    cost_eff_ACER[i,3]<-cost_eff_ACER[i,2] -
+                        sum(all_cost_data %>% filter(Scenario=="base_case", Discount==1) %>% select(`Health Service Cost (in mil)`))
   }
-
   #calculate the effectiveness measures
   #no discounting outcomes
   if(cost_eff_ACER[i,5]==0){
-    cost_eff_ACER[i,6]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("Cases Averted (in 000s)")),0)
-    cost_eff_ACER[i,7]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("Deaths Averted (in 000s)")),0)
-    cost_eff_ACER[i,8]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("QALYs (in 000s)")),0)
-    cost_eff_ACER[i,9]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("Life Years (in 000s)")),0)
+    cost_eff_ACER[i,6]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("TB Cases (in 000s)")),0)
+    cost_eff_ACER[i,7]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("TB Deaths (in 000s)")),0)
+    cost_eff_ACER[i,8]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("QALYs Lost(in 000s)")),0)
+    cost_eff_ACER[i,9]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("Life Years Lost (in 000s)")),0)
     #discounting outcomes
   } else if (cost_eff_ACER[i,5]==1){
-    cost_eff_ACER[i,6]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("Cases Averted (in 000s)")),0)
-    cost_eff_ACER[i,7]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("Deaths Averted (in 000s)" )),0)
-    cost_eff_ACER[i,8]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("QALYs (in 000s)")),0)
-    cost_eff_ACER[i,9]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("Life Years (in 000s)")),0)
+    cost_eff_ACER[i,6]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("TB Cases (in 000s)")),0)
+    cost_eff_ACER[i,7]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("TB Deaths (in 000s)" )),0)
+    cost_eff_ACER[i,8]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("QALYs Lost (in 000s)")),0)
+    cost_eff_ACER[i,9]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("Life Years Lost(in 000s)")),0)
   }
 }
-
-cost_eff_ACER[,3]<- - cost_eff_ACER[,3]
-
 cost_eff_ACER<-reshape2::melt(cost_eff_ACER, id.vars=c("Scenario","Cost (in mil)","Incremental Cost (in mil)","perspectives","discount"))
 colnames(cost_eff_ACER)[6]<-"Effectiveness Measure"
 new_effect_data<-data.frame("Scenario"=unique(cc_data$scenario),
