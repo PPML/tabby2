@@ -430,16 +430,16 @@ for (i in 1:nrow(cost_eff_ACER)){
   #calculate the effectiveness measures
   #no discounting outcomes
   if(cost_eff_ACER[i,5]==0){
-    cost_eff_ACER[i,6]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("TB Cases (in 000s)")),0)
-    cost_eff_ACER[i,7]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("TB Deaths (in 000s)")),0)
-    cost_eff_ACER[i,8]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("QALYs Lost(in 000s)")),0)
-    cost_eff_ACER[i,9]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("Life Years Lost (in 000s)")),0)
+    cost_eff_ACER[i,6]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("TB Cases (in 000s)")),3)
+    cost_eff_ACER[i,7]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("TB Deaths (in 000s)")),3)
+    cost_eff_ACER[i,8]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("QALYs Lost (in 000s)")),3)
+    cost_eff_ACER[i,9]<- round(sum(all_cost_data %>% filter(Discount==0,Scenario == cost_eff_ACER[i,1]) %>% select("Life Years Lost (in 000s)")),3)
     #discounting outcomes
   } else if (cost_eff_ACER[i,5]==1){
-    cost_eff_ACER[i,6]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("TB Cases (in 000s)")),0)
-    cost_eff_ACER[i,7]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("TB Deaths (in 000s)" )),0)
-    cost_eff_ACER[i,8]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("QALYs Lost (in 000s)")),0)
-    cost_eff_ACER[i,9]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("Life Years Lost(in 000s)")),0)
+    cost_eff_ACER[i,6]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("TB Cases (in 000s)")),3)
+    cost_eff_ACER[i,7]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("TB Deaths (in 000s)" )),3)
+    cost_eff_ACER[i,8]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("QALYs Lost (in 000s)")),3)
+    cost_eff_ACER[i,9]<- round(sum(all_cost_data %>% filter(Discount==1,Scenario == cost_eff_ACER[i,1]) %>% select("Life Years Lost(in 000s)")),3)
   }
 }
 cost_eff_ACER<-reshape2::melt(cost_eff_ACER, id.vars=c("Scenario","Cost (in mil)","Incremental Cost (in mil)","perspectives","discount"))
