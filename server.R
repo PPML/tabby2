@@ -479,7 +479,8 @@ shinyServer(function(input, output, session) {
       EFFECTS_DATA = cost_data[['effects']], 
       COSTS_DATA = cost_data[['costs']], 
       COSTEFF_ICER_DATA = cost_data[['ICER']],
-      COSTEFF_ACER_DATA = cost_data[['ACER']]
+      COSTEFF_ACER_DATA = cost_data[['ACER']],
+      COSTS_ANNUAL_DATA = cost_data[['annual']]
       )
       })
       
@@ -593,7 +594,7 @@ shinyServer(function(input, output, session) {
         
       
       output[['costcomparisonData4']] <- 
-        DT::renderDataTable(cost_data[['annual']] %>%
+        DT::renderDataTable(filtered_data[['annualCostData']]() %>%
                               mutate(Scenario = sapply(Scenario, function(x) {
                                 if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
                                   c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]

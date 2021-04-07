@@ -11,8 +11,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
   COSTS_DATA <-  reactive({ cost_data()[['COSTS_DATA']] })
   COSTEFF_ICER_DATA <-  reactive({ cost_data()[['COSTEFF_ICER_DATA']] })
   COSTEFF_ACER_DATA <-  reactive({ cost_data()[['COSTEFF_ACER_DATA']] })
-  
-  
+  COSTS_ANNUAL_DATA <-  reactive({ cost_data()[['COSTS_ANNUAL_DATA']] })
   
   # The session info is used to title the downloads with the tabby2 version
   # number. 
@@ -850,6 +849,33 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       # arrange(scenario)
   })
   
+  #costs server ----
+  #___calculate data ----
+  annualCostData <- reactive({
+    req(
+      c(
+        input[[costsoutcomes$IDs$controls$interventions]],
+        # input[[costcomparison$IDs$controls$analyses]],
+        "base_case"
+      )
+    )
+    
+    COSTS_ANNUAL_DATA() %>%
+      dplyr::filter(
+        Scenario %in% c(
+          input[[costsoutcomes$IDs$controls$interventions]],
+          input[[costsoutcomes$IDs$controls$analyses]],
+          "base_case"
+        )) %>% mutate(Scenario = sapply(Scenario, function(x) {
+        if (x %in% c('base_case', names(costsoutcomes$interventions$labels), names(costsoutcomes$analyses$labels))) {
+          c(base_case = "Base Case", costsoutcomes$interventions$labels, costsoutcomes$analyses$labels)[[x]]
+        } else as.character(x)
+      }))
+    
+    # ) %>%
+    # arrange(scenario)
+  })
+  
   #cost effectiveness server ----
   #___calculate data ----
   costeffData <- reactive({
@@ -1604,13 +1630,11 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
   # __costcomparison xlsx ----
   output[[costcomparison$IDs$downloads$xlsx]] <- downloadHandler(
     filename = paste0("tabby",
-                      version_number, "-costcomparison-data-", geo_short_code(), "_", sys_date, ".xlsx"),
+                      version_number, "-cost_comparison-data-", geo_short_code(), "_", sys_date, ".xlsx"),
     content = function(file) {
       
       #create a list of all costs data
       cost_list<-list()
-      cost_list[["Effects Table"]]<-effectsData()
-      cost_list[["Costs Table"]]<-costsData()
       cost_list[["Cost Effectiveness Table"]]<-costeffData()
       openxlsx::write.xlsx(
         cost_list,
@@ -1623,7 +1647,39 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
   # __costcomparison csv ----
   output[[costcomparison$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-                                 version_number, "-costcomparison-data-csv-", geo_short_code(), "_", sys_date, ".zip") }),
+                                 version_number, "-cost_comparison-data-csv-", geo_short_code(), "_", sys_date, ".csv") }),
+    content = function(file) {
+       costeffData() %>%
+        write.csv(
+          file = file,
+          row.names = FALSE
+        )
+    }
+  )
+  
+  # __costcomparison xlsx ----
+  output[[costsoutcomes$IDs$downloads$xlsx]] <- downloadHandler(
+    filename = paste0("tabby",
+                      version_number, "-costs_and_outcomes-data-", geo_short_code(), "_", sys_date, ".xlsx"),
+    content = function(file) {
+      
+      #create a list of all costs data
+      cost_list<-list()
+      cost_list[["Effects Summary Table"]]<-effectsData()
+      cost_list[["Costs Summary Table"]]<-costsData()
+      cost_list[["Annual Values Table"]]<-annualCostData()
+      openxlsx::write.xlsx(
+        cost_list,
+        file,
+        colNames = TRUE
+      )
+    }
+  )
+  
+  # __costcomparison csv ----
+  output[[costsoutcomes$IDs$downloads$csv]] <- downloadHandler(
+    filename = reactive({ paste0("tabby",
+                                 version_number, "-costs_and_outcomes-data-csv-", geo_short_code(), "_", sys_date, ".zip") }),
     content = function(file) {
       #go to a temp dir to avoid permission issues
       owd <- setwd(tempdir())
@@ -1633,10 +1689,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       cost_list<-list()
       cost_list[[1]]<-effectsData()
       cost_list[[2]]<-costsData()
-      cost_list[[3]]<-costeffData()
-      # cost_list[[4]]<-costsData()
+      cost_list[[3]]<-annualCostData()
       for (i in 1:3){
-        namestr<-ifelse(i==1,"Effects Table",ifelse(i==2,"Costs Table",ifelse(i==3,"Cost Effectiveness Table")))
+        namestr<-ifelse(i==1,"Effects_Summary_Table",ifelse(i==2,"Costs_Summary_Table",ifelse(i==3,"Annual_Values_Table")))
         fileName <- paste0(namestr,"_", geo_short_code(), "_", sys_date, ".csv")
         # write.csv(
         #   file = file,
@@ -1645,11 +1700,11 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         write.table(cost_list[[i]],fileName,sep = ',', row.names = F, col.names = T)
         files <- c(fileName,files)
       } 
-    #create the zip file
-    zip(file,files)
+      #create the zip file
+      zip(file,files)
     }
   )
   filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData,
-                        addoutputsData=addoutputsData, costcomparisonData=costcomparisonData, effectsData = effectsData, costsData = costsData, costeffData=costeffData) 
+                        addoutputsData=addoutputsData, costcomparisonData=costcomparisonData, effectsData = effectsData, costsData = costsData, costeffData=costeffData, annualCostData=annualCostData) 
   return(filtered_data)
 }
