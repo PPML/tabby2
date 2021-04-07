@@ -863,6 +863,24 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         "base_case"
       )
     )
+
+    input[[costcomparison$IDs$controls$discount]]
+    eff_name<-paste(costcomparison$costs$labels[[input[[costcomparison$IDs$controls$costs]]]], "(in 000s)")
+    inc_eff_name<-paste("Incremental",costcomparison$costs$labels[[input[[costcomparison$IDs$controls$costs]]]], "(in 000s)")
+    if(input[[costcomparison$IDs$controls$perspectives]]=="all"){
+      cost_name<-"Total Cost (in mil)"
+      inc_cost_name<-"Incremental Total Cost (in mil)"
+    } else{
+      cost_name<- "Health Services Cost (in mil)"
+      inc_cost_name<-"Incremental Health Services Cost (in mil)"
+    }
+  
+    if(input[[costcomparison$IDs$controls$discount]]==1){
+      cost_name<-paste("Discounted", cost_name)
+      inc_cost_name<-paste("Discounted",inc_cost_name)
+      eff_name<-paste("Discounted",eff_name)
+      inc_eff_name<-paste("Discounted",inc_eff_name)
+    }
     if(input[[costcomparison$IDs$controls$comparator]]=="ICER"){
     COSTEFF_ICER_DATA() %>%
       dplyr::filter(
@@ -879,6 +897,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       # mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
       select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>% 
       mutate(ICER=case_when(ICER < 0 ~ "Dominated", TRUE ~ as.character(ICER)))%>%
+        rename(!!eff_name := `Effectiveness (in 000s)`) %>%
+        rename(!!inc_eff_name := `Incremental Effectiveness (in mil)`) %>%
+        rename(!!cost_name := `Cost (in mil)`) %>%
+        rename(!!inc_cost_name := `Incremental Cost (in mil)`) %>%
         mutate(Scenario = sapply(Scenario, function(x) {
         if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
           c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
@@ -900,11 +922,17 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         mutate("ACER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
         select(!c(discount,perspectives,`Effectiveness Measure`,value))   %>%
         mutate(ACER=case_when(ACER<0 ~ "Dominated", TRUE ~ as.character(ACER)))%>% 
+        mutate(ACER=case_when(ACER==NaN ~ "", TRUE ~ as.character(ACER)))%>% 
+        rename(!!eff_name := `Effectiveness (in 000s)`) %>%
+        rename(!!inc_eff_name := `Incremental Effectiveness (in 000s)`) %>%
+        rename(!!cost_name := `Cost (in mil)`) %>%
+        rename(!!inc_cost_name := `Incremental Cost (in mil)`) %>%
         mutate(Scenario = sapply(Scenario, function(x) {
           if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
             c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
-          } else as.character(x)
-        }))
+          } else as.character(x) 
+        }
+        ))
 
         
       # %>% arrange(`Effectiveness Measure`, desc(value)) %>%
