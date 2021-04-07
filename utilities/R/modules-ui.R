@@ -373,7 +373,7 @@ inputCostsUI <- function() {
       and TB disease. These are calculated from incremental differences in health service provision
       estimated by the underlying transmission dynamic model cumulated over an analytic horizon 
       and unit costs estimated for each of these services. Please enter unit costs for health services below 
-      in United States Dollars and chose the time horizon of interest."),
+      in United States Dollars and choose the time horizon of interest."),
       uiOutput('inputcosts')
     )
 }
@@ -479,8 +479,39 @@ inputCostsPanel <- function(cost_inputs) {
   ) #end of tagList
   )#end of return 
 }
-
-##page for displaying costs 
+#page for costs and outcomes 
+costsOutcomesUI <- function(id){
+  ns <- NS(id)
+  tagList(fluidRow(
+    column(
+      width = 2,
+      class = "tab-content",
+      costsOutcomesControlPanel(ns)
+    ),
+    column(
+      width = 10,
+      class = "tab-content",
+      costsOutcomesVisualizationPanel(ns)
+    )
+    # fluidRow(
+    #   column(6,
+    # actionButton(
+    #   inputId = 'toCostComparison',
+    #   label = 'View Cost Comparison',
+    #   class = 'btn-primary',
+    #   style = 'color: white;'
+    # )),
+    # column(6,
+    # actionButton(
+    #   inputId = 'toInputCosts',
+    #   label = 'Change Unit Costs',
+    #   class = 'btn-primary',
+    #   style = 'color: white;'
+    # ))
+    # ) #end internal fluid row
+  ))
+}
+##page for displaying cost comparison
 costComparisonUI <- function(id){
   ns <- NS(id)
   tagList(fluidRow(

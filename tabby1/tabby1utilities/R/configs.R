@@ -41,3 +41,9 @@ config_addoutputs <- function() {
 config_costcomparison <- function() {
   yaml::read_yaml(system.file("configs", "config-costs.yaml", package = "tabby1utilities", mustWork = TRUE))
 }
+
+#' @rdname configs
+#' @export
+config_costsoutcomes <- function() {
+  yaml::read_yaml(system.file("configs", "config-costsoutcomes.yaml", package = "tabby1utilities", mustWork = TRUE))
+}

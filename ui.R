@@ -60,7 +60,8 @@ sidebar <- dashboardSidebar(
     menuItem(
       "Economic Analysis", startExpanded = T,
       menuItem(tabnames[[13]], tabName = names(tabnames)[[13]]), # input costs
-      menuItem(tabnames[[14]], tabName = names(tabnames)[[14]]) # cost comparison
+      menuItem(tabnames[[14]], tabName = names(tabnames)[[14]]), # costs and outcomes summary
+      menuItem(tabnames[[15]], tabName = names(tabnames)[[15]]) # cost comparison
     ),
     # menuItem(tabnames[[9]], tabName = names(tabnames)[[9]]), # downloads
     menuItem(tabnames[[9]], tabName = names(tabnames)[[9]]),  # further description
@@ -68,7 +69,7 @@ sidebar <- dashboardSidebar(
 		menuItem(tabnames[[11]], tabName = names(tabnames)[[11]]), # feedback
     if (
       exists('debug', envir = .GlobalEnv) && isTRUE(debug)
-      ) { menuItem(tabnames[[15]], tabName = names(tabnames)[[15]]) # debug printouts
+      ) { menuItem(tabnames[[16]], tabName = names(tabnames)[[16]]) # debug printouts
     } else { NULL },
 		# render location selected
     tags$li(uiOutput('location_selected'), style = 'position: absolute; bottom: 20px; left: 20px;')

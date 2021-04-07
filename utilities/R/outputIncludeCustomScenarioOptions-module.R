@@ -202,4 +202,41 @@ outputIncludeCustomScenarioOptions <- function(input, output, session, sim_data)
       )
     )
   })
+
+
+output$costsoutcomesInterventions <- renderUI({
+  checkboxGroup2(
+    id = paste0('tabby1-', costsoutcomes$IDs$controls$interventions),
+    heading = costsoutcomes$interventions$heading,
+    labels = c(
+      estimates$interventions$labels,
+      if (! is.null(sim_data[['ttt1']])) handle_null_and_empty_str(input$ttt1name, 'ttt1') else NULL,
+      if (! is.null(sim_data[['ttt2']])) handle_null_and_empty_str(input$ttt2name, 'ttt2') else NULL,
+      if (! is.null(sim_data[['ttt3']])) handle_null_and_empty_str(input$ttt3name, 'ttt3') else NULL,
+      
+      if (! is.null(sim_data[['programChanges1']])) handle_null_and_empty_str(input$programChange1Name, 'programChange1') else NULL,
+      if (! is.null(sim_data[['programChanges2']])) handle_null_and_empty_str(input$programChange2Name, 'programChange2') else NULL,
+      if (! is.null(sim_data[['programChanges3']])) handle_null_and_empty_str(input$programChange3Name, 'programChange3') else NULL,
+      
+      if (! is.null(sim_data[['combination1']])) handle_null_and_empty_str(input$combination1Name, 'combination1') else NULL,
+      if (! is.null(sim_data[['combination2']])) handle_null_and_empty_str(input$combination2Name, 'combination2') else NULL,
+      if (! is.null(sim_data[['combination3']])) handle_null_and_empty_str(input$combination3Name, 'combination3') else NULL
+    ),
+    values = c(
+      costsoutcomes$interventions$values,
+      if (! is.null(sim_data[['ttt1']])) handle_null_and_empty_str(input$ttt1name, 'ttt1') else NULL,
+      if (! is.null(sim_data[['ttt2']])) handle_null_and_empty_str(input$ttt2name, 'ttt2') else NULL,
+      if (! is.null(sim_data[['ttt3']])) handle_null_and_empty_str(input$ttt3name, 'ttt3') else NULL,
+      
+      if (! is.null(sim_data[['programChanges1']])) handle_null_and_empty_str(input$programChange1Name, 'programChange1') else NULL,
+      if (! is.null(sim_data[['programChanges2']])) handle_null_and_empty_str(input$programChange2Name, 'programChange2') else NULL,
+      if (! is.null(sim_data[['programChanges3']])) handle_null_and_empty_str(input$programChange3Name, 'programChange3') else NULL,
+      
+      if (! is.null(sim_data[['combination1']])) handle_null_and_empty_str(input$combination1Name, 'combination1') else NULL,
+      if (! is.null(sim_data[['combination2']])) handle_null_and_empty_str(input$combination2Name, 'combination2') else NULL,
+      if (! is.null(sim_data[['combination3']])) handle_null_and_empty_str(input$combination3Name, 'combination3') else NULL
+      
+    )
+  )
+})
 }

@@ -566,7 +566,7 @@ shinyServer(function(input, output, session) {
 		      #              c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
 		      #            } else as.character(x)
 		      #          })) %>% 
-		      formatCurrency(2:5, '', digits = 0))
+		      formatCurrency(2:5, '', digits = 3))
 
 		  output[['costcomparisonData2']] <-
       DT::renderDataTable(
@@ -577,7 +577,7 @@ shinyServer(function(input, output, session) {
           #     c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
           #   } else as.character(x)
           # })) %>%
-                  formatCurrency(2:7, '', digits = 0)) 
+                  formatCurrency(2:7, '', digits = 3)) 
                                                       
 		
       output[['costcomparisonData3']] <- 
@@ -589,7 +589,7 @@ shinyServer(function(input, output, session) {
                    #     c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
                    #   } else as.character(x)
                    # })) %>%
-           formatCurrency(2:5, '', digits = 0))
+           formatCurrency(2:5, '', digits = 3))
         
       
       output[['costcomparisonData4']] <- 

@@ -236,6 +236,23 @@ costComparisonControlPanel <- function(ns) {
   )
 }
 
+costsOutcomesControlPanel <- function(ns) {
+  costControlPanel(
+    class = "costsoutcomes-tab",
+    interventions = uiOutput('costsoutcomesInterventions'),
+    analyses = checkboxGroup2(
+      id = ns(costsoutcomes$IDs$controls$analyses),
+      heading = costsoutcomes$analyses$heading,
+      labels = costsoutcomes$analyses$labels,
+      values = costsoutcomes$analyses$values,
+    ),
+    downloads = dataDownloadButtonBar(
+      ids = ns(costsoutcomes$IDs$downloads),
+      heading = costsoutcomes$downloads$heading,
+      labels = costsoutcomes$downloads$labels
+    )
+  )
+}
 
 controlPanel <- function(class, active = TRUE, comparators = NULL,
                          populations = NULL, ages = NULL, years = NULL,
@@ -278,17 +295,6 @@ costControlPanel <- function(class, active = TRUE, costs = NULL,
     costs,
     perspectives,
     discount,
-
-    # if (class=="trends-tab") {
-    #   checkboxGroup2(
-    #     id = paste0("tabby1-", strsplit(class, "-")[[1]][[1]],
-    #                 "UncertaintyInterval"),
-    #     heading = "Uncertainty Intervals",
-    #     labels = "Add uncertainty intervals to plots",
-    #     values = "uncertainty_intervals",
-    #     selected = TRUE
-    #   )
-    # },
     labels,
     downloads
   )

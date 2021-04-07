@@ -102,60 +102,36 @@ visualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NU
 }
 
 costVisualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NULL,
-                               click = NULL, dblclick = NULL, active = TRUE, data1, data2, data3, data4) {
+                               click = NULL, dblclick = NULL, active = TRUE, data1) {
   class <- paste0(id, "-tab")
+  column(11,{
   tabsetPanel(
-    tabPanel(title = 'Results Tables',{ 
+    tabPanel(title = 'Comparison Table',{ 
       fluidRow(
-        h3("Effects Table"),
-        DT::dataTableOutput(outputId = data1),
-        br(), 
         br(),
-      h3("Costs Table (in mil)"),
-       DT::dataTableOutput(outputId = data2),
-       br(), 
-       br(), 
+        br(),
+        wellPanel(
        h3("Cost Effectiveness Table"),
-       DT::dataTableOutput(outputId = data3)
-      )
-      }),
-    # tabPanel(title = 'Cost Effectiveness Plane', {
-    #   tags$div(
-    #     class = paste(c(class, "tab-pane", if (active) " active"), collapse = " "),
-    #     if (!is.null(title)) {
-    #       tags$h3(
-    #         textOutput(title)
-    #       )
-    #     },
-    #     if (!is.null(subtitle)) {
-    #       tags$h4(
-    #         textOutput(subtitle)
-    #       )
-    #     },
-    #     do.call(
-    #       tagAppendAttributes,
-    #       c(
-    #         list(
-    #           tag = withSpinner(tags$div(
-    #             id = plot,
-    #             class = "shiny-plot-output",
-    #             style = "width: 90%; height: 600px;",
-    #             `data-alt` = alt,
-    #             tags$img(alt = alt)
-    #           ))
-    #         )
-    #       )
-    #     )
-    #   )
-    # }),
-    tabPanel(title = 'Annual Results Tables',{ 
-      fluidRow(
-        # h3("Effects Table"),
-        DT::dataTableOutput(outputId = data4)
-      )
-    })
-    
+       DT::dataTableOutput(outputId = data1)
+        )
+       ,
+       actionButton(
+         inputId = 'toCostOutputs2',
+         label = 'View Costs and Outcomes',
+         class = 'btn-primary',
+         style = 'color: white;'
+       ),
+       actionButton(
+         inputId = 'toInputCosts2',
+         label = 'Change Unit Costs',
+         class = 'btn-primary',
+         style = 'color: white;'
+       )
+       
+       )#end of fluid row
+      })
   )
+  })
 }
 
 costComparisonVisualizationPanel <- function(ns) {
@@ -166,11 +142,66 @@ costComparisonVisualizationPanel <- function(ns) {
       subtitle = ns(costcomparison$IDs$subtitle),
       plot = ns(costcomparison$IDs$plot),
       alt = "Cost of Intervention",
-      data1 = 'costcomparisonData1', 
-      data2 ='costcomparisonData2',
-      data3 ='costcomparisonData3', 
-      data4 ='costcomparisonData4'
+      data1 = 'costcomparisonData3', 
     ),
       class = "costcomparison-tab"
+  )
+}
+
+cost2VisualizationPanel <- function(id, title, subtitle, plot, alt = NULL, brush = NULL,
+                                   click = NULL, dblclick = NULL, active = TRUE, data1, data2, data3) {
+  class <- paste0(id, "-tab")
+  column(11,{
+  tabsetPanel(
+    tabPanel(title = 'Summary Tables',{ 
+      fluidRow(
+        br(),
+        br(),
+        wellPanel(
+        h3("Outcomes Table"),
+        DT::dataTableOutput(outputId = data1)
+        ),
+        wellPanel(
+        h3("Costs Table (in mil)"),
+        DT::dataTableOutput(outputId = data2)
+        ),
+        actionButton(
+          inputId = 'toCostComparison',
+          label = 'View Cost Comparison',
+          class = 'btn-primary',
+          style = 'color: white;'
+        ),
+        actionButton(
+          inputId = 'toInputCosts',
+          label = 'Change Unit Costs',
+          class = 'btn-primary',
+          style = 'color: white;'
+        )
+      ) #end of fluid row
+    }),
+    tabPanel(title = 'Annual Table',{ 
+      fluidRow(
+        # h3("Effects Table"),
+        DT::dataTableOutput(outputId = data3)
+      )
+    })
+    
+  )
+  })
+}
+
+costsOutcomesVisualizationPanel <- function(ns) {
+  tagAppendAttributes(
+    cost2VisualizationPanel(
+      id = ns(costsoutcomes$IDs$panels$visualization),
+      title = ns(costsoutcomes$IDs$title),
+      subtitle = ns(costsoutcomes$IDs$subtitle),
+      plot = ns(costsoutcomes$IDs$plot),
+      alt = "Cost of Intervention",
+      data1 = 'costcomparisonData1', 
+      data2 ='costcomparisonData2',
+      data3 ='costcomparisonData4', 
+    ),
+    class = "costsoutcomes-tab"
   )
 }
