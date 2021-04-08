@@ -47,12 +47,7 @@ runCostComparisonModule<-function(input, output, session, sim_data, treat_dist) 
         scenario !="scenario_1",
         scenario !="scenario_2",
         scenario !="scenario_3") %>% 
-      arrange(scenario) %>%
-      mutate(
-        year_adj = year + position_year(scenario)
-      ) %>% 
-      mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-             value = signif(value, 3)*2) 
+      arrange(scenario)
     
     ef_data<-TRENDS_DATA() %>%
       dplyr::filter(
@@ -64,12 +59,7 @@ runCostComparisonModule<-function(input, output, session, sim_data, treat_dist) 
         scenario !="scenario_1",
         scenario !="scenario_2",
         scenario !="scenario_3")%>%
-      arrange(scenario) %>%
-      mutate(
-        year_adj = year + position_year(scenario)
-      ) %>% 
-      mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-             value = signif(value, 3)*2)
+      arrange(scenario) 
     
     ag_data<-AGEGROUPS_DATA() %>% 
       dplyr::filter(
@@ -80,9 +70,7 @@ runCostComparisonModule<-function(input, output, session, sim_data, treat_dist) 
         scenario !="scenario_1",
         scenario !="scenario_2",
         scenario !="scenario_3") %>%
-      arrange(scenario) %>%
-      mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-             value = signif(value, 3)*2)
+      arrange(scenario) 
 ###filter the years from user input to for the time horizon of the savings 
     cc_data<-cc_data %>% dplyr::filter(year>=2020 & year <= costs["EndYear"])
     ef_data<-ef_data %>% dplyr::filter(year>=2020 & year <= costs["EndYear"])
@@ -200,6 +188,7 @@ for(i in 1:nrow(all_cost_data)){
   bc_cases_agyr<-ag_data %>% filter(outcome=="tb_incidence_000s", scenario=="base_case",year==all_cost_data[i,"year"]) %>% group_by(age_group) %>% summarise(cases = as.numeric(sum(value))) %>% mutate(cases=as.numeric(cases)) %>% select(cases)
   bc_cases_agyr<-as.numeric(unlist(bc_cases_agyr))
   
+  
   scen_deaths_ag<- ag_data %>% filter(outcome=="tb_mortality_000s", scenario==all_cost_data[i,"Scenario"],year==all_cost_data[i,"year"]) %>% group_by(age_group)  %>% summarise(deaths = as.numeric(sum(value))) %>% select(deaths)
   scen_deaths_ag<-as.numeric(unlist(scen_deaths_ag))
   bc_deaths_agyr<-ag_data %>% filter(outcome=="tb_mortality_000s", scenario=='base_case',                year==all_cost_data[i,"year"]) %>% group_by(age_group)  %>% summarise(deaths = as.numeric(sum(value))) %>% select(deaths)
@@ -279,7 +268,7 @@ for(i in 1:nrow(all_cost_data)){
     all_cost_data[i,"Life Years Lost (in 000s)"]<-disc_death_qaly
   }
 }
-
+# View(all_cost_data)
 ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
 ## EFFECTIVENESS MEASURES DATAFRAME
 ## create a new data frame of the effectiveness measures with the following columns:
@@ -457,6 +446,7 @@ new_effect_data<-data.frame("Scenario"=unique(cc_data$scenario),
                             new_effect_data, check.names = FALSE)
 
 all_cost_data[,c(2:3,5:8)]<-round(all_cost_data[,c(2:3,5:8)],3)
+
     new_cost_data_list<-list()
     new_cost_data_list[['new_effect_data']]<-new_effect_data
     new_cost_data_list[['new_cost_data']]<-new_cost_data 
