@@ -943,10 +943,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
             input[[costcomparison$IDs$controls$interventions]],
             input[[costcomparison$IDs$controls$analyses]],
             "base_case"
-          )) %>% 
-        arrange(`Effectiveness Measure`, value) %>%
+          )) %>%
         mutate("Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=value-first(value)) %>%
         mutate("ACER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
+        arrange(`Effectiveness Measure`, value) %>%
         select(!c(discount,perspectives,`Effectiveness Measure`,value))   %>%
         mutate(ACER=case_when(ACER<0 ~ "Dominated", TRUE ~ as.character(ACER)))%>% 
         mutate(ACER=case_when(ACER %in% c(NaN,0) ~ "", TRUE ~ as.character(ACER)))%>% 
