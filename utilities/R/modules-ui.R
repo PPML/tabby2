@@ -1,7 +1,18 @@
 aboutUI <- function(available_geographies) {
   fluidRow(
     column(12, h1("About Tabby2")),
-    column(6, includeMarkdown("inst/md/about.md")),
+    column(6, includeMarkdown("inst/md/about.md"), 
+           br(), 
+           tags$h4(
+             "If you are new to Tabby2 or have any questions about the tool, please review our user manual."
+           ),
+           br(),
+           shiny::actionButton(
+             inputId = 'toManual',
+             label = 'Review User Manual',
+             class = 'btn-primary',
+             style = 'color: white;'
+           )),
     column(6, wellPanel(
       tags$h4("Select a Location"),
       tags$p(

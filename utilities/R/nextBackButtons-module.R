@@ -1,5 +1,6 @@
 nextBackButtons <- function(input, output, session) {
   # main sidebar next/back buttons
+  observeEvent(input$toManual, updateTabItems(session = session, inputId = 'sidebar', selected = "readmore"))
   observeEvent(input$toPredefinedScenarios, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))
   observeEvent(input$toPredefinedScenarios1, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))
   observeEvent(input$toPredefinedScenarios2, updateTabItems(session = session, inputId = 'sidebar', selected = "predefined"))

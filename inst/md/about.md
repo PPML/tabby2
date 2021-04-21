@@ -17,14 +17,15 @@ The estimates shown by Tabby2 are based on a mathematical model of TB
 epidemiology in the United States, which incorporates TB transmission and
 natural history; prior and future TB prevention and control; heterogeneity in
 TB risks among U.S.-born and non-U.S.-born populations; and age-based
-differences in disease mechanisms and risk factor prevalence. This model has
-been fit to local data from each of the following high TB incidence states:
-California, Florida, Georgia, Illinois, Massachusetts, New Jersey, New York,
-Pennsylvania, Texas, Virginia, and Washington. The model has also been fit to
-aggregate data for the United States to allow national-level analyses. These
-analyses expand on an earlier study on future TB epidemiology in the United
-States (Menzies et al 2018. “Prospects for tuberculosis elimination in the
-United States: results of a transmission dynamic model” Am J Epid
+differences in disease mechanisms and risk factor prevalence. This model has been
+fit to local data from each of the following states: Alabama, Arizona, California,
+Florida, Georgia, Hawaii, Illinois, Indiana, Louisiana, Maryland, Massachusetts,
+Michigan, Minnesota, Missouri, New Jersey, New York, North Carolina, Ohio, Oregon,
+Pennsylvania, South Carolina, Tennessee, Texas, Virginia, and Washington. The model
+has also been fit to aggregate data for the United States to allow national-level 
+analyses. These analyses expand on an earlier study on future TB epidemiology in
+the United States (Menzies et al 2018. “Prospects for tuberculosis elimination in
+the United States: results of a transmission dynamic model” Am J Epid
 187(9):2011-2020) (<https://academic.oup.com/aje/article/187/9/2011/4995883>)).  
 
 This research was funded by the CDC, National Center for HIV, Viral Hepatitis,

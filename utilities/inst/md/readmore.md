@@ -4,7 +4,6 @@
 Definitions and Abbreviations
 -----------------------------
 
-
 **Base Case**
 
 The base case is the default scenario, assuming no change in current TB
@@ -52,6 +51,12 @@ disease in the future if they do not receive treatment.
 
 The number of cases of a disease present in a population at a given
 time.
+
+**QALY – Quality Adjusted Life Year**
+
+A summary measure of health attainment, which considered both the quality
+and the quantity of life lived. One QALY is equivalent to a year of life 
+lived in full health.
 
 **Rifapentine (RPT)**
 
@@ -104,7 +109,14 @@ view and download graphs of their chosen outcomes. The tool's sidebar
       <li>   Estimates </li>
       <li>   Time Trends </li>
       <li>   Age Groups </li>
+      <li>   Counts of Services </li>
       <li>   Comparison to Recent Data </li>
+      </ul>
+  <li>   Economic Analyses </li>
+      <ul>
+      <li>   Input Costs </li>
+      <li>   Costs and Outcomes </li>
+      <li>   Cost Effectiveness Comparison </li>
       </ul>
   <li>   Further Description </li>
   <li>   Feedback </li>
@@ -158,7 +170,7 @@ changes to latent TB and TB disease testing and treatment, described below.
 
 -   **Improved LTBI treatment in the United States**: Intensification of the
     current LTBI targeted testing and treatment efforts for high-risk
-    populations, doubling LTBI testing volume  within each risk group
+    populations, doubling treatment uptake within each risk group
     compared to current levels, and increasing the percentage cured among
     individuals initiating LTBI treatment, via a 3-month
     Isoniazid-Rifapentine drug regimen.
@@ -276,8 +288,8 @@ care cascade.
 </figure>
 </center>
 
-Model outcomes are presented as four interactive pages with
-visualizations: *Estimates*, *Time Trends*, *Age Groups*, and
+Model outcomes are presented as five interactive pages with
+visualizations: *Estimates*, *Time Trends*, *Age Groups*, *Counts of Services* and
 *Comparison to Recent Data*.
 
 The *Estimates* page provides graphs of modelled results at five major
@@ -288,6 +300,9 @@ for each individual year from 2020 to 2050.
 
 The *Age Groups* page provides graphs of modelled results for a specific
 year chosen by the user, subdivided into 11 age groups.
+
+The *Counts of Services* page provides graphs of additional model results
+for each individual year from 2020 to 2050. 
 
 The *Comparison to Recent Data* page shows model results compared to
 recent empirical data and estimates.
@@ -384,6 +399,42 @@ prevalence, TB incidence, and TB-related deaths), either as a prevalence
 or incidence rate with each age group (first three selections), or in
 absolute numbers (last three selections).
 
+#### Modelled Outcomes – Counts of Services
+
+User options are shown in a column on the left. The user specifies:
+
+*Comparison:* results can be shown as absolute values for each outcome
+in each year, as a percentage of the base case scenario in the same
+year, or as a percentage of the base case scenario in 2020.
+
+*Subgroup:* results can be shown for the total population, or for a
+subgroup described by nativity (U.S.-born, non-U.S.-born), and broad age
+groups (0-24 years, 25-64 years, 65+ years).
+
+*Outcome:* results can be shown for five different outcomes:
+
+-   **LTBI Tests** representing the annual sum of TST and IGRA tests.;
+
+-   **LTBI Treatment Initiations** representing the annual number of 
+    those testing positive who initiate LTBI treatment with any regimen.;
+
+-   **LTBI Treatment Completions** representing the number of those 
+    initiating LTBI treatment who complete their treatment. 
+
+-   **Active TB Treatment Initiations** representing the number of 
+    those diagnosed with TB disease that begin treatment. 
+    
+-   **Active TB Treatment Completions** representing the number of those 
+    initiating TB treatment who complete their treatment in the first round.
+
+*Scenarios:* results can be shown for up to five scenarios selected by
+the user, describing hypothetical changes to current TB prevention and 
+control activities ("Modelled Scenarios").
+
+*Download:* clicking on a button initiates download of the visualization
+itself (.png, .pdf, .pptx) or the estimates underlying the visualization
+(.csv, .xlsx).
+
 #### Modelled Outcomes – Comparison to Recent Data 
 
 <!--![](media/image9.png){width="4.87in" height="2.75in"}
@@ -406,6 +457,135 @@ reported Total Population in 2016 in the US by Age and Nativity." height="300px"
 In the *Comparison to Recent Data* page (Figure 7), users can compare
 the model's output to reported data on the demography and TB
 epidemiology for their selected geography.
+
+### Economic Analyses
+
+Economic Analyses are presented as three interactive pages with tabular 
+inputs and results: *Input Costs*, *Costs and Outcomes*, and 
+*Cost Effectiveness Comparison*. 
+
+The *Input Costs* page presents the user with the opportunity to input unit
+costs of services associated with treatment of LTBI and TB. The user can 
+also select the analytical horizon for the costs and outcomes (the period 
+over which total costs and outcomes are calculated. 
+
+The *Costs and Outcomes* page provides data tables reporting the outcomes and 
+costs associated with each of the modelled scenarios. These are provided in 
+annual and cumulative perspectives.
+
+The *Cost Effectiveness Comparison* page provides a cost effectiveness table 
+for the modelled scenarios. 
+
+A detailed description of each of these pages is provided below. 
+
+#### Economic Analyses – Input Costs
+The user is presented with a table of estimated average unit costs. Each 
+of these values is editable prior to submitting a costing calculation. 
+Additional information about the calculation of the national average estimates
+can be found in our costing methodology document. 
+
+The user specifies: 
+
+*LTBI Testing Costs:*
+
+-   **Cost of identifying an individual for LTBI testing** representing the average 
+    cost to a health program to identify an individual for LTBI testing.;
+    
+-   **Cost of a Mantoux tuberculin skin test (TST)** representing the average health
+    services cost for a single TST.;
+  
+-   **Cost of an IGRA** representing the average health services cost for a single IGRA.;
+    
+-   **Cost of ruling out TB disease before LTBI treatment** representing the health 
+    services costs associated with excluding TB disease. Currently calculated as two
+    chest x-rays and a sputum culture.;  
+
+*LTBI Treatment Costs:*
+representing the average per-patient cost of medication, clinic visits, and managing
+adverse reactions for each of the listed regimens.
+
+-   **Cost of treatment with 3HP** 
+
+-   **Cost of treatment with 4R** 
+
+-   **Cost of treatment with 3HR**
+
+*TB Disease Identification and Treatment Costs:*
+
+-   **Cost of identifying an individual for TB testing** representing the average cost
+    to a health program to identify an individual for TB testing.;
+
+-   **Cost of TB disease diagnosis** representing the health services costs associated
+    with definitively diagnosing TB disease. Currently calculated as one chest x-ray 
+    and three sputum cultures.;
+
+-   **Cost of TB disease treatment** representing the average cost of TB treatment 
+    for non-MDR, MDR, and XDR TB.
+
+*End year for economic analysis:*
+
+The costs and outcomes in the following pages will be calculated from 2020 until the 
+end year selected by the user.
+
+#### Economic Analyses – Costs and Outcomes
+The user is presented with two tabs: 
+
+*Summary Tables*: These tables present the estimated cumulative costs and outcomes
+associated with each of the modelled scenarios from 2020 to the end year for economic
+analysis specified on the *Input Costs* page.
+
+*Annual Table*: This table presents the estimated costs and outcomes associated with
+each of the of modelled scenarios summed over each year from 2020 to the end year for
+economic analysis specified on the *Input Costs* page. 
+
+User options are shown in a column on the left. The user specifies:
+
+*Scenarios*: results can be shown for up to five scenarios selected by the user, 
+describing hypothetical changes to current TB prevention and control activities 
+(“Modelled Scenarios”). 
+
+*Download*: clicking on a button initiates download of the three data tables (.csv, .xlsx).
+
+#### Economic Analyses – Cost Effectiveness Comparison
+User options are shown in a column on the left. The user specifies:
+
+*Scenarios*: results can be shown for up to five scenarios selected by the user, describing 
+hypothetical changes to current TB prevention and control activities (“Modelled Scenarios”). 
+
+*ICER/ACER*: 
+
+-   **Compare incremental cost effectiveness of scenarios** the costs and benefits of each
+    scenario are compared to the next most beneficial scenario, after dominated strategies have 
+    been removed (incremental cost effectiveness ratio, ICER). Dominated strategies represent 
+    those that have higher costs and lower health benefits than another strategy, or linear 
+    combination of other strategies.;
+
+-   **Compare all scenarios to the base case** the costs and benefits of each scenario 
+    are compared to the base case scenario (average cost effectiveness ratio, ACER).
+
+*Effectiveness Measure*: 
+
+-   **TB cases averted** representing the cumulative notified TB disease cases averted
+    (including those identified after death), as compared to the base-case scenario.;
+
+-   **TB deaths averted** representing cumulative TB-attributable mortality averted,
+    as compared to the base-case scenario.;
+    
+-   **QALYs saved** representing cumulative QALYs gained, as compared to the 
+    base-case scenario.;
+    
+-   **Life years saved** representing cumulative life years gained, as compared to the 
+    base-case scenario.
+    
+*Costing Perspective*: the selection determines which costing perspective is used in the 
+calculations of the cost effectiveness ratio. 
+
+*Discounting*: selecting Include applies a 3% annual discount to both health and economic
+outcomes prior to the calculation of the cost effectiveness ratio. Otherwise costs and 
+health outcomes are undiscounted in cost-effectiveness calculations.
+
+*Download*: clicking on a button initiates download of a data table (.csv, .xlsx) 
+containing the cost-effectiveness results.
 
 ### Further Description 
 
@@ -456,6 +636,7 @@ General information and resources on tuberculosis can be found on the
 Centers for Disease Control and Prevention's Tuberculosis webpage:
 <https://www.cdc.gov/tb/default.htm>
 
+### Changelog
 
 ### 508 Accessibility of This Product
 
@@ -468,4 +649,5 @@ imposed on the agency.
 
 If you need assistance with this web application, please contact
 <ppml@hsph.harvard.edu>.
+
 
