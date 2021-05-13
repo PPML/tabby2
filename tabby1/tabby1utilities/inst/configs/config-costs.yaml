@@ -24,24 +24,24 @@ costs:
     - savqalys
     - savlys 
   labels:
-    avtcases: TB cases averted
-    avtdeaths: TB deaths averted
-    savqalys: QALYs saved
-    savlys: Life years saved
+    avtcases: TB cases 
+    avtdeaths: TB deaths 
+    savqalys: QALYs 
+    savlys: Life years 
   formatted:
     avtcases: |-
-      TB cases averted
+      TB cases 
     avtdeaths: |-
-      TB deaths averted
+      TB deaths 
     savqalys: |-
-      QALYs saved
+      QALYs 
     savlys: |-
-       Life years saved
+       Life years 
   descriptions:
-       avtcases: TB cases averted
-       avtdeaths: TB deaths averted
-       savqalys: QALYS saved
-       savlys: Life years saved
+       avtcases: TB cases
+       avtdeaths: TB deaths
+       savqalys: QALYS 
+       savlys: Life years
   selected:
   - yes
   - no
