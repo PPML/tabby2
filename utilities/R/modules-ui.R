@@ -443,9 +443,6 @@ inputCostsPanel <- function(cost_inputs) {
             numericInput(inputId = "TBIdCost",
                          label = "Cost of identifiying an individual for TB testing",
                          value = cost_inputs[[8]], min = 0, max = 500),
-            numericInput(inputId ="TBTestCost",
-                         label = "Cost of TB disease diagnosis",
-                         value = cost_inputs[[9]], min = 0, max = 15),
             numericInput(inputId ="TBTreatCost",
                          label = "Cost of TB disease treatment",
                          value = cost_inputs[[10]], min = 0, max = 120)

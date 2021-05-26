@@ -18,7 +18,7 @@ runCostComparisonModule<-function(input, output, session, sim_data, treat_dist) 
     costs['3HRCost']<-input[['Cost3HR']]
     
     costs['TBIdCost']<-input[['TBIdCost']]
-    costs['TBtest']<-input[['TBTestCost']]
+    costs['TBtest']<-0
     costs['TBtx']<-input[['TBTreatCost']]
     
     costs['Discount']<-3
