@@ -1,0 +1,31 @@
+"outcome","scenario","age_group","year","mean"
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2020,100
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2022,93.6
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2025,84.8
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2035,62.8
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2050,41.8
+"Incident M. tb Infections (per 100,000)","LTBI treatment for new migrants","all_ages",2020,99.9
+"Incident M. tb Infections (per 100,000)","LTBI treatment for new migrants","all_ages",2022,91.1
+"Incident M. tb Infections (per 100,000)","LTBI treatment for new migrants","all_ages",2025,76.3
+"Incident M. tb Infections (per 100,000)","LTBI treatment for new migrants","all_ages",2035,51.5
+"Incident M. tb Infections (per 100,000)","LTBI treatment for new migrants","all_ages",2050,31.1
+"Incident M. tb Infections (per 100,000)","Improved LTBI treatment in the US","all_ages",2020,100
+"Incident M. tb Infections (per 100,000)","Improved LTBI treatment in the US","all_ages",2022,93.5
+"Incident M. tb Infections (per 100,000)","Improved LTBI treatment in the US","all_ages",2025,83.2
+"Incident M. tb Infections (per 100,000)","Improved LTBI treatment in the US","all_ages",2035,59.1
+"Incident M. tb Infections (per 100,000)","Improved LTBI treatment in the US","all_ages",2050,38
+"Incident M. tb Infections (per 100,000)","Enhanced case detection","all_ages",2020,99.2
+"Incident M. tb Infections (per 100,000)","Enhanced case detection","all_ages",2022,68.7
+"Incident M. tb Infections (per 100,000)","Enhanced case detection","all_ages",2025,42.5
+"Incident M. tb Infections (per 100,000)","Enhanced case detection","all_ages",2035,30.8
+"Incident M. tb Infections (per 100,000)","Enhanced case detection","all_ages",2050,20.5
+"Incident M. tb Infections (per 100,000)","Enhanced TB treatment","all_ages",2020,100
+"Incident M. tb Infections (per 100,000)","Enhanced TB treatment","all_ages",2022,92.8
+"Incident M. tb Infections (per 100,000)","Enhanced TB treatment","all_ages",2025,82.5
+"Incident M. tb Infections (per 100,000)","Enhanced TB treatment","all_ages",2035,60.9
+"Incident M. tb Infections (per 100,000)","Enhanced TB treatment","all_ages",2050,40.6
+"Incident M. tb Infections (per 100,000)","All improvements","all_ages",2020,99.2
+"Incident M. tb Infections (per 100,000)","All improvements","all_ages",2022,65.9
+"Incident M. tb Infections (per 100,000)","All improvements","all_ages",2025,36.7
+"Incident M. tb Infections (per 100,000)","All improvements","all_ages",2035,23.7
+"Incident M. tb Infections (per 100,000)","All improvements","all_ages",2050,14.1
