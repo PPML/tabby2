@@ -1,33 +1,32 @@
-"outcome","scenario","age_group","year","mean","ci_high","ci_low"
-"TB-Related Deaths","Base Case","all_ages",2018,0.19,0.19,0.19
-"TB-Related Deaths","Base Case","all_ages",2019,0.18,0.18,0.18
-"TB-Related Deaths","Base Case","all_ages",2020,0.18,0.18,0.18
-"TB-Related Deaths","Base Case","all_ages",2021,0.17,0.17,0.17
-"TB-Related Deaths","Base Case","all_ages",2022,0.17,0.17,0.17
-"TB-Related Deaths","Base Case","all_ages",2023,0.17,0.17,0.17
-"TB-Related Deaths","Base Case","all_ages",2024,0.16,0.16,0.16
-"TB-Related Deaths","Base Case","all_ages",2025,0.16,0.16,0.16
-"TB-Related Deaths","Base Case","all_ages",2026,0.16,0.16,0.16
-"TB-Related Deaths","Base Case","all_ages",2027,0.16,0.16,0.16
-"TB-Related Deaths","Base Case","all_ages",2028,0.15,0.15,0.15
-"TB-Related Deaths","Base Case","all_ages",2029,0.15,0.15,0.15
-"TB-Related Deaths","Base Case","all_ages",2030,0.15,0.15,0.15
-"TB-Related Deaths","Base Case","all_ages",2031,0.14,0.14,0.14
-"TB-Related Deaths","Base Case","all_ages",2032,0.14,0.14,0.14
-"TB-Related Deaths","Base Case","all_ages",2033,0.14,0.14,0.14
-"TB-Related Deaths","Base Case","all_ages",2034,0.14,0.14,0.14
-"TB-Related Deaths","Base Case","all_ages",2035,0.13,0.13,0.13
-"TB-Related Deaths","Base Case","all_ages",2036,0.13,0.13,0.13
-"TB-Related Deaths","Base Case","all_ages",2037,0.13,0.13,0.13
-"TB-Related Deaths","Base Case","all_ages",2038,0.12,0.12,0.12
-"TB-Related Deaths","Base Case","all_ages",2039,0.12,0.12,0.12
-"TB-Related Deaths","Base Case","all_ages",2040,0.12,0.12,0.12
-"TB-Related Deaths","Base Case","all_ages",2041,0.12,0.12,0.12
-"TB-Related Deaths","Base Case","all_ages",2042,0.11,0.11,0.11
-"TB-Related Deaths","Base Case","all_ages",2043,0.11,0.11,0.11
-"TB-Related Deaths","Base Case","all_ages",2044,0.11,0.11,0.11
-"TB-Related Deaths","Base Case","all_ages",2045,0.11,0.11,0.11
-"TB-Related Deaths","Base Case","all_ages",2046,0.11,0.11,0.11
-"TB-Related Deaths","Base Case","all_ages",2047,0.1,0.1,0.1
-"TB-Related Deaths","Base Case","all_ages",2048,0.1,0.1,0.1
-"TB-Related Deaths","Base Case","all_ages",2049,0.1,0.1,0.1
+"outcome","scenario","age_group","year","mean"
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2020,0.169
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2021,0.166
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2022,0.164
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2023,0.162
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2024,0.16
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2025,0.158
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2026,0.156
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2027,0.154
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2028,0.152
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2029,0.15
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2030,0.148
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2031,0.146
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2032,0.144
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2033,0.142
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2034,0.14
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2035,0.138
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2036,0.136
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2037,0.134
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2038,0.132
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2039,0.13
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2040,0.128
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2041,0.126
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2042,0.124
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2043,0.122
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2044,0.12
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2045,0.118
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2046,0.116
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2047,0.114
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2048,0.112
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2049,0.11
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2050,0.109

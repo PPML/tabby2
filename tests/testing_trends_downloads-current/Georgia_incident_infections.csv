@@ -1,33 +1,32 @@
-"outcome","scenario","age_group","year","mean","ci_high","ci_low"
-"Incident M. tb Infections","Base Case","all_ages",2018,8.92,8.92,8.92
-"Incident M. tb Infections","Base Case","all_ages",2019,8.52,8.52,8.52
-"Incident M. tb Infections","Base Case","all_ages",2020,7.96,7.96,7.96
-"Incident M. tb Infections","Base Case","all_ages",2021,7.61,7.61,7.61
-"Incident M. tb Infections","Base Case","all_ages",2022,7.29,7.29,7.29
-"Incident M. tb Infections","Base Case","all_ages",2023,7,7,7
-"Incident M. tb Infections","Base Case","all_ages",2024,6.73,6.73,6.73
-"Incident M. tb Infections","Base Case","all_ages",2025,6.48,6.48,6.48
-"Incident M. tb Infections","Base Case","all_ages",2026,6.24,6.24,6.24
-"Incident M. tb Infections","Base Case","all_ages",2027,6.01,6.01,6.01
-"Incident M. tb Infections","Base Case","all_ages",2028,5.79,5.79,5.79
-"Incident M. tb Infections","Base Case","all_ages",2029,5.58,5.58,5.58
-"Incident M. tb Infections","Base Case","all_ages",2030,5.38,5.38,5.38
-"Incident M. tb Infections","Base Case","all_ages",2031,5.19,5.19,5.19
-"Incident M. tb Infections","Base Case","all_ages",2032,5.01,5.01,5.01
-"Incident M. tb Infections","Base Case","all_ages",2033,4.84,4.84,4.84
-"Incident M. tb Infections","Base Case","all_ages",2034,4.67,4.67,4.67
-"Incident M. tb Infections","Base Case","all_ages",2035,4.51,4.51,4.51
-"Incident M. tb Infections","Base Case","all_ages",2036,4.36,4.36,4.36
-"Incident M. tb Infections","Base Case","all_ages",2037,4.21,4.21,4.21
-"Incident M. tb Infections","Base Case","all_ages",2038,4.07,4.07,4.07
-"Incident M. tb Infections","Base Case","all_ages",2039,3.94,3.94,3.94
-"Incident M. tb Infections","Base Case","all_ages",2040,3.81,3.81,3.81
-"Incident M. tb Infections","Base Case","all_ages",2041,3.69,3.69,3.69
-"Incident M. tb Infections","Base Case","all_ages",2042,3.57,3.57,3.57
-"Incident M. tb Infections","Base Case","all_ages",2043,3.45,3.45,3.45
-"Incident M. tb Infections","Base Case","all_ages",2044,3.34,3.34,3.34
-"Incident M. tb Infections","Base Case","all_ages",2045,3.24,3.24,3.24
-"Incident M. tb Infections","Base Case","all_ages",2046,3.14,3.14,3.14
-"Incident M. tb Infections","Base Case","all_ages",2047,3.04,3.04,3.04
-"Incident M. tb Infections","Base Case","all_ages",2048,2.95,2.95,2.95
-"Incident M. tb Infections","Base Case","all_ages",2049,2.86,2.86,2.86
+"outcome","scenario","age_group","year","mean"
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2020,10.5
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2021,10.2
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2022,9.78
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2023,9.41
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2024,9.08
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2025,8.77
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2026,8.47
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2027,8.18
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2028,7.92
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2029,7.66
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2030,7.41
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2031,7.18
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2032,6.96
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2033,6.75
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2034,6.54
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2035,6.35
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2036,6.16
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2037,5.98
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2038,5.81
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2039,5.64
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2040,5.48
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2041,5.33
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2042,5.18
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2043,5.04
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2044,4.9
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2045,4.77
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2046,4.64
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2047,4.52
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2048,4.4
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2049,4.28
+"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2050,4.17

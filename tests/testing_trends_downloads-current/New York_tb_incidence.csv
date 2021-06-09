@@ -1,33 +1,32 @@
-"outcome","scenario","age_group","year","mean","ci_high","ci_low"
-"TB Incidence","Base Case","all_ages",2018,3.98,3.98,3.98
-"TB Incidence","Base Case","all_ages",2019,3.84,3.84,3.84
-"TB Incidence","Base Case","all_ages",2020,3.62,3.62,3.62
-"TB Incidence","Base Case","all_ages",2021,3.49,3.49,3.49
-"TB Incidence","Base Case","all_ages",2022,3.37,3.37,3.37
-"TB Incidence","Base Case","all_ages",2023,3.26,3.26,3.26
-"TB Incidence","Base Case","all_ages",2024,3.16,3.16,3.16
-"TB Incidence","Base Case","all_ages",2025,3.06,3.06,3.06
-"TB Incidence","Base Case","all_ages",2026,2.96,2.96,2.96
-"TB Incidence","Base Case","all_ages",2027,2.87,2.87,2.87
-"TB Incidence","Base Case","all_ages",2028,2.78,2.78,2.78
-"TB Incidence","Base Case","all_ages",2029,2.7,2.7,2.7
-"TB Incidence","Base Case","all_ages",2030,2.62,2.62,2.62
-"TB Incidence","Base Case","all_ages",2031,2.54,2.54,2.54
-"TB Incidence","Base Case","all_ages",2032,2.47,2.47,2.47
-"TB Incidence","Base Case","all_ages",2033,2.39,2.39,2.39
-"TB Incidence","Base Case","all_ages",2034,2.32,2.32,2.32
-"TB Incidence","Base Case","all_ages",2035,2.26,2.26,2.26
-"TB Incidence","Base Case","all_ages",2036,2.19,2.19,2.19
-"TB Incidence","Base Case","all_ages",2037,2.13,2.13,2.13
-"TB Incidence","Base Case","all_ages",2038,2.07,2.07,2.07
-"TB Incidence","Base Case","all_ages",2039,2.01,2.01,2.01
-"TB Incidence","Base Case","all_ages",2040,1.96,1.96,1.96
-"TB Incidence","Base Case","all_ages",2041,1.9,1.9,1.9
-"TB Incidence","Base Case","all_ages",2042,1.85,1.85,1.85
-"TB Incidence","Base Case","all_ages",2043,1.8,1.8,1.8
-"TB Incidence","Base Case","all_ages",2044,1.75,1.75,1.75
-"TB Incidence","Base Case","all_ages",2045,1.71,1.71,1.71
-"TB Incidence","Base Case","all_ages",2046,1.66,1.66,1.66
-"TB Incidence","Base Case","all_ages",2047,1.62,1.62,1.62
-"TB Incidence","Base Case","all_ages",2048,1.57,1.57,1.57
-"TB Incidence","Base Case","all_ages",2049,1.53,1.53,1.53
+"outcome","scenario","age_group","year","mean"
+"TB Incidence (per 100,000)","Base Case","all_ages",2020,3.3
+"TB Incidence (per 100,000)","Base Case","all_ages",2021,3.48
+"TB Incidence (per 100,000)","Base Case","all_ages",2022,3.39
+"TB Incidence (per 100,000)","Base Case","all_ages",2023,3.3
+"TB Incidence (per 100,000)","Base Case","all_ages",2024,3.21
+"TB Incidence (per 100,000)","Base Case","all_ages",2025,3.12
+"TB Incidence (per 100,000)","Base Case","all_ages",2026,3.04
+"TB Incidence (per 100,000)","Base Case","all_ages",2027,2.95
+"TB Incidence (per 100,000)","Base Case","all_ages",2028,2.87
+"TB Incidence (per 100,000)","Base Case","all_ages",2029,2.8
+"TB Incidence (per 100,000)","Base Case","all_ages",2030,2.72
+"TB Incidence (per 100,000)","Base Case","all_ages",2031,2.65
+"TB Incidence (per 100,000)","Base Case","all_ages",2032,2.59
+"TB Incidence (per 100,000)","Base Case","all_ages",2033,2.52
+"TB Incidence (per 100,000)","Base Case","all_ages",2034,2.46
+"TB Incidence (per 100,000)","Base Case","all_ages",2035,2.4
+"TB Incidence (per 100,000)","Base Case","all_ages",2036,2.34
+"TB Incidence (per 100,000)","Base Case","all_ages",2037,2.29
+"TB Incidence (per 100,000)","Base Case","all_ages",2038,2.24
+"TB Incidence (per 100,000)","Base Case","all_ages",2039,2.18
+"TB Incidence (per 100,000)","Base Case","all_ages",2040,2.14
+"TB Incidence (per 100,000)","Base Case","all_ages",2041,2.09
+"TB Incidence (per 100,000)","Base Case","all_ages",2042,2.04
+"TB Incidence (per 100,000)","Base Case","all_ages",2043,2
+"TB Incidence (per 100,000)","Base Case","all_ages",2044,1.95
+"TB Incidence (per 100,000)","Base Case","all_ages",2045,1.91
+"TB Incidence (per 100,000)","Base Case","all_ages",2046,1.87
+"TB Incidence (per 100,000)","Base Case","all_ages",2047,1.83
+"TB Incidence (per 100,000)","Base Case","all_ages",2048,1.8
+"TB Incidence (per 100,000)","Base Case","all_ages",2049,1.76
+"TB Incidence (per 100,000)","Base Case","all_ages",2050,1.72

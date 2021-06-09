@@ -23,12 +23,19 @@ app <- ShinyDriver$new("../")
 
 app$snapshotInit("testing_trends_downloads")
 
-# these are the geographies downloaded in this test -- this needs to be updated
-# as more are included for the paper
+# these are the geographies downloaded in this test 
 
-geographies <- c("United States", "California", "Florida", "Georgia",
-                 "Illinois", "Massachusetts", "New Jersey", "New York",
-                 "Pennsylvania", "Texas", "Virginia", "Washington") 
+geographies <- c("United States", "Alabama", "Alaska", "Arizona", "Arkansas", 
+                 "California", "Colorado", "Connecticut", "Delaware", "Florida", 
+                 "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", 
+                 "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", 
+                 "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", 
+                 "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", 
+                 "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", 
+                 "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", 
+                 "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", 
+                 "West Virginia", "Wisconsin", "Wyoming")
+
 
 
 # select each location, then go to trends, and  save each of the outcomes
@@ -46,7 +53,7 @@ for (location in geographies) {
   app$snapshotDownload("tabby1-trendsCSV")
   app$setInputs(`tabby1-trendsOutcomes` = "tb_incidence_per_100k")
   app$snapshotDownload("tabby1-trendsCSV")
-  app$setInputs(`tabby1-trendsOutcomes` = "tb_deaths_per_100k")
+  app$setInputs(`tabby1-trendsOutcomes` = "tb_mortality_per_100k")
   app$snapshotDownload("tabby1-trendsCSV")
 }
 
