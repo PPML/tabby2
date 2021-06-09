@@ -436,6 +436,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
   
   # addoutputs server ----
   # __calculate data ----
+  
   addoutputsData <- reactive({
     req(
       input[[addoutputs$IDs$controls$comparators]],
@@ -464,12 +465,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         year_adj = year + position_year(scenario)
       ) %>% 
       mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-             value = signif(value, 3))  %>% 
-      mutate(scenario = sapply(scenario, function(x) {
-        if (x %in% c('base_case', names(addoutputs$interventions$labels), names(addoutputs$analyses$labels))) {
-          c(base_case = "Base Case", addoutputs$interventions$labels, addoutputs$analyses$labels)[[x]]
-        } else as.character(x)
-      })) 
+             value = signif(value, 3)) 
   })
   
   # user_filtered_data[['addoutputsData()']] <- addoutputsData()
@@ -620,7 +616,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       )
   }, res=85)
   
-  # addoutputs server ----
+  # costcomparison server ----
   # __calculate data ----
   costcomparisonData <- reactive({
     req(

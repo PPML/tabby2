@@ -552,6 +552,11 @@ shinyServer(function(input, output, session) {
 		output[['addoutputsData']] <- 
 		  DT::renderDataTable( filtered_data[['addoutputsData']]() %>% 
 		                         filter(type == 'mean') %>%
+		                         mutate(scenario = sapply(scenario, function(x) {
+		                           if (x %in% c('base_case', names(addoutputs$interventions$labels), names(addoutputs$analyses$labels))) {
+		                             c(base_case = "Base Case", addoutputs$interventions$labels, addoutputs$analyses$labels)[[x]]
+		                           } else as.character(x)
+		                         })) %>%
 		                         select(-c(type, year_adj)), 
 		                       options = list(pageLength = 25, scrollX = TRUE), 
 		                       rownames=FALSE )  
