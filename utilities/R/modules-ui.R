@@ -384,7 +384,8 @@ inputCostsUI <- function() {
       and TB disease. These are calculated from incremental differences in health service provision
       estimated by the underlying transmission dynamic model cumulated over an analytic horizon 
       and unit costs estimated for each of these services. Please enter unit costs for health services below 
-      in United States Dollars and choose the time horizon of interest."),
+      in United States Dollars and choose the time horizon of interest.
+      Currently displayed are average national costs in 2019 USD."),
       uiOutput('inputcosts')
     )
 }
