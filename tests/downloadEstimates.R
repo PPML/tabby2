@@ -57,7 +57,7 @@ for (location in geographies) {
   app$setInputs(`tabby1-estimatesInterventions` = c("intervention_1", "intervention_2", "intervention_3", "intervention_5"))
   app$setInputs(`tabby1-estimatesInterventions-4` = TRUE)
   app$setInputs(`tabby1-estimatesInterventions` = c("intervention_1", "intervention_2", "intervention_3", "intervention_4", "intervention_5"))
-  app$setInputs(`tabby1-estimatesComparator` = "pct_basecase_2018")
+  # app$setInputs(`tabby1-estimatesComparator` = "pct_basecase_2018")
   app$setInputs(`tabby1-estimatesOutcomes` = "tb_incidence_per_100k")
   app$snapshotDownload("tabby1-estimatesCSV")
   app$setInputs(`tabby1-estimatesOutcomes` = "tb_infection_per_100k")
@@ -65,6 +65,14 @@ for (location in geographies) {
   app$setInputs(`tabby1-estimatesOutcomes` = "pct_ltbi")
   app$snapshotDownload("tabby1-estimatesCSV")
   app$setInputs(`tabby1-estimatesOutcomes` = "tb_mortality_per_100k")
+  app$snapshotDownload("tabby1-estimatesCSV")
+  app$setInputs(`tabby1-estimatesOutcomes` = "tb_infection_000s")
+  app$snapshotDownload("tabby1-estimatesCSV")
+  app$setInputs(`tabby1-estimatesOutcomes` = "ltbi_000s")
+  app$snapshotDownload("tabby1-estimatesCSV")
+  app$setInputs(`tabby1-estimatesOutcomes` = "tb_incidence_000s")
+  app$snapshotDownload("tabby1-estimatesCSV")
+  app$setInputs(`tabby1-estimatesOutcomes` = "tb_mortality_000s")
   app$snapshotDownload("tabby1-estimatesCSV")
   
   print(paste0(location, " has been run!"))
@@ -85,11 +93,15 @@ for (location in geographies) {
 #
 
 
-filenames <- rep(geographies, each=4)
+filenames <- rep(geographies, each=8)
 outcomes <- c("_tb_incidence.csv",
-              "_ltbi.csv",
               "_incident_infections.csv",
-              "_tb_deaths.csv")
+              "_ltbi.csv",
+              "_tb_deaths.csv", 
+              "_tb_infections_000s.csv",
+              "_ltbi_000s.csv",
+              "_tb_incidence_000s.csv",
+              "_tb_mortality_000s.csv")
 
 # filenames are constructed using the filenames and 
 # outcomes lists
@@ -97,7 +109,7 @@ outcomes <- c("_tb_incidence.csv",
 filenames <- sapply(1:length(filenames), function(iter) {
     file.path("downloadEstimates-current/", 
       paste0(filenames[[iter]],
-             outcomes[[((iter -1) %% 4)+1]])
+             outcomes[[((iter -1) %% length(outcomes))+1]])
     )
   })
 

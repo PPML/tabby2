@@ -1,31 +1,31 @@
 "outcome","scenario","age_group","year","mean"
-"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2020,100
-"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2022,92.1
-"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2025,83.9
-"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2035,65.4
-"Incident M. tb Infections (per 100,000)","Base Case","all_ages",2050,47.7
-"Incident M. tb Infections (per 100,000)","LTBI treatment for new migrants","all_ages",2020,100
-"Incident M. tb Infections (per 100,000)","LTBI treatment for new migrants","all_ages",2022,90.3
-"Incident M. tb Infections (per 100,000)","LTBI treatment for new migrants","all_ages",2025,75.4
-"Incident M. tb Infections (per 100,000)","LTBI treatment for new migrants","all_ages",2035,51.2
-"Incident M. tb Infections (per 100,000)","LTBI treatment for new migrants","all_ages",2050,33.7
-"Incident M. tb Infections (per 100,000)","Improved LTBI treatment in the US","all_ages",2020,100
-"Incident M. tb Infections (per 100,000)","Improved LTBI treatment in the US","all_ages",2022,91.8
-"Incident M. tb Infections (per 100,000)","Improved LTBI treatment in the US","all_ages",2025,80.4
-"Incident M. tb Infections (per 100,000)","Improved LTBI treatment in the US","all_ages",2035,57.1
-"Incident M. tb Infections (per 100,000)","Improved LTBI treatment in the US","all_ages",2050,39.7
-"Incident M. tb Infections (per 100,000)","Enhanced case detection","all_ages",2020,99.7
-"Incident M. tb Infections (per 100,000)","Enhanced case detection","all_ages",2022,78.6
-"Incident M. tb Infections (per 100,000)","Enhanced case detection","all_ages",2025,49.9
-"Incident M. tb Infections (per 100,000)","Enhanced case detection","all_ages",2035,34.1
-"Incident M. tb Infections (per 100,000)","Enhanced case detection","all_ages",2050,23.6
-"Incident M. tb Infections (per 100,000)","Enhanced TB treatment","all_ages",2020,100
-"Incident M. tb Infections (per 100,000)","Enhanced TB treatment","all_ages",2022,91
-"Incident M. tb Infections (per 100,000)","Enhanced TB treatment","all_ages",2025,80
-"Incident M. tb Infections (per 100,000)","Enhanced TB treatment","all_ages",2035,61.1
-"Incident M. tb Infections (per 100,000)","Enhanced TB treatment","all_ages",2050,44.1
-"Incident M. tb Infections (per 100,000)","All improvements","all_ages",2020,99.6
-"Incident M. tb Infections (per 100,000)","All improvements","all_ages",2022,75.7
-"Incident M. tb Infections (per 100,000)","All improvements","all_ages",2025,40.6
-"Incident M. tb Infections (per 100,000)","All improvements","all_ages",2035,22.3
-"Incident M. tb Infections (per 100,000)","All improvements","all_ages",2050,13.6
+"LTBI Prevalence (percentage)","Base Case","all_ages",2020,3.14
+"LTBI Prevalence (percentage)","Base Case","all_ages",2022,2.96
+"LTBI Prevalence (percentage)","Base Case","all_ages",2025,2.7
+"LTBI Prevalence (percentage)","Base Case","all_ages",2035,2.04
+"LTBI Prevalence (percentage)","Base Case","all_ages",2050,1.37
+"LTBI Prevalence (percentage)","LTBI treatment for new migrants","all_ages",2020,3.14
+"LTBI Prevalence (percentage)","LTBI treatment for new migrants","all_ages",2022,2.95
+"LTBI Prevalence (percentage)","LTBI treatment for new migrants","all_ages",2025,2.62
+"LTBI Prevalence (percentage)","LTBI treatment for new migrants","all_ages",2035,1.81
+"LTBI Prevalence (percentage)","LTBI treatment for new migrants","all_ages",2050,1.09
+"LTBI Prevalence (percentage)","Improved LTBI treatment in the US","all_ages",2020,3.14
+"LTBI Prevalence (percentage)","Improved LTBI treatment in the US","all_ages",2022,2.95
+"LTBI Prevalence (percentage)","Improved LTBI treatment in the US","all_ages",2025,2.63
+"LTBI Prevalence (percentage)","Improved LTBI treatment in the US","all_ages",2035,1.88
+"LTBI Prevalence (percentage)","Improved LTBI treatment in the US","all_ages",2050,1.22
+"LTBI Prevalence (percentage)","Enhanced case detection","all_ages",2020,3.14
+"LTBI Prevalence (percentage)","Enhanced case detection","all_ages",2022,2.96
+"LTBI Prevalence (percentage)","Enhanced case detection","all_ages",2025,2.7
+"LTBI Prevalence (percentage)","Enhanced case detection","all_ages",2035,2.01
+"LTBI Prevalence (percentage)","Enhanced case detection","all_ages",2050,1.34
+"LTBI Prevalence (percentage)","Enhanced TB treatment","all_ages",2020,3.14
+"LTBI Prevalence (percentage)","Enhanced TB treatment","all_ages",2022,2.96
+"LTBI Prevalence (percentage)","Enhanced TB treatment","all_ages",2025,2.7
+"LTBI Prevalence (percentage)","Enhanced TB treatment","all_ages",2035,2.03
+"LTBI Prevalence (percentage)","Enhanced TB treatment","all_ages",2050,1.37
+"LTBI Prevalence (percentage)","All improvements","all_ages",2020,3.14
+"LTBI Prevalence (percentage)","All improvements","all_ages",2022,2.94
+"LTBI Prevalence (percentage)","All improvements","all_ages",2025,2.55
+"LTBI Prevalence (percentage)","All improvements","all_ages",2035,1.65
+"LTBI Prevalence (percentage)","All improvements","all_ages",2050,0.957

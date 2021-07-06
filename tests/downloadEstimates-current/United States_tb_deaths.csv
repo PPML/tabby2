@@ -1,31 +1,31 @@
 "outcome","scenario","age_group","year","mean"
-"TB-Related Deaths (per 100,000)","Base Case","all_ages",2020,100
-"TB-Related Deaths (per 100,000)","Base Case","all_ages",2022,94.1
-"TB-Related Deaths (per 100,000)","Base Case","all_ages",2025,86.3
-"TB-Related Deaths (per 100,000)","Base Case","all_ages",2035,66.4
-"TB-Related Deaths (per 100,000)","Base Case","all_ages",2050,47.1
-"TB-Related Deaths (per 100,000)","LTBI treatment for new migrants","all_ages",2020,100
-"TB-Related Deaths (per 100,000)","LTBI treatment for new migrants","all_ages",2022,93
-"TB-Related Deaths (per 100,000)","LTBI treatment for new migrants","all_ages",2025,80.1
-"TB-Related Deaths (per 100,000)","LTBI treatment for new migrants","all_ages",2035,54.2
-"TB-Related Deaths (per 100,000)","LTBI treatment for new migrants","all_ages",2050,33.3
-"TB-Related Deaths (per 100,000)","Improved LTBI treatment in the US","all_ages",2020,100
-"TB-Related Deaths (per 100,000)","Improved LTBI treatment in the US","all_ages",2022,93.9
-"TB-Related Deaths (per 100,000)","Improved LTBI treatment in the US","all_ages",2025,82.8
-"TB-Related Deaths (per 100,000)","Improved LTBI treatment in the US","all_ages",2035,56
-"TB-Related Deaths (per 100,000)","Improved LTBI treatment in the US","all_ages",2050,36.7
-"TB-Related Deaths (per 100,000)","Enhanced case detection","all_ages",2020,99.9
-"TB-Related Deaths (per 100,000)","Enhanced case detection","all_ages",2022,89.5
-"TB-Related Deaths (per 100,000)","Enhanced case detection","all_ages",2025,73.1
-"TB-Related Deaths (per 100,000)","Enhanced case detection","all_ages",2035,53.8
-"TB-Related Deaths (per 100,000)","Enhanced case detection","all_ages",2050,37.3
-"TB-Related Deaths (per 100,000)","Enhanced TB treatment","all_ages",2020,99.9
-"TB-Related Deaths (per 100,000)","Enhanced TB treatment","all_ages",2022,90.8
-"TB-Related Deaths (per 100,000)","Enhanced TB treatment","all_ages",2025,78.9
-"TB-Related Deaths (per 100,000)","Enhanced TB treatment","all_ages",2035,60.3
-"TB-Related Deaths (per 100,000)","Enhanced TB treatment","all_ages",2050,42.7
-"TB-Related Deaths (per 100,000)","All improvements","all_ages",2020,99.8
-"TB-Related Deaths (per 100,000)","All improvements","all_ages",2022,84.8
-"TB-Related Deaths (per 100,000)","All improvements","all_ages",2025,58.8
-"TB-Related Deaths (per 100,000)","All improvements","all_ages",2035,32.9
-"TB-Related Deaths (per 100,000)","All improvements","all_ages",2050,17.9
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2020,0.19
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2022,0.178
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2025,0.163
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2035,0.126
+"TB-Related Deaths (per 100,000)","Base Case","all_ages",2050,0.0893
+"TB-Related Deaths (per 100,000)","LTBI treatment for new migrants","all_ages",2020,0.189
+"TB-Related Deaths (per 100,000)","LTBI treatment for new migrants","all_ages",2022,0.176
+"TB-Related Deaths (per 100,000)","LTBI treatment for new migrants","all_ages",2025,0.152
+"TB-Related Deaths (per 100,000)","LTBI treatment for new migrants","all_ages",2035,0.103
+"TB-Related Deaths (per 100,000)","LTBI treatment for new migrants","all_ages",2050,0.0632
+"TB-Related Deaths (per 100,000)","Improved LTBI treatment in the US","all_ages",2020,0.19
+"TB-Related Deaths (per 100,000)","Improved LTBI treatment in the US","all_ages",2022,0.178
+"TB-Related Deaths (per 100,000)","Improved LTBI treatment in the US","all_ages",2025,0.157
+"TB-Related Deaths (per 100,000)","Improved LTBI treatment in the US","all_ages",2035,0.106
+"TB-Related Deaths (per 100,000)","Improved LTBI treatment in the US","all_ages",2050,0.0696
+"TB-Related Deaths (per 100,000)","Enhanced case detection","all_ages",2020,0.189
+"TB-Related Deaths (per 100,000)","Enhanced case detection","all_ages",2022,0.17
+"TB-Related Deaths (per 100,000)","Enhanced case detection","all_ages",2025,0.139
+"TB-Related Deaths (per 100,000)","Enhanced case detection","all_ages",2035,0.102
+"TB-Related Deaths (per 100,000)","Enhanced case detection","all_ages",2050,0.0706
+"TB-Related Deaths (per 100,000)","Enhanced TB treatment","all_ages",2020,0.189
+"TB-Related Deaths (per 100,000)","Enhanced TB treatment","all_ages",2022,0.172
+"TB-Related Deaths (per 100,000)","Enhanced TB treatment","all_ages",2025,0.15
+"TB-Related Deaths (per 100,000)","Enhanced TB treatment","all_ages",2035,0.114
+"TB-Related Deaths (per 100,000)","Enhanced TB treatment","all_ages",2050,0.0809
+"TB-Related Deaths (per 100,000)","All improvements","all_ages",2020,0.189
+"TB-Related Deaths (per 100,000)","All improvements","all_ages",2022,0.161
+"TB-Related Deaths (per 100,000)","All improvements","all_ages",2025,0.111
+"TB-Related Deaths (per 100,000)","All improvements","all_ages",2035,0.0624
+"TB-Related Deaths (per 100,000)","All improvements","all_ages",2050,0.0339

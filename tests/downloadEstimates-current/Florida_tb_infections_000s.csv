@@ -1,0 +1,31 @@
+"outcome","scenario","age_group","year","mean"
+"Incident M. tb Infections (in thousands)","Base Case","all_ages",2020,2.62
+"Incident M. tb Infections (in thousands)","Base Case","all_ages",2022,2.98
+"Incident M. tb Infections (in thousands)","Base Case","all_ages",2025,2.88
+"Incident M. tb Infections (in thousands)","Base Case","all_ages",2035,2.39
+"Incident M. tb Infections (in thousands)","Base Case","all_ages",2050,1.79
+"Incident M. tb Infections (in thousands)","LTBI treatment for new migrants","all_ages",2020,2.62
+"Incident M. tb Infections (in thousands)","LTBI treatment for new migrants","all_ages",2022,2.9
+"Incident M. tb Infections (in thousands)","LTBI treatment for new migrants","all_ages",2025,2.52
+"Incident M. tb Infections (in thousands)","LTBI treatment for new migrants","all_ages",2035,1.82
+"Incident M. tb Infections (in thousands)","LTBI treatment for new migrants","all_ages",2050,1.23
+"Incident M. tb Infections (in thousands)","Improved LTBI treatment in the US","all_ages",2020,2.62
+"Incident M. tb Infections (in thousands)","Improved LTBI treatment in the US","all_ages",2022,2.97
+"Incident M. tb Infections (in thousands)","Improved LTBI treatment in the US","all_ages",2025,2.73
+"Incident M. tb Infections (in thousands)","Improved LTBI treatment in the US","all_ages",2035,2
+"Incident M. tb Infections (in thousands)","Improved LTBI treatment in the US","all_ages",2050,1.42
+"Incident M. tb Infections (in thousands)","Enhanced case detection","all_ages",2020,2.61
+"Incident M. tb Infections (in thousands)","Enhanced case detection","all_ages",2022,2.53
+"Incident M. tb Infections (in thousands)","Enhanced case detection","all_ages",2025,1.83
+"Incident M. tb Infections (in thousands)","Enhanced case detection","all_ages",2035,1.44
+"Incident M. tb Infections (in thousands)","Enhanced case detection","all_ages",2050,1.07
+"Incident M. tb Infections (in thousands)","Enhanced TB treatment","all_ages",2020,2.62
+"Incident M. tb Infections (in thousands)","Enhanced TB treatment","all_ages",2022,2.88
+"Incident M. tb Infections (in thousands)","Enhanced TB treatment","all_ages",2025,2.56
+"Incident M. tb Infections (in thousands)","Enhanced TB treatment","all_ages",2035,2.08
+"Incident M. tb Infections (in thousands)","Enhanced TB treatment","all_ages",2050,1.56
+"Incident M. tb Infections (in thousands)","All improvements","all_ages",2020,2.61
+"Incident M. tb Infections (in thousands)","All improvements","all_ages",2022,2.35
+"Incident M. tb Infections (in thousands)","All improvements","all_ages",2025,1.34
+"Incident M. tb Infections (in thousands)","All improvements","all_ages",2035,0.818
+"Incident M. tb Infections (in thousands)","All improvements","all_ages",2050,0.543

@@ -1,0 +1,31 @@
+"outcome","scenario","age_group","year","mean"
+"TB Incidence (in thousands)","Base Case","all_ages",2020,1.83
+"TB Incidence (in thousands)","Base Case","all_ages",2022,1.74
+"TB Incidence (in thousands)","Base Case","all_ages",2025,1.61
+"TB Incidence (in thousands)","Base Case","all_ages",2035,1.3
+"TB Incidence (in thousands)","Base Case","all_ages",2050,1.01
+"TB Incidence (in thousands)","LTBI treatment for new migrants","all_ages",2020,1.83
+"TB Incidence (in thousands)","LTBI treatment for new migrants","all_ages",2022,1.7
+"TB Incidence (in thousands)","LTBI treatment for new migrants","all_ages",2025,1.48
+"TB Incidence (in thousands)","LTBI treatment for new migrants","all_ages",2035,1.09
+"TB Incidence (in thousands)","LTBI treatment for new migrants","all_ages",2050,0.779
+"TB Incidence (in thousands)","Improved LTBI treatment in the US","all_ages",2020,1.83
+"TB Incidence (in thousands)","Improved LTBI treatment in the US","all_ages",2022,1.73
+"TB Incidence (in thousands)","Improved LTBI treatment in the US","all_ages",2025,1.57
+"TB Incidence (in thousands)","Improved LTBI treatment in the US","all_ages",2035,1.19
+"TB Incidence (in thousands)","Improved LTBI treatment in the US","all_ages",2050,0.873
+"TB Incidence (in thousands)","Enhanced case detection","all_ages",2020,1.83
+"TB Incidence (in thousands)","Enhanced case detection","all_ages",2022,1.8
+"TB Incidence (in thousands)","Enhanced case detection","all_ages",2025,1.47
+"TB Incidence (in thousands)","Enhanced case detection","all_ages",2035,1.05
+"TB Incidence (in thousands)","Enhanced case detection","all_ages",2050,0.723
+"TB Incidence (in thousands)","Enhanced TB treatment","all_ages",2020,1.83
+"TB Incidence (in thousands)","Enhanced TB treatment","all_ages",2022,1.71
+"TB Incidence (in thousands)","Enhanced TB treatment","all_ages",2025,1.54
+"TB Incidence (in thousands)","Enhanced TB treatment","all_ages",2035,1.21
+"TB Incidence (in thousands)","Enhanced TB treatment","all_ages",2050,0.92
+"TB Incidence (in thousands)","All improvements","all_ages",2020,1.83
+"TB Incidence (in thousands)","All improvements","all_ages",2022,1.73
+"TB Incidence (in thousands)","All improvements","all_ages",2025,1.25
+"TB Incidence (in thousands)","All improvements","all_ages",2035,0.744
+"TB Incidence (in thousands)","All improvements","all_ages",2050,0.429

@@ -1,0 +1,31 @@
+"outcome","scenario","age_group","year","mean"
+"TB-Related Deaths (in thousands)","Base Case","all_ages",2020,0.0164
+"TB-Related Deaths (in thousands)","Base Case","all_ages",2022,0.0162
+"TB-Related Deaths (in thousands)","Base Case","all_ages",2025,0.0154
+"TB-Related Deaths (in thousands)","Base Case","all_ages",2035,0.0129
+"TB-Related Deaths (in thousands)","Base Case","all_ages",2050,0.00985
+"TB-Related Deaths (in thousands)","LTBI treatment for new migrants","all_ages",2020,0.0164
+"TB-Related Deaths (in thousands)","LTBI treatment for new migrants","all_ages",2022,0.0159
+"TB-Related Deaths (in thousands)","LTBI treatment for new migrants","all_ages",2025,0.014
+"TB-Related Deaths (in thousands)","LTBI treatment for new migrants","all_ages",2035,0.0102
+"TB-Related Deaths (in thousands)","LTBI treatment for new migrants","all_ages",2050,0.00678
+"TB-Related Deaths (in thousands)","Improved LTBI treatment in the US","all_ages",2020,0.0164
+"TB-Related Deaths (in thousands)","Improved LTBI treatment in the US","all_ages",2022,0.0162
+"TB-Related Deaths (in thousands)","Improved LTBI treatment in the US","all_ages",2025,0.0148
+"TB-Related Deaths (in thousands)","Improved LTBI treatment in the US","all_ages",2035,0.011
+"TB-Related Deaths (in thousands)","Improved LTBI treatment in the US","all_ages",2050,0.00782
+"TB-Related Deaths (in thousands)","Enhanced case detection","all_ages",2020,0.0163
+"TB-Related Deaths (in thousands)","Enhanced case detection","all_ages",2022,0.0149
+"TB-Related Deaths (in thousands)","Enhanced case detection","all_ages",2025,0.0124
+"TB-Related Deaths (in thousands)","Enhanced case detection","all_ages",2035,0.0102
+"TB-Related Deaths (in thousands)","Enhanced case detection","all_ages",2050,0.00777
+"TB-Related Deaths (in thousands)","Enhanced TB treatment","all_ages",2020,0.0163
+"TB-Related Deaths (in thousands)","Enhanced TB treatment","all_ages",2022,0.0155
+"TB-Related Deaths (in thousands)","Enhanced TB treatment","all_ages",2025,0.0138
+"TB-Related Deaths (in thousands)","Enhanced TB treatment","all_ages",2035,0.0115
+"TB-Related Deaths (in thousands)","Enhanced TB treatment","all_ages",2050,0.00875
+"TB-Related Deaths (in thousands)","All improvements","all_ages",2020,0.0163
+"TB-Related Deaths (in thousands)","All improvements","all_ages",2022,0.0138
+"TB-Related Deaths (in thousands)","All improvements","all_ages",2025,0.00943
+"TB-Related Deaths (in thousands)","All improvements","all_ages",2035,0.00598
+"TB-Related Deaths (in thousands)","All improvements","all_ages",2050,0.00362

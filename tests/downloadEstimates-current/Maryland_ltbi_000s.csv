@@ -1,0 +1,31 @@
+"outcome","scenario","age_group","year","mean"
+"LTBI Prevalence (in thousands)","Base Case","all_ages",2020,180
+"LTBI Prevalence (in thousands)","Base Case","all_ages",2022,171
+"LTBI Prevalence (in thousands)","Base Case","all_ages",2025,159
+"LTBI Prevalence (in thousands)","Base Case","all_ages",2035,126
+"LTBI Prevalence (in thousands)","Base Case","all_ages",2050,91.6
+"LTBI Prevalence (in thousands)","LTBI treatment for new migrants","all_ages",2020,180
+"LTBI Prevalence (in thousands)","LTBI treatment for new migrants","all_ages",2022,170
+"LTBI Prevalence (in thousands)","LTBI treatment for new migrants","all_ages",2025,153
+"LTBI Prevalence (in thousands)","LTBI treatment for new migrants","all_ages",2035,108
+"LTBI Prevalence (in thousands)","LTBI treatment for new migrants","all_ages",2050,69.2
+"LTBI Prevalence (in thousands)","Improved LTBI treatment in the US","all_ages",2020,180
+"LTBI Prevalence (in thousands)","Improved LTBI treatment in the US","all_ages",2022,170
+"LTBI Prevalence (in thousands)","Improved LTBI treatment in the US","all_ages",2025,152
+"LTBI Prevalence (in thousands)","Improved LTBI treatment in the US","all_ages",2035,111
+"LTBI Prevalence (in thousands)","Improved LTBI treatment in the US","all_ages",2050,77.2
+"LTBI Prevalence (in thousands)","Enhanced case detection","all_ages",2020,180
+"LTBI Prevalence (in thousands)","Enhanced case detection","all_ages",2022,171
+"LTBI Prevalence (in thousands)","Enhanced case detection","all_ages",2025,158
+"LTBI Prevalence (in thousands)","Enhanced case detection","all_ages",2035,125
+"LTBI Prevalence (in thousands)","Enhanced case detection","all_ages",2050,89.5
+"LTBI Prevalence (in thousands)","Enhanced TB treatment","all_ages",2020,180
+"LTBI Prevalence (in thousands)","Enhanced TB treatment","all_ages",2022,171
+"LTBI Prevalence (in thousands)","Enhanced TB treatment","all_ages",2025,159
+"LTBI Prevalence (in thousands)","Enhanced TB treatment","all_ages",2035,126
+"LTBI Prevalence (in thousands)","Enhanced TB treatment","all_ages",2050,91.4
+"LTBI Prevalence (in thousands)","All improvements","all_ages",2020,180
+"LTBI Prevalence (in thousands)","All improvements","all_ages",2022,169
+"LTBI Prevalence (in thousands)","All improvements","all_ages",2025,146
+"LTBI Prevalence (in thousands)","All improvements","all_ages",2035,94.2
+"LTBI Prevalence (in thousands)","All improvements","all_ages",2050,57.4
