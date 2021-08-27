@@ -903,7 +903,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       eff_name<-paste("Discounted",eff_name)
       inc_eff_name<-paste("Discounted",inc_eff_name)
     }
-    if(input[[costcomparison$IDs$controls$comparator]]=="ICER"){
+    if(input[[costcomparison$IDs$controls$comparator]]=="ICER" &  input[[costcomparison$IDs$controls$costs]] %in% c("savlys","savqalys")){
     COSTEFF_ICER_DATA() %>%
       dplyr::filter(
         discount == input[[costcomparison$IDs$controls$discount]],
@@ -914,7 +914,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
           input[[costcomparison$IDs$controls$analyses]],
           "base_case"
         )) %>% arrange(`Effectiveness Measure`, value) %>%
-      mutate("Incremental Cost (in mil)"=`Cost (in mil)`-lag(`Cost (in mil)`),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=-(value-lag(value)))%>%
+      mutate("Incremental Cost (in mil)"=`Cost (in mil)`-lag(`Cost (in mil)`),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=(value-lag(value)))%>%
       mutate("ICER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
       select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>% 
       mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` > 0)~ "Dominated", TRUE ~ as.character(ICER)))%>% 
@@ -928,7 +928,33 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
         c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
       } else as.character(x)
-      })) #%>% weak_dominance()
+      }))
+    } else if(input[[costcomparison$IDs$controls$comparator]]=="ICER" &  input[[costcomparison$IDs$controls$costs]] %in% c("avtcases","avtdeaths")){
+        COSTEFF_ICER_DATA() %>%
+          dplyr::filter(
+            discount == input[[costcomparison$IDs$controls$discount]],
+            perspectives == input[[costcomparison$IDs$controls$perspectives]],
+            `Effectiveness Measure` == input[[costcomparison$IDs$controls$costs]],
+            Scenario %in% c(
+              input[[costcomparison$IDs$controls$interventions]],
+              input[[costcomparison$IDs$controls$analyses]],
+              "base_case"
+            )) %>% arrange(`Effectiveness Measure`, -value) %>%
+          mutate("Incremental Cost (in mil)"=`Cost (in mil)`-lag(`Cost (in mil)`),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=-(value-lag(value)))%>%
+          mutate("ICER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
+          select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>% 
+          mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` > 0)~ "Dominated", TRUE ~ as.character(ICER)))%>% 
+          mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` < 0)~ paste(as.character(ICER),"\n","(Cost saving)"), TRUE ~ as.character(ICER)))%>%
+          mutate(ICER=case_when(ICER %in% c(NaN,0) ~ "", TRUE ~ as.character(ICER)))%>%
+          rename(!!eff_name := `Effectiveness (in 000s)`) %>%
+          rename(!!inc_eff_name := `Incremental Effectiveness (in 000s)`) %>%
+          rename(!!cost_name := `Cost (in mil)`) %>%
+          rename(!!inc_cost_name := `Incremental Cost (in mil)`) %>%
+          mutate(Scenario = sapply(Scenario, function(x) {
+            if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
+              c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
+            } else as.character(x)
+          }))
     } else {
       COSTEFF_ACER_DATA() %>%
         dplyr::filter(
