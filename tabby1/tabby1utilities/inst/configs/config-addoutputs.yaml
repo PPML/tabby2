@@ -89,8 +89,8 @@ outcomes:
     ltbi_tests_000s: LTBI Tests (in thousands)
     ltbi_txinits_000s: LTBI Treatment Initations (in thousands)
     ltbi_txcomps_000s: LTBI Treatment Completions (in thousands)
-    tb_txinits_000s: Active TB Treatment Initations (in thousands)
-    tb_txcomps_000s: Active TB Treatment Completions (in thousands)
+    tb_txinits_000s: TB Disease Treatment Initations (in thousands)
+    tb_txcomps_000s: TB Disease Treatment Completions (in thousands)
   formatted:
     ltbi_tests_000s: |-
       LTBI Tests
@@ -102,17 +102,17 @@ outcomes:
       LTBI Treatment Completions 
       (in thousands)
     tb_txinits_000s: |-
-      Active TB Treatment Initations 
+      TB Disease Treatment Initations 
       (in thousands)
     tb_txcomps_000s: |- 
-      Active TB Treatment Completions (
+      TB Disease Treatment Completions (
       in thousands)
   descriptions:
        ltbi_tests_000s: Total number of LTBI tests for selected year in thousands
        ltbi_txinits_000s: Total number of LTBI treatment initiations for selected year in thousands
        ltbi_txcomps_000s: Total number of LTBI treatment completions for selected year in thousands
-       tb_txinits_000s: Total number of active TB treatment initiations for selected year in thousands
-       tb_txcomps_000s: Total number of active TB treatment completions for selected year in thousands
+       tb_txinits_000s: Total number of TB Disease treatment initiations for selected year in thousands
+       tb_txcomps_000s: Total number of TB Disease treatment completions for selected year in thousands
   selected:
   - yes
   - no

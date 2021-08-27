@@ -114,6 +114,7 @@ view and download graphs of their chosen outcomes. The tool's sidebar
       </ul>
   <li>   Economic Analyses </li>
       <ul>
+      <li>   Cost Introduction </li>
       <li>   Input Costs </li>
       <li>   Costs and Outcomes </li>
       <li>   Cost Effectiveness Comparison </li>
@@ -323,19 +324,19 @@ groups (0-24 years, 25-64 years, 65+ years).
 
 *Outcome:* results can be shown for five different outcomes:
 
--   **Incident TB infections** representing the annual number of
+-   **Incident TB infections** represents the annual number of
     incident *M. tuberculosis (Mycobacterium tuberculosis)* infections per 100,000
     due to transmission within the United States (includes reinfection
     of individuals with prior LTBI, excludes migrants entering the United
     States with established LTBI);
 
--   **LTBI Prevalence** representing the percentage of individuals with
+-   **LTBI Prevalence** represents the percentage of individuals with
     latent TB infection in a given year;
 
--   **TB Incidence** representing the annual number of notified
+-   **TB Incidence** represents the annual number of notified
     TB disease cases per 100,000, including those after death;
 
--   **TB-Related Deaths** representing annual TB-attributable mortality
+-   **TB-Related Deaths** represents annual TB-attributable mortality
     per 100,000.
 
 *Scenarios:* results can be shown for up to five scenarios selected by
@@ -360,19 +361,19 @@ groups (0-24 years, 25-64 years, 65+ years).
 
 *Outcome:* results can be shown for five different outcomes:
 
--   **Incident TB infections** representing the annual number of
+-   **Incident TB infections** represents the annual number of
     incident *M. tuberculosis (Mycobacterium tuberculosis)* infections per 100,000
     due to transmission within the United States (includes reinfection
     of individuals with prior LTBI, excludes migrants entering the
     United States with established LTBI);
 
--   **LTBI Prevalence** representing the percentage of individuals with
+-   **LTBI Prevalence** represents the percentage of individuals with
     latent TB infection in a given year;
 
--   **TB Incidence** representing the annual number of notified
+-   **TB Incidence** represents the annual number of notified
     TB disease cases per 100,000, including those after death;
 
--   **TB-Related Deaths** representing annual TB-attributable mortality
+-   **TB-Related Deaths** represents annual TB-attributable mortality
     per 100,000.
 
 *Scenarios:* results can be shown for up to five scenarios selected by
@@ -413,18 +414,18 @@ groups (0-24 years, 25-64 years, 65+ years).
 
 *Outcome:* results can be shown for five different outcomes:
 
--   **LTBI Tests** representing the annual sum of TST and IGRA tests.;
+-   **LTBI Tests** represents the annual sum of TST and IGRA tests.;
 
--   **LTBI Treatment Initiations** representing the annual number of 
+-   **LTBI Treatment Initiations** represents the annual number of 
     those testing positive who initiate LTBI treatment with any regimen.;
 
--   **LTBI Treatment Completions** representing the number of those 
+-   **LTBI Treatment Completions** represents the number of those 
     initiating LTBI treatment who complete their treatment. 
 
--   **Active TB Treatment Initiations** representing the number of 
+-   **Active TB Treatment Initiations** represents the number of 
     those diagnosed with TB disease that begin treatment. 
     
--   **Active TB Treatment Completions** representing the number of those 
+-   **Active TB Treatment Completions** represents the number of those 
     initiating TB treatment who complete their treatment in the first round.
 
 *Scenarios:* results can be shown for up to five scenarios selected by
@@ -432,8 +433,8 @@ the user, describing hypothetical changes to current TB prevention and
 control activities ("Modelled Scenarios").
 
 *Download:* clicking on a button initiates download of the visualization
-itself (.png, .pdf, .pptx) or the estimates underlying the visualization
-(.csv, .xlsx).
+itself (.png, .pdf, .pptx format) or the estimates underlying the visualization
+(.csv, .xlsx format).
 
 #### Modelled Outcomes – Comparison to Recent Data 
 
@@ -460,9 +461,22 @@ epidemiology for their selected geography.
 
 ### Economic Analyses
 
-Economic Analyses are presented as three interactive pages with tabular 
+<center>
+<figure>
+  <img src='img/figure8.png' alt="Figure 8: The Cost Introduction page of Tabby2." height="275px"/>
+  <figcaption>
+    Figure 8: The Cost Introduction page of Tabby2
+  </figcaption>
+</figure>
+</center>
+
+Economic Analyses are presented as an introduction page and three interactive pages with tabular 
 inputs and results: *Input Costs*, *Costs and Outcomes*, and 
-*Cost Effectiveness Comparison*. 
+*Cost-Effectiveness Comparison*. 
+
+The *Cost Introduction* page presents the user with a non-technical overview
+of economic analysis of health scenarios. Detailed methodology and assumptions
+can be found in [Tabby2 Economic Analysis Methods](addlink).
 
 The *Input Costs* page presents the user with the opportunity to input unit
 costs of services associated with treatment of LTBI and TB. The user can 
@@ -479,29 +493,39 @@ for the modelled scenarios.
 A detailed description of each of these pages is provided below. 
 
 #### Economic Analyses – Input Costs
-The user is presented with a table of estimated average unit costs. Each 
-of these values is editable prior to submitting a costing calculation. 
-Additional information about the calculation of the national average estimates
-can be found in our costing methodology document. 
+
+<center>
+<figure>
+  <img src='img/figure9.png' alt="Figure 9: The Input Costs page of Tabby2." height="275px"/>
+  <figcaption>
+ Figure 9: The Input Costs page of Tabby2.      
+  </figcaption>
+</figure>
+</center>
+
+The user is presented with a table of estimated average unit costs in 2019 U.S. 
+dollar (USD). Each of these values is editable prior to submitting a costing 
+calculation. Additional information about the calculation of the national average
+estimates can be found in [Tabby2 Economic Analysis Methods](addlink). 
 
 The user specifies: 
 
 *LTBI Testing Costs:*
 
--   **Cost of identifying an individual for LTBI testing** representing the average 
+-   **Cost of identifying an individual for LTBI testing** represents the average 
     cost to a health program to identify an individual for LTBI testing.;
     
--   **Cost of a Mantoux tuberculin skin test (TST)** representing the average health
-    services cost for a single TST.;
+-   **Cost of a Mantoux tuberculin skin test (TST)** represents the average health
+    services cost for a single TST placement and reading.;
   
--   **Cost of an IGRA** representing the average health services cost for a single IGRA.;
+-   **Cost of an IGRA** represents the average health services cost for a single IGRA.;
     
--   **Cost of ruling out TB disease before LTBI treatment** representing the health 
+-   **Cost of ruling out TB disease before LTBI treatment** represents the health 
     services costs associated with excluding TB disease. Currently calculated as two
-    chest x-rays and a sputum culture.;  
+    chest x-rays.;  
 
 *LTBI Treatment Costs:*
-representing the average per-patient cost of medication, clinic visits, and managing
+represents the average per-patient cost of medication, clinic visits, and managing
 adverse reactions for each of the listed regimens.
 
 -   **Cost of treatment with 3HP** 
@@ -512,15 +536,11 @@ adverse reactions for each of the listed regimens.
 
 *TB Disease Identification and Treatment Costs:*
 
--   **Cost of identifying an individual for TB testing** representing the average cost
+-   **Cost of identifying an individual for TB testing** represents the average cost
     to a health program to identify an individual for TB testing.;
 
--   **Cost of TB disease diagnosis** representing the health services costs associated
-    with definitively diagnosing TB disease. Currently calculated as one chest x-ray 
-    and three sputum cultures.;
-
--   **Cost of TB disease treatment** representing the average cost of TB treatment 
-    for non-MDR, MDR, and XDR TB.
+- **Cost of TB disease treatment** represents the average direct cost of TB treatment 
+for non-MDR, MDR, and XDR TB. Includes cost to diagnose TB. 
 
 *End year for economic analysis:*
 
@@ -528,6 +548,16 @@ The costs and outcomes in the following pages will be calculated from 2020 until
 end year selected by the user.
 
 #### Economic Analyses – Costs and Outcomes
+
+<center>
+<figure>
+  <img src='img/figure10.png' alt=" Figure 10: The Costs and Outcomes Page of Tabby2 depicting the summary costs and outcomes for several modelled scenarios." height="275px"/>
+  <figcaption>
+ Figure 10: The Costs and Outcomes Page of Tabby2 depicting the summary costs and outcomes for several modelled scenarios.      
+  </figcaption>
+</figure>
+</center>
+
 The user is presented with two tabs: 
 
 *Summary Tables*: These tables present the estimated cumulative costs and outcomes
@@ -547,34 +577,43 @@ describing hypothetical changes to current TB prevention and control activities
 *Download*: clicking on a button initiates download of the three data tables (.csv, .xlsx).
 
 #### Economic Analyses – Cost Effectiveness Comparison
+
+<center>
+<figure>
+  <img src='img/figure11.png' alt="Figure 11: The Cost-Effectiveness Comparison Page of Tabby2 depicting the cost effectiveness for several modelled scenarios." height="275px"/>
+  <figcaption>
+Figure 11: The Cost-Effectiveness Comparison Page of Tabby2 depicting the cost effectiveness for several modelled scenarios.     
+  </figcaption>
+</figure>
+</center>
+
 User options are shown in a column on the left. The user specifies:
 
-*Scenarios*: results can be shown for up to five scenarios selected by the user, describing 
+*Scenarios*: results can be shown for up to five scenarios selected by the user, describing
 hypothetical changes to current TB prevention and control activities (“Modelled Scenarios”). 
 
 *ICER/ACER*: 
 
--   **Compare incremental cost effectiveness of scenarios** the costs and benefits of each
-    scenario are compared to the next most beneficial scenario, after dominated strategies have 
-    been removed (incremental cost effectiveness ratio, ICER). Dominated strategies represent 
-    those that have higher costs and lower health benefits than another strategy, or linear 
-    combination of other strategies.;
+-   **Compare incremental cost effectiveness of scenarios**displays the comparison of the costs
+and benefits of each scenario to the next most beneficial scenario, after dominated strategies 
+have been removed (ICER). Dominated strategies represent those that have higher costs and lower 
+health benefits than another strategy, or linear combination of other strategies.
 
--   **Compare all scenarios to the base case** the costs and benefits of each scenario 
-    are compared to the base case scenario (average cost effectiveness ratio, ACER).
+-   **Compare all scenarios to the base case** displays the comparison of the costs and benefits
+of each scenario to the base case scenario (ACER).
 
 *Effectiveness Measure*: 
 
--   **TB cases averted** representing the cumulative notified TB disease cases averted
-    (including those identified after death), as compared to the base-case scenario.;
+-   **TB cases averted** represents the cumulative notified TB disease cases averted
+    (including those identified after death), as compared to the base-case scenario.
 
--   **TB deaths averted** representing cumulative TB-attributable mortality averted,
-    as compared to the base-case scenario.;
+-   **TB deaths averted** represents cumulative TB-attributable mortality averted,
+    as compared to the base-case scenario.
     
--   **QALYs saved** representing cumulative QALYs gained, as compared to the 
-    base-case scenario.;
+-   **QALYs saved** represents cumulative QALYs gained, as compared to the 
+    base-case scenario.
     
--   **Life years saved** representing cumulative life years gained, as compared to the 
+-   **Life years saved** represents cumulative life years gained, as compared to the 
     base-case scenario.
     
 *Costing Perspective*: the selection determines which costing perspective is used in the 
@@ -584,7 +623,7 @@ calculations of the cost effectiveness ratio.
 outcomes prior to the calculation of the cost effectiveness ratio. Otherwise costs and 
 health outcomes are undiscounted in cost-effectiveness calculations.
 
-*Download*: clicking on a button initiates download of a data table (.csv, .xlsx) 
+*Download*: clicking on a button initiates download of a data table (.csv, .xlsx format) 
 containing the cost-effectiveness results.
 
 ### Further Description 

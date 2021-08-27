@@ -20,9 +20,10 @@ tabnames <- c(
   changelog = "Changelog",
 	feedback = "Feedback", 
   addOutputs = "Counts of Services",
+  aboutcosts = "Cost Introduction",
   entercosts = "Input Costs",
   costsoutcomes = "Costs and Outcomes",
-  costcomparison = "Cost Comparison"
+  costcomparison = "Cost Effectiveness Comparison"
 )
 
 tabcontents <- list(
@@ -38,6 +39,7 @@ tabcontents <- list(
   changelog = changelogUI(),
 	feedback = feedbackForm(), 
   addOutputs = addOutputs('tabby1'),
+  aboutcosts = aboutcostsUI(), 
   entercosts = inputCostsUI(),
   costsoutcomes = costsOutcomesUI('tabby1'), 
   costcomparison = costComparisonUI('tabby1')

@@ -375,6 +375,27 @@ outcomesUI <- function() {
     )
   )
 }
+#' Render the Cost Introduction page Page in Tabby2
+#' 
+#' This function renders the markdown file in md/aboutcosts.md.
+#' 
+aboutcostsUI <- function() {
+  fluidRow(
+    column(8,
+           
+             includeMarkdown(system.file("md/aboutcosts.md", package='utilities')),
+           fluidRow(
+             #column(8,""),
+             column(8,
+             tags$h4("Start an economic analysis:"),
+             actionButton(
+               inputId = 'toInputCosts3',
+               label = 'Input Costs',
+               class = 'btn-primary',
+               style = 'color: white;'
+           )))))
+}
+
 
 inputCostsUI <- function() {
   tagList(
