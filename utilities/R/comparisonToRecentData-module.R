@@ -32,7 +32,6 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
     calib_plots()[[plt_idx, 'plot']]
   })
 
-
   # Render the plot from the plots reactive containing the output from calib_plots()
   output$calib_data_target_plot <- renderPlot({ calib_data_target_plot() }, res = 100)
 }

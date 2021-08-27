@@ -689,7 +689,6 @@ debugPrintouts <- function() {
 }
 
 comparison_to_recent_data <- function() {
-
   tagList(fluidRow(
     column(
       width = 4,
@@ -700,7 +699,7 @@ comparison_to_recent_data <- function() {
     column(
       width = 8,
       class = "tab-content",
-            plotOutput('calib_data_target_plot', height = '500px')
+      plotOutput('calib_data_target_plot', height = '500px')
     )
   ))
 }
