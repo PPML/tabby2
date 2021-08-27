@@ -11,7 +11,7 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
   calib_plots <- reactive({ 
     MITUSCalibPlots::calib_plots(
       loc = geo_short_code(), 
-      # filter the plots to only include these specified 6
+      # filter the plots to only include these specified 7
       plots_subset = plots_subset) 
   }) 
 
@@ -29,7 +29,7 @@ comparisonToRecentData <- function(input, output, session, geo_short_code) {
   # Render the plot from the plots reactive containing the output from calib_plots()
   calib_data_target_plot <- reactive({
 	  plt_idx <- which(calib_plots()[['shortname']] == input[['comparisonDataChoice']])
-    calib_plots()[[plt_idx, 'plot']][[1]]
+    calib_plots()[[plt_idx, 'plot']]
   })
 
 
