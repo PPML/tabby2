@@ -476,7 +476,7 @@ inputs and results: *Input Costs*, *Costs and Outcomes*, and
 
 The *Cost Introduction* page presents the user with a non-technical overview
 of economic analysis of health scenarios. Detailed methodology and assumptions
-can be found in [Tabby2 Economic Analysis Methods](addlink).
+can be found in [Tabby2 Economic Analysis Methods](https://github.com/PPML/tabby2/blob/master/utilities/inst/md/Tabby2EconomicAnalysisMethods.md).
 
 The *Input Costs* page presents the user with the opportunity to input unit
 costs of services associated with treatment of LTBI and TB. The user can 
@@ -506,7 +506,7 @@ A detailed description of each of these pages is provided below.
 The user is presented with a table of estimated average unit costs in 2019 U.S. 
 dollar (USD). Each of these values is editable prior to submitting a costing 
 calculation. Additional information about the calculation of the national average
-estimates can be found in [Tabby2 Economic Analysis Methods](addlink). 
+estimates can be found in [Tabby2 Economic Analysis Methods](https://github.com/PPML/tabby2/blob/master/utilities/inst/md/Tabby2EconomicAnalysisMethods.md). 
 
 The user specifies: 
 
