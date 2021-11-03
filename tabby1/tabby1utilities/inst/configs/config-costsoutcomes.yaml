@@ -86,16 +86,16 @@ discount:
   - no
   - yes
 comparator:
-  heading: ICER/ACER
+  heading: Incremental cost effectiveness ratios (ICERs)
   values:
     - ICER
     - ACER
   labels:
-    ICER: Compare incremental cost effectiveness of scenarios
+    ICER: Compare scenarios in order of increasing effectiveness
     ACER: Compare all scenarios to the basecase
   formatted:
     ICER: |-
-      Compare incremental cost effectiveness of scenarios
+      Compare scenarios to the basecase scenario
     ACER: |-
       Compare all scenarios to the basecase
   descriptions:

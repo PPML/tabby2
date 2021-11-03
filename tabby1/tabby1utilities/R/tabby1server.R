@@ -967,12 +967,12 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
             "base_case"
           )) %>%
         mutate("Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=first(value)-value) %>%
-        mutate("ACER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
+        mutate("ICER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
         arrange(`Effectiveness Measure`, value) %>%
         select(!c(discount,perspectives,`Effectiveness Measure`,value))   %>%
-        mutate(ACER=case_when((ACER<0 & `Incremental Cost (in mil)` > 0)~ "Dominated", TRUE ~ as.character(ACER)))%>% 
-        mutate(ACER=case_when((ACER<0 & `Incremental Cost (in mil)` < 0)~ paste(as.character(ACER),"\n","(Cost saving)"), TRUE ~ as.character(ACER)))%>% 
-        mutate(ACER=case_when(ACER %in% c(NaN,0) ~ "", TRUE ~ as.character(ACER)))%>% 
+        mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` > 0)~ "Dominated", TRUE ~ as.character(ICER)))%>% 
+        mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` < 0)~ paste(as.character(ICER),"\n","(Cost saving)"), TRUE ~ as.character(ICER)))%>% 
+        mutate(ICER=case_when(ICER %in% c(NaN,0) ~ "", TRUE ~ as.character(ICER)))%>% 
         rename(!!eff_name := `Effectiveness (in 000s)`) %>%
         rename(!!inc_eff_name := `Incremental Effectiveness (in 000s)`) %>%
         rename(!!cost_name := `Cost (in mil)`) %>%
