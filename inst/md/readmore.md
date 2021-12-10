@@ -547,16 +547,15 @@ User options are shown in a column on the left. The user specifies:
 *Scenarios*: results can be shown for up to five scenarios selected by the user, describing 
 hypothetical changes to current TB prevention and control activities (“Modelled Scenarios”). 
 
-*ICER/ACER*: 
+*Incremental Cost Effectiveness Ratios (ICERs)*: 
 
--   **Compare incremental cost effectiveness of scenarios** the costs and benefits of each
+-   **Compare scenarios in order of increasing effectiveness** the costs and benefits of each
     scenario are compared to the next most beneficial scenario, after dominated strategies have 
-    been removed (incremental cost effectiveness ratio, ICER). Dominated strategies represent 
-    those that have higher costs and lower health benefits than another strategy, or linear 
-    combination of other strategies.
+    been removed. Dominated strategies represent those that have higher costs and lower health 
+    benefits than another strategy, or linear combination of other strategies.
 
--   **Compare all scenarios to the base case** the costs and benefits of each scenario 
-    are compared to the base case scenario (average cost effectiveness ratio, ACER).
+-   **Compare  scenarios to the base case** the costs and benefits of each scenario 
+    are compared to the base case scenario.
 
 *Effectiveness Measure*: 
 
