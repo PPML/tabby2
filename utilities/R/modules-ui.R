@@ -192,7 +192,7 @@ programChangePanel <- function(n, prg_chng) {
         tagList(
         tags$h4("LTBI Treatment Cascade:"),
 				numericInput(label = 'Start Year', inputId = paste0(id, "StartYear"),
-				             value = 2020, min = 2020, max = 2050),
+				             value = 2022, min = 2022, max = 2050),
         numericInput(inputId = paste0(id, "CoverageRate"),
                     label = "Screening Coverage Rate as a Multiple of the Current Rate",
                     value = round(prg_chng['scrn_cov'], 2), min = 1, max = 5),
@@ -485,7 +485,7 @@ inputCostsPanel <- function(cost_inputs) {
               numericInput(
                 inputId = "CostEndYr",
                 label = 'End year for economic analysis',
-                min = 2020,
+                min = 2022,
                 max = 2050,
                 value = cost_inputs[[12]],
                 step = 1

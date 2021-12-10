@@ -45,7 +45,7 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
                      population == input[[tttnativity]],
                      outcome == 'tb_incidence_per_100k',
                      scenario == 'base_case',
-                     year == 2020,
+                     year == 2022, #basecase_year is set in globals
                      comparator == 'absolute_value',
                      type == 'mean'
                      ) %>% `[[`('value') 
@@ -63,7 +63,7 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
                      population == input[[tttnativity]],
                      outcome == 'pct_ltbi',
                      scenario == 'base_case',
-                     year == 2020,
+                     year == 2022,
                      comparator == 'absolute_value',
                      type == 'mean'
                      ) %>% `[[`('value') 

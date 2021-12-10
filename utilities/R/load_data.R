@@ -60,7 +60,7 @@ load_data <- function(geo_short_code) {
 	data[['ADDOUTPUTS_DATA']] <- restab2  %>% dplyr::filter(outcome %in% add_outputs_vec)
 	data[['COSTCOMPARISON_DATA']]<-data[['ADDOUTPUTS_DATA']]
 	data[['ESTIMATES_DATA']] <-  
-		filter(data[['TRENDS_DATA']], year %in% c(2020, 2022, 2025, 2035, 2050))
+		filter(data[['TRENDS_DATA']], year %in% c(2022, 2025, 2030, 2040, 2050))
 	
 	return(data)
 }
