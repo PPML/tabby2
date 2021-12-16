@@ -1,3 +1,4 @@
+  - Version 3.1.0 (2021-12-10) updates the basecase year of Tabby2 to 2022 from 2020.
   - Version 3.0.0 (2021-08-27) represents the second version of Tabby2 which has passed the CDC Scientific Web Tool Clearance process; first release with Economic Analysis functionality.
   - Version 2.0.3 (2020-03-13) adds TB outcomes formatted in counts of individuals.
   - Version 2.0.2 (2020-02-20) updates the interval of years shown in modelled outcomes to 2020-2050.
