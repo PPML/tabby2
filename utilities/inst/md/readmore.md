@@ -294,16 +294,16 @@ visualizations: *Estimates*, *Time Trends*, *Age Groups*, *Counts of Services* a
 *Comparison to Recent Data*.
 
 The *Estimates* page provides graphs of modelled results at five major
-time points: 2020, 2022, 2025, 2035, and 2050.
+time points: 2022, 2025, 2030, 2040, and 2050.
 
 The *Time Trends* page (Figure 6) provides graphs of modelled results
-for each individual year from 2020 to 2050.
+for each individual year from 2022 to 2050.
 
 The *Age Groups* page provides graphs of modelled results for a specific
 year chosen by the user, subdivided into 11 age groups.
 
 The *Counts of Services* page provides graphs of additional model results
-for each individual year from 2020 to 2050. 
+for each individual year from 2022 to 2050. 
 
 The *Comparison to Recent Data* page shows model results compared to
 recent empirical data and estimates.
@@ -316,7 +316,7 @@ User options are shown in a column on the left. The user specifies:
 
 *Comparison:* results can be shown as absolute values for each outcome
 in each year, as a percentage of the base case scenario in the same
-year, or as a percentage of the base case scenario in 2020.
+year, or as a percentage of the base case scenario in 2022.
 
 *Subgroup:* results can be shown for the total population, or for a
 subgroup described by nativity (U.S.-born, non-U.S.-born), and broad age
@@ -353,7 +353,7 @@ User options are shown in a column on the left. The user specifies:
 
 *Comparison:* results can be shown as absolute values for each outcome
 in each year, as a percentage of the base case scenario in the same
-year, or as a percentage of the base case scenario in 2020.
+year, or as a percentage of the base case scenario in 2022.
 
 *Subgroup:* results can be shown for the total population, or for a
 subgroup described by nativity (U.S.-born, non-U.S.-born), and broad age
@@ -406,7 +406,7 @@ User options are shown in a column on the left. The user specifies:
 
 *Comparison:* results can be shown as absolute values for each outcome
 in each year, as a percentage of the base case scenario in the same
-year, or as a percentage of the base case scenario in 2020.
+year, or as a percentage of the base case scenario in 2022.
 
 *Subgroup:* results can be shown for the total population, or for a
 subgroup described by nativity (U.S.-born, non-U.S.-born), and broad age
@@ -503,7 +503,7 @@ A detailed description of each of these pages is provided below.
 </figure>
 </center>
 
-The user is presented with a table of estimated average unit costs in 2019 U.S. 
+The user is presented with a table of estimated average unit costs in 2020 U.S. 
 dollar (USD). Each of these values is editable prior to submitting a costing 
 calculation. Additional information about the calculation of the national average
 estimates can be found in [Tabby2 Economic Analysis Methods](https://github.com/PPML/tabby2/blob/master/utilities/inst/md/Tabby2EconomicAnalysisMethods.md). 
@@ -544,7 +544,7 @@ for non-MDR, MDR, and XDR TB. Includes cost to diagnose TB.
 
 *End year for economic analysis:*
 
-The costs and outcomes in the following pages will be calculated from 2020 until the 
+The costs and outcomes in the following pages will be calculated from 2022 until the 
 end year selected by the user.
 
 #### Economic Analyses – Costs and Outcomes
@@ -561,11 +561,11 @@ end year selected by the user.
 The user is presented with two tabs: 
 
 *Summary Tables*: These tables present the estimated cumulative costs and outcomes
-associated with each of the modelled scenarios from 2020 to the end year for economic
+associated with each of the modelled scenarios from 2022 to the end year for economic
 analysis specified on the *Input Costs* page.
 
 *Annual Table*: This table presents the estimated costs and outcomes associated with
-each of the of modelled scenarios summed over each year from 2020 to the end year for
+each of the of modelled scenarios summed over each year from 2022 to the end year for
 economic analysis specified on the *Input Costs* page. 
 
 User options are shown in a column on the left. The user specifies:
