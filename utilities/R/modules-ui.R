@@ -406,7 +406,7 @@ inputCostsUI <- function() {
       estimated by the underlying transmission dynamic model cumulated over an analytic horizon 
       and unit costs estimated for each of these services. Please enter unit costs for health services below 
       in United States Dollars and choose the time horizon of interest.
-      Currently displayed are average national costs in 2019 USD."),
+      Currently displayed are average national costs in 2020 USD."),
       uiOutput('inputcosts')
     )
 }

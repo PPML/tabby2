@@ -6,10 +6,6 @@ This document describes detailed, technical assumptions and approaches used to c
 Definitions and Abbreviations
 -----------------------------
 
-**ACER – Average Cost-Effectiveness Ratio**
-
-The ACER compares the costs and benefits of each strategy to the base-case strategy, which has no intervention.
-
 **Analytical horizon**
 
 The analytical horizon of an economic evaluation determines for which years to accrue cost and benefits included in the analysis. 
@@ -149,59 +145,61 @@ LTBI testing and treatment costs are calculated as the sum of the costs associat
 
 (iv) LTBI treatment: total individuals initiating LTBI treatment (estimated by the MITUS model) multiplied by a unit cost of LTBI treatment. This unit cost was calculated as the average cost of 3HP, 4R, and 3HR regimens, weighted by the distribution of regimens chosen by the user.
 
-Values for these inputs are shown in Table 3. Several of these values represent defaults that can by adjusted by users of the webtool. All health cost estimates taken from published sources were updated to 2019 US dollar values using Bureau of Economic Analysis Personal Consumption Expenditures (PCE) separate indices for hospital and outpatient healthcare services.
+Values for these inputs are shown in Table 3. Several of these values represent defaults that can by adjusted by users of the webtool. All health cost estimates taken from published sources were updated to 2020 US dollar values using Bureau of Economic Analysis Personal Consumption Expenditures (PCE) separate indices for hospital and outpatient healthcare services.
 
-**TABLE 3: Inputs for LTBI testing and treatment costs in USD 2019**
+**TABLE 3: Inputs for LTBI testing and treatment costs in USD 2020**
 
 | Input |	Value | Can be edited by user? |	Comment/source |
 |-----------|-----|-------------------|---------------|
 | Cost to identify an individual for LTBI testing 	| $0 	| Yes 	| Default to zero |
-| Cost of TST	| $8.65 | Yes 	| CMS 2019, Physician Fee CPT 86580 |
-| Cost of IGRA	| $68.87 	| Yes 	| CMS 2019, Limit (Q4) CPT 86480 |
+| Cost of TST	| $9.35 | Yes 	| CMS 2020, Physician Fee CPT 86580 |
+| Cost of IGRA	| $61.98 	| Yes 	| CMS 2020, Limit (Q4) CPT 86480 |
 | Fraction of LTBI tests with IGRA	| 0.50	| Yes	| Default, to be updated by user |
 | **Cost of ruling out TB disease before treatment initiation** |	$32.08 	| Yes 	 | |
-| Chest x-ray (2 view) 	| $32.08	| No	| CMS 2019, Physician’s Fee CPT 71046 | 
-| **Total cost of treatment with 3HP (self-administered)**	| $407.64 	| Yes 	 | |
+| Chest x-ray (2 view) 	| $33.20	| No	| CMS 2020, Physician’s Fee CPT 71046 | 
+| **Total cost of treatment with 3HP (self-administered)**	| $411.87 	| Yes 	 | |
 | Medication costs[^fn5]  	| $133 	| No	 | |
-| Cost of clinic visits[^fn6] 	| $241.05 | No	| See note below<sup>†</sup> |
+| Cost of clinic visits[^fn6] 	| $244.77 | No	| See note below<sup>†, ††</sup> |
 | Adverse events of 3HP (medical)\(^6\)	| $33.59	| No	| See note below<sup>††</sup> |
-| **Total cost of treatment with 3HR**	| $350.64	| Yes	 | |
+| **Total cost of treatment with 3HR**	| $354.87	| Yes	 | |
 | Medication costs\(^5\)	| $76	| No	 | |
-| Cost of clinic visits\(^6\)	| $241.05	| No	| See note below<sup>†</sup>  |
-| Adverse events of 3HR (medical)\(^6\)	| $33.59	| No	| See note below<sup>††</sup>  |
-| **Total cost of treatment with 4R**	| $349.42	| Yes 	 | |
+| Cost of clinic visits\(^6\)	| $244.77	| No	| See note below<sup>†, ††</sup>  |
+| Adverse events of 3HR (medical)\(^6\)	| $34.10	| No	| See note below<sup>†††</sup>  |
+| **Total cost of treatment with 4R**	| $353.61	| Yes 	 | |
 | Medication costs\(^5\)	| $78 | No| 	
-| Cost of clinic visits\(^6\)	| $271.42	| No	| See note below<sup>††</sup>  |
+| Cost of clinic visits\(^6\)	| $275.61	| No	| See note below<sup>†, ††</sup>  |
 | **Distribution of treatment of LTBI regimens** | 	
 | Fraction treated receiving 3HP	| 0.33	| Yes	| Default, to be updated by user | 
-| Fraction treated receiving 3HR	| 0.3	| Yes	| Default, to be updated by user |
+| Fraction treated receiving 3HR	| 0.33	| Yes	| Default, to be updated by user |
 | Fraction treated receiving 4R	| 0.33	| Yes	| Default, to be updated by user |
 
-† Values were converted from 2010 to 2019 dollars using the ratio of PCE separate indices for physician services for each of these years (1.39). 
+† Values were converted from 2010 to 2020 dollars using the ratio of PCE separate indices for outpatient services for each of these years (1.10). 
 
-†† We assume a common cost of adverse effects for both isoniazid-containing regimens (3HP and 3HR). This cost is based on hepatoxicity. We assume no toxicity from the 4R regimen. 
+†† Cost of clinic visit is inclusive of supplies for the associated visits.
+
+††† We assume a common cost of adverse effects for both isoniazid-containing regimens (3HP and 3HR). This cost is based on hepatoxicity. We assume no toxicity from the 4R regimen. 
 
 **Health service cost of TB disease treatment**
 TB treatment costs are calculated as the number of individuals receiving TB treatment multiplied by a fixed unit cost. Inputs used in these calculations are shown in Table 4. Of note, the transmission model does not stratify cases by drug resistance and therefore assumes a single unit cost for TB treatment. For this reason, the cost-savings associated with TB cases averted by LTBI treatment may be overestimated by 10–15%. This is because the averted cases will not include MDR-TB, even though the unit cost is calculated as a weighted average that includes MDR-TB. The average cost of TB treatment includes the cost of diagnosing TB disease.
 
-**TABLE 4: Inputs for TB testing and treatment costs in USD 2019.**
+**TABLE 4: Inputs for TB testing and treatment costs in USD 2020.**
 
 | Input |	Value | Can be edited by user? |	Comment/source |
 |------------------------------------|-----|-------------------|---------------|
 | Cost to identify an individual for TB testing 	| $0	| Yes 	| Default to zero |
-| Average cost of TB treatment	| $21,423.56	| Yes	| Weighted average by drug-susceptibility (shown below) |
-| Direct treatment costs non-MDR TB[^fn7] 	| $19,630	| No	| See note below<sup>†</sup> |
-| Direct treatment costs MDR TB\(^7\)	| $177,829	| No	| See note below<sup>††</sup> |
-| Direct treatment costs XDR TB\(^7\)	| $553,492	| No	| See note below<sup>††</sup> |
+| Average cost of TB treatment	| $22,049.75	| Yes	| Weighted average by drug-susceptibility (shown below) |
+| Direct treatment costs non-MDR TB[^fn7] 	| $21,325	| No	| See note below<sup>†</sup> |
+| Direct treatment costs MDR TB\(^7\)	| $182,186	| No	| See note below<sup>††</sup> |
+| Direct treatment costs XDR TB\(^7\)	| $567,708	| No	| See note below<sup>††</sup> |
 | **Distribution of drug strains**[^fn8] |  |  |  |
-| Non-MDR TB	| 0.9896	| No | |
-| MDR TB	| 0.0100	| No | |
-| XDR TB	| 0.0004	| No | |
+| Non-MDR TB	| 0.9921	| No | |
+| MDR TB	| 0.0078	| No | |
+| XDR TB	| 0.0001	| No | |
  
 
-† Direct costs of non-MDR TB are calculated as the product of the probability of hospitalization, average duration of hospitalization[^fn9]  and cost per day of hospitalization estimates.[^fn10]   An average outpatient cost is also added for the total value.  The values were converted to 2019 USD from 2014 USD using the ratio of PCE hospital and physician indices for each of these years, 1.24 and 1.29, respectively. 
+† Direct costs of non-MDR TB are calculated as the product of the probability of hospitalization, average duration of hospitalization[^fn9]  and cost per day of hospitalization estimates.[^fn10]   An average outpatient cost is also added for the total value.  The values were converted to 2020 USD from 2014 USD using the ratio of PCE outpatient indices for each of these years, 1.06.
 
-†† Converted from 2010 to 2019 dollars using the ratio of PCE hospital and physician indices for each of these years, 1.5 and 1.39, respectively.
+†† Converted from 2010 to 2020 dollars using the ratio of PCE inpatient and outpatient indices for each of these years, 1.21 and 1.10, respectively.
 
 ### Productivity costs
 
@@ -210,18 +208,18 @@ In addition to health services costs, Tabby2 calculates the loss in economic pro
 **Productivity costs of LTBI treatment**
 For each scenario, the productivity costs associated with LTBI treatment are calculated from the cost inputs shown in Table 5. The adverse event costs are estimated according to the user-selected distribution of drug regimens.
 
-**TABLE 5: Inputs for productivity costs associated with LTBI treatment in USD 2019.**
+**TABLE 5: Inputs for productivity costs associated with LTBI treatment in USD 2020.**
 
-| Input	| Value (2019 USD)	| Comment |
+| Input	| Value (2020 USD)	| Comment |
 |----------------------------------------------|----------------|-----------------|
-| Initial clinic visit\(^6\)	| $45.72	| See note below<sup>†</sup> |
-| Follow-up clinic visit\(^6\)	| $26.82	| See note below<sup>†</sup> |
-| Adverse events of LTBI treatment with 3HP or 3HR\(^6\)	| $5.04	| See notes below<sup>†,††</sup> |
+| Initial clinic visit\(^6\)	| $48.01	| See note below<sup>†</sup> |
+| Follow-up clinic visit\(^6\)	| $28.16	| See note below<sup>†</sup> |
+| Adverse events of LTBI treatment with 3HP or 3HR\(^6\)	| $5.27	| See notes below<sup>†,††</sup> |
 | Adverse events of LTBI treatment with 4R	| $0	| See note below<sup>†††</sup> |
  
-† These values were converted from 2010 dollars to 2019 dollars using the ratio of Bureau of Labor Statistics Average Hourly Earnings of Production and Nonsupervisory Employees index for patient productivity.
+† These values were converted from 2010 dollars to 2020 dollars using the ratio of Bureau of Labor Statistics Average Hourly Earnings of Production and Nonsupervisory Employees index for patient productivity (1.30).
 
-†† We assume the patient productivity per day is $220 (2016 USD) and average hospitalization stay is 7 days.[^fn11] The average cost of adverse events with 3HP can be calculated as the product of these values and the probability of hospitalization with 3HP toxicity. This value was then converted to 2019 dollars using the ratio of Bureau of Labor Statistics Average Hourly Earnings of Production and Nonsupervisory Employees index for patient productivity for each of these years (1.09).
+†† We assume the patient productivity per day is $220 (2016 USD) and average hospitalization stay is 7 days.[^fn11] The average cost of adverse events with 3HP can be calculated as the product of these values and the probability of hospitalization with 3HP toxicity. This value was then converted to 2020 dollars using the ratio of Bureau of Labor Statistics Average Hourly Earnings of Production and Nonsupervisory Employees index for patient productivity for each of these years (1.14).
 
 ††† While we allow for differential LTBI treatment regimens, which have different probabilities of adverse events, we assume a common cost of these adverse effects across 3HP and 3HR as they both include isoniazid. We assume no toxicity from the 4R regimen. The costs of adverse events for 3HP and 3HR have been weighted by the probability of adverse events (Table 2).
 
@@ -298,15 +296,15 @@ Citations
 
 [^fn6]: Shepardson D, Marks SM, Chesson H, Kerrigan A, Holland DP, Scott N, et al. Cost-effectiveness of a 12-dose regimen for treating latent tuberculous infection in the United States. Int J Tuberc Lung Dis 2013;17(12):1531-7.
 
-[^fn7]: Centers for Disease Control and Prevention. “CDC Estimates for TB Treatment Costs.” Atlanta, GA: Centers for Disease Control and Prevention, National Center for HIV/AIDS, Viral Hepatitis, STD, and TB Prevention, Division of Tuberculosis Elimination; 2020. https://www.cdc.gov/tb/publications/infographic/appendix.htm, last accessed May 25, 2021. 
+[^fn7]: Centers for Disease Control and Prevention. “CDC Estimates for TB Treatment Costs.” Atlanta, GA: Centers for Disease Control and Prevention, National Center for HIV/AIDS, Viral Hepatitis, STD, and TB Prevention, Division of Tuberculosis Elimination; 2021. https://www.cdc.gov/tb/publications/infographic/appendix.htm, last accessed February 16, 2022. 
 
-[^fn8]: Centers for Disease Control and Prevention. “Reported Tuberculosis in the United States, 2019.” Atlanta, GA: Centers for Disease Control and Prevention, National Center for HIV/AIDS, Viral Hepatitis, STD, and TB Prevention, Division of Tuberculosis Elimination; 2020. Table 9 and the Executive Summary https://www.cdc.gov/tb/statistics/reports/2019/table9.htm 
-https://www.cdc.gov/tb/statistics/reports/2019/Exec_Commentary.html, last accessed May 25, 2021. 
+[^fn8]: Centers for Disease Control and Prevention. “Reported Tuberculosis in the United States, 2020.” Atlanta, GA: Centers for Disease Control and Prevention, National Center for HIV/AIDS, Viral Hepatitis, STD, and TB Prevention, Division of Tuberculosis Elimination; 2021. Table 9 and the Executive Summary https://www.cdc.gov/tb/statistics/reports/2020/table9.htm 
+https://www.cdc.gov/tb/statistics/reports/2020/Exec_Commentary.html, last accessed February 16, 2022. 
 
 [^fn9]: Taylor, Z., et al. "Causes and costs of hospitalization of tuberculosis patients in the United States." The International Journal of Tuberculosis and Lung Disease 4.10 (2000): 931-939.
 
 [^fn10]: Aslam MV, Owusu-Edusei K, Marks SM, Asay GRB, Miramontes R, Kolasa M, Winston CA, Dietz PM. Number and cost of hospitalizations with principal and secondary diagnoses of tuberculosis, United States. Int J Tuberc Lung Dis. 2018; 22(12):1495-1504.
 
-[^fn11]: Grosse, Scott D., Kurt V. Krueger, and Jamison Pike. "Estimated annual and lifetime labor productivity in the United States, 2016: implications for economic evaluations." Journal of medical economics 22.6 (2019): 501-508.
+[^fn11]: Grosse, Scott D., Kurt V. Krueger, and Jamison Pike. "Estimated annual and lifetime labor productivity in the United States, 2016: implications for economic evaluations." Journal of medical economics 22.6 (2020): 501-508.
 
 [^fn12]: Neumann PJ, Sanders GD, Russell LB, Siegel JE, Ganiats TG, editors. Cost-effectiveness in health and medicine. Oxford University Press; 2016. 

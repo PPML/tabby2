@@ -114,8 +114,8 @@ P_TLTBI_tox<-.04 #probability of toxicity during LTBI treatment
 DUR_TLTBI_tox<-(2/52) #duration of reduced quality of life with toxicity (two weeks)
 DUR_TB<-.75
 ## PRODUCTIVITY COST CALCULATION VALUES
-TLTBI_clinic<-(45.72+26.82) #initial and follow-up clinic visits
-TLTBI_ae<-3.55 #adverse event costs with 3HP or 3HR
+TLTBI_clinic<-(48.01+28.16) #initial and follow-up clinic visits
+TLTBI_ae<-5.27 #adverse event costs with 3HP or 3HR
 P_TB_hosp<-.49 #probability of hospitalization with TB
 DUR_TB_hosp<-(24/365) #average duration of hospitalization with TB (24 days)
 DUR_TB_outpatient<-(6.8/365) #duration of time loss from outpatient services (6.8 days)

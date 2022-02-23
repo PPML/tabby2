@@ -8,7 +8,7 @@ Below is a brief introduction to the economic analysis of the health interventio
 
 ### Unit Cost Inputs 
 
-Tabby2 Economics allows users to specify unit costs for various LTBI and TB care cascade health services. Default unit costs are averages (e.g., treatment of TB disease), based on national average allowable Medicare reimbursements reported by The Centers for Medicare and Medicaid Services and on cost analyses estimated by CDC. If users have access to other unit costs they want to use, these can be entered in the tool before the economic analysis is conducted. In the tool, all cost inputs are assumed to represent 2019 price levels.
+Tabby2 Economics allows users to specify unit costs for various LTBI and TB care cascade health services. Default unit costs are averages (e.g., treatment of TB disease), based on national average allowable Medicare reimbursements reported by The Centers for Medicare and Medicaid Services and on cost analyses estimated by CDC. If users have access to other unit costs they want to use, these can be entered in the tool before the economic analysis is conducted. In the tool, all cost inputs are assumed to represent 2020 price levels.
 
 ### Cost-Effectiveness Analysis
 
