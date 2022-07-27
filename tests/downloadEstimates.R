@@ -18,7 +18,7 @@ file.remove(current_files)
 
 # start a new headless browser running Tabby2
 
-app <- ShinyDriver$new("../")
+app <- ShinyDriver$new("~/tabby2")
 
 # name the test so that the data downloaded goes into downloadEstimates-current
 
@@ -27,38 +27,36 @@ app$snapshotInit("downloadEstimates")
 # these are the geographies downloaded in this test -- this needs to be updated
 # as more are included for the paper
 
-geographies <- c("United States", "California", "Florida", "Georgia",
-                 "Illinois", "Massachusetts", "New Jersey", "New York",
-                 "Pennsylvania", "Texas", "Virginia", "Washington") 
+geographies <- c("United States", state.name, "District of Columbia") 
 
 # select each location, then go to the estimates and turn on all the 
 # intervention scenarios. 
 #
 # save each of the outcomes available in the estimates page
-# 
 
 for (location in geographies) {
 
-  app$setInputs(state = location)
+  app$setInputs(state = location, wait_=FALSE, values_=FALSE)
+  print(location)
   app$setInputs(sidebar = "estimates")
   app$setInputs(`tabby1-estimatesInterventions-1` = TRUE)
-  app$setInputs(`tabby1-estimatesInterventions` = "intervention_1")
+  app$setInputs(`tabby1-estimatesInterventions` = "intervention_1", wait_=FALSE, values_=FALSE)
   app$setInputs(`tabby1-estimatesInterventions-2` = TRUE)
-  app$setInputs(`tabby1-estimatesInterventions` = c("intervention_1", "intervention_2"))
+  app$setInputs(`tabby1-estimatesInterventions` = c("intervention_1", "intervention_2"), wait_=FALSE, values_=FALSE)
   app$setInputs(`tabby1-estimatesInterventions-3` = TRUE)
-  app$setInputs(`tabby1-estimatesInterventions` = c("intervention_1", "intervention_2", "intervention_3"))
+  app$setInputs(`tabby1-estimatesInterventions` = c("intervention_1", "intervention_2", "intervention_3"), wait_=FALSE, values_=FALSE)
   app$setInputs(`tabby1-estimatesInterventions-5` = TRUE)
-  app$setInputs(`tabby1-estimatesInterventions` = c("intervention_1", "intervention_2", "intervention_3", "intervention_5"))
+  app$setInputs(`tabby1-estimatesInterventions` = c("intervention_1", "intervention_2", "intervention_3", "intervention_5"), wait_=FALSE, values_=FALSE)
   app$setInputs(`tabby1-estimatesInterventions-4` = TRUE)
-  app$setInputs(`tabby1-estimatesInterventions` = c("intervention_1", "intervention_2", "intervention_3", "intervention_4", "intervention_5"))
-  app$setInputs(`tabby1-estimatesComparator` = "pct_basecase_2018")
-  app$setInputs(`tabby1-estimatesOutcomes` = "tb_incidence_per_100k")
+  app$setInputs(`tabby1-estimatesInterventions` = c("intervention_1", "intervention_2", "intervention_3", "intervention_4", "intervention_5"), wait_=FALSE, values_=FALSE)
+  app$setInputs(`tabby1-estimatesComparator` = "pct_basecase_2018", wait_=FALSE, values_=FALSE)
+  app$setInputs(`tabby1-estimatesOutcomes` = "tb_incidence_per_100k", wait_=FALSE, values_=FALSE)
   app$snapshotDownload("tabby1-estimatesCSV")
-  app$setInputs(`tabby1-estimatesOutcomes` = "tb_infection_per_100k")
+  app$setInputs(`tabby1-estimatesOutcomes` = "tb_infection_per_100k", wait_=FALSE, values_=FALSE)
   app$snapshotDownload("tabby1-estimatesCSV")
-  app$setInputs(`tabby1-estimatesOutcomes` = "pct_ltbi")
+  app$setInputs(`tabby1-estimatesOutcomes` = "pct_ltbi", wait_=FALSE, values_=FALSE)
   app$snapshotDownload("tabby1-estimatesCSV")
-  app$setInputs(`tabby1-estimatesOutcomes` = "tb_deaths_per_100k")
+  app$setInputs(`tabby1-estimatesOutcomes` = "tb_mortality_per_100k", wait_=FALSE, values_=FALSE)
   app$snapshotDownload("tabby1-estimatesCSV")
 
 }
@@ -87,7 +85,7 @@ outcomes <- c("_tb_incidence.csv",
 # outcomes lists
 
 filenames <- sapply(1:length(filenames), function(iter) {
-    file.path("downloadEstimates-current/", 
+    file.path("downloadEstimates-current", 
       paste0(filenames[[iter]],
              outcomes[[((iter -1) %% 4)+1]])
     )
@@ -96,5 +94,5 @@ filenames <- sapply(1:length(filenames), function(iter) {
 
 # rename the files
 
-current_files <- list.files("downloadEstimates-current/", full.names=T)
+current_files <- list.files("~/tabby2/tests/downloadEstimates-expected", full.names=T)
 file.rename(current_files, filenames)
