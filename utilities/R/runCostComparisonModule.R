@@ -64,11 +64,6 @@ runCostComparisonModule<-function(input, output, session, sim_data, treat_dist) 
     cc_data<-cc_data %>% dplyr::filter(year>=2022 & year <= costs["EndYear"])
     ag_data<-ag_data %>% dplyr::filter(year>=2022 & year <= costs["EndYear"])
     
-    openxlsx::write.xlsx(
-      ag_data,
-      "~/Desktop/age_data.xlsx",
-      colNames = TRUE
-    )
 ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 ### DEFINE BASIC DISCOUNTING VECTOR
 ### THIS VECTOR WILL BE USED FOR CASES, DEATHS, AND COSTS 
@@ -81,7 +76,7 @@ disc_vec <- (1+(costs['Discount']/100))^-(0:nyrs)
 ### THESE COME FROM MORTALITY.ORG LIFE TABLES 
 ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 
-life_exp<-c(78.7,72.0,62.2,52.7,43.4,34.2,25.7,18.0,11.3,6.19,3.18)
+life_exp <- readRDS(system.file("LifeExpectancies.rds", package = "MITUS"))
 disc_life_exp <- readRDS(system.file("DiscountedLifeExpectancies.rds", package = "MITUS"))[,-1]
     
 ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -149,7 +144,6 @@ extra_cost_data<-data.frame(
   check.names = FALSE
 )
 
-
 for(i in 1:nrow(all_cost_data)){
   ##### igra frc is constant unless the user changes it in the care cascade page or 
   ##### the improved LTBI treatment in the United States Scenario (intervention2) is being evaluated. 
@@ -171,7 +165,6 @@ for(i in 1:nrow(all_cost_data)){
       IGRA_frc <- IGRA_frc_vec[index]
       P_TLTBI_tox <- P_TLTBI_tox_vec[index]
   } }
-
   ##### calculate the cases, deaths, and TLTBI initiations by year and age for the scenario and the basecase 
   ##### ##### cases 
   scen_cases_ag <- ag_data %>% filter(outcome=="tb_incidence_000s", scenario==all_cost_data[i,"Scenario"],year==all_cost_data[i,"year"]) %>% group_by(age_group) %>% summarise(cases = as.numeric(sum(value))) %>% select(cases)
@@ -200,7 +193,7 @@ for(i in 1:nrow(all_cost_data)){
   ##### calculate the indvidual qalys
   index      <- (all_cost_data[i,"year"]-2022)+1
               #disutility weight*probability*duration*number [...of event]
-  TLTBI_qaly <- TLTBI_UW_tox*P_TLTBI_tox*DUR_TLTBI_tox*sum(scen_tltbi_inits_ag)
+  TLTBI_qaly <- TLTBI_UW_tox*P_TLTBI_tox*DUR_TLTBI_tox*scen_tltbi_inits_ag
               #disutility weight*duration*number [...of event]
   case_qaly  <- TB_UW*DUR_TB_TX*sum(scen_cases_ag)
                 #sum of deaths * age specific life expectancy
@@ -220,13 +213,14 @@ for(i in 1:nrow(all_cost_data)){
   ##### ##### we divide by 1e3 to get the costs in millions (counts are in 000s when read in)
   # number of initiations * clinic visits cost * adverse event costs
   extra_cost_data[i,"TLTBI Prod Cost (in mil)"]<-(scen_tltbi_inits_ag*(TLTBI_clinic+TLTBI_ae*P_TLTBI_tox)*discount)/1e3 #probability of toxicity and cost of adverse events
-
   # HEALTH SERVICES COSTS DUE TO TLTBI
   # number of tests times the cost of those tests * the cost of the regimen.
   # Each of these costs will be calculated as a weighted average.
-  LTBI_test_cost<-scen_tests_ag*((IGRA_frc*costs[['IGRACost']])+((1-IGRA_frc)*costs[['TSTCost']])+costs['NoTBCost'])
+  LTBI_test_cost <- scen_tests_ag *((IGRA_frc*costs[['IGRACost']])+ ((1-IGRA_frc)*costs[['TSTCost']]) + costs['NoTBCost'])
   TLTBI_cost<- scen_tltbi_inits_ag*((tx_dist[1]*costs[['3HPCost']])+(tx_dist[2]*costs[['4RCost']])+(tx_dist[3]*costs[['3HRCost']]))
   extra_cost_data[i,"TLTBI Health Service Cost (in mil)"]<-((LTBI_test_cost + TLTBI_cost)*discount)/1e3
+  # extra_cost_data[i,"LTBI test Health Service Cost (in mil)"]<-((LTBI_test_cost)*discount)/1e3
+  # extra_cost_data[i,"LTBI tx Health Service Cost (in mil)"]<-((TLTBI_cost)*discount)/1e3
   
   #PRODUCTIVITY COSTS DUE TO TB DISEASE
   #age specific TB treatment initiations*((probability of TB hospitalization*duration of TB hospitalization)+
@@ -234,6 +228,10 @@ for(i in 1:nrow(all_cost_data)){
   #age specific TB deaths*lifetime productivity estimates
   extra_cost_data[i,"TB Prod Cost (in mil)"]<-((sum(scen_cases_ag*annual_prod)*((P_TB_hosp*DUR_TB_TX_hosp)+DUR_TB_TX_outpatient)* discount) + 
                                                 sum(scen_deaths_ag*lifetime_prod))/1e3
+  
+  # extra_cost_data[i,"TB Morb Prod Cost (in mil)"] <-(sum(scen_cases_ag*annual_prod)*((P_TB_hosp*DUR_TB_TX_hosp)+DUR_TB_TX_outpatient)* discount)/1e3
+  # 
+  # extra_cost_data[i,"TB Mort Prod Cost (in mil)"] <- sum(scen_deaths_ag*lifetime_prod)/1e3
 
   # HEALTH SERVICES COSTS DUE TO TB DISEASE
   # Number of tests * (cost of those tests + the cost of the regimen)
@@ -245,6 +243,13 @@ for(i in 1:nrow(all_cost_data)){
   all_cost_data[i,"Health Service Cost (in mil)"]<- extra_cost_data[i,2]+extra_cost_data[i,3]
   #no discounting
   if (all_cost_data[i,"Discount"]==0){
+    
+    # extra_cost_data[i,"TLTBI QALY"]<-TLTBI_qaly
+    # 
+    # extra_cost_data[i,"TB Morb QALY"] <-case_qaly
+    # 
+    # extra_cost_data[i,"TB Mort QALY"] <- death_qaly
+    
     all_cost_data[i,"TB Cases (in 000s)"]<-
       # round((cc_data%>%filter(scenario=="base_case", outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value))-
       sum(ag_data%>%filter(scenario==all_cost_data[i,"Scenario"], outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value))
@@ -254,10 +259,16 @@ for(i in 1:nrow(all_cost_data)){
       sum(ag_data%>%filter(scenario==all_cost_data[i,"Scenario"], outcome=="tb_mortality_000s", year==all_cost_data[i,"year"])%>%select(value))
     all_cost_data[i,"QALYs Lost (in 000s)"]<-TLTBI_qaly+case_qaly+death_qaly
     all_cost_data[i,"Life Years Lost (in 000s)"]<-death_qaly
+    
   } else {
     #yes discounting
     # all_cost_data[i,"Cost (in mil)"]<- round(((tltbi_prod + tltbi_health + tb_prod + tb_health)*disc_vec[index])/1e3)
     # all_cost_data[i,"Health Service Cost (in mil)"]<- round(((tltbi_health + tb_health)*disc_vec[index])/1e3)
+    extra_cost_data[i,"TLTBI QALY"]<-TLTBI_qaly*disc_vec[index]
+    
+    extra_cost_data[i,"TB Morb QALY"] <-case_qaly*disc_vec[index]
+    
+    extra_cost_data[i,"TB Mort QALY"] <- disc_death_qaly
     
     all_cost_data[i,"TB Cases (in 000s)"]<-
       # round((cc_data%>%filter(scenario=="base_case", outcome=="tb_incidence_000s", year==all_cost_data[i,"year"])%>%select(value))-
@@ -454,6 +465,12 @@ all_cost_data[,c(2:3,5:8)]<-round(all_cost_data[,c(2:3,5:8)],3)
     new_cost_data_list[['ICER_data']]<-cost_eff_base
     new_cost_data_list[['ACER_data']]<-cost_eff_ACER
     new_cost_data_list[['annual']]<-all_cost_data
+    
+    # openxlsx::write.xlsx(
+    #   extra_cost_data,
+    #   "~/Desktop/cost_data.xlsx",
+    #   colNames = TRUE
+    # )
         
 ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####     
     return(new_cost_data_list)
