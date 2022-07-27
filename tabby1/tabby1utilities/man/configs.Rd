@@ -6,6 +6,9 @@
 \alias{config_estimates}
 \alias{config_trends}
 \alias{config_agegroups}
+\alias{config_addoutputs}
+\alias{config_costcomparison}
+\alias{config_costsoutcomes}
 \title{Load config files}
 \usage{
 config_plots()
@@ -15,6 +18,12 @@ config_estimates()
 config_trends()
 
 config_agegroups()
+
+config_addoutputs()
+
+config_costcomparison()
+
+config_costsoutcomes()
 }
 \description{
 These variables store the data found in the config files. This config data

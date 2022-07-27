@@ -1,0 +1,31 @@
+"outcome","scenario","age_group","year","mean"
+"TB Incidence (per 100,000)","Base Case","all_ages",2022,100
+"TB Incidence (per 100,000)","Base Case","all_ages",2025,98.8
+"TB Incidence (per 100,000)","Base Case","all_ages",2030,88.3
+"TB Incidence (per 100,000)","Base Case","all_ages",2040,69.8
+"TB Incidence (per 100,000)","Base Case","all_ages",2050,56
+"TB Incidence (per 100,000)","LTBI treatment for new migrants","all_ages",2022,100
+"TB Incidence (per 100,000)","LTBI treatment for new migrants","all_ages",2025,95.1
+"TB Incidence (per 100,000)","LTBI treatment for new migrants","all_ages",2030,78.7
+"TB Incidence (per 100,000)","LTBI treatment for new migrants","all_ages",2040,60.1
+"TB Incidence (per 100,000)","LTBI treatment for new migrants","all_ages",2050,47.4
+"TB Incidence (per 100,000)","Improved LTBI treatment in the US","all_ages",2022,100
+"TB Incidence (per 100,000)","Improved LTBI treatment in the US","all_ages",2025,91.4
+"TB Incidence (per 100,000)","Improved LTBI treatment in the US","all_ages",2030,69.1
+"TB Incidence (per 100,000)","Improved LTBI treatment in the US","all_ages",2040,50.5
+"TB Incidence (per 100,000)","Improved LTBI treatment in the US","all_ages",2050,38.9
+"TB Incidence (per 100,000)","Enhanced case detection","all_ages",2022,100
+"TB Incidence (per 100,000)","Enhanced case detection","all_ages",2025,98.8
+"TB Incidence (per 100,000)","Enhanced case detection","all_ages",2030,87.9
+"TB Incidence (per 100,000)","Enhanced case detection","all_ages",2040,69.1
+"TB Incidence (per 100,000)","Enhanced case detection","all_ages",2050,55.2
+"TB Incidence (per 100,000)","Enhanced TB treatment","all_ages",2022,100
+"TB Incidence (per 100,000)","Enhanced TB treatment","all_ages",2025,99.9
+"TB Incidence (per 100,000)","Enhanced TB treatment","all_ages",2030,81.4
+"TB Incidence (per 100,000)","Enhanced TB treatment","all_ages",2040,62.8
+"TB Incidence (per 100,000)","Enhanced TB treatment","all_ages",2050,49.5
+"TB Incidence (per 100,000)","All improvements","all_ages",2022,100
+"TB Incidence (per 100,000)","All improvements","all_ages",2025,101
+"TB Incidence (per 100,000)","All improvements","all_ages",2030,74.9
+"TB Incidence (per 100,000)","All improvements","all_ages",2040,56.4
+"TB Incidence (per 100,000)","All improvements","all_ages",2050,43.8

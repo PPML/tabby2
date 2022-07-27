@@ -1,33 +1,30 @@
-"outcome","scenario","age_group","year","mean","ci_high","ci_low"
-"LTBI Prevalence","Base Case","all_ages",2018,3.77,3.77,3.77
-"LTBI Prevalence","Base Case","all_ages",2019,3.7,3.7,3.7
-"LTBI Prevalence","Base Case","all_ages",2020,3.63,3.63,3.63
-"LTBI Prevalence","Base Case","all_ages",2021,3.55,3.55,3.55
-"LTBI Prevalence","Base Case","all_ages",2022,3.48,3.48,3.48
-"LTBI Prevalence","Base Case","all_ages",2023,3.42,3.42,3.42
-"LTBI Prevalence","Base Case","all_ages",2024,3.35,3.35,3.35
-"LTBI Prevalence","Base Case","all_ages",2025,3.28,3.28,3.28
-"LTBI Prevalence","Base Case","all_ages",2026,3.22,3.22,3.22
-"LTBI Prevalence","Base Case","all_ages",2027,3.15,3.15,3.15
-"LTBI Prevalence","Base Case","all_ages",2028,3.09,3.09,3.09
-"LTBI Prevalence","Base Case","all_ages",2029,3.03,3.03,3.03
-"LTBI Prevalence","Base Case","all_ages",2030,2.96,2.96,2.96
-"LTBI Prevalence","Base Case","all_ages",2031,2.9,2.9,2.9
-"LTBI Prevalence","Base Case","all_ages",2032,2.85,2.85,2.85
-"LTBI Prevalence","Base Case","all_ages",2033,2.79,2.79,2.79
-"LTBI Prevalence","Base Case","all_ages",2034,2.73,2.73,2.73
-"LTBI Prevalence","Base Case","all_ages",2035,2.67,2.67,2.67
-"LTBI Prevalence","Base Case","all_ages",2036,2.62,2.62,2.62
-"LTBI Prevalence","Base Case","all_ages",2037,2.57,2.57,2.57
-"LTBI Prevalence","Base Case","all_ages",2038,2.51,2.51,2.51
-"LTBI Prevalence","Base Case","all_ages",2039,2.46,2.46,2.46
-"LTBI Prevalence","Base Case","all_ages",2040,2.41,2.41,2.41
-"LTBI Prevalence","Base Case","all_ages",2041,2.36,2.36,2.36
-"LTBI Prevalence","Base Case","all_ages",2042,2.31,2.31,2.31
-"LTBI Prevalence","Base Case","all_ages",2043,2.26,2.26,2.26
-"LTBI Prevalence","Base Case","all_ages",2044,2.21,2.21,2.21
-"LTBI Prevalence","Base Case","all_ages",2045,2.16,2.16,2.16
-"LTBI Prevalence","Base Case","all_ages",2046,2.12,2.12,2.12
-"LTBI Prevalence","Base Case","all_ages",2047,2.07,2.07,2.07
-"LTBI Prevalence","Base Case","all_ages",2048,2.03,2.03,2.03
-"LTBI Prevalence","Base Case","all_ages",2049,1.98,1.98,1.98
+"outcome","scenario","age_group","year","mean"
+"LTBI Prevalence (percentage)","Base Case","all_ages",2022,3.3
+"LTBI Prevalence (percentage)","Base Case","all_ages",2023,3.25
+"LTBI Prevalence (percentage)","Base Case","all_ages",2024,3.22
+"LTBI Prevalence (percentage)","Base Case","all_ages",2025,3.18
+"LTBI Prevalence (percentage)","Base Case","all_ages",2026,3.15
+"LTBI Prevalence (percentage)","Base Case","all_ages",2027,3.12
+"LTBI Prevalence (percentage)","Base Case","all_ages",2028,3.08
+"LTBI Prevalence (percentage)","Base Case","all_ages",2029,3.05
+"LTBI Prevalence (percentage)","Base Case","all_ages",2030,3.01
+"LTBI Prevalence (percentage)","Base Case","all_ages",2031,2.98
+"LTBI Prevalence (percentage)","Base Case","all_ages",2032,2.94
+"LTBI Prevalence (percentage)","Base Case","all_ages",2033,2.91
+"LTBI Prevalence (percentage)","Base Case","all_ages",2034,2.87
+"LTBI Prevalence (percentage)","Base Case","all_ages",2035,2.83
+"LTBI Prevalence (percentage)","Base Case","all_ages",2036,2.8
+"LTBI Prevalence (percentage)","Base Case","all_ages",2037,2.76
+"LTBI Prevalence (percentage)","Base Case","all_ages",2038,2.73
+"LTBI Prevalence (percentage)","Base Case","all_ages",2039,2.69
+"LTBI Prevalence (percentage)","Base Case","all_ages",2040,2.65
+"LTBI Prevalence (percentage)","Base Case","all_ages",2041,2.62
+"LTBI Prevalence (percentage)","Base Case","all_ages",2042,2.58
+"LTBI Prevalence (percentage)","Base Case","all_ages",2043,2.54
+"LTBI Prevalence (percentage)","Base Case","all_ages",2044,2.51
+"LTBI Prevalence (percentage)","Base Case","all_ages",2045,2.47
+"LTBI Prevalence (percentage)","Base Case","all_ages",2046,2.44
+"LTBI Prevalence (percentage)","Base Case","all_ages",2047,2.4
+"LTBI Prevalence (percentage)","Base Case","all_ages",2048,2.36
+"LTBI Prevalence (percentage)","Base Case","all_ages",2049,2.33
+"LTBI Prevalence (percentage)","Base Case","all_ages",2050,2.29

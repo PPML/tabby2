@@ -1,5 +1,5 @@
 tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_short_code, geographies) {
-#cost_data, 
+#cost_data,
   # (to use these headings press COMMAND+SHIFT+O)
   # data server ----
 	AGEGROUPS_DATA <- reactive({ sim_data()[['AGEGROUPS_DATA']] })
@@ -12,9 +12,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
   COSTEFF_ICER_DATA <-  reactive({ cost_data()[['COSTEFF_ICER_DATA']] })
   COSTEFF_ACER_DATA <-  reactive({ cost_data()[['COSTEFF_ACER_DATA']] })
   COSTS_ANNUAL_DATA <-  reactive({ cost_data()[['COSTS_ANNUAL_DATA']] })
-  
+
   # The session info is used to title the downloads with the tabby2 version
-  # number. 
+  # number.
   session_info <- sessionInfo()
 
   # format the version number to be included in filenames to use underscores.
@@ -36,23 +36,23 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         population == input[[estimates$IDs$controls$populations]],
         age_group == input[[estimates$IDs$controls$ages]],
         outcome  == input[[estimates$IDs$controls$outcomes]],
-				scenario %in% 
+				scenario %in%
 				  c(input[[estimates$IDs$controls$interventions]],
-						input[[estimates$IDs$controls$analyses]], 
-						"base_case" 
+						input[[estimates$IDs$controls$analyses]],
+						"base_case"
 						),
         comparator == input[[estimates$IDs$controls$comparators]]
       ) %>%
       arrange(scenario) %>%
       mutate(
         value = signif(value, 3)
-      ) %>% 
+      ) %>%
       mutate(scenario = relevel(as.factor(scenario), 'base_case'))
 
   })
 
   estimatesDataTransformed <- reactive({
-    estimatesData() %>% 
+    estimatesData() %>%
       mutate(
         year = recode(as.character(year), '2022'=2000, '2025'=2025, '2030'=2050, '2040'=2075, '2050'=2100),
         year_adj = year + position_year(scenario)
@@ -240,7 +240,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         panel.ontop = TRUE,
         plot.margin=unit(c(1,1,1.5,1.2),"cm")
       ) +
-      expand_limits(y=0) 
+      expand_limits(y=0)
   })
 
 
@@ -281,7 +281,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       arrange(scenario) %>%
       mutate(
         year_adj = year + position_year(scenario)
-      ) %>% 
+      ) %>%
       mutate(scenario = relevel(as.factor(scenario), 'base_case'),
       value = signif(value, 3))
   })
@@ -367,7 +367,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       ) +
       scale_x_continuous(
         name = "Year",
-        breaks = c(2022, 2030, 2040, 2050) 
+        breaks = c(2022, 2030, 2040, 2050)
       ) +
       scale_y_continuous(
         name = trends$outcomes$formatted[[input[[trends$IDs$controls$outcomes]]]]
@@ -408,7 +408,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         panel.grid.major.y = element_line(size = 0.15, color = "#989898"),
         plot.margin=unit(c(1,1,1.5,1.2),"cm")
       ) +
-      expand_limits(y=0) 
+      expand_limits(y=0)
 
     # if(input[['trendsUncertaintyInterval-1']]) {
     #   p <- p +
@@ -433,10 +433,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         plot.subtitle = element_blank()
       )
   }, res=85)
-  
+
   # addoutputs server ----
   # __calculate data ----
-  
+
   addoutputsData <- reactive({
     req(
       input[[addoutputs$IDs$controls$comparators]],
@@ -447,7 +447,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         "base_case"
       )
     )
-    
+
     ADDOUTPUTS_DATA() %>%
       dplyr::filter(
         population == input[[addoutputs$IDs$controls$populations]],
@@ -463,13 +463,13 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       arrange(scenario) %>%
       mutate(
         year_adj = year + position_year(scenario)
-      ) %>% 
+      ) %>%
       mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-             value = signif(value, 3)) 
+             value = signif(value, 3))
   })
-  
+
   # user_filtered_data[['addoutputsData()']] <- addoutputsData()
-  
+
   # __set title ----
   addoutputsTitle <- reactive({
     req(
@@ -477,7 +477,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       input[[addoutputs$IDs$controls$populations]],
       input[[addoutputs$IDs$controls$ages]]
     )
-    
+
     sprintf(
       "Projected %s in the %s, %s in %s",
       addoutputs$outcomes$labels[[input[[addoutputs$IDs$controls$outcomes]]]],
@@ -486,18 +486,18 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       if (geo_short_code() == 'US') 'the US' else unname(geographies[geo_short_code()])
     )
   })
-  
+
   output[[addoutputs$IDs$title]] <- reactive({
     title <- addoutputsTitle()
-    
+
     session$sendCustomMessage("tabby:altupdate", list(
       selector = paste0("#", addoutputs$IDs$plot),
       alt = title
     ))
-    
+
     title
   })
-  
+
   # __set subtitle ----
   output[[addoutputs$IDs$subtitle]] <- reactive({
     req(
@@ -505,22 +505,22 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       input[[addoutputs$IDs$controls$populations]],
       input[[addoutputs$IDs$controls$ages]]
     )
-    
+
     addoutputs$comparators$formatted[[input[[addoutputs$IDs$controls$comparators]]]]
   })
-  
+
   # __generate plot ----
   addoutputsPlot <- reactive({
-    
+
     data <- spread(addoutputsData(), type, value)
-    
+
     title <- addoutputsTitle()
     guide <- guide_legend(
       title = "Scenario",
       ncol = 2
       # nrow = min(n_distinct(data$scenario), 2)
     )
-    
+
     p <- ggplot(data) +
       geom_line(
         mapping = aes(
@@ -549,7 +549,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       ) +
       scale_x_continuous(
         name = "Year",
-        breaks = c(2022, 2030, 2040, 2050) 
+        breaks = c(2022, 2030, 2040, 2050)
       ) +
       scale_y_continuous(
         name = addoutputs$outcomes$formatted[[input[[addoutputs$IDs$controls$outcomes]]]]
@@ -590,8 +590,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         panel.grid.major.y = element_line(size = 0.15, color = "#989898"),
         plot.margin=unit(c(1,1,1.5,1.2),"cm")
       ) +
-      expand_limits(y=0) 
-    
+      expand_limits(y=0)
+
     # if(input[['addoutputsUncertaintyInterval-1']]) {
     #   p <- p +
     #     geom_ribbon(
@@ -604,10 +604,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
     #       alpha = 0.3
     #     )
     # }
-    
+
     return(p)
   })
-  
+
   output[[addoutputs$IDs$plot]] <- renderPlot({
     addoutputsPlot() +
       theme(
@@ -615,7 +615,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         plot.subtitle = element_blank()
       )
   }, res=85)
-  
+
   # costcomparison server ----
   # __calculate data ----
   costcomparisonData <- reactive({
@@ -628,7 +628,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         "base_case"
       )
     )
-    
+
     COSTCOMPARISON_DATA() %>%
       dplyr::filter(
         population == "all_populations",
@@ -644,13 +644,13 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       arrange(scenario) %>%
       mutate(
         year_adj = year + position_year(scenario)
-      ) %>% 
+      ) %>%
       mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-             value = signif(value, 3)*2) 
+             value = signif(value, 3)*2)
   })
-  
+
   # user_filtered_data[['costcomparisonData()']] <- costcomparisonData()
-  
+
   # __set title ----
   costcomparisonTitle <- reactive({
     req(
@@ -662,18 +662,18 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       if (geo_short_code() == 'US') 'the US' else unname(geographies[geo_short_code()])
     )
   })
-  
+
   output[[costcomparison$IDs$title]] <- reactive({
     title <- costcomparisonTitle()
-    
+
     session$sendCustomMessage("tabby:altupdate", list(
       selector = paste0("#", costcomparison$IDs$plot),
       alt = title
     ))
-    
+
     title
   })
-  
+
   # __set subtitle ----
   output[[costcomparison$IDs$subtitle]] <- reactive({
     req(
@@ -681,19 +681,19 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
     )
     costcomparison$costs$formatted[[input[[costcomparison$IDs$controls$costs]]]]
   })
-  
+
   # __generate plot ----
   costcomparisonPlot <- reactive({
-    
+
     data <- spread(costcomparisonData(), type, value)
-    
+
     title <- costcomparisonTitle()
     guide <- guide_legend(
       title = "Scenario",
       ncol = 2
       # nrow = min(n_distinct(data$scenario), 2)
     )
-    
+
     p <- ggplot(data) +
       geom_line(
         mapping = aes(
@@ -722,7 +722,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       ) +
       scale_x_continuous(
         name = "Year",
-        breaks = c(2022, 2030, 2040, 2050) 
+        breaks = c(2022, 2030, 2040, 2050)
       ) +
       scale_y_continuous(
         name = costcomparison$costs$formatted[[input[[costcomparison$IDs$controls$costs]]]]
@@ -763,8 +763,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         panel.grid.major.y = element_line(size = 0.15, color = "#989898"),
         plot.margin=unit(c(1,1,1.5,1.2),"cm")
       ) +
-      expand_limits(y=0) 
-    
+      expand_limits(y=0)
+
     # if(input[['costcomparisonUncertaintyInterval-1']]) {
     #   p <- p +
     #     geom_ribbon(
@@ -777,10 +777,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
     #       alpha = 0.3
     #     )
     # }
-    
+
     return(p)
   })
-  
+
   output[[costcomparison$IDs$plot]] <- renderPlot({
     costcomparisonPlot() +
       theme(
@@ -788,8 +788,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         plot.subtitle = element_blank()
       )
   }, res=85)
-  
-  
+
+
   #EFFECTS server ----
   #___calculate data ----
   effectsData <- reactive({
@@ -800,7 +800,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         "base_case"
       )
     )
-    
+
     EFFECTS_DATA() %>%
       dplyr::filter(
         Scenario %in% c(
@@ -815,7 +815,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
     # ) %>%
     # arrange(scenario)
   })
-  
+
   #costs server ----
   #___calculate data ----
     costsData <- reactive({
@@ -826,7 +826,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         "base_case"
       )
     )
-    
+
     COSTS_DATA() %>%
       dplyr::filter(
         Discount == 0,
@@ -840,11 +840,11 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
               c(base_case = "Base Case", costsoutcomes$interventions$labels, costsoutcomes$analyses$labels)[[x]]
             } else as.character(x)
           }))
-        
+
       # ) %>%
       # arrange(scenario)
   })
-  
+
   #costs server ----
   #___calculate data ----
   annualCostData <- reactive({
@@ -855,7 +855,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         "base_case"
       )
     )
-    
+
     COSTS_ANNUAL_DATA() %>%
       dplyr::filter(
         Scenario %in% c(
@@ -867,11 +867,11 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
           c(base_case = "Base Case", costsoutcomes$interventions$labels, costsoutcomes$analyses$labels)[[x]]
         } else as.character(x)
       }))
-    
+
     # ) %>%
     # arrange(scenario)
   })
-  
+
   #cost effectiveness server ----
   #___calculate data ----
   costeffData <- reactive({
@@ -896,7 +896,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       cost_name<- "Health Services Cost (in mil)"
       inc_cost_name<-"Incremental Health Services Cost (in mil)"
     }
-  
+
     if(input[[costcomparison$IDs$controls$discount]]==1){
       cost_name<-paste("Discounted", cost_name)
       inc_cost_name<-paste("Discounted",inc_cost_name)
@@ -916,8 +916,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         )) %>% arrange(`Effectiveness Measure`, value) %>%
       mutate("Incremental Cost (in mil)"=`Cost (in mil)`-lag(`Cost (in mil)`),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=(value-lag(value)))%>%
       mutate("ICER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
-      select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>% 
-      mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` > 0)~ "Dominated", TRUE ~ as.character(ICER)))%>% 
+      select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>%
+      mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` > 0)~ "Dominated", TRUE ~ as.character(ICER)))%>%
       mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` < 0)~ paste(as.character(ICER),"\n","(Cost saving)"), TRUE ~ as.character(ICER)))%>%
       mutate(ICER=case_when(ICER %in% c(NaN,0) ~ "", TRUE ~ as.character(ICER)))%>%
       rename(!!eff_name := `Effectiveness (in 000s)`) %>%
@@ -942,8 +942,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
             )) %>% arrange(`Effectiveness Measure`, -value) %>%
           mutate("Incremental Cost (in mil)"=`Cost (in mil)`-lag(`Cost (in mil)`),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=-(value-lag(value)))%>%
           mutate("ICER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
-          select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>% 
-          mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` > 0)~ "Dominated", TRUE ~ as.character(ICER)))%>% 
+          select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>%
+          mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` > 0)~ "Dominated", TRUE ~ as.character(ICER)))%>%
           mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` < 0)~ paste(as.character(ICER),"\n","(Cost saving)"), TRUE ~ as.character(ICER)))%>%
           mutate(ICER=case_when(ICER %in% c(NaN,0) ~ "", TRUE ~ as.character(ICER)))%>%
           rename(!!eff_name := `Effectiveness (in 000s)`) %>%
@@ -970,9 +970,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         mutate("ICER"=round((`Incremental Cost (in mil)`*1e3)/`Incremental Effectiveness (in 000s)`,0))%>%
         arrange(`Effectiveness Measure`, value) %>%
         select(!c(discount,perspectives,`Effectiveness Measure`,value))   %>%
-        mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` > 0)~ "Dominated", TRUE ~ as.character(ICER)))%>% 
-        mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` < 0)~ paste(as.character(ICER),"\n","(Cost saving)"), TRUE ~ as.character(ICER)))%>% 
-        mutate(ICER=case_when(ICER %in% c(NaN,0) ~ "", TRUE ~ as.character(ICER)))%>% 
+        mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` > 0)~ "Dominated", TRUE ~ as.character(ICER)))%>%
+        mutate(ICER=case_when((ICER<0 & `Incremental Cost (in mil)` < 0)~ paste(as.character(ICER),"\n","(Cost saving)"), TRUE ~ as.character(ICER)))%>%
+        mutate(ICER=case_when(ICER %in% c(NaN,0) ~ "", TRUE ~ as.character(ICER)))%>%
         rename(!!eff_name := `Effectiveness (in 000s)`) %>%
         rename(!!inc_eff_name := `Incremental Effectiveness (in 000s)`) %>%
         rename(!!cost_name := `Cost (in mil)`) %>%
@@ -980,21 +980,21 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         mutate(Scenario = sapply(Scenario, function(x) {
           if (x %in% c('base_case', names(costcomparison$interventions$labels), names(costcomparison$analyses$labels))) {
             c(base_case = "Base Case", costcomparison$interventions$labels, costcomparison$analyses$labels)[[x]]
-          } else as.character(x) 
+          } else as.character(x)
         }
         ))
 
-        
+
       # %>% arrange(`Effectiveness Measure`, desc(value)) %>%
       #   mutate("Incremental Cost"=Cost-lag(Cost),"Effectiveness (in 000s)"=value, "Incremental Effectiveness (in 000s)"=value-lag(value))%>%
       #   mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
       #   # mutate("ACER"=round(`Incremental Cost`/`Incremental Effectiveness (in 000s)`,0))%>%
-      #   select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>% 
+      #   select(!c(discount,perspectives,`Effectiveness Measure`,value)) %>%
       #   mutate(ACER=case_when(ACER<0 ~ "Dominated", TRUE ~ as.character(ACER)))
       }
   })
 
-#___reactive title for cost effectiveness table 
+#___reactive title for cost effectiveness table
   # costeffTitle <- reactive({
   #   req(
   #     input[[costcomparison$IDs$controls$costs]]
@@ -1005,18 +1005,18 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
   #     if (geo_short_code() == 'US') 'the US' else unname(geographies[geo_short_code()])
   #   )
   # })
-  # 
+  #
   # output[[costeff$IDs$title]] <- reactive({
   #   title <-costeffTitle()
-  #   
+  #
   #   session$sendCustomMessage("tabby:altupdate", list(
   #     selector = paste0("#", costeff$IDs$plot),
   #     alt = title
   #   ))
-  #   
+  #
   #   title
   # })
-  # 
+  #
   # ages server ----
   # __calculate data ----
   agegroupsData <- reactive({
@@ -1031,7 +1031,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       input[[agegroups$IDs$controls$years]] >= 2016 &&
         input[[agegroups$IDs$controls$years]] <= 2100
     )
-    
+
     AGEGROUPS_DATA() %>%
       filter(
         population == input[[agegroups$IDs$controls$populations]],
@@ -1044,9 +1044,9 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
           "base_case"
         ),
         comparator == 'absolute_value'
-      ) %>% 
+      ) %>%
       mutate(scenario = relevel(as.factor(scenario), 'base_case'),
-        value = signif(value, 3)) 
+        value = signif(value, 3))
 
   })
 
@@ -1093,7 +1093,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
     bands_data <- data.frame(xstart = seq(1,11,1)-.45, xend = seq(1,11,1)+.45, col = '#F5F5F5')
 
     ggplot(data, aes(x = age_group)) +
-      geom_rect(data = bands_data, mapping = aes(x = NULL, xmin = xstart, xmax = xend, ymin = -Inf, ymax = Inf), fill = '#F5F5F5') + 
+      geom_rect(data = bands_data, mapping = aes(x = NULL, xmin = xstart, xmax = xend, ymin = -Inf, ymax = Inf), fill = '#F5F5F5') +
       geom_pointrange(
         mapping = aes(
           y = mean,
@@ -1168,7 +1168,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         plot.margin=unit(c(1,1,1.5,1.2),"cm")
 
       ) +
-      expand_limits(y=0) 
+      expand_limits(y=0)
   })
 
   output[[agegroups$IDs$plot]] <- renderPlot({
@@ -1181,8 +1181,8 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
   # downloads ----
   # __estimates png ----
   output[[estimates$IDs$downloads$png]] <- downloadHandler(
-    filename = reactive({ paste0("tabby", 
-      version_number, 
+    filename = reactive({ paste0("tabby",
+      version_number,
       "-estimates-plot-", geo_short_code(), "_", sys_date, ".png") }),
     content = function(file) {
       png(file, res = 85, width = 13, height = 9, units = "in")
@@ -1226,8 +1226,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
 
       read_pptx() %>%
         add_slide(layout = "Title and Content", master = "Office Theme") %>%
-        ph_with_text(type = "title", str = "") %>%
-        ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        # ph_with_text(type = "title", str = "") %>%
+        # ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        ph_with(value = "", location = ph_location_type(type ="title")) %>%
+        ph_with(value = tmp, location = ph_location_type(type ="body")) %>%
         print(target = file)
     }
   )
@@ -1235,7 +1237,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
   # __estimates xlsx ----
   output[[estimates$IDs$downloads$xlsx]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-      version_number, 
+      version_number,
       "-estimates-data-", geo_short_code(), "_", sys_date, ".xlsx") }),
     content = function(file) {
       estimatesData() %>% filter(outcome!="total_additional_ltbi_tests") %>%
@@ -1262,7 +1264,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
   # __estimates csv ----
   output[[estimates$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
-      version_number, 
+      version_number,
       "-estimates-data-", geo_short_code(), "_", sys_date, ".csv") }),
     content = function(file) {
       estimatesData() %>% filter(outcome!="total_additional_ltbi_tests") %>%
@@ -1330,8 +1332,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
 
       read_pptx() %>%
         add_slide(layout = "Title and Content", master = "Office Theme") %>%
-        ph_with_text(type = "title", str = "") %>%
-        ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        # ph_with_text(type = "title", str = "") %>%
+        # ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        ph_with(value = "", location = ph_location_type(type ="title")) %>%
+        ph_with(value = tmp, location = ph_location_type(type ="body")) %>%
         print(target = file)
     }
   )
@@ -1431,8 +1435,10 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
 
       read_pptx() %>%
         add_slide(layout = "Title and Content", master = "Office Theme") %>%
-        ph_with_text(type = "title", str = "") %>%
-        ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        # ph_with_text(type = "title", str = "") %>%
+        # ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        ph_with(value = "", location = ph_location_type(type ="title")) %>%
+        ph_with(value = tmp, location = ph_location_type(type ="body")) %>%
         print(target = file)
     }
   )
@@ -1466,7 +1472,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         )
     }
   )
-  
+
   # __agegroups csv ----
   output[[agegroups$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1496,7 +1502,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         )
     }
   )
-  
+
   # __addoutputs png ----
   output[[addoutputs$IDs$downloads$png]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1508,7 +1514,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       dev.off()
     }
   )
-  
+
   # __addoutputs pdf ----
   output[[addoutputs$IDs$downloads$pdf]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1520,7 +1526,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       dev.off()
     }
   )
-  
+
   # __addoutputs pptx ----
   output[[addoutputs$IDs$downloads$pptx]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1528,31 +1534,33 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
-      
+
       this <- try(addoutputsPlot(), silent = TRUE)
-      
+
       jpeg(tmp, res = 85, width = 13, height = 9, units = "in")
-      
+
       if (is.ggplot(this)) {
         print(this)
       }
-      
+
       dev.off()
-      
+
       read_pptx() %>%
         add_slide(layout = "Title and Content", master = "Office Theme") %>%
-        ph_with_text(type = "title", str = "") %>%
-        ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        # ph_with_text(type = "title", str = "") %>%
+        # ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        ph_with(value = "", location = ph_location_type(type ="title")) %>%
+        ph_with(value = tmp, location = ph_location_type(type ="body")) %>%
         print(target = file)
     }
   )
-  
+
   # __addoutputs xlsx ----
   output[[addoutputs$IDs$downloads$xlsx]] <- downloadHandler(
     filename = paste0("tabby",
                       version_number, "-addoutputs-data-", geo_short_code(), "_", sys_date, ".xlsx"),
     content = function(file) {
-      addoutputsData() %>% 
+      addoutputsData() %>%
         mutate(
           year = ifelse(year == 2000, 2016, year)
         ) %>%
@@ -1572,7 +1580,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         )
     }
   )
-  
+
   # __addoutputs csv ----
   output[[addoutputs$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1599,7 +1607,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
     }
   )
 
-  
+
   # __costcomparison png ----
   output[[costcomparison$IDs$downloads$png]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1611,7 +1619,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       dev.off()
     }
   )
-  
+
   # __costcomparison pdf ----
   output[[costcomparison$IDs$downloads$pdf]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1623,7 +1631,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       dev.off()
     }
   )
-  
+
   # __costcomparison pptx ----
   output[[costcomparison$IDs$downloads$pptx]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1631,31 +1639,33 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
     content = function(file) {
       tmp <- tempfile(fileext = "jpg")
       on.exit(unlink(tmp))
-      
+
       this <- try(costcomparisonPlot(), silent = TRUE)
-      
+
       jpeg(tmp, res = 85, width = 13, height = 9, units = "in")
-      
+
       if (is.ggplot(this)) {
         print(this)
       }
-      
+
       dev.off()
-      
+
       read_pptx() %>%
         add_slide(layout = "Title and Content", master = "Office Theme") %>%
-        ph_with_text(type = "title", str = "") %>%
-        ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        # ph_with_text(type = "title", str = "") %>%
+        # ph_with_img(type = "body", src = tmp, width = 7, height = 5) %>%
+        ph_with(value = "", location = ph_location_type(type ="title")) %>%
+        ph_with(value = tmp, location = ph_location_type(type ="body")) %>%
         print(target = file)
     }
   )
-  
+
   # __costcomparison xlsx ----
   output[[costcomparison$IDs$downloads$xlsx]] <- downloadHandler(
     filename = paste0("tabby",
                       version_number, "-cost_comparison-data-", geo_short_code(), "_", sys_date, ".xlsx"),
     content = function(file) {
-      
+
       #create a list of all costs data
       cost_list<-list()
       cost_list[["Cost Effectiveness Table"]]<-costeffData()
@@ -1666,7 +1676,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       )
     }
   )
-  
+
   # __costcomparison csv ----
   output[[costcomparison$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1680,12 +1690,13 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
     }
   )
   
+
   # __costcomparison xlsx ----
   output[[costsoutcomes$IDs$downloads$xlsx]] <- downloadHandler(
     filename = paste0("tabby",
                       version_number, "-costs_and_outcomes-data-", geo_short_code(), "_", sys_date, ".xlsx"),
     content = function(file) {
-      
+
       #create a list of all costs data
       cost_list<-list()
       cost_list[["Effects Summary Table"]]<-effectsData()
@@ -1698,7 +1709,7 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
       )
     }
   )
-  
+
   # __costcomparison csv ----
   output[[costsoutcomes$IDs$downloads$csv]] <- downloadHandler(
     filename = reactive({ paste0("tabby",
@@ -1722,12 +1733,12 @@ tabby1Server <- function(input, output, session, ns, sim_data, cost_data, geo_sh
         # )
         write.table(cost_list[[i]],fileName,sep = ',', row.names = F, col.names = T)
         files <- c(fileName,files)
-      } 
+      }
       #create the zip file
       zip(file,files)
     }
   )
   filtered_data <- list(estimatesData = estimatesData, trendsData = trendsData, agegroupsData = agegroupsData,
-                        addoutputsData=addoutputsData, costcomparisonData=costcomparisonData, effectsData = effectsData, costsData = costsData, costeffData=costeffData, annualCostData=annualCostData) 
+                        addoutputsData=addoutputsData, costcomparisonData=costcomparisonData, effectsData = effectsData, costsData = costsData, costeffData=costeffData, annualCostData=annualCostData)
   return(filtered_data)
 }

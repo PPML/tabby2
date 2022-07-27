@@ -1,0 +1,31 @@
+"outcome","scenario","age_group","year","mean"
+"LTBI Prevalence (percentage)","Base Case","all_ages",2022,100
+"LTBI Prevalence (percentage)","Base Case","all_ages",2025,92.3
+"LTBI Prevalence (percentage)","Base Case","all_ages",2030,81.2
+"LTBI Prevalence (percentage)","Base Case","all_ages",2040,63
+"LTBI Prevalence (percentage)","Base Case","all_ages",2050,49
+"LTBI Prevalence (percentage)","LTBI treatment for new migrants","all_ages",2022,100
+"LTBI Prevalence (percentage)","LTBI treatment for new migrants","all_ages",2025,92.1
+"LTBI Prevalence (percentage)","LTBI treatment for new migrants","all_ages",2030,80.3
+"LTBI Prevalence (percentage)","LTBI treatment for new migrants","all_ages",2040,61.3
+"LTBI Prevalence (percentage)","LTBI treatment for new migrants","all_ages",2050,46.8
+"LTBI Prevalence (percentage)","Improved LTBI treatment in the US","all_ages",2022,100
+"LTBI Prevalence (percentage)","Improved LTBI treatment in the US","all_ages",2025,92
+"LTBI Prevalence (percentage)","Improved LTBI treatment in the US","all_ages",2030,79.5
+"LTBI Prevalence (percentage)","Improved LTBI treatment in the US","all_ages",2040,59.5
+"LTBI Prevalence (percentage)","Improved LTBI treatment in the US","all_ages",2050,44.7
+"LTBI Prevalence (percentage)","Enhanced case detection","all_ages",2022,100
+"LTBI Prevalence (percentage)","Enhanced case detection","all_ages",2025,92.3
+"LTBI Prevalence (percentage)","Enhanced case detection","all_ages",2030,81.2
+"LTBI Prevalence (percentage)","Enhanced case detection","all_ages",2040,63
+"LTBI Prevalence (percentage)","Enhanced case detection","all_ages",2050,49
+"LTBI Prevalence (percentage)","Enhanced TB treatment","all_ages",2022,100
+"LTBI Prevalence (percentage)","Enhanced TB treatment","all_ages",2025,92.3
+"LTBI Prevalence (percentage)","Enhanced TB treatment","all_ages",2030,81.1
+"LTBI Prevalence (percentage)","Enhanced TB treatment","all_ages",2040,62.9
+"LTBI Prevalence (percentage)","Enhanced TB treatment","all_ages",2050,48.8
+"LTBI Prevalence (percentage)","All improvements","all_ages",2022,100
+"LTBI Prevalence (percentage)","All improvements","all_ages",2025,92.3
+"LTBI Prevalence (percentage)","All improvements","all_ages",2030,81.1
+"LTBI Prevalence (percentage)","All improvements","all_ages",2040,62.7
+"LTBI Prevalence (percentage)","All improvements","all_ages",2050,48.7

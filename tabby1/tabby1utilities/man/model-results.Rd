@@ -5,9 +5,13 @@
 \alias{results_estimates}
 \alias{results_trends}
 \alias{results_agegroups}
+\alias{results_addoutputs}
+\alias{results_costcomparison}
 \alias{data_estimates}
 \alias{data_trends}
 \alias{data_agegroups}
+\alias{data_addoutputs}
+\alias{data_costcomparison}
 \title{Load Raw or Transformed TB Model Results Data}
 \usage{
 results_estimates()
@@ -16,11 +20,19 @@ results_trends()
 
 results_agegroups()
 
+results_addoutputs()
+
+results_costcomparison()
+
 data_estimates()
 
 data_trends()
 
 data_agegroups()
+
+data_addoutputs()
+
+data_costcomparison()
 }
 \description{
 Melted arrays, now data frames, containing the tab results of the TB model
@@ -36,7 +48,7 @@ return formatted results ready for use in the tabby application.
 1. Incident M. TB Infection (per Mil)
 2. LTBI Prevalence (%)
 3. New TB Cases (per Mil)
-4. MDR-TB in New TB Cases (%)
+4. MDR-TB in Incident TB Cases (%)
 5. TB-Related Deaths (per Mil)
 }
 

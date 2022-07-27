@@ -164,7 +164,7 @@ summaryStatistics <- function(input, output, session, values, sim_data, geo_shor
                      "fb_population"=rep(11,length(ag))
       )
 
-      pop<-sum(out[1,71,ag+na])
+      pop<-sum(out[1,73,ag+na])
       return(pop)
     })
   }
