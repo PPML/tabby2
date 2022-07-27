@@ -26,27 +26,23 @@ app$snapshotInit("testing_trends_downloads")
 # these are the geographies downloaded in this test -- this needs to be updated
 # as more are included for the paper
 
-geographies <- c("United States", "California", "Florida", "Georgia",
-                 "Illinois", "Massachusetts", "New Jersey", "New York",
-                 "Pennsylvania", "Texas", "Virginia", "Washington") 
+geographies <- c("United States", state.name, "District of Columbia") 
 
 
 # select each location, then go to trends, and  save each of the outcomes
 # available in the estimates page
 
 for (location in geographies) { 
-
-  app$setInputs(sidebar = "timetrends")
-  app$setInputs(sidebar = "about")
-  app$setInputs(state = location)
-  app$setInputs(sidebar = "timetrends")
-  app$setInputs(`tabby1-trendsOutcomes` = "tb_infection_per_100k")
+  app$setInputs(state = location, wait_=FALSE, values_=FALSE)
+  print(location)
+  app$setInputs(sidebar = "timetrends", wait_=FALSE, values_=FALSE)
+  app$setInputs(`tabby1-trendsOutcomes` = "tb_infection_per_100k", wait_=FALSE, values_=FALSE)
   app$snapshotDownload("tabby1-trendsCSV")
-  app$setInputs(`tabby1-trendsOutcomes` = "pct_ltbi")
+  app$setInputs(`tabby1-trendsOutcomes` = "pct_ltbi", wait_=FALSE, values_=FALSE)
   app$snapshotDownload("tabby1-trendsCSV")
-  app$setInputs(`tabby1-trendsOutcomes` = "tb_incidence_per_100k")
+  app$setInputs(`tabby1-trendsOutcomes` = "tb_incidence_per_100k", wait_=FALSE, values_=FALSE)
   app$snapshotDownload("tabby1-trendsCSV")
-  app$setInputs(`tabby1-trendsOutcomes` = "tb_deaths_per_100k")
+  app$setInputs(`tabby1-trendsOutcomes` = "tb_mortality_per_100k", wait_=FALSE, values_=FALSE)
   app$snapshotDownload("tabby1-trendsCSV")
 }
 
