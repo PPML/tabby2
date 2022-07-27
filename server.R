@@ -245,9 +245,9 @@ shinyServer(function(input, output, session) {
     # to the tabby1server for providing filtering / visualization / download functionality in the 
     # user interface.
 
-    treatment_distribution<-reactiveValues(programchange1=c(1/3,1/3,1/3,1/3),
-                                           programchange2=c(1/3,1/3,1/3,1/3),
-                                           programchange3=c(1/3,1/3,1/3,1/3))
+    treatment_distribution<-reactiveValues(programchange1=c(1/2,1/3,1/3,1/3),
+                                           programchange2=c(1/2,1/3,1/3,1/3),
+                                           programchange3=c(1/2,1/3,1/3,1/3))
     
 		# Run & Append Program Changes Scenarios to Sim Data When RunSimulations Button is Pressed
 		observeEvent(input[['programChange1RunSimulations']], {
