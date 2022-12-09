@@ -155,7 +155,7 @@ Values for these inputs are shown in Table 3. Several of these values represent 
 | Cost of TST	| $9.35 | Yes 	| CMS 2020, Physician Fee CPT 86580 |
 | Cost of IGRA	| $61.98 	| Yes 	| CMS 2020, Limit (Q4) CPT 86480 |
 | Fraction of LTBI tests with IGRA	| 0.50	| Yes	| Default, to be updated by user |
-| **Cost of ruling out TB disease before treatment initiation** |	$32.08 	| Yes 	 | |
+| **Cost of ruling out TB disease before treatment initiation** |	$33.20 	| Yes 	 | |
 | Chest x-ray (2 view) 	| $33.20	| No	| CMS 2020, Physician’s Fee CPT 71046 | 
 | **Total cost of treatment with 3HP (self-administered)**	| $411.87 	| Yes 	 | |
 | Medication costs[^fn5]  	| $133 	| No	 | |
