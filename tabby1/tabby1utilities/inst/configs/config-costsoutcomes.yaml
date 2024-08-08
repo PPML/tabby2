@@ -24,24 +24,28 @@ costs:
     - savqalys
     - savlys 
   labels:
-    avtcases: TB cases averted
-    avtdeaths: TB deaths averted
-    savqalys: QALYs saved
-    savlys: Life years saved
+    avtcases: TB Cases Averted (in thousands)
+    avtdeaths: TB Deaths Averted (in thousands)
+    savqalys: QALYs Saved (in thousands)
+    savlys: Life Years Saved (in thousands)
   formatted:
     avtcases: |-
-      TB cases averted
+      TB Cases Averted
+      (in thousands)
     avtdeaths: |-
-      TB deaths averted
+      TB Deaths Averted
+      (in thousands)
     savqalys: |-
-      QALYs saved
+      QALYs Saved
+      (in thousands)
     savlys: |-
-       Life years saved
+       Life Years Saved
+       (in thousands)
   descriptions:
-       avtcases: TB cases averted
-       avtdeaths: TB deaths averted
-       savqalys: QALYS saved
-       savlys: Life years saved
+       avtcases: TB Cases Averted (in thousands)
+       avtdeaths: TB Deaths Averted (in thousands)
+       savqalys: QALYS Saved (in thousands)
+       savlys: Life Years Saved (in thousands)
   selected:
   - yes
   - no
@@ -53,8 +57,8 @@ perspectives:
     - healthsys
     - all
   labels:
-    healthsys: Health services costs only
-    all: Health services and patient productivity costs
+    healthsys: Health Services Costs Only
+    all: Health Services and Patient Productivity Costs
   formatted:
     healthsys: |-
       Health System Costs Only
@@ -73,12 +77,12 @@ discount:
     - 0
   labels:
     1: Include
-    0: Do not include
+    0: Do Not Include
   formatted:
     1: |-
       Include
     0: |-
-      Do not include
+      Do Not Include
   descriptions:
        1: Include discount rate
        0: Do not include discount rate
@@ -86,18 +90,18 @@ discount:
   - no
   - yes
 comparator:
-  heading: Incremental cost effectiveness ratios (ICERs)
+  heading: Incremental Cost Effectiveness Ratios (ICERs)
   values:
     - ICER
     - ACER
   labels:
-    ICER: Compare scenarios in order of increasing effectiveness
-    ACER: Compare all scenarios to the basecase
+    ICER: Compare Scenarios in order of Increasing Effectiveness
+    ACER: Compare All Scenarios to the Basecase
   formatted:
     ICER: |-
-      Compare scenarios to the basecase scenario
+      Compare Scenarios to the Basecase Scenario
     ACER: |-
-      Compare all scenarios to the basecase
+      Compare All Scenarios to the Basecase
   descriptions:
        ICER: Compare incremental cost effectiveness of scenarios
        ACER: Compare all scenarios to the basecase

@@ -99,7 +99,7 @@ outcomes:
     tb_mortality_per_100k: TB-Related Deaths (per 100,000)
     tb_infection_000s: Incident M. tb Infections (in thousands)
     ltbi_000s: LTBI Prevalence (in thousands)
-    tb_incidence_000s: TB Incidence (in thousands)
+    tb_incidence_000s: TB Cases (in thousands)
     tb_mortality_000s: TB-Related Deaths (in thousands)
   formatted:
     tb_infection_per_100k: |-
@@ -118,7 +118,7 @@ outcomes:
       TB Incidence
       (per 100,000)
     tb_incidence_000s: |-
-      TB Incidence
+      TB Cases
       (in thousands)
     tb_mortality_per_100k: |-
       TB-Related Deaths
